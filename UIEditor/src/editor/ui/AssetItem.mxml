@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="80" initialize="Initialized(event)"
+					   borderVisible="{_BorderFlag}" buttonMode="{_BorderFlag}" cornerRadius="5" click="SelectClick(event)" >
+	<fx:Declarations>
+		<!--
+			单个资产条目数据
+		-->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.model.asset.Asset;
+			import editor.model.asset.AssetBitmap;
+			
+			import mx.core.BitmapAsset;
+			import mx.events.FlexEvent;
+			
+			import utility.Tools;
+			
+			private var _Asset:Asset = null;
+			private var Update:Boolean = false;
+			private var _PreviewBitmap:BitmapData = null;
+			
+			[Bindable]
+			private var _BorderFlag:Boolean = false;
+			public function set Item(Item:Asset):void
+			{
+				_Asset = Item;
+				
+				if(null == PreviewImg)
+				{
+					Update = true;
+				}
+				else
+				{
+					Render();
+				}
+			}
+			public function get Item():Asset
+			{
+				return _Asset;
+			}
+			
+			protected function Initialized(event:FlexEvent):void
+			{
+				if(Update)
+				{
+					Render();
+					Update = false;
+				}
+				
+				this.addEventListener(MouseEvent.MOUSE_OVER,ShowBorder);
+				this.addEventListener(MouseEvent.MOUSE_OUT,HideBorder);
+			}
+			
+			private function Render():void
+			{
+				if(_Asset is AssetBitmap)
+				{
+					if(AssetBitmap(_Asset).Image)
+					{
+						_PreviewBitmap = Tools.BitmapScale(AssetBitmap(_Asset).Image.bitmapData,48);
+						PreviewImg.source = _PreviewBitmap;
+						Pixel.text = AssetBitmap(_Asset).ImageWidth + " X " + AssetBitmap(_Asset).ImageHeight;
+					}
+					
+				}
+				//Size.text = _Asset.Data.length / 1024 + "K";
+			}
+			
+			private function DeleteAsset(event:MouseEvent):void
+			{
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.DELETEASSET);
+				Notify.Params.push(_Asset);
+				dispatchEvent(Notify);
+			}
+			
+			private function ShowBorder(event:MouseEvent):void
+			{
+				_BorderFlag = true;
+			}
+			private function HideBorder(event:MouseEvent):void
+			{
+				_BorderFlag = false;
+			}
+			
+			private function SelectClick(event:MouseEvent):void
+			{
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.SELECTASSET);
+				Notify.Params.push(_Asset);
+				dispatchEvent(Notify);
+			}
+		]]>
+	</fx:Script>
+	
+	
+	
+	<s:layout>
+		<s:HorizontalLayout paddingLeft="10" gap="20" verticalAlign="middle" />
+	</s:layout>
+	
+	<s:Image id="PreviewImg" width="48" height="48" smooth="true" mouseEnabled="false"/>
+	
+	<s:Label text="100 X 100" width="100%" id="Pixel" mouseEnabled="false" />
+	
+	<s:Image buttonMode="true" click="DeleteAsset(event)" smooth="true"
+			 source="@Embed('../assets/Delete.png')" width="24" height="24" enabled="false"/>
+</s:BorderContainer>

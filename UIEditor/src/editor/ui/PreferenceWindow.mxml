@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="600" height="350" initialize="Initialized(event)" title="系统设置">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.utils.Preference;
+			
+			import mx.controls.Alert;
+			import mx.core.IVisualElement;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.utils.StringUtil;
+			
+			protected function Initialized(event:FlexEvent):void
+			{
+				ScriptOut.text = Preference.Instance.ScriptExport;
+				ModelOut.text = Preference.Instance.ModelExport;
+				
+				var Path:Array = Preference.Instance.AssetPath;
+				
+				for(var Idx:int=0; Idx<Path.length; Idx++)
+				{
+					var Item:AssetPathItem = new AssetPathItem();
+					Item.Text = Path[Idx];
+					Item.percentWidth = 100;
+					AssetPath.addElement(Item);
+				}
+				
+				var Packs:Array = Preference.Instance.Packages;
+				
+				for(var Index:int=0; Index<Packs.length; Index++)
+				{
+					var Pack:AssetPathItem = new AssetPathItem();
+					Pack.Text = Packs[Index];
+					Pack.percentWidth = 100;
+					PackPath.addElement(Pack);
+				}
+				AssetPath.addEventListener(NotifyEvent.PREFERENCE_DELASSETPATH,DeleteAssetPath);
+			}
+			
+			/**
+			 * 删除资源库路径
+			 **/
+			private function DeleteAssetPath(event:NotifyEvent):void
+			{
+				Alert.show("确定要删除资源库路径(" + event.Message + ")?","删除确认",Alert.YES|Alert.NO,null,function(closeEvent:CloseEvent):void{
+					
+					if(closeEvent.detail == Alert.YES)
+					{
+						Preference.Instance.DeleteAssetPath(event.Message);
+						NotificationManager.Instance.Show("删除资源库路径完成.");
+						AssetPath.removeElement(event.target as IVisualElement);
+					}
+				})
+			}
+			
+			//private var Browser:File = null;
+			private function SelectScriptOutput(event:MouseEvent):void
+			{
+				var Browser:File = new File();
+				Browser.addEventListener(Event.SELECT,function(event:Event):void{
+					ScriptOut.text = Browser.nativePath;
+				});
+				Browser.browseForDirectory("请选择生成代码输出的目标目录");
+			}
+			
+			private function SelectModelOutput(event:MouseEvent):void
+			{
+				var Browser:File = new File();
+				Browser.addEventListener(Event.SELECT,function(event:Event):void{
+					ModelOut.text = Browser.nativePath;
+				});
+				Browser.browseForDirectory("请选择生成组件模型输出的目标目录");
+			}
+			
+			private function SavePreference(event:MouseEvent):void
+			{
+				var ScriptValue:String = StringUtil.trim(ScriptOut.text);
+				if(ScriptValue == "")
+				{
+					Alert.show("代码输出路径不能为空");
+					return;
+				}
+				var ModelValue:String = StringUtil.trim(ModelOut.text);
+				if(ModelValue == "")
+				{
+					Alert.show("模型输出路径不能为空");
+					return;
+				}
+				Preference.Instance.ModelExport = ModelValue;
+				Preference.Instance.ScriptExport = ScriptValue;
+				Preference.Instance.Save();
+				NotificationManager.Instance.Show("设置信息保存完毕.");
+				CloseWindow();
+			}
+			
+			/**
+			 * 添加新的资源加载路径
+			 **/
+			private function AppendAssetPath(event:MouseEvent):void
+			{
+				var Browser:File = new File();
+				Browser.addEventListener(Event.SELECT,function(event:Event):void{
+					var Path:String = Browser.nativePath;
+					
+					var PathArray:Array = Preference.Instance.AssetPath;
+					
+					if(PathArray.indexOf(Path) >= 0)
+					{
+						Alert.show("新添加的资源路径已经存在,不允许重复添加!");
+						return;
+					}
+					Preference.Instance.AppendAssetPath(Path);
+					
+					var Item:AssetPathItem = new AssetPathItem();
+					Item.Text = Path;
+					Item.percentWidth = 100;
+					AssetPath.addElement(Item);
+				});
+				
+				Browser.browseForDirectory("请选择新添加的外部资源库目录");
+				var a:ByteArray = new ByteArray();
+			}
+			
+			private function AppenPackage(event:MouseEvent):void
+			{
+				Prompt.Show("请按照提示输入","请输入组件代码生成时使用的包路径.格式规范:xx.xx.xx.包名用点号分隔",function(Value:String):void{
+					trace(Value);
+					Preference.Instance.AppendPackage(Value);
+					var Item:AssetPathItem = new AssetPathItem();
+					Item.Text = Value;
+					Item.percentWidth = 100;
+					PackPath.addElement(Item);
+				});
+//				var Browser:File = new File();
+//				Browser.addEventListener(Event.SELECT,function(event:Event):void{
+//					var Path:String = Browser.nativePath;
+//					
+//					var PathArray:Array = Preference.Instance.AssetPath;
+//					
+//					if(PathArray.indexOf(Path) >= 0)
+//					{
+//						Alert.show("新添加的资源路径已经存在,不允许重复添加!");
+//						return;
+//					}
+//					Preference.Instance.AppendAssetPath(Path);
+//					
+//					var Item:AssetPathItem = new AssetPathItem();
+//					Item.Text = Path;
+//					Item.percentWidth = 100;
+//					AssetPath.addElement(Item);
+//				});
+//				
+//				Browser.browseForDirectory("请选择新添加的外部资源库目录");
+//				var a:ByteArray = new ByteArray();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout paddingLeft="5" paddingTop="5" gap="20" horizontalAlign="center" />
+	</ui:layout>
+	
+	<s:HGroup width="100%" visible="false" includeInLayout="false">
+		<s:Label width="100" text="UI代码输出目录" verticalAlign="middle" height="100%" />
+		<s:TextInput width="400" id="ScriptOut" editable="false"/>
+		<s:Image source="@Embed('../assets/Search.png')" width="24" height="24" smooth="true" click="SelectScriptOutput(event)" buttonMode="true" toolTip="选择本地目录"/>
+	</s:HGroup>
+	
+	<s:HGroup width="100%" visible="false" includeInLayout="false">
+		<s:Label width="100" text="UI模型输出目录" verticalAlign="middle" height="100%"/>
+		<s:TextInput width="400" id="ModelOut" editable="false"/>
+		<s:Image source="@Embed('../assets/Search.png')" width="24" height="24" smooth="true" click="SelectModelOutput(event)" buttonMode="true" toolTip="选择本地目录"/>
+	</s:HGroup>
+	<s:HGroup width="100%">
+		<s:Label width="100" text="资源库路径" verticalAlign="middle" height="100%" />
+		<s:BorderContainer>
+			<s:VGroup width="400" height="200" id="AssetPath" paddingLeft="5" paddingTop="5" paddingRight="5">
+				
+			</s:VGroup>
+		</s:BorderContainer>
+		<s:Image source="@Embed('../assets/Add.png')" width="24" height="24" smooth="true" click="AppendAssetPath(event)" buttonMode="true" toolTip="添加新的本地路径"/>
+	</s:HGroup>
+	
+	<s:HGroup width="100%" visible="false" includeInLayout="false">
+		<s:Label width="100" text="输出包路径" verticalAlign="middle" height="100%" />
+		<s:BorderContainer>
+			<s:VGroup width="400" height="200" id="PackPath" paddingLeft="5" paddingTop="5" paddingRight="5">
+				
+			</s:VGroup>
+		</s:BorderContainer>
+		<s:Image source="@Embed('../assets/Add.png')" width="24" height="24" smooth="true" click="AppenPackage(event)" buttonMode="true" toolTip="添加新的本地路径"/>
+	</s:HGroup>
+	
+	<s:HGroup gap="30">
+		<s:Image source="@Embed('../assets/Save.png')"  smooth="true" click="SavePreference(event)" buttonMode="true" toolTip="保存变更"/>
+		<s:Image source="@Embed('../assets/Cancel.png')" smooth="true" click="Close(event)" buttonMode="true" toolTip="取消"/>
+	</s:HGroup>
+</ui:AdvanceTitleWindow>

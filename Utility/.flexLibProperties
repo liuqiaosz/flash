@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="utility.System"/>
+    <classEntry path="utility.IDispose"/>
+    <classEntry path="utility.component.HorizontalScroll"/>
+    <classEntry path="utility.component.IControl"/>
+    <classEntry path="utility.component.skin.SliderSkin"/>
+    <classEntry path="utility.component.style.ContainerStyle"/>
+    <classEntry path="utility.component.style.Layout"/>
+    <classEntry path="utility.component.skin.WindowPanelSkin"/>
+    <classEntry path="utility.component.Slider"/>
+    <classEntry path="utility.component.style.ImageBackground"/>
+    <classEntry path="utility.component.style.GenericStyle"/>
+    <classEntry path="utility.component.Panel"/>
+    <classEntry path="utility.component.style.Border"/>
+    <classEntry path="utility.component.skin.TextLabelSkin"/>
+    <classEntry path="utility.component.style.SolidBackground"/>
+    <classEntry path="utility.component.style.GenericBackground"/>
+    <classEntry path="utility.Tools"/>
+    <classEntry path="utility.ISerializable"/>
+    <classEntry path="utility.IClone"/>
+    <classEntry path="utility.sqlite.TableField"/>
+    <classEntry path="utility.sqlite.table.TableSymbol"/>
+    <classEntry path="utility.sqlite.Table"/>
+    <classEntry path="utility.sqlite.TableFieldMode"/>
+    <classEntry path="utility.sqlite.error.DBError"/>
+    <classEntry path="utility.MouseManager"/>
+    <classEntry path="utility.IMouse"/>
+    <classEntry path="utility.swf.Swf"/>
+    <classEntry path="utility.swf.tag.FileAttribute"/>
+    <classEntry path="utility.swf.tag.SymbolClass"/>
+    <classEntry path="utility.swf.ISwfProcess"/>
+    <classEntry path="utility.swf.tag.GenericTag"/>
+    <classEntry path="utility.swf.tag.SetBackgroundColor"/>
+    <classEntry path="utility.swf.tag.Tag"/>
+    <classEntry path="utility.swf.tag.BitLossless2"/>
+    <classEntry path="utility.swf.SwfRect"/>
+    <classEntry path="utility.swf.BitByte"/>
+    <classEntry path="utility.swf.ByteStream"/>
+    <classEntry path="utility.swf.tag.DefineSound"/>
+    <classEntry path="utility.swf.tag.ITag"/>
+    <classEntry path="utility.swf.SwfFactory"/>
+    <classEntry path="utility.swf.SwfHeader"/>
+    <classEntry path="utility.BitmapTools"/>
+    <classEntry path="utility.swf.SwfBitmap"/>
+    <classEntry path="utility.ColorCode"/>
+    <classEntry path="utility.swf.tag.BitJPEG2"/>
+    <classEntry path="utility.swf.tag.GenericBit"/>
+    <classEntry path="utility.swf.event.SWFEvent"/>
+    <classEntry path="utility.IXMLSeializable"/>
+    <classEntry path="utility.DateTools"/>
+    <classEntry path="utility.Stat"/>
+    <classEntry path="utility.swf.tag.BitLossless"/>
+    <classEntry path="utility.bitmap.png.PNGDecoder"/>
+    <classEntry path="utility.bitmap.png.BlockGenericText"/>
+    <classEntry path="utility.CRC"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

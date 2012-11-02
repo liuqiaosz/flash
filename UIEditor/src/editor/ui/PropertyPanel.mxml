@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:My="editor.ui.*"
+		 width="210" height="100%" xmlns:ui="editor.ui.*" gap="20"
+		 >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Metadata>
+		[Event(name="OnChangeImage", type="editor.event.NotifyEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import corecom.control.Container;
+			import corecom.control.LayoutConstant;
+			import corecom.control.SimpleTabPanel;
+			import corecom.control.Tab;
+			import corecom.control.TabBar;
+			import corecom.control.TabContent;
+			import corecom.control.UIButton;
+			import corecom.control.UIControl;
+			import corecom.control.UIImage;
+			import corecom.control.UIPanel;
+			import corecom.control.UISlider;
+			import corecom.control.UITextInput;
+			import corecom.control.UIWindow;
+			import corecom.control.style.IStyle;
+			
+			import editor.event.NotifyEvent;
+			import editor.model.asset.Asset;
+			import editor.model.asset.AssetBitmap;
+			import editor.utils.Globals;
+			
+			import mx.controls.Alert;
+			import mx.events.ColorPickerEvent;
+			import mx.utils.StringUtil;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import utility.Tools;
+			private var _CurrentControl:UIControl = null;
+			
+			[Bindable]
+			private var ButtonStyleFlag:Boolean = false;
+			[Bindable]
+			private var TabStyleFlag:Boolean = false;
+			[Bindable]
+			private var SliderStyleFlag:Boolean = false;
+			[Bindable]
+			private var TabPanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var PanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var CategoryFlag:Boolean = false;
+			[Bindable]
+			private var LabelStyleFlag:Boolean = false;
+			[Bindable]
+			private var WindowStyleFlag:Boolean = false;
+			[Bindable]
+			private var ImageStyleFlag:Boolean = false;
+			[Bindable]
+			private var TextInputStyleFlag:Boolean = false;
+			
+			override protected function Initialized():void
+			{
+				Reset();
+				_CurrentControl = Control;
+				//类型
+				
+				if(_CurrentControl is UISlider)
+				{
+					Category.text = "滑动条";
+					SliderStyleFlag = true;
+					CategoryFlag = true;
+					SliderStyle.Control = _CurrentControl;
+				}
+				else if(_CurrentControl is SimpleTabPanel)
+				{
+					Category.text = "标签面板";
+					//TabPanelStyle.visible = true;
+					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
+					//TabPanelStyle.visible = true;
+					TabPanelStyleFlag = true;
+					CategoryFlag = true;
+					//BasicStyleFlag = false;
+					TabPanelStyle.Control = _CurrentControl;
+					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
+				}
+				else if(_CurrentControl is TabBar)
+				{
+					Category.text = "标签面板";
+					//TabPanelStyle.visible = true;
+					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
+					//TabPanelStyle.visible = true;
+					TabPanelStyleFlag = true;
+					CategoryFlag = true;
+					//BasicStyleFlag = false;
+					//TabPanelStyle.DisplayControl(TabBar(_CurrentControl).Owner);
+					
+					TabPanelStyle.Control = TabBar(_CurrentControl).Owner;
+					_CurrentControl = TabBar(_CurrentControl).Owner;
+				}
+				else if(_CurrentControl is Tab)
+				{
+					Category.text = "标签";
+					TabStyleFlag = true;
+					CategoryFlag = true;
+					TabStyle.Control = _CurrentControl;
+				}
+				else if(_CurrentControl is TabContent)
+				{
+					Category.text = "标签面板";
+					//TabPanelStyle.visible = true;
+					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
+					//TabPanelStyle.visible = true;
+					TabPanelStyleFlag = true;
+					CategoryFlag = true;
+					//BasicStyleFlag = false;
+					_CurrentControl = TabContent(_CurrentControl).Owner.parent.parent as SimpleTabPanel;
+					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
+					TabPanelStyle.Control = _CurrentControl;
+				}
+//				else if(_CurrentControl is HorizontalPanel)
+//				{
+//					Category.text = "横向面板";
+//				}
+//				else if(_CurrentControl is VerticalPanel)
+//				{
+//					Category.text = "横向面板";
+//				}
+				else if(_CurrentControl is corecom.control.UIButton)
+				{
+					Category.text = "简单按钮";
+					//					ButtonOverStyle.visible = true;
+					//					ButtonPressStyle.visible = true;
+					//					ButtonStateSwitch.visible = true;
+					ButtonStyleFlag = true;
+					CategoryFlag = true;
+					ButtonStyle.Control = _CurrentControl;
+					//ButtonOverStyle.DisplayControl(_CurrentControl as corecom.control.SimpleButton);
+					//ButtonPressStyle.DisplayControl(_CurrentControl as corecom.control.SimpleButton);
+					
+					//Scroll.verticalScrollBar.visible = true;
+				}
+				else if(_CurrentControl is UIPanel)
+				{
+					Category.text = "简单面板";
+					CategoryFlag = true;
+					PanelStyleFlag = true;
+					PanelStyle.Control = _CurrentControl;
+				}
+				else if(_CurrentControl is corecom.control.UILabel)
+				{
+					Category.text = "文本";
+					CategoryFlag = true;
+					LabelStyleFlag = true;
+					LabelStyle.Control = _CurrentControl;
+				}
+				else if(_CurrentControl is UIWindow)
+				{
+					Category.text = "视窗";
+					WindowStyleFlag = true;
+					WindowStyle.Control = _CurrentControl;
+				}
+				else if(_CurrentControl is UIImage)
+				{
+					Category.text = "图形";
+					ImageStyleFlag = true;
+					ImageStyle.Control = _CurrentControl;
+				}
+				else if(_CurrentControl is UITextInput)
+				{
+					Category.text = "文本输入框";
+					TextInputStyleFlag = true;
+					TextInputStyle.Control = _CurrentControl;
+				}
+				
+				Name.text = _CurrentControl.Id;
+			}
+			
+			override public function Reset():void
+			{
+				ButtonStyleFlag = false;
+				TabStyleFlag = false;
+				SliderStyleFlag = false;
+				TabPanelStyleFlag = false;
+				PanelStyleFlag = false;
+				CategoryFlag = false;
+				WindowStyleFlag = false;
+				LabelStyleFlag = false;
+				ImageStyleFlag = false;
+				TextInputStyleFlag = false;
+				Name.text = "";
+			}
+
+			/**
+			 * 控件实例名称变更
+			 **/
+			protected function ControlNameChangeEnter(event:TextOperationEvent):void
+			{
+				_CurrentControl.Id = Name.text;
+			}
+
+			
+			private var ImgFile:File = null;
+			private var ImgLoader:Loader = null;
+			/**
+			 * 选择背景图片按钮点击
+			 **/
+			private function OnBrowserImage(event:MouseEvent):void
+			{
+//				ImgFile = new File();
+//				ImgFile.addEventListener(Event.SELECT,OnBackgrundImageSelected);
+//				ImgFile.browse([new FileFilter("Images","*.jpg;*.jpeg;*.png")]);
+				//_Trigger = _CurrentControl.Style;
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.CHANGEIMAGE);
+				dispatchEvent(Notify);
+				
+				Callback = OnChangeImageResultNotify;
+			}
+			
+			/**
+			 * 变更背景图片回调通知函数
+			 **/
+			private function OnChangeImageResultNotify(LibraryId:String,AssetId:String):void
+			{
+				var AssetItem:Asset = Globals.FindAssetById(LibraryId,AssetId);
+				if(null != AssetItem && AssetItem is AssetBitmap)
+				{
+					_CurrentControl.Style.BackgroundImage = AssetBitmap(AssetItem).Image;
+					_CurrentControl.Style.BackgroundImageId = AssetId;
+					_CurrentControl.Update();
+					//BackgroundImg.text = AssetItem.Id;
+				}
+			}
+			private var Callback:Function = null;
+			private function OnSubStyleChangeImage(event:NotifyEvent):void
+			{
+				Callback = event.Params.pop();
+			}
+			
+			/**
+			 * 变更图形资源回馈
+			 **/
+			public function ChangeImageResult(LibraryId:String,AssetId:String):void
+			{
+				if(Callback != null)
+				{
+					Callback(LibraryId,AssetId);
+					Callback = null;
+				}
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:Scroller width="210" height="100%" id="Scroll">
+		<s:VGroup gap="10" paddingTop="5" paddingLeft="5" width="210" height="100%">
+			<s:VGroup visible="{CategoryFlag}" includeInLayout="{CategoryFlag}">
+				<s:HGroup >
+					<s:Label text="控件类型" height="100%" verticalAlign="middle" width="60" />
+					<s:Label text="" id="Category" />
+					
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label text="控件名称" height="100%" verticalAlign="middle" width="60" />
+					<s:TextInput id="Name" change="ControlNameChangeEnter(event)" width="100"/>
+				</s:HGroup>
+			</s:VGroup>
+			<My:WindowProperty id="WindowStyle" visible="{WindowStyleFlag}" includeInLayout="{WindowStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+			<My:PanelProperty id="PanelStyle" visible="{PanelStyleFlag}" includeInLayout="{PanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+			<My:ButtonProperty id="ButtonStyle" visible="{ButtonStyleFlag}" includeInLayout="{ButtonStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+			<My:TabProperty id="TabStyle" visible="{TabStyleFlag}" includeInLayout="{TabStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+			<My:SliderProperty id="SliderStyle" visible="{SliderStyleFlag}" includeInLayout="{SliderStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+			<My:TabPanelProperty id="TabPanelStyle" visible="{TabPanelStyleFlag}" includeInLayout="{TabPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+			<My:LabelPropery id="LabelStyle" visible="{LabelStyleFlag}" includeInLayout="{LabelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+			<My:UIImageProperty id="ImageStyle" visible="{ImageStyleFlag}" includeInLayout="{ImageStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+			<My:TextInputProperty id="TextInputStyle" visible="{TextInputStyleFlag}" includeInLayout="{TextInputStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+		</s:VGroup>
+	</s:Scroller>
+</ui:GenericProperty>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" horizontalAlign="center" mouseDown="DragStart(event)">
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.model.ComponentModel;
+			private var _Component:ComponentModel = null;
+			[Bindable]
+			private var _ClassName:String = "";
+			public function AddComponent(Value:ComponentModel):void
+			{
+				_Component = Value;
+				_ClassName = _Component.ClassName;
+			}
+			
+			protected function DragStart(event:MouseEvent):void
+			{
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.COMPONENT_DRAG_START);
+				Notify.Params.push(_Component);
+				dispatchEvent(Notify);
+			}
+			
+//			protected function Click(event:MouseEvent):void
+//			{
+//				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.COMPONENT_CHOICE);
+//				Notify.Params.push(_Component);
+//				dispatchEvent(Notify);
+//			}
+			
+//			protected function Click(event:MouseEvent):void
+//			{
+//				// TODO Auto-generated method stub
+//				
+//			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Image source="@Embed('../assets/Component.png')"/>
+	
+	<s:Label text="{_ClassName}" mouseEnabled="false" />
+</s:VGroup>

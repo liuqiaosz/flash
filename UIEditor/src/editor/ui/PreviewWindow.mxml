@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="800" height="800" close="OnClose(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			
+			import mx.controls.Alert;
+			import mx.utils.StringUtil;
+			import spark.events.IndexChangeEvent;
+			
+			private function OnClose(event:Event):void
+			{
+				dispatchEvent(new NotifyEvent(NotifyEvent.WINDOW_CLOSE));
+			}
+		]]>
+	</fx:Script>
+
+	
+</s:TitleWindow>

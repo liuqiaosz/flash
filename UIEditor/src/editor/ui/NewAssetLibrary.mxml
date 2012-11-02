@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<My:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:My="editor.ui.*" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="200" title="新建资源库">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.model.asset.AssetFactory;
+			import editor.utils.Common;
+			
+			import mx.controls.Alert;
+			private function CreateLibrary(event:MouseEvent):void
+			{
+				if(LibraryName.text == "")
+				{
+					Alert.show("资源库名称不能为空!",Common.TEXT_ERRORTIP);
+					return;
+				}
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.ASSETLIBCREATED);
+				Notify.Params.push(AssetFactory.Instance.CreateLibrary(LibraryName.text));
+				dispatchEvent(Notify);
+				CloseWindow();
+			}
+		]]>
+	</fx:Script>
+	
+	<My:layout>
+		<s:VerticalLayout paddingLeft="5" paddingTop="10" gap="20" horizontalAlign="center" />
+	</My:layout>
+	
+	<s:VGroup>
+		<s:Label text="资源库名称" verticalAlign="middle" height="100%" />
+		<s:TextInput width="150" id="LibraryName" restrict="A-Z a-z 0-9" />
+	</s:VGroup>
+	
+	<s:HGroup>
+		<s:Button label="创建" click="CreateLibrary(event)" />
+		<s:Button label="取消" click="Close(event)" />
+	</s:HGroup>
+</My:AdvanceTitleWindow>

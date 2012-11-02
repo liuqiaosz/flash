@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="300" height="200" title="{TitleText}">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			private static var TitleText:String = "";
+			
+			[Bindable]
+			private static var MessageText:String = "";
+			
+			private static var Callback:Function = null;
+//			public function Show(Title:String,Message:String="",EnterCallback:Function = null):void
+//			{
+//				TitleText = Title;
+//				this.Message = Message;
+//				Callback = EnterCallback;
+//			}
+			
+			private function OnRightClick(event:MouseEvent):void
+			{
+				if(null != Callback)
+				{
+					Callback(Value.text);
+					Clear();
+				}
+			}
+			
+			private static var _ShowInstance:Prompt = null;
+			
+			public static function Show(Title:String,Message:String="",EnterCallback:Function = null):void
+			{
+				if(_ShowInstance)
+				{
+					PopUpManager.removePopUp(_ShowInstance);
+					_ShowInstance = null;
+					TitleText = "";
+					MessageText = "";
+					Callback = null;
+				}
+				
+				TitleText = Title;
+				MessageText = Message;
+				Callback = EnterCallback;
+				_ShowInstance = new Prompt();
+				PopUpManager.addPopUp(_ShowInstance,FlexGlobals.topLevelApplication as DisplayObject,true);
+				PopUpManager.centerPopUp(_ShowInstance);
+				
+				_ShowInstance.addEventListener(CloseEvent.CLOSE,function(event:CloseEvent):void{
+					Clear();
+				});
+			}
+			
+			private static function Clear():void
+			{
+				if(_ShowInstance)
+				{
+					PopUpManager.removePopUp(_ShowInstance);
+				}
+				_ShowInstance = null;
+				TitleText = "";
+				MessageText = "";
+				Callback = null;
+			}
+		]]>
+	</fx:Script>
+	<ui:layout>
+		<s:VerticalLayout paddingTop="10" horizontalAlign="center" />
+	</ui:layout>
+	<s:Label text="{MessageText}" width="90%" />
+	<s:TextInput width="90%" id="Value"/>
+	
+	<s:HGroup gap="30">
+		<s:Image source="@Embed('../assets/Right.png')"  smooth="true" click="OnRightClick(event)" buttonMode="true" toolTip="确认" width="32"/>
+		<s:Image source="@Embed('../assets/Cancel.png')" smooth="true" click="Clear()" buttonMode="true" toolTip="取消"  width="32"/>
+	</s:HGroup>
+</ui:AdvanceTitleWindow>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="200" height="50">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			public function StartProgress(Maximum:int):void
+			{
+				Progress.maximum = Maximum;
+			}
+			
+			public function UpdateProgress(Value:int):void
+			{
+				Progress.setProgress(Progress.value + Value,Progress.maximum);
+			}
+		]]>
+	</fx:Script>
+	
+	<mx:ProgressBar width="200" label="加载中..." mode="event" id="Progress" />
+</s:Panel>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	
+	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
+	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
+	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
+</ui:GenericProperty>

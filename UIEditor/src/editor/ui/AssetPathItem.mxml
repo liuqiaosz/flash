@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" initialize="Initialized(event)" height="40" verticalAlign="middle">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			
+			import mx.events.FlexEvent;
+			private var Update:Boolean = false;
+			private var _Text:String = "";
+			
+			public function set Text(Value:String):void
+			{
+				if(Path == null)
+				{
+					_Text = Value;
+					Update = true;
+				}
+				else
+				{
+					Path.text = Value;
+				}
+			}
+			
+			protected function Initialized(event:FlexEvent):void
+			{
+				if(Update)
+				{
+					Path.text = _Text;
+				}
+			}
+			
+			private function DeletePath(event:MouseEvent):void
+			{
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.PREFERENCE_DELASSETPATH);
+				Notify.Message = Path.text;
+				dispatchEvent(Notify);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Label id="Path" width="100%" fontWeight="bold" />
+	<s:Image source="@Embed('../assets/Delete.png')" buttonMode="true" click="DeletePath(event)" width="24" height="24" smooth="true" smoothingQuality="high" />
+	
+</s:HGroup>

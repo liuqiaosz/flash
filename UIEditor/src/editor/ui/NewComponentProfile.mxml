@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<My:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:My="editor.ui.*" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="250" title="新建组件" initialize="Initialized(event)">
+	<fx:Declarations>
+		<!-- 新组件信息 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import corecom.control.utility.Utils;
+			
+			import editor.event.NotifyEvent;
+			import editor.utils.Preference;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.utils.StringUtil;
+			
+			import spark.events.IndexChangeEvent;
+			
+			/**
+			 
+			 public static const SIMPLEBUTTON:uint = 0;		//按钮
+			public static const SIMPLEPANEL:uint = 1;		//面板
+			public static const HORIZONTALPANEL:uint = 2;	//横向面板
+			public static const VERTICALPANEL:uint = 3;		//纵向面板
+			public static const GRIDPANEL:uint = 4;			//网格面板
+			public static const PROGRESS:uint = 5;			//加载进度条
+			public static const TABPANEL:uint = 6;			//TAB面板
+			public static const SLIDER:uint = 7;			//拖拉条
+			public static const TABBAR:uint = 9;			//标签栏
+			 **/
+			[Bindable]
+			private var TypeData:ArrayCollection = new ArrayCollection([
+				{Label: "面板",Id: 1},
+				{Label: "标签面板",Id: 6},
+				{Label: "拖动条",Id: 7},
+				{Label: "按钮",Id: 0},
+				{Label: "文本",Id: 12}
+			]);
+			
+			/**
+			 * 
+			 * {Label: "标签面板",Id: 6},
+				{Label: "拖动条",Id: 7},
+				{Label: "按钮",Id: 0},
+			 **/
+			
+			/**
+			 * 确认创建组件
+			 **/
+			private function OnEnter(event:MouseEvent):void
+			{
+				var ClassNameValue:String = StringUtil.trim(ClassName.text);
+				var PackNameValue:String = StringUtil.trim(PackArray[PackageName.selectedIndex]);
+				
+				if(ClassNameValue == "")
+				{
+					Alert.show("类名不能为空");
+					return;
+				}
+				
+				if(PackNameValue == "")
+				{
+					Alert.show("包路径不能为空");
+					return;
+				}
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.WINDOW_ENTER);
+				var Param:ComponentProfile = new ComponentProfile();
+				Param.ClassName = ClassName.text;
+				Param.PackageName = PackNameValue;
+				Param.Category = ComponentCategory.selectedIndex;
+				//Param.Category = 1;
+				Param.Container = Container.selectedIndex;
+				Param.Component = TypeData.getItemAt(Component.selectedIndex).Id;
+				Notify.Params.push(Param);
+				dispatchEvent(Notify);
+			}
+			
+			protected function CategoryChanged(event:IndexChangeEvent):void
+			{
+				if(ComponentCategory.selectedIndex == 1)
+				{
+					ContainerRow.visible = true;
+					ContainerRow.includeInLayout = true;
+					ComponentType.visible = false;
+					ComponentType.includeInLayout = false;
+				}
+				else
+				{
+					ContainerRow.visible = false;
+					ContainerRow.includeInLayout = false;
+					ComponentType.visible = true;
+					ComponentType.includeInLayout = true;
+				}
+			}
+			
+			[Bindable]
+			private var PackArray:ArrayCollection = new ArrayCollection(Preference.Instance.Packages);
+			protected function Initialized(event:FlexEvent):void
+			{
+				
+			}
+			
+		]]>
+	</fx:Script>
+
+	<My:layout>
+		<s:VerticalLayout paddingTop="10" paddingLeft="10" gap="20" horizontalAlign="center" />
+	</My:layout>
+	
+	<s:HGroup width="250">
+		<s:Label text="组件名称" width="100" />
+		<s:TextInput id="ClassName" restrict="A-Z 0-9 a-z" />
+	</s:HGroup>
+	
+	<s:HGroup width="250">
+		<s:Label text="包路径" width="100"/>
+		<!--<s:TextInput id="PackageName" restrict="A-Z . a-z"/>-->
+		
+		<s:ComboBox dataProvider="{PackArray}" selectedIndex="0" id="PackageName" />
+	</s:HGroup>
+	
+	<s:HGroup width="250">
+		<s:Label text="组件类型" width="100" />
+		<s:ComboBox id="ComponentCategory" change="CategoryChanged(event)"
+					selectedIndex="1">
+			<s:ArrayCollection>
+				<fx:String>简单</fx:String>
+				<fx:String>组合</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	
+	<s:HGroup id="ContainerRow" visible="false" width="250" includeInLayout="false">
+		<s:Label text="底层容器" width="100"/>
+		
+		<s:ComboBox id="Container" selectedIndex="0" >
+			<s:ArrayCollection>
+				<fx:String>普通面板</fx:String>
+				<!--
+				<fx:String>横向面板</fx:String>
+				<fx:String>纵向面板</fx:String>
+				-->
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	
+	<s:HGroup id="ComponentType" width="250">
+		<s:Label text="控件类型" width="100"/>
+		
+		<s:ComboBox selectedIndex="0" id="Component" dataProvider="{TypeData}" labelField="Label" >
+
+			
+
+		</s:ComboBox>
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Button label="确定" click="OnEnter(event)" />
+		<!--
+		<s:Btton label="取消" click="OnClose(event)" />
+		-->
+	</s:HGroup>
+</My:AdvanceTitleWindow>

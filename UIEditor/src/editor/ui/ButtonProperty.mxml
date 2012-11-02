@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	
+	<!--Tab标签样式设定-->
+	<fx:Script>
+		<![CDATA[
+			import corecom.control.Tab;
+			import corecom.control.UIButton;
+			
+			import mx.controls.Alert;
+			import mx.events.ColorPickerEvent;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import utility.Tools;
+			
+			private var Button:UIButton = null;
+			[Bindable]
+			private var _Label:String = "";
+			override protected function Initialized():void
+			{
+				Button = Control as corecom.control.UIButton;
+//				SimpleStyle.Control = Button;
+//				BorderStyle.Control = Button;
+//				BackgroundStyle.Control = Button;
+				_Label = Button.Text;
+				_FontSize = Button.FontSize;
+				_FontSizeText = "" + _FontSize;
+				FontColorPicker.selectedColor = Button.FontColor;
+				_BindFontColorText = Tools.Color2Hex(Button.FontColor);
+			}
+			
+			/**
+			 * 编辑控件为按钮时响应状态切换
+			 **/
+			private function ButtonStateChanged(Event:IndexChangeEvent):void
+			{
+				Button.State = Event.newIndex;
+				//_CurrentControl.Update();
+				
+				SimpleStyle.Control = Button;
+				BorderStyle.Control = Button;
+				BackgroundStyle.Control = Button;
+			}
+			
+			protected function LabelChanged(event:TextOperationEvent):void
+			{
+				Button.Text = ButtonText.text;
+			}
+			
+			[Bindable]
+			private var _FontSizeText:String = "10";
+			[Bindable]
+			private var _FontSize:int = 10;
+			[Bindable]
+			private var _BindFontColor:uint = 0x000000;
+			[Bindable]
+			private var _BindFontColorText:String = "0x000000";
+			
+			/**
+			 * 标签内容面板边框宽度变更
+			 **/
+			protected function FontSizeChanged(event:Event):void
+			{
+				Button.FontSize = _FontSize = FontSize.value;
+				//_Label.FontSize = _FontSize = FontSize.value;
+				_FontSizeText = "" + _FontSize;
+			}
+			
+			/**
+			 * 标签内容面板边框颜色变更
+			 **/
+			protected function FontColorChanged(event:ColorPickerEvent):void
+			{
+				Button.FontColor = FontColorPicker.selectedColor;
+				_BindFontColor = FontColorPicker.selectedColor;
+				_BindFontColorText = utility.Tools.Color2Hex(_BindFontColor);
+			}
+			
+			/**
+			 * 标签内容面板边框颜色文本变更
+			 **/
+			protected function FontColorTextChanged(event:FlexEvent):void
+			{
+				var Value:String = event.currentTarget.text;
+				if(Value.indexOf("#") == 0)
+				{
+					Value = Value.replace("#","0x");
+				}
+				else
+				{
+					if(Value.length != 6)
+					{
+						Alert.show("输入颜色代码非法,请重新输入");
+						return;
+					}
+					Value = "0x" + Value;
+				}
+				var Code:uint = new uint(Value);
+				FontColorPicker.selectedColor = Code;
+				Button.FontColor = Code;
+			}
+		]]>
+	</fx:Script>
+	
+	<s:HGroup id="Label">
+		<s:Label text="文本" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput id="ButtonText" text="{_Label}" change="LabelChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="文本大小" height="100%" verticalAlign="middle" width="60"/>
+		<s:HSlider width="100" value="{_FontSize}" maximum="100" stepSize="1" minimum="10" id="FontSize" change="FontSizeChanged(event)" />
+		<s:Label text="{_FontSizeText}" />
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="文本颜色" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput width="70" enter="FontColorTextChanged(event)" text="{_BindFontColorText}"/>
+		<mx:ColorPicker showTextField="true" id="FontColorPicker" selectedColor="{_BindFontColor}" change="FontColorChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup id="StateSwitch">
+		<s:Label text="按钮状态" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox width="80" change="ButtonStateChanged(event)" id="ButtonState" selectedIndex="0">
+			<s:ArrayCollection>
+				<fx:String>普通</fx:String>
+				<fx:String>滑过</fx:String>
+				<fx:String>按下</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	
+	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
+	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
+	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
+</ui:GenericProperty>

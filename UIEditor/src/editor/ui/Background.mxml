@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.ColorPickerEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import utility.Tools;
+			[Bindable]
+			protected var BindBackgroundColor:uint = 0;
+			[Bindable]
+			protected var BindBackgroundColorText:String = "";
+			[Bindable]
+			protected var BindBackgroundAlpha:Number = 0;
+			[Bindable]
+			protected var BindBackgroundAlphaText:String = "";
+			[Bindable]
+			protected var BindBackgroundImgId:String = "";
+			
+			override protected function Initialized():void
+			{
+				BindBackgroundColor = Control.BackgroundColor;
+				if(BackgroundColorPicker)
+				{
+					BackgroundColorPicker.selectedColor = BindBackgroundColor;
+				}
+				BindBackgroundColorText = Tools.Color2Hex(BindBackgroundColor);
+				BindBackgroundAlpha = Control.BackgroundAlpha;
+				BindBackgroundAlphaText = BindBackgroundAlpha + "";
+				BindBackgroundImgId = Control.BackgroundImageId;
+				ImageFillType.selectedIndex = Control.BackgroundImageFill;
+			}
+			
+			/**
+			 * 标签内容面板背景颜色变更
+			 **/
+			protected function BackgroundColorChanged(Event:ColorPickerEvent):void
+			{
+				Control.BackgroundColor = Event.color;
+				BindBackgroundColorText = Tools.Color2Hex(Event.color);
+			}
+			
+			/**
+			 *  标签内容面板背景透明度
+			 **/
+			protected function BackgroundAlphaChanged(event:Event):void
+			{
+				Control.BackgroundAlpha = BackgroundAlpha.value;
+				BindBackgroundAlphaText = "" + BackgroundAlpha.value;
+			}
+			
+			/**
+			 * 标签内容面板背景图选择
+			 **/
+			override protected function ImageSelected(Image:Bitmap, ImageId:String):void
+			{
+				Control.BackgroundImage = Image;
+				Control.BackgroundImageId = ImageId;
+				BindBackgroundImgId = ImageId;
+			}
+			
+			protected function ImageFillTypeChanged(event:IndexChangeEvent):void
+			{
+				Control.BackgroundImageFill = event.newIndex;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Label text="背景样式" styleName="LabelTitle"/>
+	<mx:HRule width="100%" />
+	
+	<s:HGroup>
+		<s:Label text="背景图片" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput width="90" id="BackgroundImg" editable="false" text="{BindBackgroundImgId}" />
+		<s:Image source="@Embed('../assets/Search.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="BrowserImage(event)" />
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="图片模式" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox width="90" selectedIndex="1" change="ImageFillTypeChanged(event)" id="ImageFillType">
+			<s:ArrayCollection>
+				<fx:String>拉伸填充</fx:String>
+				<fx:String>平铺</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="背景颜色" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput width="70" id="BackgroundColorField" text="{BindBackgroundColorText}" />
+		<mx:ColorPicker id="BackgroundColorPicker" selectedColor="{BindBackgroundColor}" change="BackgroundColorChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="背景透明" height="100%" verticalAlign="middle" width="60"/>
+		<s:HSlider width="100" value="{BindBackgroundAlpha}" maximum="1.0" stepSize="0.1" minimum="0" id="BackgroundAlpha" change="BackgroundAlphaChanged(event)" />
+		<s:Label text="{BindBackgroundAlphaText}" id="BackgroundAlphaValue" />
+	</s:HGroup>
+</ui:GenericProperty>

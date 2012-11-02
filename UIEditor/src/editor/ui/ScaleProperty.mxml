@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			protected var BindScaleLeft:int = 10;
+			[Bindable]
+			protected var BindScaleTop:int = 10;
+			[Bindable]
+			protected var BindScaleRight:int = 10;
+			[Bindable]
+			protected var BindScaleBottom:int = 10;
+			
+			private function OnScale9GridChange(event:MouseEvent):void
+			{
+				Control.Scale9Grid = Scale9Grid.selected;
+				BindEnable = Scale9Grid.selected;
+				//ScalePropertyVisible = Scale9Grid.selected;
+				//_CurrentControl.Update();
+				
+				BindScaleLeft = Control.Scale9GridLeft;
+				BindScaleTop = Control.Scale9GridTop;
+				BindScaleRight = Control.Scale9GridRight;
+				BindScaleBottom = Control.Scale9GridBottom;
+			}
+			
+			override protected function Initialized():void
+			{
+				
+			}
+			
+			protected function ScaleValueChanged(event:FlexEvent):void
+			{
+				var Name:String = event.currentTarget.name;
+				var Value:int = int(event.currentTarget.text);
+				switch(Name)
+				{
+					case "Left":
+						Control.Scale9GridLeft = Value;
+						break;
+					case "Top":
+						Control.Scale9GridTop = Value;
+						break;
+					case "Right":
+						Control.Scale9GridRight = Value;
+						break;
+					case "Bottomt":
+						Control.Scale9GridBottom = Value;
+						break;
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:HGroup>
+		<s:CheckBox id="Scale9Grid" label="九宫格切图" click="OnScale9GridChange(event)" />
+	</s:HGroup>
+	
+	<s:VGroup enabled="{BindEnable}">
+		<s:HGroup>
+			<s:Label text="左边距" height="100%" verticalAlign="middle" width="60"/>
+			<s:TextInput width="90" id="ScaleLeft" text="{BindScaleLeft}" enter="ScaleValueChanged(event)" name="Left" />
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="上边距" height="100%" verticalAlign="middle" width="60"/>
+			<s:TextInput width="90" id="ScaleTop"  text="{BindScaleTop}"  enter="ScaleValueChanged(event)" name="Top"/>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="右边距" height="100%" verticalAlign="middle" width="60"/>
+			<s:TextInput width="90" id="ScaleRight"  text="{BindScaleRight}"  enter="ScaleValueChanged(event)" name="Right"/>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="下边距" height="100%" verticalAlign="middle" width="60"/>
+			<s:TextInput width="90" id="ScaleBottom"  text="{BindScaleBottom}"  enter="ScaleValueChanged(event)" name="Bottomt"/>
+		</s:HGroup>
+	</s:VGroup>
+</ui:GenericProperty>

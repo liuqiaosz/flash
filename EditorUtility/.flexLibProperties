@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="editor.uitility.ui.ProgressPopUp"/>
+    <classEntry path="editor.uitility.ui.ProgressManager"/>
+    <classEntry path="editor.uitility.ui.IProgress"/>
+    <classEntry path="editor.uitility.ui.event.UIEvent"/>
+    <classEntry path="editor.uitility.ui.AdvanceWindow"/>
+    <classEntry path="editor.uitility.ui.PopUpWindowManager"/>
+    <classEntry path="editor.uitility.Tools"/>
+    <classEntry path="editor.uitility.ui.ActiveFrame"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

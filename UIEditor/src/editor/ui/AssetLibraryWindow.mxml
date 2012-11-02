@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<My:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:My="editor.ui.*" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="550" height="550" initialize="Initialized(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.model.asset.Asset;
+			import editor.model.asset.AssetFactory;
+			import editor.model.asset.AssetLibrary;
+			import editor.model.asset.IAssetLibrary;
+			import editor.model.asset.SwfAssetLibrary;
+			import utility.swf.tag.BitLossless2;
+			import utility.swf.tag.SymbolClass;
+			
+			import flashx.textLayout.events.SelectionEvent;
+			
+			import mx.controls.Alert;
+			import mx.core.IVisualElement;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			
+			private var Item:IAssetLibrary = null;
+			private var NeedInitialize:Boolean = false;
+			private var Update:Boolean = false;
+			private var AssetDiction:Dictionary = new Dictionary();
+			public function AssetLibraryItem(Item:IAssetLibrary):void
+			{
+				this.Item = Item;
+				
+				if(null == Name)
+				{
+					NeedInitialize = true;
+				}
+				else
+				{
+					Render();
+				}
+			}
+			
+			protected function Initialized(event:FlexEvent):void
+			{
+				if(NeedInitialize)
+				{
+					Render();
+					NeedInitialize = false;
+				}
+			}
+			
+			private function Render():void
+			{
+				var Idx:int = 0;
+				Name.text = Item.Name;
+				var AssetChild:AssetItem = null;
+				if(Item is SwfAssetLibrary)
+				{
+					//加杂的SWF资源
+					IdRow.visible = false;
+					IdRow.includeInLayout = false;
+					TotalRow.visible = false;
+					TotalRow.includeInLayout = false;
+					//AssetList.visible = true;
+					//AssetList.includeInLayout = true;
+					
+					//var ImageAssets:Array = SwfAssetLibrary(Item).BitmapAssets;
+//					var ImageAssets:Array = SwfAssetLibrary(Item).BitmapAssets;
+//					for(Idx=0; Idx<ImageAssets.length; Idx++)
+//					{
+//						AssetChild = new AssetItem();
+//						AssetChild.Item = ImageAssets[Idx];
+//						AssetList.addElement(AssetChild);
+//						//AssetDiction[Assets[Idx].Id] = AssetChild;
+//					}
+				}
+				else(Item)
+				{
+					Id.text = Item.Id;
+					Total.text = Item.Total + "";
+//					var Assets:Array = Item.AssetList;
+//					for(Idx=0; Idx<Assets.length; Idx++)
+//					{
+//						AssetChild = new AssetItem();
+//						AssetChild.Item = Assets[Idx];
+//						AssetList.addElement(AssetChild);
+//						//AssetDiction[Assets[Idx].Id] = AssetChild;
+//					}
+					
+					AssetList.addEventListener(NotifyEvent.DELETEASSET,OnDeleteAsset);
+					//AssetList.visible = true;
+					//AssetList.includeInLayout = true;
+				}
+				
+				var Assets:Array = Item.AssetList;
+				for(Idx=0; Idx<Assets.length; Idx++)
+				{
+					AssetChild = new AssetItem();
+					AssetChild.Item = Assets[Idx];
+					AssetList.addElement(AssetChild);
+					//AssetDiction[Assets[Idx].Id] = AssetChild;
+				}
+			}
+			
+			/**
+			 * 删除资源
+			 **/
+			private function OnDeleteAsset(event:NotifyEvent):void
+			{
+				Alert.show("是否要删除当前选择的资源?!","删除确认",Alert.YES|Alert.NO,null,function(AlertEvent:CloseEvent):void{
+					if(AlertEvent.detail == Alert.YES)
+					{
+						//保存当前库
+						AssetFactory.Instance.SaveLibrary(Item);
+						NotificationManager.Instance.Show("资源库保存完成!");
+						AssetList.removeElement(event.target as IVisualElement);
+						var Data:Asset = event.Params.pop() as Asset;
+						Item.DeleteAsset(Data);
+						Update = true;
+					}
+				});
+			}
+			
+			private var FileArray:Array = null;;
+			private var FileLoader:Loader = new Loader();
+			private var CurrentFile:File = null;
+			private function AddAsset(event:MouseEvent):void
+			{
+				FileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,LoadAssetComplete);
+				var Browser:File = new File();
+				Browser.addEventListener(FileListEvent.SELECT_MULTIPLE,function(event:FileListEvent):void{
+					FileArray = event.files;
+					Update = true;
+					StartLoad();
+				});
+				Browser.browseForOpenMultiple("请选择要添加进入资源库的资源",[new FileFilter("Image","*.png")]);
+				var a:SelectionEvent
+			}
+			
+			private function StartLoad():void
+			{
+				if(FileArray.length > 0)
+				{
+					CurrentFile = FileArray.pop();
+					var Reader:FileStream = null;
+					var Buffer:ByteArray = new ByteArray();
+					try
+					{
+						Reader = new FileStream();
+						Reader.open(CurrentFile,FileMode.READ);
+						Reader.readBytes(Buffer,0,Reader.bytesAvailable);
+						Buffer.position = 0;
+						FileLoader.loadBytes(Buffer);
+					}
+					catch(Err:Error)
+					{
+						trace(Err.message);
+					}
+					finally
+					{
+						if(Reader)
+						{
+							Reader.close();
+						}
+						//Buffer.clear();
+					}
+					//FileLoader.loadBytes(
+				}
+			}
+			
+			private function LoadAssetComplete(event:Event):void
+			{
+				var AssetData:Asset = Item.AddBitmap(FileLoader.content as Bitmap);
+				FileLoader.unload();
+				if(AssetData)
+				{
+					var AssetChild:AssetItem = new AssetItem();
+					AssetChild.Item = AssetData;
+					AssetList.addElement(AssetChild);
+				}
+				StartLoad();
+			}
+			
+			private function Save(event:MouseEvent):void
+			{
+				AssetFactory.Instance.SaveLibrary(Item);
+				super.CloseWindow();
+				NotificationManager.Instance.Show("资源库保存完成!");
+			}
+			
+			override public function CloseWindow():void
+			{
+				//var Self:AssetLibraryWindow = this;
+				if(Update)
+				{
+					var CloseHandler:Function = super.CloseWindow;
+					Alert.show("当前资源库将被关闭,关闭之前是否要对资源库做的修改进行保存?!","保存提醒",Alert.YES|Alert.NO,null,function(event:CloseEvent):void{
+						if(event.detail == Alert.YES)
+						{
+							//保存当前库
+							AssetFactory.Instance.SaveLibrary(Item);
+							NotificationManager.Instance.Show("资源库保存完成!");
+						}
+						//Self.CloseWindow();
+						CloseHandler();
+					});
+				}
+				else
+				{
+					super.CloseWindow();
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<My:layout>
+		<s:VerticalLayout paddingTop="10" gap="10" horizontalAlign="center" />
+	</My:layout>
+	
+	<s:HGroup width="95%" verticalAlign="middle" gap="20">
+		<s:VGroup horizontalAlign="center">
+			<s:Image source="@Embed('../assets/Save.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="保存资源库" click="Save(event)" enabled="false" />
+			<s:Label text="保存" />
+		</s:VGroup>
+		<s:VGroup horizontalAlign="center">
+			<s:Image source="@Embed('../assets/Import.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="选择本地资源导入资源库" click="AddAsset(event)" enabled="false"/>
+			<s:Label text="导入资源" />
+		</s:VGroup>
+	</s:HGroup>
+	
+	<mx:HRule width="100%" height="1" />
+	<s:HGroup width="95%" verticalAlign="middle">
+		<s:Label width="60" text="名称" />
+		
+		<s:Label id="Name" />
+	</s:HGroup>
+	
+	<s:HGroup width="95%" verticalAlign="middle" id="IdRow">
+		<s:Label width="60" text="ID" />
+		
+		<s:Label id="Id" />
+	</s:HGroup>
+	
+	<s:HGroup width="95%" verticalAlign="middle" id="TotalRow">
+		<s:Label width="60" text="资源数量" />
+		<s:Label id="Total" />
+	</s:HGroup>
+	
+	<s:HGroup width="95%" verticalAlign="middle">
+		<s:Label width="60" text="资源列表" />
+		
+		<s:BorderContainer width="100%" height="350">
+			<s:Scroller width="100%" height="100%">
+				<s:Group>
+					<s:VGroup width="100%" height="100%" id="AssetList" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+					</s:VGroup>
+					<!--
+					<s:VGroup width="100%" height="100%" id="SwfAssetList" visible="false" includeInLayout="false" paddingLeft="5" paddingTop="5">
+						<s:TabBar dataProvider="{Content}" />
+						<mx:ViewStack width="100%" height="100%" id="Content">
+							<s:NavigatorContent  label="图形" width="100%" height="100%"> 
+								<s:Scroller width="100%" height="100%">
+									<s:VGroup id="ImageContent" paddingLeft="5" paddingRight="5" paddingTop="5">
+									</s:VGroup>
+								</s:Scroller>
+							</s:NavigatorContent> 
+							<s:NavigatorContent id="SoundContent" label="声音" width="100%" height="100%"> 
+								<s:VGroup>
+								</s:VGroup>
+							</s:NavigatorContent> 
+						</mx:ViewStack>
+					</s:VGroup>
+					-->
+				</s:Group>
+			</s:Scroller>
+		</s:BorderContainer>
+	</s:HGroup>
+</My:AdvanceTitleWindow>

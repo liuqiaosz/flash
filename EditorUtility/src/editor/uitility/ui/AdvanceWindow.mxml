@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" close="OnCloseWindow(event)" width="200" height="200" initialize="Initialized(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.event.UIEvent;
+			
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			
+			public function CloseWindow():void
+			{
+				//清理事件引用
+//				for(var Key:* in _EventDictionary)
+//				{
+//					this.removeEventListener(Key,_EventDictionary[Key]);
+//				}
+				
+				var Notify:UIEvent = new UIEvent(UIEvent.WINDOW_CLOSE);
+				dispatchEvent(Notify);
+			}
+			
+			protected function Enter(event:MouseEvent):void
+			{
+				dispatchEvent(new UIEvent(UIEvent.WINDOW_ENTER));
+				CloseWindow();
+			}
+			
+			protected function Close(event:MouseEvent):void
+			{
+				CloseWindow();
+			}
+			
+			protected function OnCloseWindow(event:CloseEvent):void
+			{
+				// TODO Auto-generated method stub
+				CloseWindow();
+			}
+			
+			protected function Initialized(event:FlexEvent):void
+			{
+				
+			}
+			
+//			private var _EventDictionary:Dictionary = new Dictionary();
+//			override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
+//			{
+//				if(!useWeakReference)
+//				{
+//					_EventDictionary[type] = listener;
+//				}
+//				
+//				super.addEventListener(type,listener,useCapture,priority,useWeakReference);
+//			}
+			
+		]]>
+	</fx:Script>
+</s:TitleWindow>

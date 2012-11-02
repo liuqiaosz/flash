@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import corecom.control.Container;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			[Bindable]
+			private var BindGapVisible:Boolean = false;
+			
+			[Bindable]
+			private var _Gap:String = "";
+			
+			override protected function Initialized():void
+			{
+				_Gap = Container(CurrentControl).Gap + "";
+				ControlLayout.selectedIndex = Container(CurrentControl).Layout;
+			}
+			
+			protected function GapEnter(event:FlexEvent):void
+			{
+				if(GapProperty.text != "")
+				{
+					Container(CurrentControl).Gap = int(GapProperty.text);
+				}
+			}
+			
+			/**
+			 * 标签对应的内容面板布局修改
+			 **/
+			protected function LayoutChange(event:IndexChangeEvent):void
+			{
+				Container(CurrentControl).Layout = ControlLayout.selectedIndex;
+				
+				if(ControlLayout.selectedIndex > 0)
+				{
+					BindGapVisible = true;
+				}
+				else
+				{
+					BindGapVisible = false;
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:HGroup>
+		<s:Label text="布局" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox id="ControlLayout" change="LayoutChange(event)" width="80" >
+			<s:ArrayCollection>
+				<fx:String>绝对布局</fx:String>
+				<fx:String>横向布局</fx:String>
+				<fx:String>纵向布局</fx:String>
+				<fx:String>GRID布局</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	<s:HGroup visible="{BindGapVisible}" includeInLayout="{BindGapVisible}">
+		<s:Label text="子控件间隔" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput id="GapProperty" text="{_Gap}" enter="GapEnter(event)" width="90"/>
+	</s:HGroup>
+	
+</ui:GenericProperty>

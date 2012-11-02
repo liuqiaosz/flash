@@ -1,0 +1,1260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:ui="editor.ui.*"
+					   xmlns:mx="library://ns.adobe.com/flex/mx" width="1200" height="800" applicationComplete="ApplicationComplete(event)" showStatusBar="false">
+	<fx:Declarations>
+		<!--UI编辑器-->
+	</fx:Declarations>
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		
+		.LabelTitle
+		{
+			fontWeight: bold;
+			fontSize: 12;
+			color: "0x66CCFF";
+		}
+		
+	</fx:Style>
+	
+	<fx:Script>
+		<![CDATA[
+			import corecom.control.Container;
+			import corecom.control.IUIControl;
+			import corecom.control.SimpleTabPanel;
+			import corecom.control.UIButton;
+			import corecom.control.UIControl;
+			import corecom.control.UIControlFactory;
+			import corecom.control.UIImage;
+			import corecom.control.UILabel;
+			import corecom.control.UIPanel;
+			import corecom.control.UISlider;
+			import corecom.control.UITextInput;
+			import corecom.control.UIWindow;
+			import corecom.control.asset.ControlAssetManager;
+			import corecom.control.event.EditModeEvent;
+			import corecom.control.style.ButtonStyle;
+			import corecom.control.style.IStyle;
+			import corecom.control.style.SliderStyle;
+			import corecom.control.style.StyleShape;
+			import corecom.control.style.UIStyle;
+			import corecom.control.utility.ControlType;
+			import corecom.control.utility.Utils;
+			
+			import editor.event.NotifyEvent;
+			import editor.model.ComponentModel;
+			import editor.model.ModelFactory;
+			import editor.model.asset.AssetFactory;
+			import editor.model.asset.AssetLibrary;
+			import editor.model.asset.IAssetLibrary;
+			import editor.model.asset.SwfAssetLibrary;
+			import editor.ui.AboutWindow;
+			import editor.ui.AssetLibraryWindow;
+			import editor.ui.AssetSelectWindow;
+			import editor.ui.ComponentProfile;
+			import editor.ui.ControlLibraryItem;
+			import editor.ui.NewAssetLibrary;
+			import editor.ui.NewComponentProfile;
+			import editor.ui.NotificationManager;
+			import editor.ui.PreferenceWindow;
+			import editor.ui.PreviewWindow;
+			import editor.ui.Shell;
+			import editor.ui.SwfImportWindow;
+			import editor.ui.TreeNode;
+			import editor.ui.Workspace;
+			import editor.ui.WorkspacePlus;
+			import editor.uitility.ui.event.UIEvent;
+			import editor.utils.Common;
+			import editor.utils.FileLoadQueue;
+			import editor.utils.Globals;
+			import editor.utils.Preference;
+			
+			import flash.net.dns.AAAARecord;
+			import flash.net.registerClassAlias;
+			import flash.utils.getQualifiedClassName;
+			
+			import mx.collections.ArrayCollection;
+			import mx.containers.TitleWindow;
+			import mx.controls.Alert;
+			import mx.controls.LinkButton;
+			import mx.controls.ProgressBar;
+			import mx.controls.ProgressBarMode;
+			import mx.controls.menuClasses.MenuBarItem;
+			import mx.core.FlexBitmap;
+			import mx.core.IFlexDisplayObject;
+			import mx.core.IVisualElementContainer;
+			import mx.core.UIComponent;
+			import mx.core.mx_internal;
+			import mx.events.CloseEvent;
+			import mx.events.ColorPickerEvent;
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.events.ItemClickEvent;
+			import mx.events.ListEvent;
+			import mx.events.MenuEvent;
+			import mx.events.SliderEvent;
+			import mx.managers.CursorManager;
+			import mx.managers.PopUpManager;
+			import mx.utils.StringUtil;
+			
+			import spark.components.Button;
+			import spark.components.SkinnableContainer;
+			import spark.events.IndexChangeEvent;
+			import spark.skins.spark.ImageSkin;
+			
+			import utility.MouseManager;
+			import utility.System;
+			import utility.Tools;
+			import utility.swf.Swf;
+			import utility.swf.SwfFactory;
+			[Embed(source="assets/AssetLibrary.png")]
+			private var TreeIcon:Class;
+			[Embed(source="assets/AssetSwf.png")]
+			private var TreeSwfIcon:Class;
+			
+			[Embed(source="assets/Button.png")]
+			private var ButtonIcon:Class;
+			
+			[Embed(source="assets/SimplePanel.png")]
+			private var PanelIcon:Class;
+			
+			[Embed(source="assets/Tabpanel.png")]
+			private var TabPanelIcon:Class;
+			
+			[Embed(source="assets/hslider.png")]
+			private var SliderIcon:Class;
+			
+			[Embed(source="assets/Label.png")]
+			private var LabelIcon:Class;
+			
+			[Embed(source="assets/Component.png")]
+			private var ComponentIcon:Class;
+			
+			//当前弹出的菜单
+			private var PopupWindow:SkinnableContainer = null;
+			//当前窗体类型
+			//private var WindowState:int = -1;
+			
+			[Bindable]
+			private var AssetLibraryTree:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var ComponentTree:ArrayCollection = new ArrayCollection();
+			/**
+			 * 初始化
+			 **/
+			protected function ApplicationComplete(event:FlexEvent):void
+			{
+				this.nativeWindow.x = Screen.mainScreen.visibleBounds.width/2 - this.width/2;
+				this.nativeWindow.y = Screen.mainScreen.visibleBounds.height/2 - this.height/2;
+//				var SwfFile:Swf = new Swf();
+//				SwfFile.Version = 9;
+//				SwfFile.Compress = true;
+				
+				//				var Model:ByteArray = new ByteArray();
+				//				var ModelFile:File = new File("D:\\fff.aaa.mod");
+				//				EditWorkspace.DecodeModel(ModelFile);
+				WorkspaceContainer.enabled = true;
+				
+				EditorWindow.closeButton.visible = false;
+				
+				stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
+					if(event.keyCode == Keyboard.DELETE)
+					{
+						if(EditWorkspace)
+						{
+							EditWorkspace.DeleteCurrentShell();
+						}
+					}
+				});
+				//WorkspaceContainer.closeButton.visible = false;
+//				AssetLibraryTree.addItem({Name:"1"});
+//				AssetLibraryTree.addItem({Name:"2"});
+//				AssetLibraryTree.addItem({Name:"3"});
+//				AssetLibraryTree.addItem({Name:"1"});
+//				AssetLibraryTree.addItem({Name:"2"});
+//				AssetLibraryTree.addItem({Name:"3"});
+//				AssetLibraryTree.addItem({Name:"1"});
+//				AssetLibraryTree.addItem({Name:"2"});
+//				AssetLibraryTree.addItem({Name:"3"});
+//				AssetLibraryTree.addItem({Name:"1"});
+//				AssetLibraryTree.addItem({Name:"2"});
+//				AssetLibraryTree.addItem({Name:"3"});
+				//AssetLibraryTree.addItem();
+				//flash.net.registerClassAlias("corecom.control.style",SimpleButtonSkin);
+				//				var Reader:FileStream = new FileStream();
+				//				Reader.open(ModelFile,FileMode.READ);
+				//				
+				//				Reader.readBytes(Model,0,Reader.bytesAvailable);
+				//				Reader.close();
+				//				Model.position = 0;
+				//				var Control:UIControl = ModelFactory.Instance.Decode(Model);
+				//				
+				//				var c:UIComponent = new UIComponent();
+				//				c.addChild(Control);
+				//				addElement(c);C
+//				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+//				
+//					NotificationManager.Instance.Show("Test",1000);
+//				});
+				
+				InitializeAssetLib();
+				
+				InitializeModelLib();
+				//SwfLoad();
+				
+			}
+			
+			/**
+			 * 资源库加载
+			 * 
+			 * 搜索当前定义的所有目录,加载后缀为assl的资源库文件
+			 **/
+			private function InitializeAssetLib():void
+			{
+				var Libs:Array = Preference.Instance.AssetPath;
+				var Directory:File = null;
+				for(var Idx:int=0; Idx<Libs.length; Idx++)
+				{
+					var Path:String = Libs[Idx];
+					Directory = new File(Path);
+					if(Directory.exists && Directory.isDirectory)
+					{
+						var FileList:Array = Directory.getDirectoryListing();
+						for(var Index:int=0; Index<FileList.length; Index++)
+						{
+							var ChildFile:File = FileList[Index];
+							var Lib:IAssetLibrary = AssetFactory.Instance.OpenLibrary(ChildFile.nativePath);
+							if(Lib)
+							{
+								Globals.AppendAssetLibrary(Lib);
+								AssetLibraryTree.addItem(Lib);
+							}
+						}
+					}
+				}
+			}
+			
+			/**
+			 * 模型库加载
+			 **/
+			private function InitializeModelLib():void
+			{
+				ComponentLibrary.removeAllElements();
+				var ModelLib:String = Preference.Instance.ModelExport;
+				var ModelDirect:File = new File(ModelLib);
+				
+				if(ModelDirect.exists && ModelDirect.isDirectory)
+				{
+					var ModelArray:Array = ModelDirect.getDirectoryListing();
+					var LoadQueue:FileLoadQueue = new FileLoadQueue(ModelArray,"mod");
+					LoadQueue.Start(ModelFileLoaded);
+				}
+				//组件面板库监听自定义组件拖拽事件
+				ComponentLibrary.addEventListener(NotifyEvent.COMPONENT_DRAG_START,ComponentStartDrag);
+				ComponentLibrary.addEventListener(NotifyEvent.COMPONENT_CHOICE,ComponentChoice);
+			}
+			
+			private function ModelFileLoaded(ModelFile:File,Data:ByteArray):void
+			{
+				//trace("Mod loaded nav[" + ModelFile.nativePath + "] Len[" + Data.length + "]");
+				//ComponentLibrary
+				var Component:ComponentModel = ModelFactory.Instance.Decode(Data);
+				Component.ModelFile = ModelFile;
+				var ComponentItem:ControlLibraryItem = new ControlLibraryItem();
+				ComponentItem.AddComponent(Component);
+				ComponentLibrary.addElement(ComponentItem);
+			}
+			
+			private var Total:int = 10;
+			private var ModelFile:FileReference = null;
+			private function MenuSelected(event:MenuEvent):void 
+			{ 
+				// Don't open the Alert for a menu bar item that  
+				// opens a popup submenu. 
+//				if (event.item.@data == "Create") 
+//				{ 
+//					PopupWindow = CreateWindowByClass(NewComponentProfile);
+//					PopUpManager.addPopUp(PopupWindow,this,true);
+//					PopUpManager.centerPopUp(PopupWindow);
+//					//WorkspaceContainer.closeButton.visible = true;
+//					WindowState = 0;
+//				}
+//				else if (event.item.@data == "Open") 
+//				{
+//					ModelFile = new FileReference();
+//					var Filter:FileFilter = new FileFilter("组件模型","*.mod");
+//					ModelFile.browse([Filter]);
+//					ModelFile.addEventListener(Event.SELECT,OnModelFileSelected);
+//					//WorkspaceContainer.closeButton.visible = true;
+//				}
+//				else if(event.item.@data == "CreateAsset")
+//				{
+//					PopupWindow = CreateWindowByClass(NewAssetLibrary);
+//					PopUpManager.addPopUp(PopupWindow,this,true);
+//					PopUpManager.centerPopUp(PopupWindow);
+//					PopupWindow.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
+//					//创建资源库
+//					WindowState = 1;
+//				}
+				if(event.item.@data == "Preference")
+				{
+					PopupWindow = CreateWindowByClass(PreferenceWindow);
+					PopUpManager.addPopUp(PopupWindow,this,true);
+					PopUpManager.centerPopUp(PopupWindow);
+					//创建资源库
+					//WindowState = 2;
+				}
+			} 
+			
+			private function OpenPreferenceWindow(event:MouseEvent):void
+			{
+				PopupWindow = CreateWindowByClass(PreferenceWindow);
+				PopUpManager.addPopUp(PopupWindow,this,true);
+				PopUpManager.centerPopUp(PopupWindow);
+			}
+			
+			private function OpenAbautWindow(event:MouseEvent):void
+			{
+				PopupWindow = CreateWindowByClass(AboutWindow);
+				PopUpManager.addPopUp(PopupWindow,this,true);
+				PopUpManager.centerPopUp(PopupWindow);
+			}
+			
+			/**
+			 * 资源库创建成功回调
+			 **/
+			private function AssetLibraryCreated(event:NotifyEvent):void
+			{
+				var Library:IAssetLibrary = event.Params.pop() as IAssetLibrary;
+				AssetLibraryTree.addItem(Library);
+			}
+			
+			[Bindable]
+			private var Enabled:Boolean = false;
+			/**
+			 * 选择打开指定的组件数据模型
+			 **/
+			private function OnModelFileSelected(event:Event):void
+			{
+				ModelFile.load();
+				ModelFile.addEventListener(Event.COMPLETE,function(event:Event):void{
+					
+					if(WorkspaceContainer.containsElement(EditWorkspace))
+					{
+						WorkspaceContainer.removeElement(EditWorkspace);
+					}
+					EditWorkspace = null;
+					//WorkspaceContainer.closeButton.visible = false;
+					ComponentBar.enabled = false;
+					ControlProperty.Reset();
+					ControlProperty.enabled = false;
+					//SaveButton.enabled = true;
+					//CloseButton.enabled = true;
+					Enabled = true;
+					//EditWorkspace = new Workspace();
+					EditWorkspace = new WorkspacePlus();
+					EditWorkspace.width = 2048;
+					EditWorkspace.height = 2048;
+					EditWorkspace.x = 10;
+					EditWorkspace.y = 10;
+					BackFill.width = EditWorkspace.width;
+					BackFill.height = EditWorkspace.height;
+					EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
+					WorkspaceContainer.enabled = true;
+					WorkspaceContainer.visible = true;
+					WorkspaceContainer.addElement(EditWorkspace);
+					ComponentBar.enabled = true;
+					Enabled = true;
+					//ComProfile = EditWorkspace.DecodeModelByByte(ModelFile.data);
+					//EditWorkspace.DecodeModelByByteOld(ModelFile.data);
+					EditWorkspace.DecodeWorkspaceByModel(ModelFile.data);
+				});
+			}
+			
+			private function CreateWindowByClass(WindowClass:Class):SkinnableContainer
+			{
+				var Window:SkinnableContainer = new WindowClass() as SkinnableContainer;
+				Window.addEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
+				Window.addEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
+				return Window;
+			}
+			
+			//组件基本信息
+			private var ComProfile:ComponentProfile = null;
+			//复合组件的底层容器
+			private var ParentContainer:Container;
+			//private var EditWorkspace:Workspace = null;
+			private var EditWorkspace:WorkspacePlus = null;
+			/**
+			 * 窗口确认
+			 * 
+			 **/
+			private function OnWindowEnter(event:NotifyEvent):void
+			{
+//				PopupWindow.removeEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
+//				PopupWindow.removeEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
+//				PopUpManager.removePopUp(PopupWindow);
+				
+//				switch(WindowState)
+//				{
+//					case 0:
+//						CloseCurrentPopupWindow();
+//						//保存当前控件的基本信息
+//						ComProfile = event.Params.pop() as ComponentProfile;
+//
+//						if(null != EditWorkspace)
+//						{
+//							if(WorkspaceContainer.containsElement(EditWorkspace))
+//							{
+//								WorkspaceContainer.removeElement(EditWorkspace);
+//							}
+//							
+//							ControlProperty.Reset();
+//						}
+//						
+//						EditWorkspace = new WorkspacePlus();
+//						//EditWorkspace.width = 2048;
+//						//EditWorkspace.height = 2048;
+//						BackFill.width = EditWorkspace.width;
+//						BackFill.height = EditWorkspace.height;
+//						
+//						EditWorkspace.addEventListener(NotifyEvent.UPDATECONSTRUCT,function(event:NotifyEvent):void{
+//							ComponentTree = new ArrayCollection(event.Params.pop() as Array);
+//						});
+//						//EditWorkspace.BuildWorkspace(ComProfile);
+//						WorkspaceContainer.enabled = true;
+//						EditWorkspace.x = 10;
+//						EditWorkspace.y = 10;
+//						WorkspaceContainer.addElement(EditWorkspace);
+//						break;
+//				}
+//				CloseCurrentPopupWindow();
+//				//保存当前控件的基本信息
+//				ComProfile = event.Params.pop() as ComponentProfile;
+				
+//				ComponentBar.enabled = true;
+//				if(null != EditWorkspace)
+//				{
+//					if(WorkspaceContainer.containsElement(EditWorkspace))
+//					{
+//						WorkspaceContainer.removeElement(EditWorkspace);
+//					}
+//					
+//					ControlProperty.Reset();
+//				}
+//				
+//				EditWorkspace = new WorkspacePlus();
+//				EditWorkspace.width = 2048;
+//				EditWorkspace.height = 2048;
+//				BackFill.width = EditWorkspace.width;
+//				BackFill.height = EditWorkspace.height;
+//				
+//				EditWorkspace.addEventListener(NotifyEvent.UPDATECONSTRUCT,function(event:NotifyEvent):void{
+//					ComponentTree = new ArrayCollection(event.Params.pop() as Array);
+//				});
+//				//EditWorkspace.BuildWorkspace(ComProfile);
+//				WorkspaceContainer.enabled = true;
+//				EditWorkspace.x = 10;
+//				EditWorkspace.y = 10;
+//				WorkspaceContainer.addElement(EditWorkspace);
+//				WorkspaceContainer.visible = true;
+//				EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
+//				EditWorkspace.addEventListener(UIEvent.FRAME_RESIZED,function(event:EditModeEvent):void{
+//					
+//					EditWorkspace.width = event.target.width > 2048 ? event.target.width + 100:2048;
+//					EditWorkspace.height = event.target.height > 2048 ? event.target.height + 100:2048;
+//					BackFill.width = EditWorkspace.width;
+//					BackFill.height = EditWorkspace.height;
+//					//trace("Resized");
+//				});
+			}
+			
+			private var _CurrentSelect:UIControl = null;
+			/**
+			 * 更新当前选择控件的属性面板
+			 **/
+			private function UpdateParameter(event:NotifyEvent):void
+			{
+				_CurrentSelect = event.Params.pop() as UIControl;
+				ControlProperty.Control = _CurrentSelect;
+				ControlProperty.enabled = true;
+				
+				ComponentTree.removeAll();
+				
+				if(_CurrentSelect is Container)
+				{
+//					var Children:Array = Container(_CurrentSelect).Children;
+//					
+//					for each(var Child:UIControl in Children)
+//					{
+//						var a:UIControlFactory
+//						AssetLibraryTree.addItem({
+//							Id: Child.Id,
+//							Type: Utils.GetControlPrototype(Child)
+//						});
+//					}
+					
+					ComponentTree.addAll(CreateTreeNodes(Container(_CurrentSelect)));
+				}
+			}
+			
+			private function CreateTreeNodes(Parent:Container):ArrayCollection
+			{
+				var List:ArrayCollection = new ArrayCollection();
+				var Children:Array = Parent.Children;
+				
+				for each(var Child:UIControl in Children)
+				{
+					//var ChildNode:Array = (Child is Container ? CreateTreeNodes(Child):[]);
+					List.addItem({
+						Id: Child.Id,
+						Type: Utils.GetControlPrototype(Child),
+						Control: Child,
+						children: (Child is Container ? CreateTreeNodes(Container(Child)):[])
+					});
+				}
+				
+				return List;
+			}
+			
+			/**
+			 * 窗口关闭
+			 **/
+			private function OnWindowClose(event:Event):void
+			{
+				CloseCurrentPopupWindow();
+			}
+			
+			/**
+			 * 关闭当前的弹出窗口
+			 * 
+			 **/
+			private function CloseCurrentPopupWindow():void
+			{
+				if(PopupWindow)
+				{
+					PopupWindow.removeEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
+					PopupWindow.removeEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
+					PopUpManager.removePopUp(PopupWindow);
+					PopupWindow = null;
+				}
+			}
+			
+			private function NewPanelToWorkspace(event:MouseEvent):void
+			{
+				var NewPanel:UIPanel = new UIPanel();
+				NewPanel.width = 200;
+				NewPanel.height = 100;
+				EditWorkspace.addChild(NewPanel);
+			}
+			
+			private function NewButtonToWorkspace(event:MouseEvent):void
+			{
+				var NewButton:corecom.control.UIButton = new corecom.control.UIButton();
+				NewButton.width = 100;
+				NewButton.height = 40;
+				EditWorkspace.addChild(NewButton);
+			}
+			
+			private function NewSliderToWorkspace(event:MouseEvent):void
+			{
+				var Slider:UISlider = new UISlider(SliderStyle);
+				Slider.width = 150;
+				Slider.height = 40;
+				EditWorkspace.addChild(Slider);
+			}
+			
+			private function NewTabPanelToWorkspace(event:MouseEvent):void
+			{
+				var TabPanel:SimpleTabPanel= new SimpleTabPanel();
+				//TabPanel.EnableEditMode();//开启组件编辑模式
+				TabPanel.width = 200;
+				TabPanel.height = 100;
+				TabPanel.CreateTab();
+				
+				EditWorkspace.addChild(TabPanel);
+			}
+			
+			private function NewLabelToWorkspace(event:MouseEvent):void
+			{
+				var Label:corecom.control.UILabel = new corecom.control.UILabel("Label",null);
+				Label.width = 100;
+				Label.height = 40;
+				EditWorkspace.addChild(Label);
+			}
+			
+			private function NewWindowToWorkspace(event:MouseEvent):void
+			{
+				var Window:UIWindow = new UIWindow();
+				Window.width = 100;
+				Window.height = 80;
+				EditWorkspace.addChild(Window);
+			}
+			
+			private function NewTextInputToWorkspace(event:MouseEvent):void
+			{
+				var TextInput:UITextInput = new UITextInput();
+				TextInput.width = 100;
+				TextInput.height = 20;
+				EditWorkspace.addChild(TextInput);
+			}
+			
+			private function NewImageToWorkspace(event:MouseEvent):void
+			{
+				var Image:UIImage = new UIImage();
+				Image.width = 48;
+				Image.height = 48;
+				EditWorkspace.addChild(Image);
+			}
+
+			
+			/**
+			 * 组件转换成代码
+			 **/
+			protected function GenericSourceCode(event:MouseEvent):void
+			{
+				if(ComProfile)
+				{
+//					var SourceCode:String = EditWorkspace.GenerateControlCode();
+//					SaveCode(SourceCode);
+					
+					//var Model:ByteArray = EditWorkspace.GenerateControlModel(ComProfile);
+					//SaveModel(Model);
+					
+					//刷新自定义组件库
+					InitializeModelLib();
+					NotificationManager.Instance.Show("代码&模型输出成功完成.");
+				}
+			}
+			
+			protected function CreateModel(event:MouseEvent):void
+			{
+				var Browser:File = new File();
+				Browser.addEventListener(Event.SELECT,function(event:Event):void{
+					var Data:ByteArray = EditWorkspace.GenerateControlModel();
+					var ModelFile:File = new File(Browser.nativePath + ".mod");
+					var Writer:FileStream = new FileStream();
+					Writer.open(ModelFile,FileMode.WRITE);
+					Writer.writeBytes(Data,0,Data.length);
+					Writer.close();
+				});
+
+				Browser.browseForSave("请选择保存控件模型的目标路径");
+			}
+			
+			private function SaveCode(SourceCode:String):void
+			{
+				var Package:String = ComProfile.PackageName;
+				var Nav:String = Package.replace(".",utility.System.SystemSplitSymbol);
+				while(Nav.indexOf(".") > 0)
+				{
+					Nav = Nav.replace(".",utility.System.SystemSplitSymbol);
+				}
+				var PackageDir:File = new File(Common.OUTPUT + Nav);
+				if(!PackageDir.exists || !PackageDir.isDirectory)
+				{
+					PackageDir.createDirectory();
+				}
+				var ClassFile:File = new File(Common.OUTPUT + Nav + utility.System.SystemSplitSymbol + ComProfile.ClassName + ".as");
+				var Writer:FileStream = new FileStream();
+				Writer.open(ClassFile,FileMode.WRITE);
+				Writer.writeUTFBytes(SourceCode);
+				Writer.close();
+			}
+			
+			private function SaveModel(Model:ByteArray):void
+			{
+				Model.position = 0;
+				var ModelDir:File = new File(Common.MODEL);
+				if(!ModelDir.exists)
+				{
+					ModelDir.createDirectory();
+				}
+				
+				var ModelFile:File = new File(Common.MODEL + ComProfile.PackageName + "." + ComProfile.ClassName + ".mod");
+				var Writer:FileStream = new FileStream();
+				Writer.open(ModelFile,FileMode.WRITE);
+				Writer.writeBytes(Model,0,Model.bytesAvailable);
+				Writer.close();
+			}
+			
+			/**
+			 * 资源库图标生成
+			 **/
+			private function TreeIconFactory(Item:Object):Class
+			{
+				if(Item is SwfAssetLibrary)
+				{
+					return TreeSwfIcon;
+				}
+				
+				if(Item is Object)
+				{
+					switch(Item.Type)
+					{
+						case ControlType.SIMPLEBUTTON:
+							return ButtonIcon;
+							break;
+						case ControlType.SIMPLEPANEL:
+							return PanelIcon;
+							break;
+						case ControlType.SLIDER:
+							return SliderIcon;
+							break;
+						case ControlType.TABPANEL:
+							return TabPanelIcon;
+							break;
+						case ControlType.LABEL:
+							return LabelIcon;
+							break;
+					}
+//					var Node:TreeNode = Item as TreeNode;
+//
+//					if(Node.label == "SimpleButton")
+//					{
+//						return ButtonIcon;
+//					}
+//					
+//					if(Node.label == "SimplePanel")
+//					{
+//						return PanelIcon;
+//					}
+//					
+//					if(Node.label == "SimpleTabPanel")
+//					{
+//						return TabPanelIcon;
+//					}
+//					
+//					if(Node.label == "SimpleSlider")
+//					{
+//						return SliderIcon;
+//					}
+//					if(Node.label == "Label")
+//					{
+//						return LabelIcon;
+//					}
+				}
+				return TreeIcon;	
+			}
+			
+			/**
+			 * 资源库选择 
+			 **/
+			private function TreeItemClick(event:ListEvent):void
+			{
+				var Library:IAssetLibrary = AssetLibraryTree.getItemAt(event.rowIndex) as IAssetLibrary;
+				PopupWindow = CreateWindowByClass(AssetLibraryWindow);
+				PopUpManager.addPopUp(PopupWindow,this,true);
+				PopUpManager.centerPopUp(PopupWindow);
+				AssetLibraryWindow(PopupWindow).AssetLibraryItem(Library);
+				//PopupWindow.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
+				//创建资源库
+				//WindowState = 88;
+				//trace(event.rowIndex + "");
+			}
+			
+			/**
+			 * 
+			 * 结构树子对象选取
+			 * 
+			 **/
+			private function ComponentChildSelect(event:ListEvent):void
+			{
+				
+				var Obj:Object = event.itemRenderer.data;
+				
+				this.EditWorkspace.OnComponentChoice(Obj.Control);
+			}
+			
+			/**
+			 * 创建新的资源库
+			 **/
+			private function CreateAssetLibrary(event:MouseEvent):void
+			{
+				
+				PopupWindow = CreateWindowByClass(NewAssetLibrary);
+				PopUpManager.addPopUp(PopupWindow,this,true);
+				PopUpManager.centerPopUp(PopupWindow);
+				PopupWindow.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
+				//创建资源库
+				//WindowState = 1;
+			}
+			
+			private function ImportSwfLibrary(event:MouseEvent):void
+			{
+				PopupWindow = CreateWindowByClass(SwfImportWindow);
+				PopUpManager.addPopUp(PopupWindow,this,true);
+				PopUpManager.centerPopUp(PopupWindow);
+				PopupWindow.addEventListener(NotifyEvent.IMPORTSWF,OnImportSwfLibrary);
+			}
+			
+			/**
+			 * 通过网络加载外部SWF
+			 **/
+			private function DownloadSwfLibrary(event:MouseEvent):void
+			{
+			}
+			
+			/**
+			 * 响应SWF导入事件
+			 **/
+			private function OnImportSwfLibrary(event:NotifyEvent):void
+			{
+				try
+				{
+					//清除该事件引用,因为响应事件的同时窗口已经关闭
+					PopupWindow.removeEventListener(NotifyEvent.IMPORTSWF,AssetLibraryCreated);
+					var Lib:IAssetLibrary = AssetFactory.Instance.OpenLibrary(event.Message);
+					if(Lib)
+					{
+						Globals.AppendAssetLibrary(Lib);
+						AssetLibraryTree.addItem(Lib);
+					}
+				}
+				catch(Err:Error)
+				{
+					NotificationManager.Instance.Show("导入SWF失败!错误原因[" + Err.message + "]");
+				}
+				
+				NotificationManager.Instance.Show("导入SWF完成");
+			}
+			
+			/**
+			 * 刷新资源库.
+			 * 
+			 * 先清理所有数据然后重新解析并且填充
+			 **/
+			private function OnRefreshAssetLibrary(event:MouseEvent):void
+			{
+				Alert.show("是否确认要刷新资源库?","",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
+					if(event.detail == Alert.YES)
+					{
+						Globals.Clear();
+						AssetLibraryTree.removeAll();
+						InitializeAssetLib();
+					}
+				});
+			}
+			
+			/**
+			 * 组建工具栏新建按钮响应事件
+			 **/
+			private function OnCreateNewAsset(event:MouseEvent):void
+			{
+//				PopupWindow = CreateWindowByClass(NewComponentProfile);
+//				PopUpManager.addPopUp(PopupWindow,this,true);
+//				PopUpManager.centerPopUp(PopupWindow);
+//				//WorkspaceContainer.closeButton.visible = true;
+//				WindowState = 0;
+				if(null != EditWorkspace)
+				{
+					Alert.show("是否保存当前工作区的任务然后再新建？","任务进度保存提醒",Alert.YES | Alert.CANCEL,null,function(event:CloseEvent):void{
+						
+						if(event.detail == Alert.YES)
+						{
+							//保存当前工作区状态
+							var Browser:File = new File();
+							Browser.addEventListener(Event.SELECT,function(event:Event):void{
+								var Data:ByteArray = EditWorkspace.GenerateControlModel();
+								var ModelFile:File = new File(Browser.nativePath + ".mod");
+								var Writer:FileStream = new FileStream();
+								Writer.open(ModelFile,FileMode.WRITE);
+								Writer.writeBytes(Data,0,Data.length);
+								Writer.close();
+								//清理当前工作区
+								OnCloseAsset(null);
+								//保存完成后初始化工作区
+								WorkspaceInitializer();
+							});
+							
+							Browser.browseForSave("请选择保存控件模型的目标路径");
+						}
+						else
+						{
+							//返回空值，不做任何处理
+							return;
+						}
+					
+					});
+					
+				}
+				else
+				{
+					WorkspaceInitializer();
+				}
+			}
+			
+			/**
+			 * 工作区初始化
+			 * 
+			 * 
+			 **/
+			private function WorkspaceInitializer():void
+			{
+				ComponentBar.enabled = true;
+				EditWorkspace = new WorkspacePlus();
+				EditWorkspace.width = 2048;
+				EditWorkspace.height = 2048;
+				BackFill.width = EditWorkspace.width;
+				BackFill.height = EditWorkspace.height;
+				
+				EditWorkspace.addEventListener(NotifyEvent.UPDATECONSTRUCT,function(event:NotifyEvent):void{
+					ComponentTree = new ArrayCollection(event.Params.pop() as Array);
+				});
+				//EditWorkspace.BuildWorkspace(ComProfile);
+				WorkspaceContainer.enabled = true;
+				EditWorkspace.x = 10;
+				EditWorkspace.y = 10;
+				WorkspaceContainer.addElement(EditWorkspace);
+				WorkspaceContainer.visible = true;
+				EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
+				EditWorkspace.addEventListener(UIEvent.FRAME_RESIZED,function(event:EditModeEvent):void{
+					
+					EditWorkspace.width = event.target.width > 2048 ? event.target.width + 100:2048;
+					EditWorkspace.height = event.target.height > 2048 ? event.target.height + 100:2048;
+					BackFill.width = EditWorkspace.width;
+					BackFill.height = EditWorkspace.height;
+				});
+			}
+			
+			/**
+			 * 组件工具栏打开按钮响应事件
+			 **/
+			private function OnOpenAssetModel(event:MouseEvent):void
+			{
+				ModelFile = new FileReference();
+				var Filter:FileFilter = new FileFilter("组件模型","*.mod");
+				ModelFile.browse([Filter]);
+				ModelFile.addEventListener(Event.SELECT,OnModelFileSelected);
+				//WorkspaceContainer.closeButton.visible = true;
+				//SaveButton.enabled = true;
+				//CloseButton.enabled = true;
+			}
+			
+			private function OnCloseAsset(event:MouseEvent):void
+			{
+				if(WorkspaceContainer.containsElement(EditWorkspace))
+				{
+					WorkspaceContainer.removeElement(EditWorkspace);
+				}
+				EditWorkspace = null;
+				//WorkspaceContainer.closeButton.visible = false;
+				ComponentBar.enabled = false;
+				ControlProperty.Reset();
+				ControlProperty.enabled = false;
+				
+				ComponentTree = new ArrayCollection();
+				
+				Enabled = false;
+			}
+			
+			/**
+			 * 当前选择控件变更背景图片的响应事件
+			 **/
+			private function OnChangeControlImage(event:NotifyEvent):void
+			{
+				PopupWindow = CreateWindowByClass(AssetSelectWindow);
+				PopUpManager.addPopUp(PopupWindow,this,true);
+				PopUpManager.centerPopUp(PopupWindow);
+				AssetSelectWindow(PopupWindow).Item = AssetLibraryTree;
+				PopupWindow.addEventListener(NotifyEvent.SELECTEDASSET,function(event:NotifyEvent):void{
+					//资源选择完成
+					var LibId:String = event.Params.pop();
+					var AssId:String = event.Params.pop();
+					ControlProperty.ChangeImageResult(LibId,AssId);
+				});
+			}
+			
+			private var _DragControl:Object = null;
+			private var _DefaultCursor:String = "";
+			private var _CursorName:String = "";
+			/**
+			 * 控件开始拖拽
+			 **/
+			protected function StartDrag(event:MouseEvent):void
+			{
+				switch(event.currentTarget.id)
+				{
+					case "Slider":
+						_DragControl = new UISlider();
+						_DragControl.width = 150;
+						_DragControl.height = 40;
+						break;
+					case "Button":
+						_DragControl = new corecom.control.UIButton();
+						_DragControl.width = 100;
+						_DragControl.height = 40;
+						break;
+					case "TabPanel":
+						_DragControl = new SimpleTabPanel();
+						_DragControl.width = 200;
+						_DragControl.height = 100;
+						SimpleTabPanel(_DragControl).CreateTab();
+						break;
+					case "Panel":
+						_DragControl = new UIPanel();
+						_DragControl.width = 200;
+						_DragControl.height = 100;
+						break;
+					case "Label":
+						_DragControl = new corecom.control.UILabel("Label",null);
+						_DragControl.width = 100;
+						_DragControl.height = 40;
+						break;
+					case "Window":
+						_DragControl = new UIWindow();
+						_DragControl.width = 100;
+						_DragControl.height = 80;
+						break;
+					case "TextInput":
+						_DragControl = new UITextInput();
+						_DragControl.width = 100;
+						_DragControl.height = 20;
+						break;
+					case  "Image":
+						_DragControl = new UIImage();
+						_DragControl.width = 48;
+						_DragControl.height = 48;
+						break;
+						
+				}
+				
+				MouseManager.Instance.Register("Drag",[ImageSkin(event.target).imageDisplay.bitmapData],true);
+				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				this.stage.addEventListener(MouseEvent.MOUSE_UP,DropControl);
+			}
+			
+			private function ComponentStartDrag(event:NotifyEvent):void
+			{
+				_DragControl = ComponentModel(event.Params.pop());
+				//MouseManager.Instance.Register("Drag",[Bitmap(new ComponentIcon()).bitmapData],true);
+				
+				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				this.stage.addEventListener(MouseEvent.MOUSE_UP,DropControl);
+			}
+			
+			private function ComponentChoice(event:NotifyEvent):void
+			{
+				var Data:ByteArray = new ByteArray();
+				var Source:ByteArray = ComponentModel(_DragControl).ModelByte;
+				Source.position = 0;
+				Source.readBytes(Data,0,Source.length);
+				//ComponentModel(_DragControl).ModelByte.readBytes(Data,0,ComponentModel(_DragControl).ModelByte.length);
+				Data.position = 0;
+				var Copy:ComponentModel = ModelFactory.Instance.Decode(Data);
+				var Control:UIControl = Copy.Control;
+				
+				EditWorkspace.addChild(Control);
+			}
+			
+			private function DragMove(event:MouseEvent):void
+			{
+				//trace(event.target);	
+			}
+			
+			private function DropControl(event:MouseEvent):void
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,DropControl);
+				MouseManager.Instance.Default();
+				try
+				{
+					if(_DragControl is UIControl)
+					{
+						_DragControl.x = event.localX;
+						_DragControl.y = event.localY;
+						var Target:UIControl = null;
+						if(event.target is Container)
+						{
+							UIControl(_DragControl).EnableEditMode();
+							Container(event.target).OnDrop(_DragControl as UIControl);
+							this.EditWorkspace.OnComponentChoice(_DragControl);
+						}
+						else if(event.target == WorkspaceContainer)
+						{
+							UIControl(_DragControl).EnableEditMode();
+							EditWorkspace.addChild(_DragControl as DisplayObject);
+						}
+					}
+					
+					else if(_DragControl is ComponentModel)
+					{
+						var Data:ByteArray = new ByteArray();
+						var Source:ByteArray = ComponentModel(_DragControl).ModelByte;
+						Source.position = 0;
+						Source.readBytes(Data,0,Source.length);
+						//ComponentModel(_DragControl).ModelByte.readBytes(Data,0,ComponentModel(_DragControl).ModelByte.length);
+						Data.position = 0;
+						var Copy:ComponentModel = ModelFactory.Instance.Decode(Data);
+						var Control:UIControl = Copy.Control;
+						
+						for each(var Child:UIControl in Copy.Children)
+						{
+							Control.addChild(Child);
+						}
+						
+						Control.x = event.localX;
+						Control.y = event.localY;
+						
+						Control.EnableEditMode();
+						Container(event.target).OnDrop(Control);
+						
+						//var CopyObj:ComponentModel = ModelFactory.Instance.Decode(ComponentModel(_DragControl).ModelByte);
+						//EditWorkspace.BuildComponent(_DragControl as ComponentModel);
+					}
+				}
+				catch(Err:Error)
+				{
+					trace(Err.message);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout gap="5" paddingLeft="5" paddingTop="5" paddingRight="5" />
+	</s:layout>
+		
+	<s:HGroup width="100%" height="100%">
+		<s:VGroup width="154" height="100%">
+			<s:Panel width="100%" height="100%" dropShadowVisible="false" title="控件列表" id="ComponentBar" enabled="false">
+				<s:layout>
+					<s:VerticalLayout horizontalAlign="center" />
+				</s:layout>
+				
+				<mx:Accordion width="100%" height="100%">
+					
+					<mx:VBox label="基本控件" horizontalAlign="center" width="100%">
+						<s:Scroller height="100%" width="100%">
+							<s:VGroup height="100%" width="100%" horizontalAlign="center">
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Button.png')" id="Button" mouseDown="StartDrag(event)" click="NewButtonToWorkspace(event)"/>
+									<s:Label text="Button" />
+								</s:VGroup>
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Tabpanel.png')" id="TabPanel" mouseDown="StartDrag(event)" click="NewTabPanelToWorkspace(event)"/>
+									<s:Label text="TabPanel" />
+								</s:VGroup>
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/hslider.png')" id="Slider" mouseDown="StartDrag(event)" click="NewSliderToWorkspace(event)"/>
+									<s:Label text="HSlider" />
+								</s:VGroup>
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/SimplePanel.png')" id="Panel" mouseDown="StartDrag(event)" click="NewPanelToWorkspace(event)" />
+									<s:Label text="Panel" />
+								</s:VGroup>
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Label.png')" id="Label" mouseDown="StartDrag(event)" click="NewLabelToWorkspace(event)" />
+									<s:Label text="Label" />
+								</s:VGroup>
+								
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Image.png')" id="Image" mouseDown="StartDrag(event)" click="NewImageToWorkspace(event)"/>
+									<s:Label text="Image" />
+								</s:VGroup>
+								
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Input.png')" id="TextInput" mouseDown="StartDrag(event)" click="NewTextInputToWorkspace(event)"/>
+									<s:Label text="TextInput" />
+								</s:VGroup>
+								
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Window.png')" id="Window" mouseDown="StartDrag(event)" click="NewWindowToWorkspace(event)"/>
+									<s:Label text="Window" />
+								</s:VGroup>
+								
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Progress.png')" id="Progress" enabled="false"/>
+									<s:Label text="Progress" enabled="false" />
+								</s:VGroup>
+								
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Combobox.png')" id="Combobox" enabled="false"/>
+									<s:Label text="Combobox" enabled="false" />
+								</s:VGroup>
+							</s:VGroup>
+						</s:Scroller>
+					</mx:VBox>
+					<mx:VBox label="自定义组件" id="ComponentLibrary" width="100%">
+					</mx:VBox>
+				</mx:Accordion>
+			</s:Panel>
+		</s:VGroup>
+		
+		
+		<s:TitleWindow width="800" height="100%" dropShadowVisible="false"  title="组件编辑区" id="EditorWindow">
+			<s:layout>
+				<s:VerticalLayout paddingLeft="10" paddingTop="10" />
+			</s:layout>
+			<s:HGroup width="100%" verticalAlign="middle" gap="20" paddingLeft="5">
+				
+				<s:VGroup horizontalAlign="center">
+					<s:Image source="@Embed('../assets/Add.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="创建新组件" click="OnCreateNewAsset(event)"/>
+					<s:Label text="新建" />
+				</s:VGroup>
+				<s:VGroup horizontalAlign="center">
+					<s:Image source="@Embed('../assets/Search.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="打开一个外部组件模型" click="OnOpenAssetModel(event)"/>
+					<s:Label text="打开" />
+				</s:VGroup>
+				<s:VGroup horizontalAlign="center" enabled="{Enabled}" id="SaveButton">
+					<s:Image source="@Embed('../assets/Save.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="保存当前编辑的组件" click="CreateModel(event)"/>
+					<s:Label text="保存" />
+				</s:VGroup>
+				<s:VGroup horizontalAlign="center" enabled="{Enabled}" id="CloseButton">
+					<s:Image source="@Embed('../assets/Recycle.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="关闭当前组件编辑" click="OnCloseAsset(event)"/>
+					<s:Label text="关闭" />
+				</s:VGroup>
+				<s:VGroup horizontalAlign="center">
+					<s:Image source="@Embed('../assets/Preference.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="系统设置" click="OpenPreferenceWindow(event)"/>
+					<s:Label text="设置" />
+				</s:VGroup>
+				<s:VGroup horizontalAlign="center">
+					<s:Image source="@Embed('../assets/Question.png')" width="24" height="24" smooth="true" buttonMode="true" toolTip="系统帮助" click="OpenAbautWindow(event)" />
+					<s:Label text="版本说明" />
+				</s:VGroup>
+			</s:HGroup>
+			<mx:HRule width="100%" height="1" />
+			<s:Scroller width="100%" height="100%">
+				<s:Group id="WorkspaceContainer"  visible="false">
+					<s:Rect id="BackFill" >
+						<s:fill>
+							<s:BitmapFill  source="@Embed('../assets/Grid.png')" fillMode="repeat"  />
+						</s:fill>
+					</s:Rect>
+				</s:Group>
+			</s:Scroller>
+		</s:TitleWindow>
+		
+		<mx:Accordion width="100%" height="100%" creationPolicy="all">
+			<mx:VBox label="属性" horizontalAlign="center" width="100%" height="100%">
+				<ui:PropertyPanel id="ControlProperty" width="100%" height="100%"  OnChangeImage="OnChangeControlImage(event)"/>	
+			</mx:VBox>
+			
+			<mx:VBox label="资源库" horizontalAlign="center" width="100%">
+				<s:HGroup gap="20" paddingTop="5">
+					<s:Image source="@Embed('../assets/Add.png')" width="24" height="24" smooth="true" click="CreateAssetLibrary(event)" buttonMode="true" toolTip="新建资源库" enabled="false" />
+					<s:Image source="@Embed('../assets/Search.png')" width="24" height="24" smooth="true" click="ImportSwfLibrary(event)" buttonMode="true" toolTip="从本地导入SWF资源"/>
+					<s:Image source="@Embed('../assets/Import.png')" width="24" height="24" smooth="true" click="DownloadSwfLibrary(event)" buttonMode="true" toolTip="通过URL下载外部SWF资源"/>
+					<s:Image source="@Embed('../assets/Refresh.png')" width="24" height="24" smooth="true" click="OnRefreshAssetLibrary(event)" buttonMode="true" toolTip="刷新资源库"/>
+				</s:HGroup>
+				<mx:HRule width="200" height="1"/>
+				<mx:Tree width="200" height="100%" borderVisible="false" contentBackgroundColor="#FFFFFF"
+						 dataProvider="{AssetLibraryTree}" iconFunction="TreeIconFactory"
+						 itemClick="TreeItemClick(event)" labelField="Name"/>
+			</mx:VBox>
+			
+			<mx:VBox label="结构视图" horizontalAlign="center" width="100%" height="100%">
+				<mx:Tree width="200" height="100%" borderVisible="false" contentBackgroundColor="#FFFFFF"
+						 dataProvider="{ComponentTree}" iconFunction="TreeIconFactory"
+						 itemClick="ComponentChildSelect(event)" labelField="Id" paddingTop="10">
+				</mx:Tree>
+			</mx:VBox>
+		</mx:Accordion>
+		
+			
+	</s:HGroup>
+</s:WindowedApplication>

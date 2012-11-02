@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="corecom.control.UIButton"/>
+    <classEntry path="corecom.control.LayoutConstant"/>
+    <classEntry path="corecom.control.Container"/>
+    <classEntry path="corecom.control.IUIControl"/>
+    <classEntry path="corecom.control.UISlider"/>
+    <classEntry path="corecom.control.UIPanel"/>
+    <classEntry path="corecom.control.style.StyleShape"/>
+    <classEntry path="corecom.control.utility.Utils"/>
+    <classEntry path="corecom.control.utility.ControlType"/>
+    <classEntry path="corecom.control.style.UIStyle"/>
+    <classEntry path="corecom.control.style.SliderStyle"/>
+    <classEntry path="corecom.control.event.SliderEvent"/>
+    <classEntry path="corecom.control.utility.ErrorConstant"/>
+    <classEntry path="corecom.control.style.IStyle"/>
+    <classEntry path="corecom.control.event.UIControlEvent"/>
+    <classEntry path="corecom.control.style.ButtonStyle"/>
+    <classEntry path="corecom.control.ICloneable"/>
+    <classEntry path="corecom.control.SimpleTabPanel"/>
+    <classEntry path="corecom.control.style.TabPanelStyle"/>
+    <classEntry path="corecom.control.event.TabPanelEvent"/>
+    <classEntry path="corecom.control.Tab"/>
+    <classEntry path="corecom.control.style.TabStyle"/>
+    <classEntry path="corecom.control.TabState"/>
+    <classEntry path="corecom.control.style.ContainerStyle"/>
+    <classEntry path="corecom.control.TabContent"/>
+    <classEntry path="corecom.control.Scale9GridBitmap"/>
+    <classEntry path="corecom.control.asset.ControlAssetManager"/>
+    <classEntry path="corecom.control.asset.IControlAssetManager"/>
+    <classEntry path="corecom.control.event.DownloadEvent"/>
+    <classEntry path="corecom.control.TabBar"/>
+    <classEntry path="corecom.control.utility.ButtonState"/>
+    <classEntry path="corecom.control.event.ControlEditModeEvent"/>
+    <classEntry path="corecom.control.UIImage"/>
+    <classEntry path="corecom.control.style.ImageStyle"/>
+    <classEntry path="corecom.control.UIProgress"/>
+    <classEntry path="corecom.control.style.UIProgressStyle"/>
+    <classEntry path="corecom.control.style.UIProgressBarStyle"/>
+    <classEntry path="corecom.control.UIControlFactory"/>
+    <classEntry path="corecom.control.IContainer"/>
+    <classEntry path="corecom.control.IUIControlFactory"/>
+    <classEntry path="corecom.control.FontTextFactory"/>
+    <classEntry path="corecom.control.IFontTextFactory"/>
+    <classEntry path="corecom.control.style.FontStyle"/>
+    <classEntry path="corecom.control.style.IVisualStyle"/>
+    <classEntry path="corecom.control.Combobox"/>
+    <classEntry path="corecom.control.style.CombStyle"/>
+    <classEntry path="corecom.control.ComboboxItem"/>
+    <classEntry path="corecom.control.event.ComboboxEvent"/>
+    <classEntry path="corecom.control.Scroller"/>
+    <classEntry path="corecom.control.style.ScrollerStyle"/>
+    <classEntry path="corecom.control.VerticalScroller"/>
+    <classEntry path="corecom.control.event.ScrollerEvent"/>
+    <classEntry path="corecom.control.HorizontalScroller"/>
+    <classEntry path="corecom.control.ScrollHandler"/>
+    <classEntry path="corecom.control.UILabel"/>
+    <classEntry path="corecom.control.style.LabelStyle"/>
+    <classEntry path="corecom.control.style.FontTextAlignEnmu"/>
+    <classEntry path="corecom.control.utility.FocusFrame"/>
+    <classEntry path="corecom.control.event.EditModeEvent"/>
+    <classEntry path="corecom.control.SimpleShape"/>
+    <classEntry path="corecom.control.effect.Effect"/>
+    <classEntry path="corecom.control.effect.FilterMode"/>
+    <classEntry path="corecom.control.effect.EaseMode"/>
+    <classEntry path="corecom.control.effect.IEffectFilter"/>
+    <classEntry path="corecom.control.effect.EffectBlurFilter"/>
+    <classEntry path="corecom.control.effect.EffectGlowFilter"/>
+    <classEntry path="corecom.control.effect.IEffect"/>
+    <classEntry path="corecom.control.effect.EffectRotate"/>
+    <classEntry path="corecom.control.effect.EffectTransform"/>
+    <classEntry path="corecom.control.UIWindow"/>
+    <classEntry path="corecom.control.style.UIWindowStyle"/>
+    <classEntry path="corecom.control.style.UIPanelStyle"/>
+    <classEntry path="corecom.control.UIProgressBar"/>
+    <classEntry path="corecom.control.UITextInput"/>
+    <classEntry path="corecom.control.UITextBase"/>
+    <classEntry path="corecom.control.style.UITextInputStyle"/>
+    <classEntry path="corecom.control.style.IBackgroundStyle"/>
+    <classEntry path="corecom.control.utility.ScaleRect"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

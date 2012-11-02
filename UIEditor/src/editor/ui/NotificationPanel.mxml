@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="300" height="200" initialize="Initialized(event)" cornerRadius="6">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.EffectEvent;
+			import mx.events.FlexEvent;
+			
+			import spark.effects.Fade;
+			
+			private var FadeEffect:Fade = null;
+			
+			private var Update:Boolean = false;
+			private var Text:String = "";
+			public function set Message(Value:String):void
+			{
+				if(null == DisplayText)
+				{
+					Update = true;
+					Text = Value;
+				}
+				else
+				{
+					DisplayText.text = Value;
+				}
+			}
+			
+			protected function Initialized(event:FlexEvent):void
+			{
+				FadeEffect = new Fade();
+				FadeEffect.alphaFrom = 1.0;
+				FadeEffect.alphaTo = 0;
+				
+				if(Update)
+				{
+					DisplayText.text = Text;
+					Update = false;
+				}
+			}
+			
+			public function PlayFadeEffect(Duration:Number):void
+			{
+				FadeEffect.duration = Duration;
+				FadeEffect.play([this]);
+				FadeEffect.addEventListener(EffectEvent.EFFECT_END,PlayEnd);
+			}
+			
+			private function PlayEnd(event:EffectEvent):void
+			{
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center" paddingTop="20" />
+	</s:layout>
+	
+	<s:Label text="" id="DisplayText" />
+</s:BorderContainer>

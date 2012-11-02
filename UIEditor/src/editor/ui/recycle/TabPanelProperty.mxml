@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvancePropertyGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						 xmlns:ui="editor.ui.*"
+						 xmlns:s="library://ns.adobe.com/flex/spark" 
+						 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Metadata>
+		[Event(name="OnChangeImage", type="editor.event.NotifyEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import corecom.control.SimpleTabPanel;
+			import corecom.control.Tab;
+			import corecom.control.TabBar;
+			import corecom.control.TabContent;
+			import corecom.control.event.TabPanelEvent;
+			import corecom.control.style.IStyle;
+			
+			import editor.event.NotifyEvent;
+			import editor.model.asset.Asset;
+			import editor.model.asset.AssetBitmap;
+			import editor.utils.Globals;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.ColorPickerEvent;
+			import mx.events.FlexEvent;
+			import mx.utils.StringUtil;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import utility.Tools;
+			
+			[Bindable]
+			private var _TabChildren:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var ButtonStyleFlag:Boolean = false;
+			[Bindable]
+			private var TabStyleFlag:Boolean = false;
+			[Bindable]
+			private var LayoutFlag:Boolean = false;
+			
+			private var _CurrentControl:SimpleTabPanel = null;
+			[Bindable]
+			private var TabContentStyleEnable:Boolean = false;
+			private var _CurrentTab:Tab = null;
+			private var _CurrentTabContent:TabContent = null;
+			public function DisplayControl(Control:SimpleTabPanel):void
+			{
+				Reset();
+				_CurrentControl = Control;
+				var Style:IStyle = _CurrentControl.Style;
+				var Tabs:Array = _CurrentControl.Tabs;
+				var TabChild:Tab = null;
+				for(var Idx:int=0; Idx<Tabs.length; Idx++)
+				{
+					TabChild = Tabs[Idx];
+					
+					_TabChildren.addItem({
+						Index: Idx,
+						Label: "标签" + Idx,
+						Tab: TabChild
+					});
+				}
+				
+				_CurrentControl.addEventListener(TabPanelEvent.TABSELECT,function(event:TabPanelEvent):void{
+					TabCombobox.selectedIndex = _TabChildren.getItemIndex(event.SelectTab);
+					_CurrentTab = event.SelectTab;
+					_CurrentTabContent = _CurrentControl.FindContentByTab(_CurrentTab);
+					TabContentReset(_CurrentTabContent);
+					
+				},false,0,true);
+				TabHeight.text = _CurrentControl.TabPanel.height  + "";
+			}
+			
+			private function AddNewTab(event:MouseEvent):void
+			{
+				var NewTab:Tab = _CurrentControl.CreateTab();
+				var Idx:int = _TabChildren.length;
+				_TabChildren.addItem({
+					Index: Idx,
+					Label: "标签" + Idx,
+					Tab: NewTab
+				});
+				TabCombobox.selectedIndex = Idx;
+				_CurrentTabContent = _CurrentControl.FindContentByTab(NewTab);
+				TabContentReset(_CurrentTabContent);
+			}
+			
+			protected function TabHeightChange(event:FlexEvent):void
+			{
+				_CurrentControl.TabHeight = int(TabHeight.text);
+			}
+			
+			private function Reset():void
+			{
+				_TabChildren = new ArrayCollection();
+//				BorderThinkness.value = 0;
+//				BorderColorPicker.selectedColor = 0;
+//				BorderAlpha.value = 0;
+//				LeftTopBorderCorner.value = 0;
+//				LeftBottomBorderCorner.value = 0;
+//				RightTopBorderCorner.value = 0;
+//				RightBottomBorderCorner.value = 0;
+//				BackgroundColorPicker.selectedColor = 0;
+//				BackgroundAlpha.value = 0;
+//				//ButtonOverStyle.visible = false;
+//				_CurrentControl = null;
+//				BackgroundImg.text = "";
+//				ButtonStyleFlag = false;
+//				//Scroll.verticalScrollBar.visible = false;
+//				TabStyleFlag = false;
+			}
+			
+			private function TabContentReset(TabContentChild:TabContent):void
+			{
+				//Reset();
+				BorderThinkness.value = TabContentChild.Style.BorderThinkness;
+				BorderColorPicker.selectedColor = TabContentChild.Style.BorderColor;
+				BorderAlpha.value = TabContentChild.Style.BorderAlpha;
+				LeftTopBorderCorner.value = TabContentChild.Style.LeftTopCorner;
+				LeftBottomBorderCorner.value = TabContentChild.Style.LeftBottomCorner;
+				RightTopBorderCorner.value = TabContentChild.Style.RightTopCorner;
+				RightBottomBorderCorner.value = TabContentChild.Style.RightBottomCorner;
+				BackgroundColorPicker.selectedColor = TabContentChild.Style.BackgroundColor;
+				BackgroundAlpha.value = TabContentChild.Style.BackgroundAlpha;
+				ControlLayout.selectedIndex = TabContentChild.Layout;
+				TabContentStyleEnable = true;
+			}
+			
+			/**
+			 * 背景颜色变更
+			 **/
+			protected function BackgroundColorChanged(Event:ColorPickerEvent):void
+			{
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.BackgroundColor = Event.color;
+					BackgroundColorField.text = Tools.Color2Hex(Event.color);
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 边框颜色变更
+			 **/
+			protected function BorderColorChanged(Event:ColorPickerEvent):void
+			{
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.BorderColor = Event.color;
+					BorderColorField.text = Tools.Color2Hex(Event.color);
+					_CurrentTabContent.Update();
+				}
+			}
+			/**
+			 * 边框颜色文本变更
+			 **/
+			protected function BorderColorTextChanged(Event:KeyboardEvent):void
+			{
+				if(Event.keyCode == Keyboard.ENTER)
+				{
+					var Value:String = BorderColorField.text;
+					
+					if(Value.indexOf("#") == 0)
+					{
+						Value = Value.replace("#","0x");
+					}
+					else
+					{
+						if(Value.length != 6)
+						{
+							Alert.show("输入颜色代码非法,请重新输入");
+							return;
+						}
+						Value = "0x" + Value;
+					}
+					var Code:uint = new uint(Value);
+					BorderColorPicker.selectedColor = Code;
+					_CurrentTabContent.BorderColor = Code;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 背景颜色文本变更
+			 **/
+			protected function BackgroundColorTextChanged(Event:KeyboardEvent):void
+			{
+				if(Event.keyCode == Keyboard.ENTER)
+				{
+					var Value:String = BorderColorField.text;
+					
+					if(Value.indexOf("#") == 0)
+					{
+						Value = Value.replace("#","0x");
+					}
+					else
+					{
+						if(Value.length != 6)
+						{
+							Alert.show("输入颜色代码非法,请重新输入,只允许输入格式为RGB的颜色代码");
+							return;
+						}
+						Value = "0x" + Value;
+					}
+					var Code:uint = new uint(Value);
+					BackgroundColorPicker.selectedColor = Code;
+					_CurrentTabContent.Style.BackgroundColor = Code;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 边框宽度变更
+			 **/
+			protected function BorderThinknessChanged(event:Event):void
+			{
+				if(_CurrentControl)
+				{
+					_CurrentTabContent.Style.BorderThinkness = BorderThinkness.value;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 边框圆角变更
+			 **/
+			//			protected function BorderCornerChanged(event:Event):void
+			//			{
+			//				if(_CurrentControl)
+			//				{
+			//					_CurrentControl.Style.BorderCorner = BorderCorner.value;
+			//					_CurrentControl.Update();
+			//				}
+			//			}
+			
+			/**
+			 * 边框圆角变更
+			 **/
+			protected function BorderCornerLeftTopChanged(event:Event):void
+			{
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.LeftTopCorner = LeftTopBorderCorner.value;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 边框圆角变更
+			 **/
+			protected function BorderCornerLeftBottomChanged(event:Event):void
+			{
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.LeftBottomCorner = LeftBottomBorderCorner.value;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 边框圆角变更
+			 **/
+			protected function BorderCornerRightTopChanged(event:Event):void
+			{
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.RightTopCorner = RightTopBorderCorner.value;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 边框圆角变更
+			 **/
+			protected function BorderCornerRightBottomChanged(event:Event):void
+			{
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.RightBottomCorner = RightBottomBorderCorner.value;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			
+			/**
+			 * 边框透明度
+			 **/
+			protected function BorderAlphaChanged(event:Event):void
+			{
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.BorderAlpha = BorderAlpha.value;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			/**
+			 * 背景透明度
+			 **/
+			protected function BackgroundAlphaChanged(event:Event):void
+			{
+				BackgroundAlphaValue.text = BackgroundAlpha.value + "";
+				if(_CurrentTabContent)
+				{
+					_CurrentTabContent.Style.BackgroundAlpha = BackgroundAlpha.value;
+					_CurrentTabContent.Update();
+				}
+			}
+			
+			private var ImgFile:File = null;
+			private var ImgLoader:Loader = null;
+			private var Callback:Function = null;
+			/**
+			 * 选择背景图片按钮点击
+			 **/
+			private function OnBrowserImage(event:MouseEvent):void
+			{
+				//				ImgFile = new File();
+				//				ImgFile.addEventListener(Event.SELECT,OnBackgrundImageSelected);
+				//				ImgFile.browse([new FileFilter("Images","*.jpg;*.jpeg;*.png")]);
+				//_Trigger = _CurrentControl.Style;
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.CHANGEIMAGE);
+				Notify.Params.push(OnChangeImageResultNotify);
+				dispatchEvent(Notify);
+				Callback = OnChangeImageResultNotify;
+			}
+			
+			/**
+			 * 变更背景图片回调通知函数
+			 **/
+			private function OnChangeImageResultNotify(LibraryId:String,AssetId:String):void
+			{
+				var AssetItem:Asset = Globals.FindAssetById(LibraryId,AssetId);
+				if(null != AssetItem && AssetItem is AssetBitmap)
+				{
+					_CurrentTabContent.Style.BackgroundImage = AssetBitmap(AssetItem).Image;
+					_CurrentTabContent.Style.BackgroundImageId = AssetId;
+					_CurrentTabContent.Update();
+					BackgroundImg.text = AssetItem.Id;
+				}
+			}
+			
+//			/**
+//			 * 背景图片已选择
+//			 **/
+//			private function OnBackgrundImageSelected(event:Event):void
+//			{
+//				ImgLoader = new Loader();
+//				ImgLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,OnImageLoaded);
+//				ImgLoader.load(new URLRequest(ImgFile.nativePath));
+//				ImgFile.removeEventListener(Event.SELECT,OnBackgrundImageSelected);
+//				ImgFile = null;
+//			}
+//			
+//			/**
+//			 * 背景图片已加载
+//			 **/
+//			private function OnImageLoaded(event:Event):void
+//			{
+//				var Img:Bitmap = ImgLoader.content as Bitmap;
+//				ImgLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,OnImageLoaded);
+//				_CurrentTabContent.Style.BackgroundImage = Img;
+//				_CurrentTabContent.Update();
+//				ImgLoader = null;
+//			}
+			
+			[Bindable]
+			private var ScalePropertyVisible:Boolean = false;
+			private function OnScale9GridChange(event:MouseEvent):void
+			{
+				_CurrentTabContent.Style.Scale9Grid = Scale9Grid.selected;
+				ScalePropertyVisible = Scale9Grid.selected;
+				//_CurrentControl.Update();
+			}
+			
+			private function ScaleLeftEnter(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+				{
+					return;
+				}
+				var Value:String = StringUtil.trim(TextInput(event.currentTarget).text);
+				if(Value == "")
+				{
+					Value = "1";
+				}
+				_CurrentTabContent.Style.Scale9GridLeft = int(Value);
+				_CurrentTabContent.Update();
+			}
+			private function ScaleRightEnter(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+				{
+					return;
+				}
+				var Value:String = StringUtil.trim(TextInput(event.currentTarget).text);
+				if(Value == "")
+				{
+					Value = "1";
+				}
+				_CurrentTabContent.Style.Scale9GridRight = int(Value);
+				_CurrentTabContent.Update();
+			}
+			private function ScaleTopEnter(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+				{
+					return;
+				}
+				var Value:String = StringUtil.trim(TextInput(event.currentTarget).text);
+				if(Value == "")
+				{
+					Value = "1";
+				}
+				_CurrentTabContent.Style.Scale9GridTop = int(Value);
+				_CurrentTabContent.Update();
+			}
+			private function ScaleBottomEnter(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+				{
+					return;
+				}
+				var Value:String = StringUtil.trim(TextInput(event.currentTarget).text);
+				if(Value == "")
+				{
+					Value = "1";
+				}
+				_CurrentTabContent.Style.Scale9GridBottom = int(Value);
+				_CurrentTabContent.Update();
+			}
+			
+			protected function TabChange(event:IndexChangeEvent):void
+			{
+				if(event.newIndex >= 0)
+				{
+					var TabChild:Tab = _TabChildren.getItemAt(event.newIndex).Tab;
+					if(null != TabChild)
+					{
+						_CurrentTab = TabChild;
+						_CurrentTabContent = _CurrentControl.SwitchTab(TabChild);
+						TabContentReset(_CurrentTabContent);
+					}
+				}
+			}
+			
+			/**
+			 * 变更TabPanel的宽度
+			 **/
+			protected function TabPanelWidthChange(event:FlexEvent):void
+			{
+				var Value:String = StringUtil.trim(TextInput(event.currentTarget).text);
+				if(Value == "")
+				{
+					Value = "1";
+				}
+				_CurrentControl.width = int(Value);
+				_CurrentControl.Update();
+			}
+			/**
+			 * 变更TabPanel的高度
+			 **/
+			protected function TabPanelHeightChange(event:FlexEvent):void
+			{
+				var Value:String = StringUtil.trim(TextInput(event.currentTarget).text);
+				if(Value == "")
+				{
+					Value = "1";
+				}
+				_CurrentControl.height = int(Value);
+				_CurrentControl.Update();
+			}
+			
+			protected function LayoutChange(event:IndexChangeEvent):void
+			{
+				_CurrentTabContent.Layout = ControlLayout.selectedIndex;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label text="整体样式" color="#66CCFF" fontWeight="bold"/>
+	<s:HGroup>
+		<s:Label text="宽度" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput restrict="0-9" id="TabPanelWidth" enter="TabPanelWidthChange(event)" width="70" />
+	</s:HGroup>
+	<s:HGroup>
+		<s:Label text="高度" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput restrict="0-9" id="TabPanelHeight" enter="TabPanelHeightChange(event)" width="70" />
+	</s:HGroup>
+	
+	<s:Label text="标签样式" color="#66CCFF" fontWeight="bold"/>
+	<s:HGroup>
+		<s:Label text="Tab标签" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox id="TabCombobox" dataProvider="{_TabChildren}" labelField="Label" width="70" change="TabChange(event)" selectedIndex="0" />
+		<s:Image source="@Embed('../assets/Add.png')" width="20" height="20" smooth="true" smoothingQuality="high" buttonMode="true" click="AddNewTab(event)" toolTip="添加新标签"/>
+		<s:Image source="@Embed('../assets/Delete.png')" width="20" height="20" smooth="true" smoothingQuality="high" buttonMode="true"/>
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="标签高度" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput restrict="0-9" id="TabHeight" enter="TabHeightChange(event)" width="70" />
+	</s:HGroup>
+	
+	<mx:HRule width="100%" />
+	<s:Label text="标签内容面板属性" color="#66CCFF" fontWeight="bold"/>
+	<s:VGroup id="TabContentStyleGroup" enabled="{TabContentStyleEnable}">
+		<s:HGroup>
+			<s:Label text="布局" height="100%" verticalAlign="middle" width="60"/>
+			<s:ComboBox id="ControlLayout" selectedIndex="0" change="LayoutChange(event)" width="80" >
+				<s:ArrayCollection>
+					<fx:String>绝对布局</fx:String>
+					<fx:String>横向布局</fx:String>
+					<fx:String>纵向布局</fx:String>
+				</s:ArrayCollection>
+			</s:ComboBox>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="边框宽度" height="100%" verticalAlign="middle" width="60"/>
+			<s:HSlider width="100" maximum="20" stepSize="1" minimum="0" id="BorderThinkness" change="BorderThinknessChanged(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Label text="边框颜色" height="100%" verticalAlign="middle" width="60"/>
+			<s:TextInput width="70" id="BorderColorField" keyDown="BorderColorTextChanged(event)"/>
+			<mx:ColorPicker showTextField="true" id="BorderColorPicker" change="BorderColorChanged(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Label text="边框透明" height="100%" verticalAlign="middle" width="60"/>
+			<s:HSlider width="100" maximum="1.0" stepSize="0.1" minimum="0" id="BorderAlpha" change="BorderAlphaChanged(event)" />
+			<s:Label text="1.0" />
+		</s:HGroup>
+		<!--
+		<s:HGroup>
+		<s:Label text="边框圆角" height="100%" verticalAlign="middle" width="60"/>
+		<s:HSlider width="100" maximum="30" minimum="0" id="BorderCorner" change="BorderCornerChanged(event)" />
+		</s:HGroup>
+		-->
+		<s:HGroup>
+			<s:Label text="左上圆角" height="100%" verticalAlign="middle" width="60"/>
+			<s:HSlider width="100" maximum="30" minimum="0" id="LeftTopBorderCorner" change="BorderCornerLeftTopChanged(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Label text="左下圆角" height="100%" verticalAlign="middle" width="60"/>
+			<s:HSlider width="100" maximum="30" minimum="0" id="LeftBottomBorderCorner" change="BorderCornerLeftBottomChanged(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Label text="右上圆角" height="100%" verticalAlign="middle" width="60"/>
+			<s:HSlider width="100" maximum="30" minimum="0" id="RightTopBorderCorner" change="BorderCornerRightTopChanged(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Label text="右下圆角" height="100%" verticalAlign="middle" width="60"/>
+			<s:HSlider width="100" maximum="30" minimum="0" id="RightBottomBorderCorner" change="BorderCornerRightBottomChanged(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Label text="背景图片" height="100%" verticalAlign="middle" width="60"/>
+			<s:TextInput width="90" id="BackgroundImg" editable="false" />
+			<!--<s:Button width="25" height="100%" label=".." click="OnBrowserImage(event)"/>-->
+			<s:Image source="@Embed('../assets/Search.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="OnBrowserImage(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:CheckBox id="Scale9Grid" label="九宫格切图" click="OnScale9GridChange(event)" />
+		</s:HGroup>
+		
+		<s:VGroup id="ScaleProperty" visible="{ScalePropertyVisible}" includeInLayout="{ScalePropertyVisible}">
+			<s:HGroup>
+				<s:Label text="左边距" height="100%" verticalAlign="middle" width="60"/>
+				<s:TextInput width="90" id="ScaleLeft" text="1" keyDown="ScaleLeftEnter(event)" />
+			</s:HGroup>
+			<s:HGroup>
+				<s:Label text="上边距" height="100%" verticalAlign="middle" width="60"/>
+				<s:TextInput width="90" id="ScaleTop"  text="1"  keyDown="ScaleTopEnter(event)" />
+			</s:HGroup>
+			<s:HGroup>
+				<s:Label text="右边距" height="100%" verticalAlign="middle" width="60"/>
+				<s:TextInput width="90" id="ScaleRight"  text="1"  keyDown="ScaleRightEnter(event)" />
+			</s:HGroup>
+			<s:HGroup>
+				<s:Label text="下边距" height="100%" verticalAlign="middle" width="60"/>
+				<s:TextInput width="90" id="ScaleBottom"  text="1"  keyDown="ScaleBottomEnter(event)" />
+			</s:HGroup>
+		</s:VGroup>
+		
+		<s:HGroup>
+			<s:Label text="背景颜色" height="100%" verticalAlign="middle" width="60"/>
+			<s:TextInput width="70" id="BackgroundColorField" />
+			<mx:ColorPicker id="BackgroundColorPicker" change="BackgroundColorChanged(event)" />
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Label text="背景透明" height="100%" verticalAlign="middle" width="60"/>
+			<s:HSlider width="100" maximum="1.0" stepSize="0.1" minimum="0" id="BackgroundAlpha" change="BackgroundAlphaChanged(event)" />
+			<s:Label text="1.0" id="BackgroundAlphaValue" />
+		</s:HGroup>
+	</s:VGroup>
+	
+</ui:AdvancePropertyGroup>

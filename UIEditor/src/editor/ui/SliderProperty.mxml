@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						 xmlns:s="library://ns.adobe.com/flex/spark" 
+						 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" gap="10">
+	
+	<fx:Script>
+		<![CDATA[
+			/**
+			 * 滑动线颜色
+			 **/
+			protected function LineColorChanged(event:ColorPickerEvent):void
+			{
+				Slider.SliderLineColor = event.color;
+			}
+			/**
+			 * 滑动线高度
+			 **/
+			protected function LineHeightChanged(event:Event):void
+			{
+				Slider.SliderLineHeight = LineHeight.value;
+				BindLineHeight = LineHeight.value;
+			}
+			
+			/**
+			 * 控件高度变更
+			 **/
+			protected function ButtonHeightChanged(event:FlexEvent):void
+			{
+				BindButtonHeight = int(SliderButtonHeight.text);
+				Slider.SliderButtonHeight = BindButtonHeight;
+			}
+			
+			/**
+			 * 控件宽度变更
+			 **/
+			protected function ButtonWidthChanged(event:FlexEvent):void
+			{
+				BindButtonWidth = int(SliderButtonWidth.text);
+				Slider.SliderButtonWidth = BindButtonWidth;
+			}
+		]]>
+	</fx:Script>
+	
+	
+	<!--
+		滑动条样式设置
+	-->
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import corecom.control.UISlider;
+			
+			import mx.events.ColorPickerEvent;
+			import mx.events.FlexEvent;
+			
+			import utility.Tools;
+			
+			[Bindable]
+			private var Slider:UISlider = null;
+			[Bindable]
+			private var BindLineColor:uint = 0;
+			[Bindable]
+			private var BindLineColorValue:String = "";
+			[Bindable]
+			private var BindLineHeight:int = 0;
+			[Bindable]
+			private var BindButtonWidth:int = 0;
+			[Bindable]
+			private var BindButtonHeight:int = 0;
+			
+			/**
+			 * 初始化
+			 **/
+			override protected function Initialized():void
+			{
+				Slider = Control as UISlider;
+				if(Slider)
+				{
+					//Simple.Control = Slider;
+					BindEnable = true;
+					
+					BindLineColor = Slider.SliderLineColor;
+					BindLineColorValue = Tools.Color2Hex(BindLineColor);
+					BindLineHeight = Slider.SliderLineHeight;
+					
+					BindButtonWidth = Slider.SliderButtonWidth;
+					BindButtonHeight = Slider.SliderButtonHeight;
+				}
+			}
+			
+			/**
+			 * 获取选择的图片资源
+			 **/
+			override protected function ImageSelected(Image:Bitmap,ImageId:String):void
+			{
+				//更新图片
+				Slider.SliderButtonImage = Image;
+				//更新图片ID
+				Slider.SliderButtonImageId = ImageId;
+			}
+		]]>
+	</fx:Script>
+	
+	<ui:SimpleProperty id="Simple" Control="{CurrentControl}" />
+	
+	<s:Label text="滑动线样式" styleName="LabelTitle"/>
+	<mx:HRule width="100%" />
+	
+	<s:HGroup  verticalAlign="middle">
+		<s:Label text="滑动线颜色" width="60"/>
+		<s:TextInput width="60" id="LineColorValue" text="{BindLineColorValue}"/>
+		<mx:ColorPicker showTextField="true" id="LineColor" change="LineColorChanged(event)" selectedColor="{BindLineColor}" />
+	</s:HGroup>
+	
+	<s:HGroup >
+		<s:Label text="滑动线高度" width="60"/>
+		<s:HSlider width="80" maximum="20" stepSize="1" minimum="1" id="LineHeight" change="LineHeightChanged(event)" value="{BindLineHeight}" />
+		<s:Label id="LineHeightValue" text="{BindLineHeight}" />
+	</s:HGroup>
+	
+	<s:Label text="滑动按钮样式" styleName="LabelTitle"/>
+	<mx:HRule width="100%" />
+	
+	<s:HGroup  verticalAlign="middle">
+		<s:Label text="滑动钮宽度" width="60"/>
+		<s:TextInput width="60" id="SliderButtonWidth" text="{BindButtonWidth}" enter="ButtonWidthChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup  verticalAlign="middle">
+		<s:Label text="滑动钮高度" width="60"/>
+		<s:TextInput width="60" id="SliderButtonHeight" text="{BindButtonHeight}" enter="ButtonHeightChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup  verticalAlign="middle">
+		<s:Label text="背景图" width="60"/>
+		<s:TextInput width="90" id="BackgroundImg" editable="false" />
+		<s:Image source="@Embed('../assets/Search.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="BrowserImage(event)" />
+	</s:HGroup>
+</ui:GenericProperty>
