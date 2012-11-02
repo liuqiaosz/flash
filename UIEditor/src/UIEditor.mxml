@@ -880,7 +880,6 @@
 						}
 					
 					});
-					
 				}
 				else
 				{
@@ -895,6 +894,7 @@
 			 **/
 			private function WorkspaceInitializer():void
 			{
+				Enabled = true;
 				ComponentBar.enabled = true;
 				EditWorkspace = new WorkspacePlus();
 				EditWorkspace.width = 2048;

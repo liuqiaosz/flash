@@ -261,6 +261,15 @@ package corecom.control.style
 			return _Font;
 		}
 		
+		protected var _ImagePack:Boolean = true;
+		public function set ImagePack(Value:Boolean):void
+		{
+			_ImagePack = Value;
+		}
+		public function get ImagePack():Boolean
+		{
+			return _ImagePack;
+		}
 		/**
 		 * 序列化接口
 		 **/
@@ -294,14 +303,42 @@ package corecom.control.style
 			
 			if(_BackgroundImage != null)
 			{
+//				//有图形数据
+//				Data.writeByte(1);
+//				//Data.writeUTFBytes(Tools.FillChar(this.BackgroundImageId," ",50));
+//				Data.writeByte(BackgroundImageId.length);
+//				Data.writeUTFBytes(BackgroundImageId);
+//				
+//				Data.writeShort(_BackgroundImage.bitmapData.width);
+//				Data.writeShort(_BackgroundImage.bitmapData.height);
+//				Data.writeByte(_ImageFillType);
+//				if(this.Scale9Grid)
+//				{
+//					Data.writeByte(1);
+//					Data.writeByte(this.Scale9GridLeft);
+//					Data.writeByte(this.Scale9GridTop);
+//					Data.writeByte(this.Scale9GridRight);
+//					Data.writeByte(this.Scale9GridBottom);
+//				}
+//				else
+//				{
+//					Data.writeByte(0);
+//				}
+//				var ImgData:ByteArray = _BackgroundImage.bitmapData.getPixels(_BackgroundImage.bitmapData.rect);
+//				ImgData.compress();
+//				ImgData.position = 0;
+//				//1	int		图片数据域长度
+//				Data.writeUnsignedInt(ImgData.length);
+//				//图片数据
+//				Data.writeBytes(ImgData,0,ImgData.bytesAvailable);
+				
 				//有图形数据
 				Data.writeByte(1);
 				//Data.writeUTFBytes(Tools.FillChar(this.BackgroundImageId," ",50));
 				Data.writeByte(BackgroundImageId.length);
 				Data.writeUTFBytes(BackgroundImageId);
-				Data.writeShort(_BackgroundImage.bitmapData.width);
-				Data.writeShort(_BackgroundImage.bitmapData.height);
-				Data.writeByte(_ImageFillType);
+				
+				//是否九宫格
 				if(this.Scale9Grid)
 				{
 					Data.writeByte(1);
@@ -314,13 +351,27 @@ package corecom.control.style
 				{
 					Data.writeByte(0);
 				}
-				var ImgData:ByteArray = _BackgroundImage.bitmapData.getPixels(_BackgroundImage.bitmapData.rect);
-				ImgData.compress();
-				ImgData.position = 0;
-				//1	int		图片数据域长度
-				Data.writeUnsignedInt(ImgData.length);
-				//图片数据
-				Data.writeBytes(ImgData,0,ImgData.bytesAvailable);
+				
+				if(_ImagePack)
+				{
+					Data.writeByte(1);
+					Data.writeShort(_BackgroundImage.bitmapData.width);
+					Data.writeShort(_BackgroundImage.bitmapData.height);
+					Data.writeByte(_ImageFillType);
+					
+					var ImgData:ByteArray = _BackgroundImage.bitmapData.getPixels(_BackgroundImage.bitmapData.rect);
+					ImgData.compress();
+					ImgData.position = 0;
+					//1	int		图片数据域长度
+					Data.writeUnsignedInt(ImgData.length);
+					//图片数据
+					Data.writeBytes(ImgData,0,ImgData.bytesAvailable);
+				}
+				else
+				{
+					Data.writeByte(0);
+				}
+				
 			}
 			else
 			{
@@ -365,11 +416,7 @@ package corecom.control.style
 				{
 					var Len:int = Data.readByte();
 					_BackgroundImageId = Data.readUTFBytes(Len);
-					//_BackgroundImageId = Tools.ReplaceAll(Data.readUTFBytes(50)," ","");
-					//获取图片长度
-					var ImgWidth:int = Data.readShort();
-					var ImgHeight:int = Data.readShort();
-					_ImageFillType = Data.readByte();
+					
 					var Scale9GridFlag:int = Data.readByte();
 					if(Scale9GridFlag)
 					{
@@ -380,15 +427,28 @@ package corecom.control.style
 						Scale9GridBottom = Data.readByte();
 					}
 					
-					var ImgLen:int = Data.readUnsignedInt();
-					var ImgData:ByteArray = new ByteArray();
-					Data.readBytes(ImgData,0,ImgLen);
-					ImgData.uncompress();
-					ImgData.position = 0;
+					_ImagePack = Boolean(Data.readByte());
 					
-					var ImageData:BitmapData = new BitmapData(ImgWidth,ImgHeight);
-					ImageData.setPixels(ImageData.rect,ImgData);
-					_BackgroundImage = new Bitmap(ImageData);
+					if(_ImagePack)
+					{
+						//_BackgroundImageId = Tools.ReplaceAll(Data.readUTFBytes(50)," ","");
+						//获取图片长度
+						var ImgWidth:int = Data.readShort();
+						var ImgHeight:int = Data.readShort();
+						_ImageFillType = Data.readByte();
+						
+						
+						var ImgLen:int = Data.readUnsignedInt();
+						var ImgData:ByteArray = new ByteArray();
+						Data.readBytes(ImgData,0,ImgLen);
+						ImgData.uncompress();
+						ImgData.position = 0;
+						
+						var ImageData:BitmapData = new BitmapData(ImgWidth,ImgHeight);
+						ImageData.setPixels(ImageData.rect,ImgData);
+						_BackgroundImage = new Bitmap(ImageData);
+					}
+					
 				}
 				_Font.Decode(Data);
 			}
