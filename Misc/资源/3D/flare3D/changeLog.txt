@@ -1,0 +1,324 @@
+﻿PreRelease 2.0.48c
+
+	* added - showLogo propery that shows or hides the Flare3D watermak logo for debugging purposes.
+		  This property only works on comercial versions of Flare3D or if the content is running using a Flash Player Debugger version.
+		  If the library is a trial version and the content is runnung under a Flash Player release version, this property will not take any effect.
+	* added - Input3D.enableEventPhase property (could be temporal).
+	* added - Flare3DLoader2.loadAsync - count property that defines the amount of chunks to load each iteration.
+	* fixed - Bug when removing events from Pivot3D.
+	* fixed - SphereCollision bug that was skiping some triangles.
+	* fixed - Fog and AnimatedTexture filters now remvoes the listeners when disposed.
+	* fixed / changed - When an animationComplete event is dispatched and the animation changes to another animation, the new animation is updated properly.
+	* fixed - Some issues with sampled lights.
+	* fixed - General issues on VertexAnimationModifier.
+	* fixed - General issues with multiple skinned instances andanimations.
+	* fixed - Some presicion issues when using Pivot3D.getScreenCoords or Scene3D.getPointScreenCoords().
+	* fixed - If stage3d is running on software mode, the witdh and height of the scene can not be grater than 2048.
+	* fixed - Small issues when usgin scene.addChildFromFile on loaded objects.
+	* fixed - Mouse detection issues when using multiple cameras.
+	* fixed - Camera3D and Ligth3D clone() method now includes userData, labels and layer property's.
+	* fixed - Library3D ioError events.
+	* fixed - Other minor issues.
+	* improved - Camera3D.aspectRatio property.
+	* updated some docs.
+	
+PreRelease 2.0.47
+
+	VERY IMPORTANT NOTES FOR THIS VERSION:
+		
+		* F3D v1 format isn't included by default now, you'll need to activate it manually using scene.registerClass( Flare3DLoader1 ); - http://wiki.flare3d.com/index.php/Register_Class
+		* Set pivot.layer directly is not longer supported, use pivot.setLayer() instead.
+		* This version has lots of important changes and optimizations. If something isn't working as expected, please report!.
+
+	* added - Scene3D.setLayerSortMode( layer;int, mode:int = Scene3D.SORT_FRONT_TO_BACK / Scene3D.SORT_BACK_TO_FRONT );
+	This will automatically sort all objects in an specific layer.
+	* added - Pivot3D.sortMode = SORT_CENTER / SORT_FAR / SORT_NEAR / SORT_NONE that works in conjunction with Scene3D.setLayerSortMode.
+	* added - Pivot3D.updatable property that defines the pivot 3D to be added to the update list.
+	* added - Texture3D now support a Displaybject as a request.
+	* added - Device3D.invertCullMode property.
+	* fixed - reload objects with Scene3D.addChildFromFile after dispose.
+	* fixed - Pivot3D.ENTER_FRAME / Pivot3D.EXIT_FRAME events.
+	* fixed - axis and general issues with Collada objects.
+	* changed / fixed - Mesh3D.mouseEnabled property behavior.
+	* changed - Scene3D addChildFromFile and addTextureFromFile, now takes a request instead an url string to support other types of objects.
+	* changed - some changes to loaders library's and resources.
+	* removed - Scene3D.updateRenderList method.
+	* removed layer get/set from IDrawable interface, and added to Pivot3D as a public property.
+	* improved / fixed - extra memory allocations on filters that uses textures.
+	* improved - Pivot3DUtils.appendAnimations bones matching.
+	* improved - Pivot3DUtils.getBounds precision and added relativeTo parameter.
+	* improved - general resource manager issues.
+	* improved - optimizations on update and render lists.
+	* improved - optimizations when remove / insert objects to the scene.
+	* improved - fast layer and object sorting algorithm.
+	* improved - skinning and skeleton stability and performance.
+	
+
+PreRelease 2.0.46
+
+	* added - Vertex colors to 3DMax plugin (Vertex colors, vertex illum. and vertex alpha are supported).
+	* added - Texture3D format and support for cubemaps.
+	* added - Texture3D.mipLevelsCallback property to set a custom callback to generate mip levels.
+	* added - Scene3D.autoResize property that allow automatic viewport resize related to the stage.
+	* added - Scene3D.addTextureFromFile optimizeForRenderToTexture and format parameters.
+	* added - Surface3D.COLOR2 attribute and changed VertexColorFilter to support channels from 0 to 2.
+	* added - support for external textures in Flare3DLoader2.
+	* added - support for load SkyBox using BITMAP_DATA_ARRAY.
+	* fixed - Error when the stage size is less than 50x50 pixels.
+	* fixed - errors in RayCollision class when all polygons are requested.
+	* fixed - Boundings3D min and max properties when they are initialized.
+	* fixed - some issues in ColladaLoader.
+	* fixed - some dispose memory issues.
+	* fixed - some animation blending issues.
+	* fixed / changed - Pivot3DUtils.getBounds method. now returns more accurate results.
+	* fixed / changed - Surface3DUtils.transform, now normals are also normalized.
+	* changed - Camera3D.far value was 100,000, now is 10,000.
+	* changed - added error checking for missed resources in Library3D.
+
+PreRelease 2.0.45
+
+	* added - some error cheking for buffers to avoid possible missed buffers like uv channels, tangetns and bitangetns, vertex colors, etc.. 
+	* added - Camera3D.canvasSize:Point and added parameter to Scene3D.setupFrame( camera, aspecRatio ) to render to diferent texture sizes.
+	* added - Light3D attenuation property. this property only takes effect with sampled lights.
+	* added - vertex colors to ColladaLoader.
+	* added - FLSLFilter byteCode read/write property.
+	* changed - Light3D.setParams parameters order. now should be (color, radius, attenuation(0 to 1), multiplier, infinite)
+	* changed - scene context behavior in Flare3dLoader.
+	* changed - expanded Surface3D offsets and buffers.
+	* fixed / changed / improved - issues  with Mesh3DUtils.merge. also added removeOriginal and material parameters to merge by material.
+	* fixed - some Light3D rendering issues.
+	* fixed - Pivot3DUtils.appendAnimation duplicated bones in complex skinned meshes were causing incorrect results.
+	* fixed / changed - wrong math in Camera3D.viewport and projection. (note: could cause compatibility issues)
+	* fixed - RayCollision ignoreBackFace parameter. now tests for backFace or material with two sided. 
+	* fixed - some issues with upload/download methods.
+	* fixed - bug in Mesh3D.draw with includeChildren parameter.
+	* fixed - ParticleEmiter null bounds.
+	* fixed - issues with Surface3DUtils transform and concat methods.
+
+PreRelease 2.0.44
+
+	NOTE: This version has some important changes that could break some code.
+	
+	* added - Mesh3DUtils.merge utility.
+	* added - "frc" function in FLSL.
+	* added - includeMaterials parameter in Pivot3DUtils.appendAnimation to include animated parameters.
+	* added - SkinModifier.updatePolys method. this is an expensive function, but could be used for manually update mesh bounds or polys structures (for mouse collisions) for skinned meshes.
+	* added - Scene3D.mouseEnabled property to enable / disable all scene mouse events.
+	* added - Scene3D.updateMouseEvents method that forces to update mouse events for all 3D objects in the scene.
+	* added - Input3D.eventPhase property returns the last eventPhase value.
+	* added - flare.primitives.SkyBox class.
+	* fixed - some Pivot3DUtils.appendAnimation issues when append animations to different clones.
+	* fixed - small fixes in Viewer3D class with camera translations and mouse drag.
+	* fixed - bug when objects were disposed in mouseDown events.
+	* fixed - bug when using the parent parameter of Scene3D.addChildFromFile.
+	* fixed - issue with sampled lights that produces a non-lighted area close to the light.
+	* fixed - issue with mouse events outside the scene viewport.
+	* fixed - rotated axis in some Collada files.
+	* changed - renamed Library3D load( item ) method for push( item ) and start() for load().
+	* changed - Shader3D technique, now is a transform FLSLFilter for future additions and enable external transforms.
+	* changed - ColladaLoader constructor.
+	* changed / fixed - scene MouseEvent3D's, now check for eventPhase propery to allow better interactivity 
+	with the display list and other minor changes. this could cause some compatibility issues, please report any problem!.
+	* improved - general memory management in Matrix3DUtils.
+	* improved - general occlusion culling optimizations.
+
+PreRelease 2.0.43
+
+	NOTE: This version has some important architectural changes. Please report any unexpected result.
+
+	* added - new Flare3DLoader2 parser (beta).
+	* added - animated filter parameters.
+	* added - Pivot3D.resetTransforms().
+	* added - Device3D.defaultCullFace property.
+	* added - Frame3D.callback property.
+	* fixed - some issues with directional lights colors.
+	* fixed - clone methods of Camera3D and Light3D.
+	* fixed - bug with skined meshes that have more frames than bones frames.
+	* fixed - issues with new lines when use \n instead of \r in FLSLCompiler.
+	* fixed - issues with some lights configurations.
+	* fixed - bug when camera values were changed before the scene initialization.
+	* fixed - wrong scene.progress value after complete event.
+	* fixed - bug in Library3D when load miltple binary data at the same time.
+	* fixed - Surface3D.COLOR constant changed from 8 to 6. 
+	* changed / fixed - Scene3D.addChildFromFile when loads same file multiple times, returns a clone of it.
+	* changed - internal update/render order to improve performance (beta).
+
+PreRelease 2.0.42
+
+	* changed - specular formula, now is source color additive instead of multiply allowing specular for dark objects.
+	* added - some material validations. now isn't needed to build manually the tangent and bitangents for normal maps.
+	* added - scene.visible now shows/hides the entire scene.
+	* added - Pivot3D enterDrag and exitDrag events.
+	* added - NormalMapFilter OBJECT_SPACE and WORLD_SPACE techniques.
+	* fixed - bugs with mouse events when removing or dispose objects.
+	* fixed - bug when removing the container before dispose the scene.
+	* fixed - some issues with specular and specular map filters.
+	* fixed - bug in collada loader with animations inside other animations.
+	* fixed - issues with textures filterMode, wrapMode and mipMode during the shader compilation.
+	* fixed - issues with Pivot3DUtils.appendAnimations with same labels defined in multiple files.
+
+PreRelease 2.0.41
+
+	* added - support for multiple scenes.
+	* added - automatic reupload when context is lossed.
+	* added - dispose() methods.
+	* added - download() methods.
+	* added - flare3d version on right click menu and Scene3D.showMenu property.
+	* added - surface and material getters in ParticleEmiter3D.
+	* added - Scene3D.enableUpdateAndRender boolean property.
+	* improved - all resources uploading system.
+	* improved - much faster loading times.
+	* changed - re-implemented all resources managment.
+	* changed - Pivot3DUtils.appendAnimation now adds the file labels + offset.
+	* changed - Shader3D is now reusing internal filters when it is created with non filters.
+	* changed - upload methods, now receives a Scene3D instead a Context3D
+	* removed - context property from Pivot3D. Use Pivot3D.scene.context instead.
+	* removed - context and library propertys from Device3D.
+	* changed / removed - Device3D.nullTexture and replaced for Device3D.nullBitmapData.
+	* changed / removed - Texture3D.sampler property for Texture3D filterMode, wrapMode and mipMode.
+	* fixed - bugs in some skinned meshes and clones.
+	* fixed - bugs with boundings and culling.
+	* fixed - issues with some filters parameters.
+	* fixed - some bugs with materials references in COLLADA loader.
+	* fixed - issues with Scene3D pause and resume methods.
+	* fixex - issues with wrong texture samplers.
+
+PreRelease 2.0.40
+
+	* improved - texture quality and mip levels.
+	* added - support for multiple cameras.
+	* fixed - some appendAnimations bugs.
+
+PreRelease 2.0.39
+
+	* added - important optimizations to the materials pipeline.
+	* added - Pivot3DUtils.appendAnimation to add external loaded animations.
+	* changed - Scene3D.ignoreInvisibleObjectsUnderMouse for Scene3D.ignoreInvisibleUnderMouse.
+	* fixed - objects loaded with same textures, now load the texture one time and use the same instance for others.
+
+PreRelease 2.0.38
+
+	* added - now it is possible to export UV's offset and tilling of texture maps from 3dmax (beta).
+	* added - SpecularMapFilter
+	* added - Texture3DUtils.toNormalMap - converts any texture (like grayscale) to normal map 
+	* changed - AnimatedTextureFitler.addFrame - now the values should be normalized from 0 to 1 instead of the texture size values.
+	* changed - MeshUtils3D for Mesh3DUtils.
+	* changed - EnvironmentFilter projected parameter.
+	* changed - Texture3D.texture now is a TextureBase instead a Texture.
+	* fixed - error removing listeners from Pivot3D,
+	
+PreRelease 2.0.37
+
+	* added - Input3D.mouseMoved - returns whatever the mouse was moved.
+	* added - Pivot3D.startDrag() and Pivot3D.stopDrag()
+	* added - Pivot3D.getScreenCoords() - returns 2D screen position of 3D objects.
+	* added - Scene3D.ignoreInvisibleObjectsUnderMouse to detect mouse events with non visible objects.
+	* added - now is possible to pass an XML directly to ColladaLoader constructor (beta).
+	* fixed - some collada skinning isues with non normalized weights.
+	* fixed - bounds null in primitives.
+
+PreRelease 2.0.36
+
+	* added - repeat and offset properties for texture filters.
+	* fixed - overlay blend mode.
+	* fixed - various animation blending issues.
+	* fixed - buffer offset error in particles.
+
+PreRelease 2.0.35
+
+	NOTE: Because some issues with materials and buffers, we needed to change the internal architecture, but now it much clear and easy than before.
+	
+	Previous was:
+
+	Mesh3D.materials : Vector.<Material3D>
+	Mesh3D.surfaces : Vector.<Surface3D>
+		Surface3D.materialID : int
+
+	now:
+
+	Mesh3D.surfaces : Vector.<Surface3D>
+		Surface3D.material : Material3D
+
+	* improved - performance and internal signals!
+	* added - Surface3D.material : Material3D
+	* removed - Surface3D.materialID.
+	* removed - Mesh3D.materials.
+	* fixed - some errors with particles.
+
+PreRelease 2.0.33/34
+	
+	NOTE: A lot of things was changed on the resource manager and the animation system. 
+	If something it is not working as axpected please report it!.
+
+	* updated for Flash Player 11 - Beta (http://labs.adobe.com/downloads/flashplayer11.html)
+	* added - COLLADA (*.dae) importer support. (beta)
+	* added - SpecularFilter.
+	* added - NormalMapFilter (could have some issues with skinned meshes and it is necesary call to Surface3DUtils.buildTangentsAndBitangents for each surface at the moment).
+	* added - play() and gotoAndPlay() animation modes : loop, stop (play and stop when compelte) and ping-pong (use Pivot3D.ANIMATION_LOOP_MODE, ANIMATION_STOP_MODE, etc.. )
+	* added - animationComplete event.
+	* added - updateTime and renderTime in Scene3D.
+	* improved - performance in animation system.
+	* improved - performance in particle system.
+	* rewrited - resource manager (now Library3D)
+	* changed - rendersPerFrame and updatesPerFrame to rendersPerSecond and updatesPerSecond.
+	* changed - labels property of Pivot3D is an Array instead a Vector.<Label3D>.
+	* removed - getLabel method in Pivot3D. use pivot.labels["labelName"] instead.
+	* removed - playLabel method in Pivot3D. use gotoAndPlay("labelName") instead.
+	* removed - flare.loaders.Loader3D
+	* fixed - various FLSL issues.
+	* fixed - bug with mesh boudings.
+	* lots of small fixes and improvements.
+
+PreRelease 2.0.32
+
+	* added - flare.materials.filters.AnimatedTextureFilter
+	* added - integrated particles with materials, filters and lights.
+	* added - flare.materials.filters.ColorParticleFilter.
+	* added - Surface3D.PÂRTICLE constant and Shader3D VERTEX_PARTICLE, VERTEX_VERTICAL_PARTICLE and VERTEX_HORIZONTAL_PARTICLE constants.
+	* added - flare.materials.ParticleMaterial3D.
+	* added / changed - Particle3D.size for sizeX and sizeY.
+	* fixed bug in FLSL with selected registers in sample functions.
+	* fixed - Cube primitive has inverted the uv's.
+	* moved - IComponent to flare.core.
+	* removed Shader3D.cloneFilters, now clones the filters by default.
+	* general optimizations.
+
+PreRelease 2.0.31
+
+	* added clone methods to all filters.
+	* added Shader3D.cloneFilters method.
+	* added first flsl docs (flsl_docs.rtf).
+	* added IDrawable.inView:Boolean property.
+	* added Scene3D.render( camera:Camera3D = null )
+	* changed / fixed ColorMaskFilter for AlphaMaskFilter.
+	* fixed color get property on some filters.
+
+PreRelease 2.0.30
+
+	* moved IDrawable to flare.core
+	* added Shader3D.globalFilters static property that affect all scene shaders.
+	* added FogFilter
+	* added ParticlesEmiter3D.emitParticlesPerSecond.
+	* fiex bug when removing mouse events from 3d objects.
+
+PreRelease 2.0.29
+
+	* added and improved mouse events.
+	* added startIndex parameter in Pivot3D.getChildByName( name:String, startIndex:int = 0, includeChildren:Boolean = true ):Pivot3D
+	* changed and improved ParticleEmiter3D methods and properties.
+
+PreRelease 2.0.28
+	
+	* added Plugin for 3DMax v2.
+	* added enterDraw and exitDraw events.
+	* added enterFrame and exitFrame events.
+	* added updateTransform event.
+	* fixed bug in Material3D.twoSided.
+	* updated docs.
+
+PreRelease 2.0.27
+
+	* changed Material3D.backFace is BACK by default.
+	* changed flare.materials.Shader3D instead MaterialFilter3D.
+	* added maxPointLights and maxDirectionalLights properties in LightFilter.
+	* added NO_LIGHTS, PER_VERTEX, LINEAR and SAMPLED constants in LightFilter.

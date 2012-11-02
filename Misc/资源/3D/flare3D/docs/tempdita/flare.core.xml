@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="flare.core"><apiName>flare.core</apiName><apiDetail/><apiClassifier id="flare.core:Knot3D"><apiName>Knot3D</apiName><shortdesc>
+	 The Knot3D class defines points for the splines (Spline3D).</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flash.geom:Vector3D</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Knot3D class defines points for the splines (Spline3D).
+	 
+	 <p>Knot3D objects not only define the points as vertices do in a mesh, but also define control 
+	 points to generate and move bezier curves through “inVec” and  “outVec” vectors.</p>
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Knot3D:Knot3D"><apiName>Knot3D</apiName><shortdesc>
+		  Creates a new Knot3D.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef><apiDesc>
+		  Creates a new Knot3D.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Knot3D:clone"><apiName>clone</apiName><shortdesc>
+		 Returns a copy of Knot3D.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiDesc>a new Knot3D.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn></apiOperationDef><apiDesc>
+		 Returns a copy of Knot3D.
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Knot3D:inVec"><apiName>inVec</apiName><shortdesc>
+		 Input vector for splines (Spline3D)
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="flash.geom:Vector3D"/></apiValueDef><apiDesc>
+		 Input vector for splines (Spline3D)
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Knot3D:outVec"><apiName>outVec</apiName><shortdesc>
+		 Output vector for splines (Spline3D)
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="flash.geom:Vector3D"/></apiValueDef><apiDesc>
+		 Output vector for splines (Spline3D)
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Light3D"><apiName>Light3D</apiName><shortdesc>
+	 The Light3D class represents a 3d light.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flare.core:Pivot3D</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Light3D class represents a 3d light. 
+	 Lights will have an effect on the materials that admit them. 
+	 
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Light3D:Light3D"><apiName>Light3D</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData/></apiParam><apiParam><apiItemName>type</apiItemName><apiType value="int"/><apiData>unknown</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Light3D:setParams"><apiName>setParams</apiName><shortdesc>
+		 Sets the light properties.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>color</apiItemName><apiType value="int"/><apiData>0xffffff</apiData></apiParam><apiParam><apiItemName>radius</apiItemName><apiType value="Number"/><apiData>0</apiData></apiParam><apiParam><apiItemName>attenuation</apiItemName><apiType value="Number"/><apiData>1</apiData></apiParam><apiParam><apiItemName>multipler</apiItemName><apiType value="Number"/><apiData>1</apiData></apiParam><apiParam><apiItemName>infinite</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam></apiOperationDef><apiDesc>
+		 Sets the light properties. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Light3D:DIRECTIONAL"><apiName>DIRECTIONAL</apiName><shortdesc> 
+		 Constant that defines a directional light.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc> 
+		 Constant that defines a directional light. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:POINT"><apiName>POINT</apiName><shortdesc> 
+		 Constant that defines a point light.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef><apiDesc> 
+		 Constant that defines a point light. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:attenuation"><apiName>attenuation</apiName><shortdesc>
+		 Sets or returns light attenuation.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>100</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 Sets or returns light attenuation.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:color"><apiName>color</apiName><shortdesc>
+		 Sets or returns light color.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.geom:Vector3D"/></apiValueDef><apiDesc>
+		 Sets or returns light color.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:infinite"><apiName>infinite</apiName><shortdesc>
+		 Sets and returns if the light is infinite or not.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Sets and returns if the light is infinite or not. 
+		 Set it to true for ambient lights. 
+		 Directional lights are always infinite.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:multipler"><apiName>multipler</apiName><shortdesc>
+		 Light color multipler.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>1</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 Light color multipler.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:radius"><apiName>radius</apiName><shortdesc>
+		 Sets or returns light radius.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 Sets or returns light radius.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:sample"><apiName>sample</apiName><shortdesc>
+		 The BitmapData to use for light projections.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="flash.display:BitmapData"/></apiValueDef><apiDesc>
+		 The BitmapData to use for light projections.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Light3D:type"><apiName>type</apiName><shortdesc>
+		 Type of light (point/directional)
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="int"/></apiValueDef><apiDesc>
+		 Type of light (point/directional)
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Light3D/POINT_LIGHT"><linktext>POINT_LIGHT</linktext></link><link href="flare.core.xml#Light3D/DIRECTIONAL_LIGHT"><linktext>DIRECTIONAL_LIGHT</linktext></link></related-links></apiValue><apiValue id="flare.core:Light3D:inView:get"><apiName>inView</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiIsOverride/><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Camera3D"><apiName>Camera3D</apiName><shortdesc>
+	 The Camera3D class represents the point of view and orientation of the scene.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flare.core:Pivot3D</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Camera3D class represents the point of view and orientation of the scene.
+	 
+	 <p>There can be as many cameras as required, but the one selected in the scene will do the rendering.</p>
+	 
+	 </apiDesc></apiClassifierDetail><related-links><link href="../basic/Scene3D.html#camera"><linktext>Scene3D camera</linktext></link></related-links><apiConstructor id="flare.core:Camera3D:Camera3D"><apiName>Camera3D</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData/></apiParam><apiParam><apiItemName>fieldOfView</apiItemName><apiType value="Number"/><apiData>60</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Camera3D:getPointDir"><apiName>getPointDir</apiName><shortdesc>
+		 Returns a global 3D direction vector relative to a 2D camera position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>If the 'out' is 'null', a new vector will be returned. Otherwise, the same vector, passed to the 'out' parameter, will be returned.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/><apiDesc>The x position over the camera viewport.
+		 </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/><apiDesc>The y position over the camera viewport.
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>A reference vector to return the direction vector.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns a global 3D direction vector relative to a 2D camera position.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Camera3D:updateProjectionMatrix"><apiName>updateProjectionMatrix</apiName><shortdesc>
+		 Updates the camera projection matrix.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Updates the camera projection matrix.
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Camera3D:clipRectangle"><apiName>clipRectangle</apiName><shortdesc>
+		 Define whatever the viewPort clip all pixels outside the viewPort.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Define whatever the viewPort clip all pixels outside the viewPort.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Camera3D:aspectRatio:get"><apiName>aspectRatio</apiName><shortdesc>
+		 Sets or returns the aspect ratio of the camera.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Sets or returns the aspect ratio of the camera.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Camera3D:canvasSize:set"><apiName>canvasSize</apiName><shortdesc>
+		 Defines the projection area for the camera viewPort.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="flash.geom:Point"/></apiValueDef><apiDesc>
+		 Defines the projection area for the camera viewPort.
+		 If no canvasSize is defined, the values from scene viewPort are used.
+		 This property could be used in case where you need to render to a texture that has
+		 different dimensions that the scene viewport.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Camera3D:far:get"><apiName>far</apiName><shortdesc>
+		 Sets or returns the furthest clip plane from the camera.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Sets or returns the furthest clip plane from the camera. The higher the value, the further the camera will view.
+		 This value corresponds to the distance between the camera and the plane. 
+		 Everything beyond that distance is not to be rendered.       
+		 For optimization purposes, complex scenes with a large number of polygons should not have a 
+		 high value to avoid the unnecessary rendering of objects that are too far.                              
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Camera3D/near"><linktext>near</linktext></link></related-links></apiValue><apiValue id="flare.core:Camera3D:fieldOfView:get"><apiName>fieldOfView</apiName><shortdesc>
+		 Sets and returns the camera’s angle of view.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Sets and returns the camera’s angle of view. The angle of view is inversely proportional 
+		 to the zoom. The wider the angle, the closer the projection plane and, therefore, the shorter the zoom.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Camera3D/zoom"><linktext>zoom</linktext></link></related-links></apiValue><apiValue id="flare.core:Camera3D:near:get"><apiName>near</apiName><shortdesc>
+		 Sets or returns the clip plane that is closest to the camera.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Sets or returns the clip plane that is closest to the camera. Its value must be greater than zero.
+		 Everything beyond this virtual plane is not to be rendered.
+		 The value corresponds to the distance between the camera and the plane.
+		 This value should be set at the furthest possible point from the camera. This is likely to result in improved performance, 
+		 especially in those situations where objects go through the camera plane.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Camera3D/far"><linktext>far</linktext></link></related-links></apiValue><apiValue id="flare.core:Camera3D:projection:get"><apiName>projection</apiName><shortdesc>
+		 Returns the projection matrix.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="flash.geom:Matrix3D"/></apiValueDef><apiDesc>
+		 Returns the projection matrix.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Camera3D:viewPort:set"><apiName>viewPort</apiName><shortdesc>
+		 Defines the area where the camera will draw.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="flash.geom:Rectangle"/></apiValueDef><apiDesc>
+		 Defines the area where the camera will draw. This area is relative to the scene viewport or canvasSize if it is defined.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Camera3D:viewProjection:get"><apiName>viewProjection</apiName><shortdesc>
+		 Returns the viewProjection matrix.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="flash.geom:Matrix3D"/></apiValueDef><apiDesc>
+		 Returns the viewProjection matrix.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Camera3D:view:get"><apiName>view</apiName><shortdesc>
+		 Returns the view matrix.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="flash.geom:Matrix3D"/></apiValueDef><apiDesc>
+		 Returns the view matrix.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Camera3D:zoom:get"><apiName>zoom</apiName><shortdesc>
+		 Sets or returns the camera zoom.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Sets or returns the camera zoom. The zoom is the distance between the point of origin of the camera and the projection plane.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Camera3D/fieldOfView"><linktext>fieldOfView</linktext></link></related-links></apiValue></apiClassifier><apiClassifier id="flare.core:Surface3D"><apiName>Surface3D</apiName><shortdesc>
+	 The Surface3D class represents a set of vertices, polygons and surfaces which can be drawn.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Surface3D class represents a set of vertices, polygons and surfaces which can be drawn.         
+	 
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Surface3D:Surface3D"><apiName>Surface3D</apiName><shortdesc>
+		 Creates a new Surface3D object.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData>null</apiData></apiParam></apiConstructorDef><apiDesc>
+		 Creates a new Surface3D object.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Surface3D:addVertexData"><apiName>addVertexData</apiName><shortdesc>
+		 Define a new attribute for each vertex.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>
+		 </apiDesc><apiType value="int"/></apiReturn><apiParam><apiItemName>dataIndex</apiItemName><apiType value="uint"/><apiDesc>A value from 0 to 7 that define the type of data to be assocciated. The common values may be one of the POSITION, NORMALS, UV0, UV1, etc. constans of the Surface3D class.
+		 </apiDesc></apiParam><apiParam><apiItemName>size</apiItemName><apiType value="int"/><apiData>-1</apiData><apiDesc>The size of data associated to the attribute for each vertex (1 to 4).
+		 </apiDesc></apiParam><apiParam><apiItemName>vector</apiItemName><apiType value="Vector$Number"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Define a new attribute for each vertex. Each attribute can be a vector of 1-4 values (flotas) associated to each vertex.
+		 <p>The vertexVector can be for example: x,y,z,nx,ny,nz,u,v,  x,y,z,nx,ny,nz,u,v, x,y,z,nx,ny,nz,u,v... </p>
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Surface3D:dispose"><apiName>dispose</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Surface3D:download"><apiName>download</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Surface3D:updateBoundings"><apiName>updateBoundings</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiOperationClassifier>flare.core:Boundings3D</apiOperationClassifier></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Surface3D:upload"><apiName>upload</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>scene</apiItemName><apiOperationClassifier>flare.basic:Scene3D</apiOperationClassifier><apiData>null</apiData></apiParam><apiParam><apiItemName>force</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="flare.core:Surface3D:BITANGENT"><apiName>BITANGENT</apiName><shortdesc>
+		 Vertex bi-tangents attribute (float3).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>5</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex bi-tangents attribute (float3).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:COLOR0"><apiName>COLOR0</apiName><shortdesc>
+		 Vertex color attribute (float3).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>9</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex color attribute (float3).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:COLOR1"><apiName>COLOR1</apiName><shortdesc>
+		 Vertex color attribute (float3).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>10</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex color attribute (float3).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:COLOR2"><apiName>COLOR2</apiName><shortdesc>
+		 Vertex color attribute (float3).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>11</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex color attribute (float3).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:NORMAL"><apiName>NORMAL</apiName><shortdesc>
+		 Vertex normals attribute (float3).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>3</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex normals attribute (float3).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:PARTICLE"><apiName>PARTICLE</apiName><shortdesc>
+		 Vertex particles attribute (float4).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>6</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex particles attribute (float4). Life (0-1), rotation in radians and size x and y (-1 to 1).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:POSITION"><apiName>POSITION</apiName><shortdesc>
+		 Vertex position attribute (float3).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex position attribute (float3).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:SKIN_INDICES"><apiName>SKIN_INDICES</apiName><shortdesc>
+		 Vertex skin indices attribute (could be float1 to float4 depending of the Device3D.maxBonesPerVertex property).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>8</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex skin indices attribute (could be float1 to float4 depending of the Device3D.maxBonesPerVertex property).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:SKIN_WEIGHTS"><apiName>SKIN_WEIGHTS</apiName><shortdesc>
+		 Vertex skin weights attribute (could be float1 to float4 depending of the Device3D.maxBonesPerVertex property).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>7</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex skin weights attribute (could be float1 to float4 depending of the Device3D.maxBonesPerVertex property).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:TANGENT"><apiName>TANGENT</apiName><shortdesc>
+		 Vertex tangents attribute (float3).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>4</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex tangents attribute (float3).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:UV0"><apiName>UV0</apiName><shortdesc>
+		 Vertex primary uv channel attribute (flaot2).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex primary uv channel attribute (flaot2).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:UV1"><apiName>UV1</apiName><shortdesc>
+		 Vertex secondary uv channel attribute (float2).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Vertex secondary uv channel attribute (float2).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:bounds"><apiName>bounds</apiName><shortdesc>
+		 Returns or sets a Boundings3D object with object properties, such as radius, dimensions, etc.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueClassifier>flare.core:Boundings3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Returns or sets a Boundings3D object with object properties, such as radius, dimensions, etc. 
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Boundings3D"><linktext>flare.core.Boundings3D</linktext></link></related-links></apiValue><apiValue id="flare.core:Surface3D:firstIndex"><apiName>firstIndex</apiName><shortdesc> 
+		 The index of the first vertex index selected to render.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc> 
+		 The index of the first vertex index selected to render.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:indexBuffer"><apiName>indexBuffer</apiName><shortdesc> 
+		 Buffer of indices that reference to a vertex buffers of the Surface3D.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.display3D:IndexBuffer3D"/></apiValueDef><apiDesc> 
+		 Buffer of indices that reference to a vertex buffers of the Surface3D. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:indexVector"><apiName>indexVector</apiName><shortdesc> 
+		 Vector of indices that reference to a vertex buffers of the Surface3D.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="Vector$uint"/></apiValueDef><apiDesc> 
+		 Vector of indices that reference to a vertex buffers of the Surface3D.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:name"><apiName>name</apiName><shortdesc>
+		 The name of the surface.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="String"/></apiValueDef><apiDesc>
+		 The name of the surface.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:numTriangles"><apiName>numTriangles</apiName><shortdesc> 
+		 Number of triangles that will be drawn.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>-1</apiData><apiType value="int"/></apiValueDef><apiDesc> 
+		 Number of triangles that will be drawn.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:offset"><apiName>offset</apiName><shortdesc>
+		 The offset of data index in the vertexVector.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="Vector$int"/></apiValueDef><apiDesc>
+		 The offset of data index in the vertexVector.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:sizePerVertex"><apiName>sizePerVertex</apiName><shortdesc>
+		 The number of data values associated with each vertex
+		 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 The number of data values associated with each vertex
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:vertexBuffer"><apiName>vertexBuffer</apiName><shortdesc>
+		 Buffer of vertices that reference to a vertex buffers of the Surface3D.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.display3D:VertexBuffer3D"/></apiValueDef><apiDesc>
+		 Buffer of vertices that reference to a vertex buffers of the Surface3D.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:vertexVector"><apiName>vertexVector</apiName><shortdesc>
+		 Vector of vertices that reference to a vertex buffers of the Surface3D.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="Vector$Number"/></apiValueDef><apiDesc>
+		 Vector of vertices that reference to a vertex buffers of the Surface3D.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:material:set"><apiName>material</apiName><shortdesc> 
+		 Material instance to render the surface.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="flare.materials:Material3D"/></apiValueDef><apiDesc> 
+		 Material instance to render the surface. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Surface3D:scene:get"><apiName>scene</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiValueClassifier>flare.basic:Scene3D</apiValueClassifier></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Pivot3D"><apiName>Pivot3D</apiName><shortdesc>
+	 The Pivot3D class is the most basic three-dimensional element.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flash.events:EventDispatcher</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Pivot3D class is the most basic three-dimensional element.           
+	 <p>Represents a point, its orientation and scale in the 3d space.</p>
+	 <p>The Pivot3D object can also be parent or container of other 3d objects and can be animated.</p>
+	 </apiDesc></apiClassifierDetail><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_exitDrag"><apiName>exitDrag</apiName><shortdesc>
+	 This event occurs after drag the object.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs after drag the object.
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_enterDrag"><apiName>enterDrag</apiName><shortdesc>
+	 This event occurs before drag the object.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs before drag the object.
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_changeTransform"><apiName>changeTransform</apiName><shortdesc>
+	 This event occurs whatever the object changes his position, rotation or scale.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs whatever the object changes his position, rotation or scale.
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_unload"><apiName>unload</apiName><shortdesc>
+	 This event occurs when the dispose method of the object itself or of a parent object is called.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs when the dispose method of the object itself or of a parent object is called. 
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_exitDraw"><apiName>exitDraw</apiName><shortdesc>
+	 This event occurs after draw the object.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs after draw the object.
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_enterDraw"><apiName>enterDraw</apiName><shortdesc>
+	 This event occurs before draw the object.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs before draw the object.
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_exitFrame"><apiName>exitFrame</apiName><shortdesc>
+	 This event occurs after updating every frame.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs after updating every frame.
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_enterFrame"><apiName>enterFrame</apiName><shortdesc>
+	 This event occurs before entering any frame.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs before entering any frame.
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_removed"><apiName>removed</apiName><shortdesc>
+	 This event occurs when the object is removed from a scene or from any other object.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs when the object is removed from a scene or from any other object.         
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_removedFromScene"><apiName>removedFromScene</apiName><shortdesc>
+	 This event occurs when the object is removed from a scene.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs when the object is removed from a scene.            
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_addedToScene"><apiName>addedToScene</apiName><shortdesc>
+	 This event occurs when the object is added to a scene.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs when the object is added to a scene.            
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_added"><apiName>added</apiName><shortdesc>
+	 This event occurs when the object is added to a scene or to any other object.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs when the object is added to a scene or to any other object.            
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Pivot3D_flash.events.Event_animationComplete"><apiName>animationComplete</apiName><shortdesc>
+	 This event occurs at the end of an animation.</shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flash.events.Event</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 This event occurs at the end of an animation.    
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><apiConstructor id="flare.core:Pivot3D:Pivot3D"><apiName>Pivot3D</apiName><shortdesc>
+		 Creates a new Pivot3D object.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData/><apiDesc>3d object name.    
+		 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+		 Creates a new Pivot3D object.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Pivot3D:addChild"><apiName>addChild</apiName><shortdesc>
+		 Add a new object as a child.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The object that has been added.
+		 </apiDesc><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier></apiReturn><apiParam><apiItemName>pivot</apiItemName><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier><apiDesc>Object to be added.         
+		 </apiDesc></apiParam><apiParam><apiItemName>useGlobalSpace</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam></apiOperationDef><apiDesc>
+		 Add a new object as a child.        
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/parent"><linktext>parent</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:addComponent"><apiName>addComponent</apiName><shortdesc>
+		 Adds a new component to the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>'true' is the component was sucesfully added, 'false' otherwise.
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>component</apiItemName><apiOperationClassifier>flare.core:IComponent</apiOperationClassifier><apiDesc>The component to add.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Adds a new component to the object.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:addLabel"><apiName>addLabel</apiName><shortdesc>
+		  Adds a label that refers to a given animation.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>Returns same Label3D object that contains the label information.                       
+		 </apiDesc><apiOperationClassifier>flare.core:Label3D</apiOperationClassifier></apiReturn><apiParam><apiItemName>label</apiItemName><apiOperationClassifier>flare.core:Label3D</apiOperationClassifier><apiDesc>Label3D object.
+		 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true if labels are to be included in all the sub-objects.  
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		  Adds a label that refers to a given animation.                  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:clone"><apiName>clone</apiName><shortdesc>
+		 Creates a copy of the object and all its elements.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new Pivot3D object.
+		 </apiDesc><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Creates a copy of the object and all its elements. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:copyTransformFrom"><apiName>copyTransformFrom</apiName><shortdesc>
+		 Copies all transformations (position, rotation and scale) from another Pivot3D object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>source</apiItemName><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier><apiDesc>Source object from you want to copy.
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to copy from/to local coordinates, false will take global space coordinates.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Copies all transformations (position, rotation and scale) from another Pivot3D object.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:download"><apiName>download</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:draw"><apiName>draw</apiName><shortdesc>
+		 Draws the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam></apiOperationDef><apiDesc>
+		 Draws the object. This method is generally called by the scene that contains it and manages it. However, it is possible to manage the drawing process independently from a scene.
+		 To do so, it is essential that the canvas and the camera be properly set in the Device3D class and that the calculateView method of the Camera3D class be previously called. 		
+		 </apiDesc></apiOperationDetail><related-links><link href="../system/Device3D.html#camera"><linktext>Device3D.camera</linktext></link><link href="../system/Device3D.html#canvas"><linktext>Device3D.canvas</linktext></link><link href="../core/Camera3D.html#calculateView()"><linktext>Camera3D calculateView()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:forEach"><apiName>forEach</apiName><shortdesc>
+		 Excecutes a calback functions for each of his children.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>callback</apiItemName><apiType value="Function"/><apiDesc>	 </apiDesc></apiParam><apiParam><apiItemName>filterClass</apiItemName><apiType value="Class"/><apiData>null</apiData><apiDesc>	 </apiDesc></apiParam><apiParam><apiItemName>params</apiItemName><apiType value="Object"/><apiData>null</apiData></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam></apiOperationDef><apiDesc>
+		 Excecutes a calback functions for each of his children. The callback should recibe a object:Pivot3D parameter.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getBackward"><apiName>getBackward</apiName><shortdesc>
+		 Returns the direction vector that points to the back of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The new direction vector.   
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction vector that points to the back of the object.      
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getChildByName"><apiName>getChildByName</apiName><shortdesc>
+		 Returns the first child that matches the specified name.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The object that matches the specified name.    
+		 </apiDesc><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier></apiReturn><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiDesc>Name of the object to be searched for.
+		 </apiDesc></apiParam><apiParam><apiItemName>startIndex</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>An optional integer specifying the starting index of the search.
+		 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to extend the search to all the hierarchy.   
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the first child that matches the specified name.          
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getDir"><apiName>getDir</apiName><shortdesc>
+		 Returns the direction vector that points to the front of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The new direction vector.   
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction vector that points to the front of the object.      
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getDown"><apiName>getDown</apiName><shortdesc>
+		 Returns the direction vector that points to the bottom side of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The new direction vector.   
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction vector that points to the bottom side of the object.   
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getLeft"><apiName>getLeft</apiName><shortdesc>
+		 Returns the direction vector that points to the left side of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The new direction vector.    
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction vector that points to the left side of the object.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getMaterialByName"><apiName>getMaterialByName</apiName><shortdesc>
+		 Returns the first material that matches the specified name.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The material that matches the specified name.     
+		 </apiDesc><apiType value="flare.materials:Material3D"/></apiReturn><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiDesc>Name of the material to be searched for.
+		 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to extend the search to all the object hierarchy.    
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the first material that matches the specified name.        
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getPosition"><apiName>getPosition</apiName><shortdesc>
+		 Returns the current position of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new vector with the current position of the object. 
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the current position of the object. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getRight"><apiName>getRight</apiName><shortdesc>
+		 Returns the direction vector that points to the right side of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The new direction vector.    
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction vector that points to the right side of the object.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getRotation"><apiName>getRotation</apiName><shortdesc>
+		 Returns the current rotation of the object in euler angles.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new vector with the current rotation of the object.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the current rotation of the object in euler angles.      
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getScale"><apiName>getScale</apiName><shortdesc>
+		 Returns the current scale of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new vector with the current scale of the object. 
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the current scale of the object. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getScreenCoords"><apiName>getScreenCoords</apiName><shortdesc>
+		 Returns the coordinates of an object with respect to the screen.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The vector with the coordinates. 
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>If a vector is specified, this vector will be filled with the returned values.
+		 </apiDesc></apiParam><apiParam><apiItemName>camera</apiItemName><apiOperationClassifier>flare.core:Camera3D</apiOperationClassifier><apiData>null</apiData></apiParam><apiParam><apiItemName>viewPort</apiItemName><apiType value="flash.geom:Rectangle"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the coordinates of an object with respect to the screen. 
+		 The returned values are relative to the viewPort size that is currently used.      
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:getUp"><apiName>getUp</apiName><shortdesc>
+		 Returns the direction vector that points to the upper side of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The new direction vector.   
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction vector that points to the upper side of the object.   
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:globalToLocalVector"><apiName>globalToLocalVector</apiName><shortdesc>
+		 Transforms a point of the global space of the object into a local space without translation.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>Vector3D with the transformed point.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>vector</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>The point to be transformed.  
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector3D where the transformed point will be returned. If null, a new Vector3D is returned.            
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Transforms a point of the global space of the object into a local space without translation. Useful to convert direction normals or vectors.        
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:globalToLocal"><apiName>globalToLocal</apiName><shortdesc>
+		 Transforms a point of the global space of the object into a local space.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>Vector3D with the transformed point.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>point</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>The point to be transformed.  
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector3D where the transformed point will be returned. If null, a new Vector3D is returned.                         
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Transforms a point of the global space of the object into a local space.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:gotoAndPlay"><apiName>gotoAndPlay</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>frame</apiItemName><apiType value="Object"/></apiParam><apiParam><apiItemName>blendFrames</apiItemName><apiType value="Number"/><apiData>0</apiData></apiParam><apiParam><apiItemName>animationMode</apiItemName><apiType value="int"/><apiData>unknown</apiData></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:gotoAndStop"><apiName>gotoAndStop</apiName><shortdesc>
+		 Stops the animation at the specified frame.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>frame</apiItemName><apiType value="Object"/><apiDesc>Frame number at which animation will be stopped. Animation frames are zero-based.             
+		 </apiDesc></apiParam><apiParam><apiItemName>blendFrames</apiItemName><apiType value="Number"/><apiData>0</apiData></apiParam></apiOperationDef><apiDesc>
+		 Stops the animation at the specified frame.         
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:hide"><apiName>hide</apiName><shortdesc>
+		 Sets whether the object is visible.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Sets whether the object is visible. Only affects the current object.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/visible"><linktext>visible</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:localToGlobalVector"><apiName>localToGlobalVector</apiName><shortdesc>
+		 Transforms a point of the local space of the object into a global space without translation.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>Vector3D with the transformed point.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>vector</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>The point to be transformed.         
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector3D where the transformed point will be returned. If null, a new Vector3D is returned.                  
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Transforms a point of the local space of the object into a global space without translation. Useful to convert direction normals or vectors.                
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:localToGlobal"><apiName>localToGlobal</apiName><shortdesc>
+		 Transforms a point of the local space into the global space.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>If the “out” parameter is “null”, a new Vector3D object with the transformed point will be returned, or the same “out” vector.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>point</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>The point to be transformed.
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>The Vector3D where the transformed point will be returned. If null, a new Vector3D is returned.            
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Transforms a point of the local space into the global space.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:lookAt"><apiName>lookAt</apiName><shortdesc>
+		 Directs the object towards the specified position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/><apiDesc>Position on x
+		 </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/><apiDesc>Position on Y
+		 </apiDesc></apiParam><apiParam><apiItemName>z</apiItemName><apiType value="Number"/><apiDesc>Position on z
+		 </apiDesc></apiParam><apiParam><apiItemName>up</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector3D related to the direction of the upper side of the object. The default value is (0, 1, 0). 
+		 </apiDesc></apiParam><apiParam><apiItemName>smooth</apiItemName><apiType value="Number"/><apiData>1</apiData><apiDesc>Optional interpolation value towards final transformation (0-1).
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Directs the object towards the specified position. Coordinates are related to the local space of the object.
+		 </apiDesc></apiOperationDetail><related-links><link href="../utils/Pivot3DUtils.html#lookAt()"><linktext>Pivot3DUtils.lookAt()</linktext></link><link href="../utils/Pivot3DUtils.html#lookAtWithReference()"><linktext>Pivot3DUtils.lookAtWithReference()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:nextFrame"><apiName>nextFrame</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:play"><apiName>play</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>animationMode</apiItemName><apiType value="int"/><apiData>0</apiData></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:prevFrame"><apiName>prevFrame</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:removeChild"><apiName>removeChild</apiName><shortdesc>
+		 Removes a child of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The object that has been removed.
+		 </apiDesc><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier></apiReturn><apiParam><apiItemName>pivot</apiItemName><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier><apiDesc>Object to be removed.       
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Removes a child of the object. 
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:removeComponent"><apiName>removeComponent</apiName><shortdesc>
+		 Removes a component from the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>'true' if the component was sucesfully removed, 'false' otherwise or if the components was in the components list..
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>component</apiItemName><apiOperationClassifier>flare.core:IComponent</apiOperationClassifier><apiDesc>The component to remove.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Removes a component from the object.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:removeLabel"><apiName>removeLabel</apiName><shortdesc>
+		 Removes a label.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The label has been removed.  
+		 </apiDesc><apiOperationClassifier>flare.core:Label3D</apiOperationClassifier></apiReturn><apiParam><apiItemName>label</apiItemName><apiOperationClassifier>flare.core:Label3D</apiOperationClassifier><apiDesc>Label3D object to be removed.           
+		 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true if the labels of all the sub-objects are to be removed.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Removes a label.    
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:replaceMaterial"><apiName>replaceMaterial</apiName><shortdesc>
+		 Replaces an existing material of the object with another material.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>source</apiItemName><apiType value="flare.materials:Material3D"/><apiDesc>Material that is to be replaced.
+		 </apiDesc></apiParam><apiParam><apiItemName>replaceFor</apiItemName><apiType value="flare.materials:Material3D"/><apiDesc>Material that is to replace the previous one.
+		 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true if children are to be included. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Replaces an existing material of the object with another material.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/setMaterial()"><linktext>setMaterial()</linktext></link><link href="flare.core.xml#Pivot3D/getMaterialByName()"><linktext>getMaterialByName()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:resetTransforms"><apiName>resetTransforms</apiName><shortdesc>
+		 Resets the object position, rotation and scale.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Resets the object position, rotation and scale.   
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:rotateAxis"><apiName>rotateAxis</apiName><shortdesc>
+		 Rotates the object on the specified axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>angle</apiItemName><apiType value="Number"/><apiDesc>Angles to be rotated
+		 </apiDesc></apiParam><apiParam><apiItemName>axis</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>Direction vector or axis on which to rotate.          
+		 </apiDesc></apiParam><apiParam><apiItemName>pivotPoint</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Position vector that sets an anchoring point for rotation. The position must be expressed in local units.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Rotates the object on the specified axis from its current position.              
+		 The pivotPoint parameter can be used to rotate around a point.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:rotateX"><apiName>rotateX</apiName><shortdesc>
+		 Rotates the object on the X axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>angle</apiItemName><apiType value="Number"/><apiDesc>Angles to be rotated.     
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to rotate respecting current orientation, or false to rotate according to orientation relative to parent. 
+		 </apiDesc></apiParam><apiParam><apiItemName>pivotPoint</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Position vector that sets an anchoring point for rotation. The position must be expressed in local units.                
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Rotates the object on the X axis from its current position.
+		 The pivotPoint parameter can be used to rotate around a point.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:rotateY"><apiName>rotateY</apiName><shortdesc>
+		 Rotates the object on the Y axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>angle</apiItemName><apiType value="Number"/><apiDesc>Angles to be rotated.      
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to rotate respecting current orientation, or false to rotate according to orientation relative to parent.     
+		 </apiDesc></apiParam><apiParam><apiItemName>pivotPoint</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Position vector that sets an anchoring point for rotation. The position must be expressed in local units.              
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Rotates the object on the Y axis from its current position. 
+		 The pivotPoint parameter can be used to rotate around a point.         
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:rotateZ"><apiName>rotateZ</apiName><shortdesc>
+		 Rotates the pivot on the Z axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>angle</apiItemName><apiType value="Number"/><apiDesc>Angles to be rotated.      
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to rotate respecting current orientation, or false to rotate according to orientation relative to parent.
+		 </apiDesc></apiParam><apiParam><apiItemName>pivotPoint</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Position vector that sets an anchoring point for rotation. The position must be expressed in local units.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Rotates the pivot on the Z axis from its current position.  
+		 The pivotPoint parameter can be used to rotate around a point.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setLayer"><apiName>setLayer</apiName><shortdesc>
+		 Sets the layer to render the object and all of his children.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="int"/><apiDesc>The layer index.
+		 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to apply the same value to all the object hierarchy.    
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Sets the layer to render the object and all of his children.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setMaterial"><apiName>setMaterial</apiName><shortdesc>
+		 Sets a material for the object and, optionally, all its descendants.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>material</apiItemName><apiType value="flare.materials:Material3D"/><apiDesc>Material that will be assigned.
+		 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true if all the hierarchy is to be included.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Sets a material for the object and, optionally, all its descendants. The material will only affect Mesh3D objects that contain the Pivot3D.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setNormalOrientation"><apiName>setNormalOrientation</apiName><shortdesc>
+		 Aligns the object to a normal.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>normal</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>Normal used for alignment.                    
+		 </apiDesc></apiParam><apiParam><apiItemName>smooth</apiItemName><apiType value="Number"/><apiData>1</apiData><apiDesc>Optional interpolation value (0-1).
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Aligns the object to a normal.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setOrientation"><apiName>setOrientation</apiName><shortdesc>
+		 Orients the object in a specific direction.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>dir</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>Direction set for orientation.       
+		 </apiDesc></apiParam><apiParam><apiItemName>up</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Upper side of the object. The default value is (0,1,0).
+		 </apiDesc></apiParam><apiParam><apiItemName>smooth</apiItemName><apiType value="Number"/><apiData>1</apiData><apiDesc>Optional interpolation value (0-1).
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Orients the object in a specific direction.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setPosition"><apiName>setPosition</apiName><shortdesc>
+		 Sets the position of the object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/><apiDesc>Position on x
+		 </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/><apiDesc>Position on y
+		 </apiDesc></apiParam><apiParam><apiItemName>z</apiItemName><apiType value="Number"/><apiDesc>Position on z
+		 </apiDesc></apiParam><apiParam><apiItemName>smooth</apiItemName><apiType value="Number"/><apiData>1</apiData><apiDesc>Optional interpolation value towards final transformation (0-1).
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam></apiOperationDef><apiDesc>
+		 Sets the position of the object.    
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setRotation"><apiName>setRotation</apiName><shortdesc>
+		 Sets the object rotation using euler angles.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/><apiDesc>Rotation on x in angles. 
+		 </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/><apiDesc>Rotation on y in angles. 
+		 </apiDesc></apiParam><apiParam><apiItemName>z</apiItemName><apiType value="Number"/><apiDesc>Rotation on z in angles. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Sets the object rotation using euler angles. Rotation is absolute, so any previous rotation will be ignored.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setScale"><apiName>setScale</apiName><shortdesc>
+		 Sets the object scale.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/><apiDesc>Scale on x
+		 </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/><apiDesc>Scale on y
+		 </apiDesc></apiParam><apiParam><apiItemName>z</apiItemName><apiType value="Number"/><apiDesc>Scale on z
+		 </apiDesc></apiParam><apiParam><apiItemName>smooth</apiItemName><apiType value="Number"/><apiData>1</apiData></apiParam></apiOperationDef><apiDesc>
+		 Sets the object scale. This method sets the scale in an absolute manner; therefore, any previous scale will be ignored.              
+		 Default value is 1, use a value greater than one to increase or less than 1 to decrease the scale. 
+		 Setting the scale to 2 means that objects will be scaled to twice their original size, whereas a value of 0.5 would scale objects to one half of their original size.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:setTranslation"><apiName>setTranslation</apiName><shortdesc>
+		 Translates the object from its current position to the specified distance.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/><apiData>0</apiData><apiDesc>Distance in units to translate on X axis.         
+		 </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/><apiData>0</apiData><apiDesc>Distance in units to translate on Y axis.            
+		 </apiDesc></apiParam><apiParam><apiItemName>z</apiItemName><apiType value="Number"/><apiData>0</apiData><apiDesc>Distance in units to translate on Z axis.            
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to translate respecting current orientation or false to translate on the coordinates relative to the parent.         
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Translates the object from its current position to the specified distance.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/translateX()"><linktext>translateX()</linktext></link><link href="flare.core.xml#Pivot3D/translateY()"><linktext>translateY()</linktext></link><link href="flare.core.xml#Pivot3D/translateZ()"><linktext>translateZ()</linktext></link><link href="flare.core.xml#Pivot3D/translateAxis()"><linktext>translateAxis()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:show"><apiName>show</apiName><shortdesc>
+		 Sets whether the object is visible.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Sets whether the object is visible. Only affects the current object.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/visible"><linktext>visible</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:startDrag"><apiName>startDrag</apiName><shortdesc>
+		 Lets the user drag the specified Pivot3D.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>lockCenter</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>
+		 </apiDesc></apiParam><apiParam><apiItemName>reference</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>	 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Lets the user drag the specified Pivot3D. The Pivot3D remains draggable until explicitly stopped through a call to the Pivot3D.stopDrag() method, or until another Pivot3D is made draggable. Only one Pivot3D is draggable at a time.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:stopDrag"><apiName>stopDrag</apiName><shortdesc>
+		 Ends the startDrag() method.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Ends the startDrag() method. A Pivot3D that was made draggable with the startDrag() method remains draggable until a stopDrag() method is added, or until another Pivot3D becomes draggable. Only one Pivot3D is draggable at a time.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:stop"><apiName>stop</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:translateAxis"><apiName>translateAxis</apiName><shortdesc>
+		 Translates the object on a certain axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>distance</apiItemName><apiType value="Number"/><apiDesc>Distance to translate. 
+		 </apiDesc></apiParam><apiParam><apiItemName>axis</apiItemName><apiType value="flash.geom:Vector3D"/><apiDesc>Direction vector or axis on which to translate.                     
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Translates the object on a certain axis from its current position.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/translateX()"><linktext>translateX()</linktext></link><link href="flare.core.xml#Pivot3D/translateY()"><linktext>translateY()</linktext></link><link href="flare.core.xml#Pivot3D/translateZ()"><linktext>translateZ()</linktext></link><link href="flare.core.xml#Pivot3D/setTranslation()"><linktext>setTranslation()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:translateX"><apiName>translateX</apiName><shortdesc>
+		 Translates the object on the X axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>distance</apiItemName><apiType value="Number"/><apiDesc>Distance to translate.          
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to translate respecting current orientation, or false to translate on the coordinates relative to parent.         
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Translates the object on the X axis from its current position.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/setTranslation()"><linktext>setTranslation()</linktext></link><link href="flare.core.xml#Pivot3D/translateAxis()"><linktext>translateAxis()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:translateY"><apiName>translateY</apiName><shortdesc>
+		 Translates the object on the Y axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>distance</apiItemName><apiType value="Number"/><apiDesc>Distance to translate.                     
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to translate respecting current orientation, or false to translate on the coordinates relative to parent.              
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Translates the object on the Y axis from its current position.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/setTranslation()"><linktext>setTranslation()</linktext></link><link href="flare.core.xml#Pivot3D/translateAxis()"><linktext>translateAxis()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:translateZ"><apiName>translateZ</apiName><shortdesc>
+		 Translates the object on the Z axis from its current position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>distance</apiItemName><apiType value="Number"/><apiDesc>Distance to translate.       
+		 </apiDesc></apiParam><apiParam><apiItemName>local</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>true to translate respecting current orientation, or false to translate on the coordinates relative to parent.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Translates the object on the Z axis from its current position.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/setTranslation()"><linktext>setTranslation()</linktext></link><link href="flare.core.xml#Pivot3D/translateAxis()"><linktext>translateAxis()</linktext></link></related-links></apiOperation><apiOperation id="flare.core:Pivot3D:updateTransforms"><apiName>updateTransforms</apiName><shortdesc>
+		 This method is used to force the system to update the object in those cases where its matrices have been modified manually.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>true to include all the hierarchy.    
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 This method is used to force the system to update the object in those cases where its matrices have been modified manually.        
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:update"><apiName>update</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Pivot3D:upload"><apiName>upload</apiName><shortdesc>
+		 
+		 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>scene</apiItemName><apiOperationClassifier>flare.basic:Scene3D</apiOperationClassifier><apiData>null</apiData><apiDesc>	 </apiDesc></apiParam><apiParam><apiItemName>force</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>	 </apiDesc></apiParam><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam></apiOperationDef><apiDesc>
+		 
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Pivot3D:ADDED_EVENT"><apiName>ADDED_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'added' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>added</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'added' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:ADDED_TO_SCENE_EVENT"><apiName>ADDED_TO_SCENE_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'addedToScene' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>addedToScene</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'addedToScene' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:ANIMATION_COMPLETE_EVENT"><apiName>ANIMATION_COMPLETE_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'animationComplete' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>animationComplete</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'animationComplete' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:ANIMATION_LOOP_MODE"><apiName>ANIMATION_LOOP_MODE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:ANIMATION_PING_PONG_MODE"><apiName>ANIMATION_PING_PONG_MODE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:ANIMATION_STOP_MODE"><apiName>ANIMATION_STOP_MODE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:ENTER_DRAW_EVENT"><apiName>ENTER_DRAW_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'enterDraw' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>enterDraw</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'enterDraw' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:ENTER_FRAME_EVENT"><apiName>ENTER_FRAME_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'enterFrame' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>enterFrame</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'enterFrame' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:EXIT_DRAW_EVENT"><apiName>EXIT_DRAW_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'exitDraw' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>exitDraw</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'exitDraw' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:EXIT_FRAME_EVENT"><apiName>EXIT_FRAME_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'exitFrame' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>exitFrame</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'exitFrame' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:REMOVED_EVENT"><apiName>REMOVED_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'removed' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>removed</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'removed' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:REMOVED_FROM_SCENE_EVENT"><apiName>REMOVED_FROM_SCENE_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'removedFromScene' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>removedFromScene</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'removedFromScene' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:SORT_CENTER"><apiName>SORT_CENTER</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:SORT_FAR"><apiName>SORT_FAR</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>4</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:SORT_NEAR"><apiName>SORT_NEAR</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:SORT_NONE"><apiName>SORT_NONE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:UNLOAD_EVENT"><apiName>UNLOAD_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'unload' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>unload</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'unload' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:UPDATE_TRANSFORM_EVENT"><apiName>UPDATE_TRANSFORM_EVENT</apiName><shortdesc> 
+		 Defines the value for the 'updateTransform' event.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>updateTransform</apiData><apiType value="String"/></apiValueDef><apiDesc> 
+		 Defines the value for the 'updateTransform' event. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:animationEnabled"><apiName>animationEnabled</apiName><shortdesc>
+		 Activates or deactivates the animation.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Activates or deactivates the animation. If the object is animated and this animation is being placed, the element will be blocked by the animation and will not be able to move or rotate manually; therefore, if an animated object is to be controlled, the animation must first be disabled by setting animationEnabled false.    
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:animationMode"><apiName>animationMode</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:components"><apiName>components</apiName><shortdesc>
+		 A collection vector that contains all the components of the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="Vector$flare.core:IComponent"/></apiValueDef><apiDesc>
+		 A collection vector that contains all the components of the object.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:dirty"><apiName>dirty</apiName><shortdesc>
+		 Gets or sets when the object has changed his transform matrix by hand.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Gets or sets when the object has changed his transform matrix by hand.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Pivot3D/updateTransforms()"><linktext>updateTransforms()</linktext></link></related-links></apiValue><apiValue id="flare.core:Pivot3D:frames"><apiName>frames</apiName><shortdesc>
+		 Vector that contains all the animation frames.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="Vector$flare.core:Frame3D"/></apiValueDef><apiDesc>
+		 Vector that contains all the animation frames.            
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:labels"><apiName>labels</apiName><shortdesc>
+		 Returns or sets a vector that contains the Labels3D objects used to play and manage animations.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="Array"/></apiValueDef><apiDesc>
+		 Returns or sets a vector that contains the Labels3D objects used to play and manage animations.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Pivot3D/addLabel()"><linktext>addLabel()</linktext></link><link href="flare.core.xml#Pivot3D/getLabel()"><linktext>getLabel()</linktext></link><link href="flare.core.xml#Pivot3D/playLabel()"><linktext>playLabel()</linktext></link><link href="flare.core.xml#Pivot3D/removeLabel()"><linktext>removeLabel()</linktext></link></related-links></apiValue><apiValue id="flare.core:Pivot3D:layer"><apiName>layer</apiName><shortdesc>
+		 Gets or sets the layer to render the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 Gets or sets the layer to render the object.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:name"><apiName>name</apiName><shortdesc> 
+		 Sets or returns the object name.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="String"/></apiValueDef><apiDesc> 
+		 Sets or returns the object name. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:priority"><apiName>priority</apiName><shortdesc>
+		 This value is for internal use to calculate the  priority acording the distance from the camera during the render.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+		 This value is for internal use to calculate the  priority acording the distance from the camera during the render.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:userData"><apiName>userData</apiName><shortdesc> 
+		 Sets or returns an object for free use by the user.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="Object"/></apiValueDef><apiDesc> 
+		 Sets or returns an object for free use by the user. The userData object may also contain variables included within the f3d files. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:world"><apiName>world</apiName><shortdesc> 
+		 Sets or returns the matrix of local position, rotation and scale.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="flash.geom:Matrix3D"/></apiValueDef><apiDesc> 
+		 Sets or returns the matrix of local position, rotation and scale. The world property corresponds to the local space of the object. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:children:get"><apiName>children</apiName><shortdesc> 
+		 Returns a Pivot3D-type vector with its children.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Vector$flare.core:Pivot3D"/></apiValueDef><apiDesc> 
+		 Returns a Pivot3D-type vector with its children. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:currentFrame:get"><apiName>currentFrame</apiName><shortdesc>
+		 Returns or sets the frame number where the pivot is situated.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Returns or sets the frame number where the pivot is situated. Animation frames are zero-based.                         
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:frameSpeed:get"><apiName>frameSpeed</apiName><shortdesc>
+		 Returns or sets animation speed.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Returns or sets animation speed. The default value is 1.               
+		 The frame number is increased by the “frameSpeed” value in each update (“update” event) and is directly related to the number of updates per second in Device3D.
+		 </apiDesc></apiValueDetail><related-links><link href="../system/Device3D.html#setFPS()"><linktext>Device3D.setFPS()</linktext></link><link href="flare.core.xml#Pivot3D/currentFrame"><linktext>currentFrame</linktext></link></related-links></apiValue><apiValue id="flare.core:Pivot3D:global:get"><apiName>global</apiName><shortdesc>
+		 Returns a matrix with the global position, rotation and scale of the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="flash.geom:Matrix3D"/></apiValueDef><apiDesc>
+		 Returns a matrix with the global position, rotation and scale of the object.   
+		 If the object is part of a hierarchy that has been moved, rotated, scaled, etc., this property will return the matrix
+		 relative to the furthest parent that can be found. In general, this could be the scene.
+		 The “world” matrix, instead, represents the local position, rotation and scale.             
+		 If the “world” matrix has been manually modified, it will have to call the updateTransforms method to update the global matrix.         
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Pivot3D/world"><linktext>world</linktext></link><link href="flare.core.xml#Pivot3D/invGlobal"><linktext>invGlobal</linktext></link><link href="flare.core.xml#Pivot3D/updateTransforms()"><linktext>updateTransforms()</linktext></link></related-links></apiValue><apiValue id="flare.core:Pivot3D:inView:get"><apiName>inView</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:invGlobal:get"><apiName>invGlobal</apiName><shortdesc>
+		 Returns a matrix with the inverse global position, rotation and scale of the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="flash.geom:Matrix3D"/></apiValueDef><apiDesc>
+		 Returns a matrix with the inverse global position, rotation and scale of the object.   
+		 If the object is part of a hierarchy that has been moved, rotated, scaled, etc., this property will return the matrix
+		 relative to the furthest parent that can be found. In general, this could be the scene.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Pivot3D/world"><linktext>world</linktext></link><link href="flare.core.xml#Pivot3D/global"><linktext>global</linktext></link><link href="flare.core.xml#Pivot3D/updateTransforms()"><linktext>updateTransforms()</linktext></link></related-links></apiValue><apiValue id="flare.core:Pivot3D:isPlaying:get"><apiName>isPlaying</apiName><shortdesc>
+		 Returns true if an animation is being played.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Returns true if an animation is being played.       
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:parent:get"><apiName>parent</apiName><shortdesc>
+		 Returns or sets the object’s parent.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiValueClassifier>flare.core:Pivot3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Returns or sets the object’s parent.    
+		 Setting the parent through the “parent” property has the same effect as establishing the “parent” property with the AddChild method of the Pivot3D that will be parent.    
+		 It can remove parent object by setting the “parent” property to “null”.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Pivot3D/addChild()"><linktext>addChild()</linktext></link></related-links></apiValue><apiValue id="flare.core:Pivot3D:scaleX:get"><apiName>scaleX</apiName><shortdesc>
+		 Increases or decreases the object scale on the X axis from its current scale.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Increases or decreases the object scale on the X axis from its current scale. 
+		 Use a value greater than one to increase or less than one to decrease.
+		 Setting the scale to 2 means that objects will be scaled to twice their original size, whereas a value of 0.5 would scale objects to one half of their original size.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:scaleY:get"><apiName>scaleY</apiName><shortdesc>
+		 Increases or decreases the object scale on the Y axis from its current scale.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Increases or decreases the object scale on the Y axis from its current scale.
+		 Use a value greater than one to increase or less than one to decrease.
+		 Setting the scale to 2 means that objects will be scaled to twice their original size, whereas a value of 0.5 would scale objects to one half of their original size.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:scaleZ:get"><apiName>scaleZ</apiName><shortdesc>
+		 Increases or decreases the object scale on the Z axis from its current scale.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Increases or decreases the object scale on the Z axis from its current scale.     
+		 Use a value greater than one to increase or less than one to decrease.
+		 Setting the scale to 2 means that objects will be scaled to twice their original size, whereas a value of 0.5 would scale objects to one half their original size.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:scene:get"><apiName>scene</apiName><shortdesc>
+		 Gets a reference to the scene that contains the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiValueClassifier>flare.basic:Scene3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets a reference to the scene that contains the object.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:sortMode:get"><apiName>sortMode</apiName><shortdesc>
+		 Gets ot sets the sorting mode for the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="int"/></apiValueDef><apiDesc>
+		 Gets ot sets the sorting mode for the object.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:updatable:get"><apiName>updatable</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Boolean"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:visible:get"><apiName>visible</apiName><shortdesc>
+		 Sets or returns whether the object is visible.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Sets or returns whether the object is visible. If the visible property is set false, the object will be hidden and so will all its descendants.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Pivot3D/show()"><linktext>show()</linktext></link><link href="flare.core.xml#Pivot3D/hide()"><linktext>hide()</linktext></link></related-links></apiValue><apiValue id="flare.core:Pivot3D:x:get"><apiName>x</apiName><shortdesc>
+		 Returns or sets the position on the X axis.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Returns or sets the position on the X axis.  
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:y:get"><apiName>y</apiName><shortdesc>
+		 Returns or sets the position on the Y axis.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Returns or sets the position on the Y axis.  
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Pivot3D:z:get"><apiName>z</apiName><shortdesc>
+		 Returns or sets the position on the Z axis.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 Returns or sets the position on the Z axis. 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Mesh3D"><apiName>Mesh3D</apiName><shortdesc>
+	 The Mesh3D class contains the data (geometry, materials, modifiers) instances which can be drawn a 3d object.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>flare.core:IDrawable</apiBaseInterface><apiBaseClassifier>flare.core:Pivot3D</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Mesh3D class contains the data (geometry, materials, modifiers) instances which can be drawn a 3d object.
+	 
+	 </apiDesc></apiClassifierDetail><adobeApiEvent id="flare.core:Mesh3D_flash.events.Event_mouseWheel"><apiName>mouseWheel</apiName><shortdesc>
+	 </shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flare.events.MouseEvent3D</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Mesh3D_flash.events.Event_mouseUp"><apiName>mouseUp</apiName><shortdesc>
+	 </shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flare.events.MouseEvent3D</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Mesh3D_flash.events.Event_mouseOver"><apiName>mouseOver</apiName><shortdesc>
+	 </shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flare.events.MouseEvent3D</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Mesh3D_flash.events.Event_mouseOut"><apiName>mouseOut</apiName><shortdesc>
+	 </shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flare.events.MouseEvent3D</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Mesh3D_flash.events.Event_mouseMove"><apiName>mouseMove</apiName><shortdesc>
+	 </shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flare.events.MouseEvent3D</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Mesh3D_flash.events.Event_mouseDown"><apiName>mouseDown</apiName><shortdesc>
+	 </shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flare.events.MouseEvent3D</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><adobeApiEvent id="flare.core:Mesh3D_flash.events.Event_click"><apiName>click</apiName><shortdesc>
+	 </shortdesc><prolog/><adobeApiEventDetail><adobeApiEventDef><apiEventType>flash.events.Event</apiEventType><adobeApiEventClassifier>flare.events.MouseEvent3D</adobeApiEventClassifier><apiGeneratedEvent/></adobeApiEventDef><apiDesc>
+	 </apiDesc></adobeApiEventDetail></adobeApiEvent><apiConstructor id="flare.core:Mesh3D:Mesh3D"><apiName>Mesh3D</apiName><shortdesc>
+		 Creates a new Mesh3D object.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData/><apiDesc>Mesh name.
+		 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+		 Creates a new Mesh3D object.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Mesh3D:updateBoundings"><apiName>updateBoundings</apiName><shortdesc>
+		 Forces to update mesh boundings.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Forces to update mesh boundings.
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Mesh3D:modifier"><apiName>modifier</apiName><shortdesc>
+		 Modifier instance used to process and project vertices.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="flare.modifiers:Modifier"/></apiValueDef><apiDesc>
+		 Modifier instance used to process and project vertices.                   
+		 </apiDesc></apiValueDetail><related-links><link href="" invalidHref="flare.modifiers.Modifier.xml"><linktext>flare.modifiers.Modifier</linktext></link></related-links></apiValue><apiValue id="flare.core:Mesh3D:mouseEnabled"><apiName>mouseEnabled</apiName><shortdesc>
+		 Enables the mouse interaction with the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Enables the mouse interaction with the object. If any mouse related event is added trough addEventListener method, this property will automatically be seted to 'true'.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Mesh3D:surfaces"><apiName>surfaces</apiName><shortdesc>
+		 Instance to the Surface3D class.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="Vector$flare.core:Surface3D"/></apiValueDef><apiDesc>
+		 Instance to the Surface3D class.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Mesh3D:useHandCursor"><apiName>useHandCursor</apiName><shortdesc>
+		 Value that defines whether the hand cursor is to display when events such as MouseEvent3D.MOUSE_OVER or MouseEvent3D.MOUSE_MOVE are defined.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Value that defines whether the hand cursor is to display when events such as MouseEvent3D.MOUSE_OVER or MouseEvent3D.MOUSE_MOVE are defined. The default value is false. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Mesh3D:bounds:set"><apiName>bounds</apiName><shortdesc>
+		 Returns or sets a Boundings3D object with object properties, such as radius, dimensions, etc.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiValueClassifier>flare.core:Boundings3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Returns or sets a Boundings3D object with object properties, such as radius, dimensions, etc. 
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#Boundings3D"><linktext>flare.core.Boundings3D</linktext></link></related-links></apiValue></apiClassifier><apiClassifier id="flare.core:Texture3D"><apiName>Texture3D</apiName><shortdesc>
+	 The Textrue3D class contains information on material textures.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>flare.system:ILibraryExternalItem</apiBaseInterface><apiBaseClassifier>flash.events:EventDispatcher</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Textrue3D class contains information on material textures.             
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Texture3D:Texture3D"><apiName>Texture3D</apiName><shortdesc>
+		 Creates a new texture.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>request</apiItemName><apiType value="any"/><apiDesc>It can be texture file path or BitmapData object.
+		 </apiDesc></apiParam><apiParam><apiItemName>optimizeForRenderToTexture</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam><apiParam><apiItemName>format</apiItemName><apiType value="String"/><apiData>unknown</apiData></apiParam></apiConstructorDef><apiDesc>
+		 Creates a new texture. The 'request' parameter can be a url string path, URLRequest, or BitmapData.
+		 If a path is set for the texture, the Texture3D object will start its loading process. If no path is set for the texture,
+		 a BitmapData object that has been directly loaded can be specified.         
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Texture3D:close"><apiName>close</apiName><shortdesc>
+		 Terminates the loading proccess.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Terminates the loading proccess.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Texture3D:dispose"><apiName>dispose</apiName><shortdesc>
+		 Eliminates all the resources associated to the texture.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Eliminates all the resources associated to the texture.
+		 The texture will be unusable after dispose.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Texture3D:download"><apiName>download</apiName><shortdesc>
+		 Download the texture from the graphics card.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Download the texture from the graphics card.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Texture3D:load"><apiName>load</apiName><shortdesc>
+		 Loads the texture if it is an external resource..</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Loads the texture if it is an external resource..
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Texture3D:upload"><apiName>upload</apiName><shortdesc>
+		 Upload the texture to the graphics card.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>true if was uploaded, false otherwise.
+		 </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>scene</apiItemName><apiOperationClassifier>flare.basic:Scene3D</apiOperationClassifier><apiData>null</apiData><apiDesc>The scene to use as a context.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Upload the texture to the graphics card.
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Texture3D:FILTER_LINEAR"><apiName>FILTER_LINEAR</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>linear</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:FILTER_NEAREST"><apiName>FILTER_NEAREST</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>nearest</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:FORMAT_CUBEMAP"><apiName>FORMAT_CUBEMAP</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>cubemap</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:FORMAT_RGBA"><apiName>FORMAT_RGBA</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>rgba</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:MIP_LINEAR"><apiName>MIP_LINEAR</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>miplinear</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:MIP_NEAREST"><apiName>MIP_NEAREST</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>mipnearest</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:MIP_NONE"><apiName>MIP_NONE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>mipnone</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:TYPE_2D"><apiName>TYPE_2D</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2d</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:TYPE_CUBE"><apiName>TYPE_CUBE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>cube</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:WRAP_CLAMP"><apiName>WRAP_CLAMP</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>clamp</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:WRAP_REPEAT"><apiName>WRAP_REPEAT</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>repeat</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:bitmapData"><apiName>bitmapData</apiName><shortdesc>
+		 BitmapData object that contains the texture data.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.display:BitmapData"/></apiValueDef><apiDesc>
+		 BitmapData object that contains the texture data.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:filterMode"><apiName>filterMode</apiName><shortdesc>
+		 Defines how the texture will be sampled when it needs to be streched on the screen.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>linear</apiData><apiType value="String"/></apiValueDef><apiDesc>
+		 Defines how the texture will be sampled when it needs to be streched on the screen. 
+		 This property should be defined before the shader compilation.
+		 Setting to Texture3D.FILTER_NEAREST will take the nearest pixel.
+		 Setting to Texture3D.FILTER_LINEAR will take an interpolation between the nearest pixels.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:mipLevelsCallback"><apiName>mipLevelsCallback</apiName><shortdesc>
+		 Allow you to define a custom function to generate and upload the MIP levels.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="Function"/></apiValueDef><apiDesc>
+		 Allow you to define a custom function to generate and upload the MIP levels.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:mipMode"><apiName>mipMode</apiName><shortdesc>
+		 Defines if the texture will use mip mapping and how it will be applyied.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>miplinear</apiData><apiType value="String"/></apiValueDef><apiDesc>
+		 Defines if the texture will use mip mapping and how it will be applyied.
+		 This property should be defined before the shader compilation.
+		 Setting to Texture3D.MIP_NEAREST, uses the pixel from the nearest mipmap level.
+		 Setting to Texture3D.MIP_LINEAR uses the pixel from two nearest mipmap levels, and interpolates linearly.
+		 Setting to Texture3D.MIP_NONE will disable mip mode for the texture.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:name"><apiName>name</apiName><shortdesc>
+		 The name of the texture.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="String"/></apiValueDef><apiDesc>
+		 The name of the texture.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:texture"><apiName>texture</apiName><shortdesc>
+		 Texture object that contains the texture data on graphics card.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.display3D.textures:TextureBase"/></apiValueDef><apiDesc>
+		 Texture object that contains the texture data on graphics card.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:typeMode"><apiName>typeMode</apiName><shortdesc>
+		 Defines the type of the texture.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>2d</apiData><apiType value="String"/></apiValueDef><apiDesc>
+		 Defines the type of the texture.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:wrapMode"><apiName>wrapMode</apiName><shortdesc>
+		 Defines how the texture will be sampled outside the normalized coordinates (0-1).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>repeat</apiData><apiType value="String"/></apiValueDef><apiDesc>
+		 Defines how the texture will be sampled outside the normalized coordinates (0-1).
+		 This property should be defined before the shader compilation.
+		 Setting to WRAP_REPEAT, the texture will repeat to the infinity.
+		 Setting to WRAP_CLAMP, the last pixel of the texture image stretches to the infinity.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:bytesLoaded:get"><apiName>bytesLoaded</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:bytesTotal:get"><apiName>bytesTotal</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:loaded:get"><apiName>loaded</apiName><shortdesc>
+		 Returns if the texture was succesfull loaded.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Returns if the texture was succesfull loaded.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:optimizeForRenderToTexture:get"><apiName>optimizeForRenderToTexture</apiName><shortdesc>
+		 Returns whatever the texture is optimized for dynamic rendering.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Returns whatever the texture is optimized for dynamic rendering.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:request:get"><apiName>request</apiName><shortdesc>
+		 Gets a reference to the request object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="any"/></apiValueDef><apiDesc>
+		 Gets a reference to the request object.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Texture3D:scene:get"><apiName>scene</apiName><shortdesc>
+		 Returns a reference where the texture context is.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiValueClassifier>flare.basic:Scene3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Returns a reference where the texture context is.
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:IComponent"><apiName>IComponent</apiName><shortdesc>
+	 ...</shortdesc><prolog><author>
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 ...
+	 </apiDesc></apiClassifierDetail><apiOperation id="flare.core:IComponent:flare.core:IComponent:added"><apiName>added</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>target</apiItemName><apiOperationClassifier>flare.core:Pivot3D</apiOperationClassifier></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:IComponent:flare.core:IComponent:removed"><apiName>removed</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="Boolean"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="flare.core:Shape3D"><apiName>Shape3D</apiName><shortdesc>
+	 The Shape3D class represents a set of splines (Spline3D).</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flare.core:Pivot3D</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Shape3D class represents a set of splines (Spline3D).
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Shape3D:Shape3D"><apiName>Shape3D</apiName><shortdesc>
+		 Creates a new set of splines.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData/><apiDesc>Object name.      
+		 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+		 Creates a new set of splines.             
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Shape3D:getPoint"><apiName>getPoint</apiName><shortdesc>
+		 Returns the position on the spline depending on the “value” parameter.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>If an 'out' value has been specified, the same object is returned. Otherwise, a new vector with the position is returned.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Number"/><apiDesc>0 to 1 value that represents the position in time on the spline.               
+		 </apiDesc></apiParam><apiParam><apiItemName>global</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>Sets whether the value will be returned in the global space or local space of the Shape3D. The default value is 'true'.
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector where the position will be returned. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the position on the spline depending on the “value” parameter. 
+		 This method will take into consideration all the splines (Spline3D) that are contained in the Shape3D. 
+		 For example, if two Spline3D objects are contained, a value ranging from 0.0 to 0.5 in the “value” parameter will locate the resulting
+		 position on the first spline, whereas a value ranging from 0.5 to 1.0 will locate the resulting  position on the second spline.  
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Shape3D:getTangent"><apiName>getTangent</apiName><shortdesc>
+		 Returns the direction on the spline in a given position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>If an 'out' value has been specified, the same object is returned. Otherwise, a new vector with the position is returned.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Number"/><apiDesc>0 to 1 value that represents the position in time on the spline.               
+		 </apiDesc></apiParam><apiParam><apiItemName>global</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc>Sets whether the value will be returned in the global space or local space of the Shape3D. The default value is 'true'.
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector where the direction will be returned. 
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction on the spline in a given position.          
+		 This method will take into consideration all the splines (Spline3D) that are contained in the Shape3D. 
+		 For example, if two Spline3D objects are contained, a value ranging from 0.0 to 0.5 in the “value” parameter will locate the resulting
+		 position on the first spline, whereas a value ranging from 0.5 to 1.0 will locate the resulting  position on the second spline.
+		 </apiDesc></apiOperationDetail><related-links><link href="flare.core.xml#Pivot3D/setOrientation()"><linktext>Pivot3D setOrientation()</linktext></link></related-links></apiOperation><apiValue id="flare.core:Shape3D:splines"><apiName>splines</apiName><shortdesc>
+		 Spline3D-type vector with the splines contained in the Shape3D.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="Vector$flare.core:Spline3D"/></apiValueDef><apiDesc>
+		 Spline3D-type vector with the splines contained in the Shape3D.
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:ParticleEmiter3D"><apiName>ParticleEmiter3D</apiName><shortdesc>
+	 The ParticleEmiter3D is used to create particle effects.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>flare.core:IDrawable</apiBaseInterface><apiBaseClassifier>flare.core:Pivot3D</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The ParticleEmiter3D is used to create particle effects.
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:ParticleEmiter3D:ParticleEmiter3D"><apiName>ParticleEmiter3D</apiName><shortdesc>
+		 Creates a new ParticleEmiter3D object.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData/><apiDesc>The name of the particle emiter.
+		 </apiDesc></apiParam><apiParam><apiItemName>material</apiItemName><apiType value="flare.materials:Material3D"/><apiData>null</apiData><apiDesc>The texture to use for the particles.
+		 </apiDesc></apiParam><apiParam><apiItemName>particle</apiItemName><apiOperationClassifier>flare.core:Particle3D</apiOperationClassifier><apiData>null</apiData><apiDesc>The particle to use as a template for all emited particles.
+		 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+		 Creates a new ParticleEmiter3D object.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:ParticleEmiter3D:dispose"><apiName>dispose</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="flare.core:ParticleEmiter3D:decrementPerFrame"><apiName>decrementPerFrame</apiName><shortdesc>
+		 A value of 0 (by default), keeps the particle emision constantly in loop.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 A value of 0 (by default), keeps the particle emision constantly in loop.
+		 A value from 1 to n, will decrement each frame the amount of particles to fire by this value.
+		 If we set a emitParticlesPerFrame to a value of 10, and decrementPerFrame to 2, the first frame will fire 10,
+		 the second 8, the third 6, etc...until emitParticlesPerFrame is equal to 0.
+		 If the value is -1, the emitParticlesPerFrame property will be seted to 0 after fire
+		 the particles and no particles will be fired after a new emitParticlesPerFrame value is defined. 
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#ParticleEmiter3D/emitParticlesPerFrame"><linktext>emitParticlesPerFrame</linktext></link></related-links></apiValue><apiValue id="flare.core:ParticleEmiter3D:particlesLife"><apiName>particlesLife</apiName><shortdesc>
+		 Particles life in frames.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>100</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 Particles life in frames.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:ParticleEmiter3D:bounds:set"><apiName>bounds</apiName><shortdesc>
+		 Gets or sets the boudings to use for the emiter.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiValueClassifier>flare.core:Boundings3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets or sets the boudings to use for the emiter.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:ParticleEmiter3D:emitParticlesPerFrame:set"><apiName>emitParticlesPerFrame</apiName><shortdesc>
+		 How many particles fires each frame.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 How many particles fires each frame. When this property is changed, the emitParticlesPerSecond is also updated.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#ParticleEmiter3D/decrementPerFrame"><linktext>decrementPerFrame</linktext></link><link href="flare.core.xml#ParticleEmiter3D/emitParticlesPerSecond"><linktext>emitParticlesPerSecond</linktext></link></related-links></apiValue><apiValue id="flare.core:ParticleEmiter3D:emitParticlesPerSecond:set"><apiName>emitParticlesPerSecond</apiName><shortdesc>
+		 How many particles fires each second.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Number"/></apiValueDef><apiDesc>
+		 How many particles fires each second. When this property is changed, the emitParticlesPerFrame is also updated.
+		 </apiDesc></apiValueDetail><related-links><link href="flare.core.xml#ParticleEmiter3D/decrementPerFrame"><linktext>decrementPerFrame</linktext></link><link href="flare.core.xml#ParticleEmiter3D/emitParticlesPerFrame"><linktext>emitParticlesPerFrame</linktext></link></related-links></apiValue><apiValue id="flare.core:ParticleEmiter3D:material:set"><apiName>material</apiName><shortdesc>
+		 Sets or gets the materisl to be used to render the particles.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="flare.materials:Material3D"/></apiValueDef><apiDesc>
+		 Sets or gets the materisl to be used to render the particles.
+		 The material should be a compatible material for particle emiters.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:ParticleEmiter3D:particle:set"><apiName>particle</apiName><shortdesc>
+		 Set the particle to use as a template for all emited particles.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiValueClassifier>flare.core:Particle3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Set the particle to use as a template for all emited particles.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:ParticleEmiter3D:surface:get"><apiName>surface</apiName><shortdesc>
+		 Gets the surface associated to the emiter.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiValueClassifier>flare.core:Surface3D</apiValueClassifier></apiValueDef><apiDesc>
+		 Gets the surface associated to the emiter.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:ParticleEmiter3D:useGlobalSpace:set"><apiName>useGlobalSpace</apiName><shortdesc>
+		 If true, all particles will be updated in global space, otherwise, will be linked to the
+		 emiter object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 If true, all particles will be updated in global space, otherwise, will be linked to the
+		 emiter object.
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Spline3D"><apiName>Spline3D</apiName><shortdesc>
+	 The Spline3D class represents a 3d spline.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Spline3D class represents a 3d spline.
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Spline3D:Spline3D"><apiName>Spline3D</apiName><shortdesc>
+		 Creates a new spline.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef><apiDesc>
+		 Creates a new spline.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Spline3D:clone"><apiName>clone</apiName><shortdesc>
+		 Creates a copy of the spline.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>The new copy of the spline. 
+		 </apiDesc><apiOperationClassifier>flare.core:Spline3D</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Creates a copy of the spline.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Spline3D:getPoint"><apiName>getPoint</apiName><shortdesc>
+		 Returns the position on the spline depending on the “value” parameter.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>If an 'out' value has been specified, the same object is returned. Otherwise, a new vector with the position is returned.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Number"/><apiDesc>0 to 1 value that represents the position in time on the spline. 
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector where the position will be returned.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the position on the spline depending on the “value” parameter.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Spline3D:getTangent"><apiName>getTangent</apiName><shortdesc>
+		 Returns the direction on the spline in a given position.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>If an 'out' value has been specified, the same object is returned. Otherwise, a new vector with the position is returned.
+		 </apiDesc><apiType value="flash.geom:Vector3D"/></apiReturn><apiParam><apiItemName>value</apiItemName><apiType value="Number"/><apiDesc>0 to 1 value that represents the position in time on the spline.
+		 </apiDesc></apiParam><apiParam><apiItemName>out</apiItemName><apiType value="flash.geom:Vector3D"/><apiData>null</apiData><apiDesc>Vector where the direction will be returned.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 Returns the direction on the spline in a given position.    
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Spline3D:knots"><apiName>knots</apiName><shortdesc>
+		 Knot3D-type vector with the spline knots.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiType value="Vector$flare.core:Knot3D"/></apiValueDef><apiDesc>
+		 Knot3D-type vector with the spline knots.                    
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Spline3D:closed:get"><apiName>closed</apiName><shortdesc>
+		 Returns or sets whether this is a closed spline.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Returns or sets whether this is a closed spline. In that case, the last Knot3D will be joined to the first. 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:IDrawable"><apiName>IDrawable</apiName><shortdesc>
+	 ...</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiInterface/><apiAccess value="public"/><apiStatic/><apiBaseClassifier/></apiClassifierDef><apiDesc>
+	 ...
+	 </apiDesc></apiClassifierDetail><apiOperation id="flare.core:IDrawable:flare.core:IDrawable:draw"><apiName>draw</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>includeChildren</apiItemName><apiType value="Boolean"/><apiData>true</apiData></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="flare.core:IDrawable:flare.core:IDrawable:inView:get"><apiName>inView</apiName><shortdesc>
+		 Returns whether the object should be drawn.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+		 Returns whether the object should be drawn. The property usually uses a Boundings3D-class values and determines whether it is visible or not based on the object radius. Therefore, the returned value is only an approximation. 
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Boundings3D"><apiName>Boundings3D</apiName><shortdesc>
+	 The Boundings3D class has the information about Pivot3D-type object dimensions.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Boundings3D class has the information about Pivot3D-type object dimensions.
+	 
+	 <p>The values established in this class will not affect objects physically; they are just informative.</p>
+	 
+	 <p>The values returned are represented in the local space of each object.        
+	 To transform them to a global space use localToGlobal or localToGlobalVector of the Pivot3D objects.</p>
+	 
+	 <p>Although values can be modified, this is not advisable as these properties are often used by the visibility 
+	 and collision calculation system, for example.
+	 Preferably, create a copy using the clone system and modify that copy.</p>
+	 
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Boundings3D:Boundings3D"><apiName>Boundings3D</apiName><shortdesc>
+		 Creates a new Boundings3D object.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef><apiDesc>
+		 Creates a new Boundings3D object.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Boundings3D:clone"><apiName>clone</apiName><shortdesc>
+		 Creates a copy of a Boundings3D object.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>Returns a new Boundings3D object.
+		 </apiDesc><apiOperationClassifier>flare.core:Boundings3D</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 Creates a copy of a Boundings3D object.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Boundings3D:reset"><apiName>reset</apiName><shortdesc>
+		 Resets the object properties to its default values.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+		 Resets the object properties to its default values.    
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Boundings3D:center"><apiName>center</apiName><shortdesc>
+		 Center of the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.geom:Vector3D"/></apiValueDef><apiDesc>
+		 Center of the object. The center does not correspond to (0,0,0) of the object, but it is the calculated center of all the vertices.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Boundings3D:length"><apiName>length</apiName><shortdesc>
+		 Lengths of the bounding box of the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.geom:Vector3D"/></apiValueDef><apiDesc>
+		 Lengths of the bounding box of the object. (Maximum corner minus minimum corner).
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Boundings3D:max"><apiName>max</apiName><shortdesc>
+		 Maximum corner of the bounding box of the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.geom:Vector3D"/></apiValueDef><apiDesc>
+		 Maximum corner of the bounding box of the object. 
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Boundings3D:min"><apiName>min</apiName><shortdesc>
+		 Minimum corner of the bounding box of the object.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.geom:Vector3D"/></apiValueDef><apiDesc>
+		 Minimum corner of the bounding box of the object.  
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Boundings3D:radius"><apiName>radius</apiName><shortdesc>
+		 Radius of the object count from the center of the object (not from the object).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 Radius of the object count from the center of the object (not from the object).
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Lines3D"><apiName>Lines3D</apiName><shortdesc>
+	 The Lines3D class is a helper to work with 3D pixel thickness lines.</shortdesc><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseInterface>flare.core:IDrawable</apiBaseInterface><apiBaseClassifier>flare.core:Pivot3D</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Lines3D class is a helper to work with 3D pixel thickness lines.
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Lines3D:Lines3D"><apiName>Lines3D</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiData/></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Lines3D:clear"><apiName>clear</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Lines3D:lineStyle"><apiName>lineStyle</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>thickness</apiItemName><apiType value="Number"/><apiData>1</apiData></apiParam><apiParam><apiItemName>color</apiItemName><apiType value="uint"/><apiData>0xffffff</apiData></apiParam><apiParam><apiItemName>alpha</apiItemName><apiType value="Number"/><apiData>1</apiData></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Lines3D:lineTo"><apiName>lineTo</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/></apiParam><apiParam><apiItemName>z</apiItemName><apiType value="Number"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="flare.core:Lines3D:moveTo"><apiName>moveTo</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="Number"/></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="Number"/></apiParam><apiParam><apiItemName>z</apiItemName><apiType value="Number"/></apiParam></apiOperationDef></apiOperationDetail></apiOperation></apiClassifier><apiClassifier id="flare.core:Label3D"><apiName>Label3D</apiName><shortdesc>
+	 The Label3D class defines labels to be used for 3d object animation.</shortdesc><prolog><author>Ariel Nehmad
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Label3D class defines labels to be used for 3d object animation.                          
+	 </apiDesc></apiClassifierDetail><related-links><link href="flare.core.xml#Pivot3D"><linktext>flare.core.Pivot3D</linktext></link><link href="../core/Pivot3D.html#labels"><linktext>Pivot3D labels</linktext></link><link href="../core/Pivot3D.html#addLabel()"><linktext>Pivot3D addLabel()</linktext></link><link href="../core/Pivot3D.html#getLabel()"><linktext>Pivot3D getLabel()</linktext></link><link href="../core/Pivot3D.html#playLabel()"><linktext>Pivot3D playLabel()</linktext></link><link href="../core/Pivot3D.html#removeLabel()"><linktext>Pivot3D removeLabel()</linktext></link></related-links><apiConstructor id="flare.core:Label3D:Label3D"><apiName>Label3D</apiName><shortdesc>
+		 Creates a new Label3D object.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>name</apiItemName><apiType value="String"/><apiDesc>Animation name.                     
+		 </apiDesc></apiParam><apiParam><apiItemName>from</apiItemName><apiType value="int"/><apiDesc>Frame where animation begins. The frame number is zero-based.                                 
+		 </apiDesc></apiParam><apiParam><apiItemName>to</apiItemName><apiType value="int"/><apiDesc>Frame where animation ends. The frame number is zero-based.                  
+		 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+		 Creates a new Label3D object.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Label3D:toString"><apiName>toString</apiName><shortdesc> </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc></apiDesc><apiType value="String"/></apiReturn></apiOperationDef><apiDesc> </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Label3D:from"><apiName>from</apiName><shortdesc>
+		 Frame where animation begins.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="int"/></apiValueDef><apiDesc>
+		 Frame where animation begins. The frame number is zero-based.                       
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Label3D:name"><apiName>name</apiName><shortdesc>
+		 Name given to the animation.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="String"/></apiValueDef><apiDesc>
+		 Name given to the animation.            
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Label3D:to"><apiName>to</apiName><shortdesc>
+		 Frame where animation ends.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="int"/></apiValueDef><apiDesc>
+		 Frame where animation ends. The frame number is zero-based.                           
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Label3D:length:get"><apiName>length</apiName><shortdesc>
+		 Returns the length of the animation label.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="int"/></apiValueDef><apiDesc>
+		 Returns the length of the animation label.
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="flare.core:Particle3D"><apiName>Particle3D</apiName><shortdesc>
+	 The Particle3D is used as a base template class for ParticleEmiter3D.</shortdesc><prolog><author>
+	 </author><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef><apiDesc>
+	 The Particle3D is used as a base template class for ParticleEmiter3D.
+	 </apiDesc></apiClassifierDetail><apiConstructor id="flare.core:Particle3D:Particle3D"><apiName>Particle3D</apiName><shortdesc>
+		 Creates a new Particle3D objects.</shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef><apiDesc>
+		 Creates a new Particle3D objects.
+		 </apiDesc></apiConstructorDetail></apiConstructor><apiOperation id="flare.core:Particle3D:clone"><apiName>clone</apiName><shortdesc>
+		 You must override this method to implement a custom particle.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>A new cloned particle.
+		 </apiDesc><apiOperationClassifier>flare.core:Particle3D</apiOperationClassifier></apiReturn></apiOperationDef><apiDesc>
+		 You must override this method to implement a custom particle.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Particle3D:init"><apiName>init</apiName><shortdesc>
+		 This method is called by the ParticleEmiter3D when needs to initializate the particle.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>emiter</apiItemName><apiOperationClassifier>flare.core:ParticleEmiter3D</apiOperationClassifier><apiDesc>The parent ParticleEmiter3D object that fires the particle.
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 This method is called by the ParticleEmiter3D when needs to initializate the particle.
+		 Each particle could be initialized and reused many times while the emiter is active.
+		 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="flare.core:Particle3D:update"><apiName>update</apiName><shortdesc>
+		 This method is called each frame by the ParticleEmiter3D class when needs to update the particle.</shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>time</apiItemName><apiType value="Number"/><apiDesc>The life time of the particle (from 0 to 1 ).
+		 </apiDesc></apiParam></apiOperationDef><apiDesc>
+		 This method is called each frame by the ParticleEmiter3D class when needs to update the particle.
+		 </apiDesc></apiOperationDetail></apiOperation><apiValue id="flare.core:Particle3D:rotation"><apiName>rotation</apiName><shortdesc>
+		 The rotation of the particle in radians.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 The rotation of the particle in radians.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Particle3D:sizeX"><apiName>sizeX</apiName><shortdesc>
+		 The size along the x axis of the particle.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>1</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 The size along the x axis of the particle.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Particle3D:sizeY"><apiName>sizeY</apiName><shortdesc>
+		 The size along the y axis of the particle.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>1</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 The size along the y axis of the particle.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Particle3D:x"><apiName>x</apiName><shortdesc>
+		 The x position of the particle.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 The x position of the particle.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Particle3D:y"><apiName>y</apiName><shortdesc>
+		 The y position of the particle.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 The y position of the particle.
+		 </apiDesc></apiValueDetail></apiValue><apiValue id="flare.core:Particle3D:z"><apiName>z</apiName><shortdesc>
+		 The z position of the particle.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+		 The z position of the particle.
+		 </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage>

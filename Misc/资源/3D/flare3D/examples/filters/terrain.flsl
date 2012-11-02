@@ -1,0 +1,60 @@
+/**
+ * Flare3D Layer Shader Language v1.0.
+ * @author Ariel Nehmad
+ */
+
+< namespace:"flare", name:"Sample Terrain Filter" >
+ 
+public texture layer0 		< desc:"Layer0" >;
+public texture layer1 		< desc:"Layer1" >;
+public texture layer2 		< desc:"Layer2" >;
+public texture layer3 		< desc:"Layer3" >;
+
+public float2 repeat0 = 1 	< desc:"Repeat0" min:"0" max:"0" >;;
+public float2 repeat1 = 1 	< desc:"Repeat1" min:"0" max:"0" >;;
+public float2 repeat2 = 1 	< desc:"Repeat2" min:"0" max:"0" >;;
+public float2 repeat3 = 1 	< desc:"Repeat3" min:"0" max:"0" >;;
+
+public float2 offset1 = 0 	< desc:"Offset0" min:"0" max:"0" >;;
+
+input UV0 uv0;
+
+interpolated float4 iUV;
+
+private void v_terrain()
+{
+	iUV = uv0;
+}
+
+private float4 f_terrain()
+{	
+	// get the height map pixel.
+	float4 heightMap = sample( layer0, iUV.xy * repeat0 );
+	
+	// get the first and base color.
+	float4 color = sample( layer1, iUV.xy * repeat1 + offset1 );
+	
+	// we'll use the red channel to store the heights, so
+	// here we use the green 'heightMap.y' channel to define areas for the second layer.
+	color *= ( 1 - heightMap.y );
+	color += sample( layer2, iUV.xy * repeat2 ) * heightMap.y;
+	
+	// and finally uses the blue channel to blend with the final layer.
+	color *= ( 1 - heightMap.z );
+	color += sample( layer3, iUV.xy * repeat3 ) * heightMap.z;
+	
+	// returns the result color.
+	return color;
+	//return 1;
+	
+	// it is really important to delete 
+	// all used temporal variables.
+	delete color;
+	delete heightMap;
+}
+
+technique "main"
+{
+	vertex v_terrain();
+	fragment f_terrain();
+}

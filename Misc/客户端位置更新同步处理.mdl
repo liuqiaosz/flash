@@ -1,0 +1,814 @@
+
+(object Petal
+    version    	47
+    _written   	"Rose 8.2.0310.2800"
+    charSet    	134)
+
+(object Design "显示逻辑"
+    is_unit    	TRUE
+    is_loaded  	TRUE
+    quid       	"506503AD03D5"
+    defaults   	(object defaults
+	rightMargin 	0.250000
+	leftMargin 	0.250000
+	topMargin  	0.250000
+	bottomMargin 	0.500000
+	pageOverlap 	0.250000
+	clipIconLabels 	TRUE
+	autoResize 	TRUE
+	snapToGrid 	TRUE
+	gridX      	0
+	gridY      	0
+	defaultFont 	(object Font
+	    size       	12
+	    face       	"宋体"
+	    charSet    	134
+	    bold       	FALSE
+	    italics    	FALSE
+	    underline  	FALSE
+	    strike     	FALSE
+	    color      	0
+	    default_color 	TRUE)
+	showMessageNum 	3
+	showClassOfObject 	TRUE
+	notation   	"Unified")
+    root_usecase_package 	(object Class_Category "显示用例"
+	quid       	"506503AD03D7"
+	exportControl 	"Public"
+	global     	TRUE
+	logical_models 	(list unit_reference_list)
+	logical_presentations 	(list unit_reference_list
+	    (object UseCaseDiagram "Main"
+		quid       	"506503AE004E"
+		title      	"Main"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list))))
+    root_category 	(object Class_Category "显示逻辑"
+	quid       	"506503AD03D6"
+	exportControl 	"Public"
+	global     	TRUE
+	subsystem  	"显示组成"
+	quidu      	"506503AD03D8"
+	logical_models 	(list unit_reference_list
+	    (object Mechanism @1
+		logical_models 	(list unit_reference_list
+		    (object Object "Client"
+			quid       	"506503C1022B"
+			collaborators 	(list link_list
+			    (object Link
+				quid       	"506503E801EE"
+				supplier   	"Client"
+				quidu      	"506503C1022B"
+				messages   	(list Messages
+				    (object Message "消息进入发送队列"
+					quid       	"506503E801EF"
+					frequency  	"Aperiodic"
+					synchronization 	"Simple"
+					dir        	"FromClientToSupplier"
+					sequence   	"1"
+					ordinal    	0
+					quidu      	"000000000000"
+					creation   	FALSE)
+				    (object Message "发送失败,消息进入丢弃队列"
+					quid       	"506504000244"
+					frequency  	"Aperiodic"
+					synchronization 	"Simple"
+					dir        	"FromClientToSupplier"
+					sequence   	"1.1"
+					ordinal    	1
+					quidu      	"000000000000"
+					creation   	FALSE)
+				    (object Message "动画播放和位置更新开始处理"
+					quid       	"5065050F01D4"
+					frequency  	"Aperiodic"
+					synchronization 	"Simple"
+					dir        	"FromClientToSupplier"
+					sequence   	"3"
+					ordinal    	3
+					quidu      	"000000000000"
+					creation   	FALSE)
+				    (object Message "高延迟返回"
+					quid       	"5065061C02FE"
+					frequency  	"Aperiodic"
+					synchronization 	"Simple"
+					dir        	"FromClientToSupplier"
+					sequence   	"7"
+					ordinal    	7
+					quidu      	"000000000000"
+					creation   	FALSE)))
+			    (object Link
+				quid       	"5065042C03BC"
+				supplier   	"Server"
+				quidu      	"506503C203CA"
+				messages   	(list Messages
+				    (object Message "位置更新消息发送,消息进入等待消息队列"
+					quid       	"5065042C03BD"
+					frequency  	"Aperiodic"
+					synchronization 	"Asynchronous"
+					dir        	"FromClientToSupplier"
+					sequence   	"2"
+					ordinal    	2
+					quidu      	"000000000000"
+					creation   	FALSE)
+				    (object Message "消息接收确认"
+					quid       	"5065045900CC"
+					frequency  	"Aperiodic"
+					synchronization 	"Return"
+					dir        	"ToClientFromSupplier"
+					sequence   	"4"
+					ordinal    	4
+					quidu      	"000000000000"
+					creation   	FALSE)
+				    (object Message "允许客户端位置更新请求"
+					quid       	"506504A601FB"
+					frequency  	"Aperiodic"
+					synchronization 	"Return"
+					dir        	"ToClientFromSupplier"
+					sequence   	"6"
+					ordinal    	6
+					quidu      	"000000000000"
+					creation   	FALSE))))
+			persistence 	"Transient"
+			creationObj 	TRUE
+			multi      	FALSE)
+		    (object Object "Server"
+			quid       	"506503C203CA"
+			collaborators 	(list link_list
+			    (object Link
+				quid       	"506504720301"
+				supplier   	"Server"
+				quidu      	"506503C203CA"
+				messages   	(list Messages
+				    (object Message "更新并同步请求方新的位置信息"
+					quid       	"506504720302"
+					frequency  	"Aperiodic"
+					synchronization 	"Simple"
+					dir        	"FromClientToSupplier"
+					sequence   	"5"
+					ordinal    	5
+					quidu      	"000000000000"
+					creation   	FALSE)))
+			    (object Link
+				quid       	"506504CF02A2"
+				supplier   	"Other"
+				quidu      	"506503C50149"
+				messages   	(list Messages
+				    (object Message "更新请求方新的状态信息给队友(有组队)或同屏其他客户端"
+					quid       	"506504CF02A3"
+					frequency  	"Aperiodic"
+					synchronization 	"Return"
+					dir        	"FromClientToSupplier"
+					sequence   	"8"
+					ordinal    	8
+					quidu      	"000000000000"
+					creation   	FALSE))))
+			persistence 	"Transient"
+			creationObj 	FALSE
+			multi      	FALSE)
+		    (object Object "Other"
+			quid       	"506503C50149"
+			persistence 	"Transient"
+			creationObj 	FALSE
+			multi      	FALSE))))
+	logical_presentations 	(list unit_reference_list
+	    (object ClassDiagram "Main"
+		quid       	"506503AE004F"
+		title      	"Main"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list))
+	    (object InteractionDiagram "Design"
+		mechanism_ref 	@1
+		quid       	"506503BE01C3"
+		title      	"Design"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	1219
+		items      	(list diagram_item_list
+		    (object InterObjView "Client" @2
+			location   	(659, 228)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	TRUE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@2
+			    location   	(659, 228)
+			    fill_color 	13434879
+			    anchor_loc 	1
+			    nlines     	2
+			    max_width  	595
+			    justify    	0
+			    label      	"Client")
+			icon_style 	"Icon"
+			line_color 	3342489
+			fill_color 	13434879
+			quidu      	"506503C1022B"
+			width      	613
+			height     	1951
+			icon_height 	0
+			icon_width 	0
+			icon_y_offset 	0
+			annotation 	1
+			Focus_Of_Control 	(object Focus_Of_Control "" @3
+			    location   	(659, 288)
+			    InterObjView 	@2
+			    height     	60
+			    y_coord    	0
+			    Nested     	FALSE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @4
+			    location   	(659, 403)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	924
+			    y_coord    	864
+			    Nested     	FALSE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @5
+			    location   	(659, 403)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	329
+			    y_coord    	269
+			    Nested     	TRUE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @6
+			    location   	(659, 612)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	60
+			    y_coord    	0
+			    Nested     	TRUE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @7
+			    location   	(659, 971)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	296
+			    y_coord    	236
+			    Nested     	TRUE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @8
+			    location   	(659, 1201)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	60
+			    y_coord    	0
+			    Nested     	TRUE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @9
+			    location   	(659, 1594)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	60
+			    y_coord    	0
+			    Nested     	FALSE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @10
+			    location   	(659, 1824)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	120
+			    y_coord    	60
+			    Nested     	FALSE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @11
+			    location   	(659, 1824)
+			    line_color 	3342489
+			    InterObjView 	@2
+			    height     	60
+			    y_coord    	0
+			    Nested     	TRUE))
+		    (object InterObjView "Server" @12
+			location   	(1937, 225)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	TRUE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@12
+			    location   	(1937, 225)
+			    fill_color 	13434879
+			    anchor_loc 	1
+			    nlines     	2
+			    max_width  	526
+			    justify    	0
+			    label      	"Server")
+			icon_style 	"Icon"
+			line_color 	3342489
+			fill_color 	13434879
+			quidu      	"506503C203CA"
+			width      	544
+			height     	1954
+			icon_height 	0
+			icon_width 	0
+			icon_y_offset 	0
+			annotation 	1
+			Focus_Of_Control 	(object Focus_Of_Control "" @13
+			    location   	(1937, 804)
+			    line_color 	3342489
+			    InterObjView 	@12
+			    height     	60
+			    y_coord    	0
+			    Nested     	FALSE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @14
+			    location   	(1937, 1141)
+			    line_color 	3342489
+			    InterObjView 	@12
+			    height     	60
+			    y_coord    	0
+			    Nested     	FALSE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @15
+			    location   	(1937, 1503)
+			    line_color 	3342489
+			    InterObjView 	@12
+			    height     	586
+			    y_coord    	526
+			    Nested     	FALSE)
+			Focus_Of_Control 	(object Focus_Of_Control "" @16
+			    location   	(1937, 1503)
+			    line_color 	3342489
+			    InterObjView 	@12
+			    height     	60
+			    y_coord    	0
+			    Nested     	TRUE))
+		    (object InterObjView "Other" @17
+			location   	(3181, 225)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	TRUE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@17
+			    location   	(3181, 225)
+			    fill_color 	13434879
+			    anchor_loc 	1
+			    nlines     	2
+			    max_width  	489
+			    justify    	0
+			    label      	"Other")
+			icon_style 	"Icon"
+			line_color 	3342489
+			fill_color 	13434879
+			quidu      	"506503C50149"
+			width      	507
+			height     	1954
+			icon_height 	0
+			icon_width 	0
+			icon_y_offset 	0
+			annotation 	1
+			Focus_Of_Control 	(object Focus_Of_Control "" @18
+			    location   	(3181, 1969)
+			    line_color 	3342489
+			    InterObjView 	@17
+			    height     	60
+			    y_coord    	0
+			    Nested     	FALSE))
+		    (object SelfMessView "" @19
+			location   	(0, 403)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @20
+			    Parent_View 	@19
+			    location   	(956, 357)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"506503E801EF"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	475
+			    justify    	0
+			    label      	"消息进入发送队列"
+			    pctDist    	1.880000
+			    height     	47
+			    orientation 	0)
+			line_color 	3342489
+			client     	@2
+			supplier   	@2
+			Focus_Src  	@4
+			Focus_Entry 	@5
+			origin     	(675, 403)
+			terminus   	(825, 403)
+			ordinal    	0)
+		    (object SelfMessView "" @21
+			location   	(0, 612)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @22
+			    Parent_View 	@21
+			    location   	(1061, 577)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"506504000244"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	700
+			    justify    	0
+			    label      	"发送失败,消息进入丢弃队列"
+			    pctDist    	2.580000
+			    height     	36
+			    orientation 	0)
+			line_color 	3342489
+			client     	@2
+			supplier   	@2
+			Focus_Src  	@5
+			Focus_Entry 	@6
+			origin     	(675, 612)
+			terminus   	(825, 612)
+			ordinal    	1)
+		    (object InterMessView "" @23
+			location   	(1020, 804)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @24
+			    Parent_View 	@23
+			    location   	(1215, 761)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"5065042C03BD"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	1010
+			    justify    	0
+			    label      	"位置更新消息发送,消息进入等待消息队列"
+			    pctDist    	0.433841
+			    height     	43
+			    orientation 	0)
+			line_color 	3342489
+			client     	@2
+			supplier   	@12
+			Focus_Src  	@4
+			Focus_Entry 	@13
+			origin     	(674, 804)
+			terminus   	(1921, 804)
+			ordinal    	2)
+		    (object InterMessView "" @25
+			location   	(1020, 1201)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @26
+			    Parent_View 	@25
+			    location   	(931, 1161)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"5065045900CC"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	385
+			    justify    	0
+			    label      	"消息接收确认"
+			    pctDist    	0.795311
+			    height     	41
+			    orientation 	1)
+			line_color 	3342489
+			client     	@12
+			supplier   	@2
+			Focus_Src  	@14
+			Focus_Entry 	@8
+			origin     	(1921, 1201)
+			terminus   	(675, 1201)
+			ordinal    	4)
+		    (object SelfMessView "" @27
+			location   	(0, 1503)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @28
+			    Parent_View 	@27
+			    location   	(2377, 1442)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"506504720302"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	775
+			    justify    	0
+			    label      	"更新并同步请求方新的位置信息"
+			    pctDist    	2.833333
+			    height     	62
+			    orientation 	0)
+			line_color 	3342489
+			client     	@12
+			supplier   	@12
+			Focus_Src  	@15
+			Focus_Entry 	@16
+			origin     	(1953, 1503)
+			terminus   	(2103, 1503)
+			ordinal    	5)
+		    (object InterMessView "" @29
+			location   	(0, 1594)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @30
+			    Parent_View 	@29
+			    location   	(1071, 1551)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"506504A601FB"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	635
+			    justify    	0
+			    label      	"允许客户端位置更新请求"
+			    pctDist    	0.682597
+			    height     	44
+			    orientation 	1)
+			line_color 	3342489
+			client     	@12
+			supplier   	@2
+			Focus_Src  	@15
+			Focus_Entry 	@9
+			origin     	(1921, 1594)
+			terminus   	(675, 1594)
+			ordinal    	6)
+		    (object InterMessView "" @31
+			location   	(0, 1969)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @32
+			    Parent_View 	@31
+			    location   	(2746, 1910)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"506504CF02A3"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	1384
+			    justify    	0
+			    label      	"更新请求方新的状态信息给队友(有组队)或同屏其他客户端"
+			    pctDist    	0.655327
+			    height     	60
+			    orientation 	0)
+			line_color 	3342489
+			client     	@12
+			supplier   	@17
+			Focus_Src  	@15
+			Focus_Entry 	@18
+			origin     	(1952, 1969)
+			terminus   	(3165, 1969)
+			ordinal    	8)
+		    (object SelfMessView "" @33
+			location   	(0, 971)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @34
+			    Parent_View 	@33
+			    location   	(1067, 933)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"5065050F01D4"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	725
+			    justify    	0
+			    label      	"动画播放和位置更新开始处理"
+			    pctDist    	2.620000
+			    height     	39
+			    orientation 	0)
+			line_color 	3342489
+			client     	@2
+			supplier   	@2
+			Focus_Src  	@4
+			Focus_Entry 	@7
+			origin     	(675, 971)
+			terminus   	(825, 971)
+			ordinal    	3)
+		    (object SelfMessView "" @35
+			location   	(0, 1824)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object SegLabel @36
+			    Parent_View 	@35
+			    location   	(877, 1778)
+			    font       	(object Font
+				size       	12
+				face       	"宋体"
+				charSet    	134
+				bold       	FALSE
+				italics    	FALSE
+				underline  	FALSE
+				strike     	FALSE
+				color      	0
+				default_color 	TRUE)
+			    quidu      	"5065061C02FE"
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	325
+			    justify    	0
+			    label      	"高延迟返回"
+			    pctDist    	1.346667
+			    height     	47
+			    orientation 	0)
+			line_color 	3342489
+			client     	@2
+			supplier   	@2
+			Focus_Src  	@10
+			Focus_Entry 	@11
+			origin     	(675, 1824)
+			terminus   	(825, 1824)
+			ordinal    	7)
+		    (object NoteView @37
+			location   	(987, 2205)
+			font       	(object Font
+			    size       	12
+			    face       	"宋体"
+			    charSet    	134
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@37
+			    location   	(696, 1874)
+			    fill_color 	13434879
+			    nlines     	13
+			    max_width  	546
+			    label      	"高延迟返回情况下在等待回应的过程中可能已经又有过多个位置变更请求,导致回应的确认消息可能是等待队列中间某个请求的回应确认,因为客户端在未收到确认时已经做过位置变更所以可以略过该消息.这种情况不对客户端做拉回处理,而是继续等待当前位置的更新确认回应.")
+			line_color 	3342489
+			fill_color 	13434879
+			width      	606
+			height     	675)))))
+    root_subsystem 	(object SubSystem "显示组成"
+	quid       	"506503AD03D8"
+	physical_models 	(list unit_reference_list)
+	physical_presentations 	(list unit_reference_list
+	    (object Module_Diagram "Main"
+		quid       	"506503AE004D"
+		title      	"Main"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list))))
+    process_structure 	(object Processes
+	quid       	"506503AD03D9"
+	ProcsNDevs 	(list
+	    (object Process_Diagram "Deployment View"
+		quid       	"506503AD03DB"
+		title      	"Deployment View"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list))))
+    properties 	(object Properties
+	quid       	"506503AD03DA"))

@@ -1,0 +1,26 @@
+/**
+ * Flare3D Layer Shader Language v1.0.
+ * @author Ariel Nehmad
+ */
+
+< namespace:"flare", name:"Sample Terrain Filter" >
+
+input COLOR0 color;
+
+interpolated float4 iColor;
+
+private void vertexFunction()
+{
+	iColor = color;
+}
+
+private float4 fragmentFunction()
+{
+	return iColor;
+}
+
+technique "vertexColors"
+{
+	vertex vertexFunction();
+	fragment fragmentFunction();
+}
