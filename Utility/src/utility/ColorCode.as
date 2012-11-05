@@ -161,5 +161,38 @@ package utility
 			{
 				return red << 16 | green << 8 | blue;
 			}
+			
+			public static function Pixel8888To565(Pixel:uint):uint
+			{
+				var PixelRGBA:RGBA = GetRGBA(Pixel);
+				return (((PixelRGBA.Red >> 3) << 11) | 
+					((PixelRGBA.Green >> 2) << 5) | 
+					((PixelRGBA.Blue >> 3)));
+			}
+			
+			public static function GetRGB(Pixel:uint):RGBA
+			{
+				return new RGBA((Pixel >> 16 & 0xFF),(Pixel >> 8 & 0xFF),(Pixel & 0xFF));
+			}
+			public static function GetRGBA(Pixel:uint):RGBA
+			{
+				return new RGBA((Pixel >> 16 & 0xFF),(Pixel >> 8 & 0xFF),(Pixel & 0xFF),(Pixel >> 24 & 0xFF));
+			}
+			
+			public static const RGB4444_MASK:uint = parseInt("00001111",2);
+			public static function Pixel8888To4444(Pixel:uint):uint
+			{
+				var PixelRGBA:RGBA = GetRGBA(Pixel);
+				
+				return (PixelRGBA.Alpha >> 4 & RGB4444_MASK) << 12 | 
+					(PixelRGBA.Red >> 4 & RGB4444_MASK) << 8 |
+					(PixelRGBA.Green >> 4 & RGB4444_MASK) << 4 |
+					(PixelRGBA.Blue >> 4 & RGB4444_MASK);
+			}
+			public static function Pixel16ToRGB4444(Pixel:uint):uint
+			{
+				return 0;
+			}
+			
 		}
 }

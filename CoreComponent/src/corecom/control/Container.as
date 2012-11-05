@@ -370,5 +370,16 @@ package corecom.control
 				addChild(Child);
 			}
 		}
+		
+		override public function set ImagePack(Value:Boolean):void
+		{
+			super.ImagePack = Value;
+			var Child:UIControl = null;
+			
+			for each(Child in _Children)
+			{
+				Child.ImagePack = Value;
+			}
+		}
 	}
 }

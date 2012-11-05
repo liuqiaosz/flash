@@ -126,6 +126,20 @@ package utility.swf
 			return Vec;
 		}
 		
+		/**
+		 * ID获取资源
+		 * 
+		 * 
+		 **/
+		public function FindObjectById(Id:String):Object
+		{
+			if(IsContain(Id))
+			{
+				return GenericTag(_TagDictionary[Id]).Source;
+			}
+			return null;
+		}
+		
 //		public function get Header():SwfHeader
 //		{
 //			return _Header;
@@ -168,12 +182,29 @@ package utility.swf
 				if(SwfTag)
 				{
 					_TagArray.push(SwfTag);
-					if(SwfTag.TagId > 0)
+//					if(SwfTag.TagId > 0)
+//					{
+//						_TagDictionary[SwfTag.Id] = SwfTag;
+//					}
+				}
+			}
+			
+			var SymbolArray:Array = FindTagByType(Tag.SYMBOLCLASS);
+			if(SymbolArray.length > 0)
+			{
+				var Symbol:SymbolClass =  FindTagByType(Tag.SYMBOLCLASS)[0];
+				var ChildTag:GenericTag = null;
+				var Class:String = "";
+				for each(ChildTag in _TagArray)
+				{
+					if(ChildTag.TagId >= 0)
 					{
-						_TagDictionary[SwfTag.Id] = SwfTag;
+						Class = Symbol.FindSymbolClassById(ChildTag.TagId);
+						_TagDictionary[Class] = ChildTag;
 					}
 				}
 			}
+			
 		}
 		
 		/**
@@ -192,6 +223,11 @@ package utility.swf
 				}
 			}
 			return Result;
+		}
+		
+		public function IsContain(Id:String):Object
+		{
+			return (Id in _TagDictionary);
 		}
 		
 		public function GetAllImageTag():Array

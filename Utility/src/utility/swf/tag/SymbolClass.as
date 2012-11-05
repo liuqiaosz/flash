@@ -58,5 +58,10 @@ package utility.swf.tag
 		{
 			return _Keyset;
 		}
+		
+		public function IsKeyContain(KeyName:String):Boolean
+		{
+			return (KeyName in _Keyset);
+		}
 	}
 }

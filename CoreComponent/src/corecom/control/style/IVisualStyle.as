@@ -59,5 +59,8 @@ package corecom.control.style
 		function get Scale9GridBottom():int;
 		
 		function get FontTextStyle():FontStyle;
+		
+		function set ImagePack(Value:Boolean):void;
+		function get ImagePack():Boolean;
 	}
 }

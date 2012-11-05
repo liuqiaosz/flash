@@ -622,5 +622,14 @@ package corecom.control
 			_Style.RightBottomCorner = Value;
 			StyleUpdate();
 		}
+		
+		public function set ImagePack(Value:Boolean):void
+		{
+			_Style.ImagePack = Value;
+		}
+		public function get ImagePack():Boolean
+		{
+			return _Style.ImagePack;
+		}
 	}
 }

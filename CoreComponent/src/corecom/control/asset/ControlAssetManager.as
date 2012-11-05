@@ -27,27 +27,33 @@ import corecom.control.event.DownloadEvent;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
-import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
 import flash.events.ProgressEvent;
+import flash.net.URLLoader;
+import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
+import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
 import utility.IDispose;
+import utility.Tools;
+import utility.swf.ByteStream;
+import utility.swf.Swf;
 
 class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetManager,IDispose
 {
 	private var AssetDictionary:Dictionary = new Dictionary();
 	//加载器
-	private var AssetLoader:Loader = null;
+	//private var AssetLoader:Loader = null;
+	private var Loader:URLLoader = null;
 	//加载队列
 	private var DownloadQueue:Array = [];
 	//锁定标识
 	private var _Busy:Boolean = false;
 	
-	private var _AssetLibArray:Vector.<Loader> = new Vector.<Loader>();
+	private var _AssetLibArray:Vector.<Swf> = new Vector.<Swf>();
 	//正在加载的资源
 	private var _LibraryLoading:int = 1;
 	//正在加载的资源URL
@@ -74,12 +80,19 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	protected function StartDownloadQueue():void
 	{
 		_LibraryLoadingUrl = DownloadQueue.pop();
-		AssetLoader = new Loader();
-		AssetLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,OnProgress);
-		AssetLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,OnError);
-		AssetLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,OnComplete);
-		AssetLoader.contentLoaderInfo.addEventListener(Event.OPEN,OnStart);
-		AssetLoader.load(new URLRequest(_LibraryLoadingUrl));
+		Loader = new URLLoader();
+		Loader.dataFormat = URLLoaderDataFormat.BINARY;
+		//AssetLoader = new Loader();
+//		AssetLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,OnProgress);
+//		AssetLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,OnError);
+//		AssetLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,OnComplete);
+//		AssetLoader.contentLoaderInfo.addEventListener(Event.OPEN,OnStart);
+//		AssetLoader.load(new URLRequest(_LibraryLoadingUrl));
+		Loader.addEventListener(ProgressEvent.PROGRESS,OnProgress);
+		Loader.addEventListener(IOErrorEvent.IO_ERROR,OnError);
+		Loader.addEventListener(Event.COMPLETE,OnComplete);
+		Loader.addEventListener(Event.OPEN,OnStart);
+		Loader.load(new URLRequest(_LibraryLoadingUrl));
 	}
 	
 	/**
@@ -89,8 +102,10 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 		var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_START);
 		Notify.CurrentIndex = _LibraryLoading;
 		Notify.CurrentUri = _LibraryLoadingUrl;
-		Notify.LoadedBytes = AssetLoader.contentLoaderInfo.bytesLoaded;
-		Notify.TotalBytes = AssetLoader.contentLoaderInfo.bytesTotal;
+		//Notify.LoadedBytes = AssetLoader.contentLoaderInfo.bytesLoaded;
+		//Notify.TotalBytes = AssetLoader.contentLoaderInfo.bytesTotal;
+		Notify.LoadedBytes = Loader.bytesLoaded;
+		Notify.TotalBytes = Loader.bytesTotal;
 		Notify.Total = _Total;
 		dispatchEvent(Notify);
 	}
@@ -109,17 +124,30 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	
 	private function OnComplete(event:Event):void
 	{
-		AssetLoader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
-		AssetLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
-		AssetLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,OnComplete);
-		AssetLoader.contentLoaderInfo.removeEventListener(Event.OPEN,OnStart);
-		_AssetLibArray.push(AssetLoader);
-		AssetLoader = null;
+//		AssetLoader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
+//		AssetLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
+//		AssetLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,OnComplete);
+//		AssetLoader.contentLoaderInfo.removeEventListener(Event.OPEN,OnStart);
+//		_AssetLibArray.push(AssetLoader);
+//		AssetLoader = null;
+		
+		var Data:ByteArray = new ByteArray();
+		Data.writeBytes(ByteArray(Loader.data),0,ByteArray(Loader.data).length);
+		Data.position = 0;
+		var Parse:Swf = new Swf(new ByteStream(Data));
+		_AssetLibArray.push(Parse);
 		
 		if(DownloadQueue.length == 0)
 		{
 			var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
 			dispatchEvent(Notify);
+			
+			Loader.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
+			Loader.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
+			Loader.removeEventListener(Event.COMPLETE,OnComplete);
+			Loader.removeEventListener(Event.OPEN,OnStart);
+			Loader = null;
+			
 			return;
 		}
 		//继续加载下一个资源
@@ -147,38 +175,48 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	
 	public function Dispose():void
 	{
-		if(_AssetLibArray && _AssetLibArray.length > 0)
-		{
-			var LibLoader:Loader = null;
-			while((LibLoader = _AssetLibArray.pop()) as Loader != null)
-			{
-				if(LibLoader)
-				{
-					LibLoader.unload();
-				}
-			}
-		}
+//		if(_AssetLibArray && _AssetLibArray.length > 0)
+//		{
+//			var LibLoader:Loader = null;
+//			while((LibLoader = _AssetLibArray.pop()) as Loader != null)
+//			{
+//				if(LibLoader)
+//				{
+//					LibLoader.unload();
+//				}
+//			}
+//		}
 	}
 	
 	public function FindAssetById(Id:String):Object
 	{
-		var Lib:Loader = null;
-		//检查缓存是否有映射
-		if(AssetDictionary.hasOwnProperty(Id))
+		var Lib:Swf = null;
+		
+		for each(Lib in _AssetLibArray)
 		{
-			return AssetDictionary[Id];
-		}
-		for(var Idx:int=0; Idx<_AssetLibArray.length; Idx++)
-		{
-			Lib = _AssetLibArray[Idx];
-			if(Lib.contentLoaderInfo.applicationDomain.hasDefinition(Id))
-			{
-				var Prototype:Class = Lib.contentLoaderInfo.applicationDomain.getDefinition(Id) as Class;
-				AssetDictionary[Id] = new Prototype();
-				return AssetDictionary[Id];
+			if(Lib.IsContain(Id))
+			{				
+				return Lib.FindObjectById(Id);
 			}
 		}
 		return null;
+//		var Lib:Loader = null;
+//		//检查缓存是否有映射
+//		if(AssetDictionary.hasOwnProperty(Id))
+//		{
+//			return AssetDictionary[Id];
+//		}
+//		for(var Idx:int=0; Idx<_AssetLibArray.length; Idx++)
+//		{
+//			Lib = _AssetLibArray[Idx];
+//			if(Lib.contentLoaderInfo.applicationDomain.hasDefinition(Id))
+//			{
+//				var Prototype:Class = Lib.contentLoaderInfo.applicationDomain.getDefinition(Id) as Class;
+//				AssetDictionary[Id] = new Prototype();
+//				return AssetDictionary[Id];
+//			}
+//		}
+//		return null;
 	}
 	
 	public function FindBitmapById(Id:String):Bitmap

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="GBK"?>
+<Preference version="0.0.1">
+	<AssetLibrarys>
+		<AssetLibrary id="scene1_0"
+			url="D:\\Code\\Flash\\MapAssistant\\bin-debug\\Resources\\scene1_0.swf" />
+	</AssetLibrarys>
+	
+	<Sprites>
+		<Sprite url = "D:\\1.sprp" />
+	</Sprites>
+	
+	<Scenes>
+		<Scene name="" url="" />
+ 	</Scenes>
+	
+	<Modules>
+		<Module name="scene1_0" id="scene1_0"
+			url="D:\\Code\\Flash\\MapAssistant\\bin-debug\\Resources\\scene1_0.swf"
+			format="0" />
+	</Modules>
+</Preference>

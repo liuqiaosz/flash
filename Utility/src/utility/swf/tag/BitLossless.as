@@ -42,13 +42,14 @@ package utility.swf.tag
 					var Blue:int = 0;
 					ColorMap = new Vector.<uint>();
 					var Len:int = _ColorTableSize + 1;
+					
 					for(var Idx:int = 0; Idx<Len; Idx++)
 					{
 						Red = ColorTable.ReadUI8();
 						Green = ColorTable.ReadUI8();
 						Blue = ColorTable.ReadUI8();
-						
 						ColorMap[Idx] = ColorCode.ColorARGB(255,Red,Green,Blue);
+						
 						TotalSize -= 3;
 					}
 					

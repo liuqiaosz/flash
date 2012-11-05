@@ -55,6 +55,7 @@
     <classEntry path="utility.bitmap.png.PNGDecoder"/>
     <classEntry path="utility.bitmap.png.BlockGenericText"/>
     <classEntry path="utility.CRC"/>
+    <classEntry path="utility.RGBA"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

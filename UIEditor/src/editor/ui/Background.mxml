@@ -71,6 +71,11 @@
 				Control.BackgroundImageFill = event.newIndex;
 			}
 			
+			protected function ImagePackTypeChanged(event:IndexChangeEvent):void
+			{
+				Control.ImagePack = Boolean(event.newIndex);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -91,6 +96,17 @@
 				<fx:String>平铺</fx:String>
 			</s:ArrayCollection>
 		</s:ComboBox>
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="资源映射" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox width="90" selectedIndex="1" change="ImagePackTypeChanged(event)" id="ImagePackType">
+			<s:ArrayCollection>
+				<fx:String>外挂</fx:String>
+				<fx:String>打包</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+		<s:Image smooth="true" source="@Embed('../assets/Help.png')" buttonMode="true" toolTip="生成组件模型时通过该选项决定是否将图形资源打包进模型数据(打包会大幅度增加组件模型文件体积)"/>
 	</s:HGroup>
 	
 	<s:HGroup>
