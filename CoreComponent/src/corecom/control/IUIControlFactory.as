@@ -5,6 +5,6 @@ package corecom.control
 	public interface IUIControlFactory
 	{
 		function Encode(Control:IUIControl):ByteArray;
-		function Decode(Data:ByteArray):IUIControl;
+		function Decode(Data:ByteArray):Vector.<UIControl>;
 	}
 }

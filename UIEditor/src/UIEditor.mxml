@@ -35,7 +35,9 @@
 			import corecom.control.UITextInput;
 			import corecom.control.UIWindow;
 			import corecom.control.asset.ControlAssetManager;
+			import corecom.control.event.DownloadEvent;
 			import corecom.control.event.EditModeEvent;
+			import corecom.control.event.UIControlEvent;
 			import corecom.control.style.ButtonStyle;
 			import corecom.control.style.IStyle;
 			import corecom.control.style.SliderStyle;
@@ -47,7 +49,6 @@
 			import editor.event.NotifyEvent;
 			import editor.model.ComponentModel;
 			import editor.model.ModelFactory;
-			import editor.model.asset.AssetFactory;
 			import editor.model.asset.AssetLibrary;
 			import editor.model.asset.IAssetLibrary;
 			import editor.model.asset.SwfAssetLibrary;
@@ -150,17 +151,8 @@
 			{
 				this.nativeWindow.x = Screen.mainScreen.visibleBounds.width/2 - this.width/2;
 				this.nativeWindow.y = Screen.mainScreen.visibleBounds.height/2 - this.height/2;
-//				var SwfFile:Swf = new Swf();
-//				SwfFile.Version = 9;
-//				SwfFile.Compress = true;
-				
-				//				var Model:ByteArray = new ByteArray();
-				//				var ModelFile:File = new File("D:\\fff.aaa.mod");
-				//				EditWorkspace.DecodeModel(ModelFile);
 				WorkspaceContainer.enabled = true;
-				
 				EditorWindow.closeButton.visible = false;
-				
 				stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
 					if(event.keyCode == Keyboard.DELETE)
 					{
@@ -170,41 +162,8 @@
 						}
 					}
 				});
-				//WorkspaceContainer.closeButton.visible = false;
-//				AssetLibraryTree.addItem({Name:"1"});
-//				AssetLibraryTree.addItem({Name:"2"});
-//				AssetLibraryTree.addItem({Name:"3"});
-//				AssetLibraryTree.addItem({Name:"1"});
-//				AssetLibraryTree.addItem({Name:"2"});
-//				AssetLibraryTree.addItem({Name:"3"});
-//				AssetLibraryTree.addItem({Name:"1"});
-//				AssetLibraryTree.addItem({Name:"2"});
-//				AssetLibraryTree.addItem({Name:"3"});
-//				AssetLibraryTree.addItem({Name:"1"});
-//				AssetLibraryTree.addItem({Name:"2"});
-//				AssetLibraryTree.addItem({Name:"3"});
-				//AssetLibraryTree.addItem();
-				//flash.net.registerClassAlias("corecom.control.style",SimpleButtonSkin);
-				//				var Reader:FileStream = new FileStream();
-				//				Reader.open(ModelFile,FileMode.READ);
-				//				
-				//				Reader.readBytes(Model,0,Reader.bytesAvailable);
-				//				Reader.close();
-				//				Model.position = 0;
-				//				var Control:UIControl = ModelFactory.Instance.Decode(Model);
-				//				
-				//				var c:UIComponent = new UIComponent();
-				//				c.addChild(Control);
-				//				addElement(c);C
-//				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//				
-//					NotificationManager.Instance.Show("Test",1000);
-//				});
-				
 				InitializeAssetLib();
-				
 				InitializeModelLib();
-				//SwfLoad();
 				
 			}
 			
@@ -217,6 +176,8 @@
 			{
 				var Libs:Array = Preference.Instance.AssetPath;
 				var Directory:File = null;
+				//ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS
+				var Url:Array = [];
 				for(var Idx:int=0; Idx<Libs.length; Idx++)
 				{
 					var Path:String = Libs[Idx];
@@ -227,15 +188,31 @@
 						for(var Index:int=0; Index<FileList.length; Index++)
 						{
 							var ChildFile:File = FileList[Index];
-							var Lib:IAssetLibrary = AssetFactory.Instance.OpenLibrary(ChildFile.nativePath);
-							if(Lib)
-							{
-								Globals.AppendAssetLibrary(Lib);
-								AssetLibraryTree.addItem(Lib);
-							}
+							//var Lib:IAssetLibrary = AssetFactory.Instance.OpenLibrary(ChildFile.nativePath);
+							Url.push(ChildFile.nativePath);
+//							if(Lib)
+//							{
+//								Globals.AppendAssetLibrary(Lib);
+//								AssetLibraryTree.addItem(Lib);
+//							}
 						}
 					}
 				}
+				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
+				ControlAssetManager.Instance.Download(Url);
+			}
+			
+			private function AssetLibraryInitalized(event:DownloadEvent):void
+			{
+				var Vec:Vector.<Swf> = ControlAssetManager.Instance.AssetLibrary;
+				
+				for each(var Lib:Swf in Vec)
+				{
+					var Item:SwfAssetLibrary = new SwfAssetLibrary(Lib);
+					Globals.AppendAssetLibrary(Item);
+					AssetLibraryTree.addItem(Item);
+				}
+				ControlAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
 			}
 			
 			/**
@@ -271,44 +248,44 @@
 			
 			private var Total:int = 10;
 			private var ModelFile:FileReference = null;
-			private function MenuSelected(event:MenuEvent):void 
-			{ 
-				// Don't open the Alert for a menu bar item that  
-				// opens a popup submenu. 
-//				if (event.item.@data == "Create") 
-//				{ 
-//					PopupWindow = CreateWindowByClass(NewComponentProfile);
+//			private function MenuSelected(event:MenuEvent):void 
+//			{ 
+//				// Don't open the Alert for a menu bar item that  
+//				// opens a popup submenu. 
+////				if (event.item.@data == "Create") 
+////				{ 
+////					PopupWindow = CreateWindowByClass(NewComponentProfile);
+////					PopUpManager.addPopUp(PopupWindow,this,true);
+////					PopUpManager.centerPopUp(PopupWindow);
+////					//WorkspaceContainer.closeButton.visible = true;
+////					WindowState = 0;
+////				}
+////				else if (event.item.@data == "Open") 
+////				{
+////					ModelFile = new FileReference();
+////					var Filter:FileFilter = new FileFilter("组件模型","*.mod");
+////					ModelFile.browse([Filter]);
+////					ModelFile.addEventListener(Event.SELECT,OnModelFileSelected);
+////					//WorkspaceContainer.closeButton.visible = true;
+////				}
+////				else if(event.item.@data == "CreateAsset")
+////				{
+////					PopupWindow = CreateWindowByClass(NewAssetLibrary);
+////					PopUpManager.addPopUp(PopupWindow,this,true);
+////					PopUpManager.centerPopUp(PopupWindow);
+////					PopupWindow.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
+////					//创建资源库
+////					WindowState = 1;
+////				}
+//				if(event.item.@data == "Preference")
+//				{
+//					PopupWindow = CreateWindowByClass(PreferenceWindow);
 //					PopUpManager.addPopUp(PopupWindow,this,true);
 //					PopUpManager.centerPopUp(PopupWindow);
-//					//WorkspaceContainer.closeButton.visible = true;
-//					WindowState = 0;
-//				}
-//				else if (event.item.@data == "Open") 
-//				{
-//					ModelFile = new FileReference();
-//					var Filter:FileFilter = new FileFilter("组件模型","*.mod");
-//					ModelFile.browse([Filter]);
-//					ModelFile.addEventListener(Event.SELECT,OnModelFileSelected);
-//					//WorkspaceContainer.closeButton.visible = true;
-//				}
-//				else if(event.item.@data == "CreateAsset")
-//				{
-//					PopupWindow = CreateWindowByClass(NewAssetLibrary);
-//					PopUpManager.addPopUp(PopupWindow,this,true);
-//					PopUpManager.centerPopUp(PopupWindow);
-//					PopupWindow.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
 //					//创建资源库
-//					WindowState = 1;
+//					//WindowState = 2;
 //				}
-				if(event.item.@data == "Preference")
-				{
-					PopupWindow = CreateWindowByClass(PreferenceWindow);
-					PopUpManager.addPopUp(PopupWindow,this,true);
-					PopUpManager.centerPopUp(PopupWindow);
-					//创建资源库
-					//WindowState = 2;
-				}
-			} 
+//			} 
 			
 			private function OpenPreferenceWindow(event:MouseEvent):void
 			{
@@ -808,12 +785,14 @@
 				{
 					//清除该事件引用,因为响应事件的同时窗口已经关闭
 					PopupWindow.removeEventListener(NotifyEvent.IMPORTSWF,AssetLibraryCreated);
-					var Lib:IAssetLibrary = AssetFactory.Instance.OpenLibrary(event.Message);
-					if(Lib)
-					{
-						Globals.AppendAssetLibrary(Lib);
-						AssetLibraryTree.addItem(Lib);
-					}
+					ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
+					//var Lib:IAssetLibrary = AssetFactory.Instance.OpenLibrary(event.Message);
+					ControlAssetManager.Instance.PushQueue(event.Message);
+//					if(Lib)
+//					{
+//						Globals.AppendAssetLibrary(Lib);
+//						AssetLibraryTree.addItem(Lib);
+//					}
 				}
 				catch(Err:Error)
 				{
@@ -821,6 +800,14 @@
 				}
 				
 				NotificationManager.Instance.Show("导入SWF完成");
+			}
+			
+			private function OnImportSwfSuccess(event:DownloadEvent):void
+			{
+				var Lib:SwfAssetLibrary = new SwfAssetLibrary(event.CurrentSwf);
+				Globals.AppendAssetLibrary(Lib);
+				AssetLibraryTree.addItem(Lib);
+				ControlAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
 			}
 			
 			/**

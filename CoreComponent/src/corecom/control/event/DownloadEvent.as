@@ -1,11 +1,14 @@
 package corecom.control.event
 {
+	import utility.swf.Swf;
+
 	public class DownloadEvent extends UIControlEvent
 	{
 		public static const DOWNLOAD_START:String = "DownloadStart";
 		public static const DOWNLOAD_PROGRESS:String = "DownloadPogress";
 		public static const DOWNLOAD_ERROR:String = "DownloadError";
 		public static const DOWNLOAD_SUCCESS:String = "DownloadSuccess";
+		public static const DOWNLOAD_SINGLETASK_SUCCESS:String = "DownloadSingleTaskSuccess";
 		
 		//加载文件总数
 		private var _Total:int = 0;
@@ -58,14 +61,14 @@ package corecom.control.event
 			return _LoadedBytes;
 		}
 		
-		private var _Message:String = "";
-		public function set Message(Value:String):void
+		private var _CurrentSwf:Swf = null;
+		public function set CurrentSwf(Value:Swf):void
 		{
-			_Message = Value;
+			_CurrentSwf = Value;
 		}
-		public function get Message():String
+		public function get CurrentSwf():Swf
 		{
-			return _Message;
+			return _CurrentSwf;
 		}
 		public function DownloadEvent(Type:String,Bubbles:Boolean = false)
 		{

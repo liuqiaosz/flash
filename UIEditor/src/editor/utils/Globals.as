@@ -43,5 +43,19 @@ package editor.utils
 			}
 			return null;
 		}
+		
+		public static function FindAssetByAssetId(Id:String):Asset
+		{
+			var Library:IAssetLibrary = null;
+			
+			for each(Library in _AssetLibrarys)
+			{
+				if(Library.ContainId(Id))
+				{
+					return Library.FindAssetById(Id);
+				}
+			}
+			return null;
+		}
 	}
 }

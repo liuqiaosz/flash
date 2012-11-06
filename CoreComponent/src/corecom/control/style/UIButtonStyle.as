@@ -1,6 +1,6 @@
 package corecom.control.style
 {
-	import corecom.control.FontTextFactory;
+	//import corecom.control.FontTextFactory;
 	
 	import flash.utils.ByteArray;
 

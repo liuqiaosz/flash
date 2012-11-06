@@ -22,6 +22,7 @@ package corecom.control.asset
 		}
 	}
 }
+import corecom.control.UIControl;
 import corecom.control.asset.IControlAssetManager;
 import corecom.control.event.DownloadEvent;
 
@@ -62,6 +63,12 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	private var _Total:int = 0;
 	public function ControlAssetManagerImpl()
 	{
+		Loader = new URLLoader();
+		Loader.dataFormat = URLLoaderDataFormat.BINARY;
+		Loader.addEventListener(ProgressEvent.PROGRESS,OnProgress);
+		Loader.addEventListener(IOErrorEvent.IO_ERROR,OnError);
+		Loader.addEventListener(Event.COMPLETE,OnComplete);
+		Loader.addEventListener(Event.OPEN,OnStart);
 	}
 	
 	public function Download(Uri:Array):void
@@ -69,7 +76,86 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 		if(Uri && Uri.length > 0)
 		{
 			_Total = Uri.length;
-			DownloadQueue = Uri;
+			DownloadQueue = DownloadQueue.concat(Uri);
+			StartDownloadQueue();
+		}
+	}
+	
+	public function get AssetLibrary():Vector.<Swf>
+	{
+		return _AssetLibArray;
+	}
+	
+	private var HookDict:Dictionary = new Dictionary();
+	public function AssetHookRegister(Id:String,Target:UIControl):void
+	{
+		for each(var Lib:Swf in _AssetLibArray)
+		{
+			if(Lib.ClassKeyset.indexOf(Id) >= 0)
+			{
+				//当前库资源已加载
+				Target.AssetComleteNotify(Id,Lib.FindObjectById(Id));
+				return;
+			}
+		}
+		var Vec:Vector.<UIControl> = null;
+		if(Id in HookDict)
+		{
+			Vec = HookDict[Id];
+			if(Vec.indexOf(Target) < 0)
+			{
+				Vec.push(Target);
+			}
+		}
+		else
+		{
+			Vec = new Vector.<UIControl>();
+			Vec.push(Target);
+			HookDict[Id] = Vec;
+		}
+	}
+	
+	/**
+	 * 资源回调注册解除
+	 * 
+	 * 
+	 **/
+	public function AssetHookRemove(Id:String,Target:UIControl):void
+	{
+		if(Id in HookDict)
+		{
+			var Vec:Vector.<UIControl> = HookDict[Id];
+			if(Vec.indexOf(Target))
+			{
+				Vec.splice(Vec.indexOf(Target),1);
+			}
+		}
+	}
+	
+	private function CheckHook(NewLibrary:Swf):void
+	{
+		var Key:String = "";
+		var Vec:Vector.<UIControl> = null;
+		var Hook:UIControl = null;
+		for(Key in HookDict)
+		{
+			if(NewLibrary.IsContain(Key))
+			{
+				var Obj:Object = NewLibrary.FindObjectById(Key);
+				Vec = HookDict[Key];
+				for each(Hook in Vec)
+				{
+					Hook.AssetComleteNotify(Key,Obj);
+				}
+			}
+		}
+	}
+	
+	public function PushQueue(Url:String):void
+	{
+		DownloadQueue.push(Url);
+		if(!_Busy)
+		{
 			StartDownloadQueue();
 		}
 	}
@@ -79,19 +165,8 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	 **/
 	protected function StartDownloadQueue():void
 	{
+		_Busy = true;
 		_LibraryLoadingUrl = DownloadQueue.pop();
-		Loader = new URLLoader();
-		Loader.dataFormat = URLLoaderDataFormat.BINARY;
-		//AssetLoader = new Loader();
-//		AssetLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,OnProgress);
-//		AssetLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,OnError);
-//		AssetLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,OnComplete);
-//		AssetLoader.contentLoaderInfo.addEventListener(Event.OPEN,OnStart);
-//		AssetLoader.load(new URLRequest(_LibraryLoadingUrl));
-		Loader.addEventListener(ProgressEvent.PROGRESS,OnProgress);
-		Loader.addEventListener(IOErrorEvent.IO_ERROR,OnError);
-		Loader.addEventListener(Event.COMPLETE,OnComplete);
-		Loader.addEventListener(Event.OPEN,OnStart);
 		Loader.load(new URLRequest(_LibraryLoadingUrl));
 	}
 	
@@ -102,8 +177,6 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 		var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_START);
 		Notify.CurrentIndex = _LibraryLoading;
 		Notify.CurrentUri = _LibraryLoadingUrl;
-		//Notify.LoadedBytes = AssetLoader.contentLoaderInfo.bytesLoaded;
-		//Notify.TotalBytes = AssetLoader.contentLoaderInfo.bytesTotal;
 		Notify.LoadedBytes = Loader.bytesLoaded;
 		Notify.TotalBytes = Loader.bytesTotal;
 		Notify.Total = _Total;
@@ -130,23 +203,33 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 //		AssetLoader.contentLoaderInfo.removeEventListener(Event.OPEN,OnStart);
 //		_AssetLibArray.push(AssetLoader);
 //		AssetLoader = null;
-		
 		var Data:ByteArray = new ByteArray();
 		Data.writeBytes(ByteArray(Loader.data),0,ByteArray(Loader.data).length);
 		Data.position = 0;
 		var Parse:Swf = new Swf(new ByteStream(Data));
+
+		Parse.FileName = _LibraryLoadingUrl.substring(_LibraryLoadingUrl.lastIndexOf("\\") + 1);
 		_AssetLibArray.push(Parse);
+		CheckHook(Parse);
+		
+		var TaskNotify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS);
+		TaskNotify.CurrentSwf = Parse;
+		TaskNotify.CurrentUri = _LibraryLoadingUrl;
+		TaskNotify.CurrentIndex = _LibraryLoading;
+		
+		dispatchEvent(TaskNotify);
 		
 		if(DownloadQueue.length == 0)
 		{
 			var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
 			dispatchEvent(Notify);
-			
-			Loader.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
-			Loader.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
-			Loader.removeEventListener(Event.COMPLETE,OnComplete);
-			Loader.removeEventListener(Event.OPEN,OnStart);
-			Loader = null;
+			_Busy = false;
+//			
+//			Loader.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
+//			Loader.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
+//			Loader.removeEventListener(Event.COMPLETE,OnComplete);
+//			Loader.removeEventListener(Event.OPEN,OnStart);
+//			Loader = null;
 			
 			return;
 		}

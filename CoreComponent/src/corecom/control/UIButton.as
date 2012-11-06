@@ -1,5 +1,6 @@
 package corecom.control
 {
+	import corecom.control.asset.ControlAssetManager;
 	import corecom.control.event.UIControlEvent;
 	import corecom.control.style.ButtonStyle;
 	import corecom.control.style.IStyle;
@@ -7,9 +8,8 @@ package corecom.control
 	import corecom.control.style.StyleShape;
 	import corecom.control.utility.ButtonState;
 	
+	import flash.display.Bitmap;
 	import flash.events.MouseEvent;
-	import flash.text.TextField;
-	import flash.text.engine.TextLine;
 	import flash.utils.ByteArray;
 	
 	import utility.Tools;
@@ -36,8 +36,8 @@ package corecom.control
 		//按钮状态
 		protected var _State:uint = ButtonState.NORMAL;
 		
-		protected var _Text:TextLine = null;
-		
+		//protected var _Text:TextLine = null;
+		protected var _Text:UILabel = null;
 		public function UIButton(Skin:Class = null)
 		{
 			var StyleSkin:Class = Skin ? Skin:ButtonStyle;
@@ -55,15 +55,15 @@ package corecom.control
 		{
 			super.RegisterEvent();
 			addEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
-			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
+			addEventListener(MouseEvent.MOUSE_MOVE,EventMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 		}
 		override protected function RemoveEvent():void
 		{
 			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
-			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
-			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
+			removeEventListener(MouseEvent.MOUSE_MOVE,EventMouseOver);
+			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut); 
 			removeEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 		}
 		
@@ -76,12 +76,20 @@ package corecom.control
 		override public function set width(value:Number):void
 		{
 			super.width = value;
+			if(_Text)
+			{
+				_Text.width = value;
+			}
 			//_MouseOverStyle.Width = value;
 			//_MouseDownStyle.Width = value;
 		}
 		override public function set height(value:Number):void
 		{
 			super.height = value;
+			if(_Text)
+			{
+				_Text.height = value;
+			}
 			//_MouseOverStyle.Height = value;
 			//_MouseDownStyle.Height = value;
 		}
@@ -109,6 +117,7 @@ package corecom.control
 		public function set State(Value:uint):void
 		{
 			_State = Value;
+			trace("State[" + _State + "]");
 			switch(_State)
 			{
 				case ButtonState.DOWN:
@@ -120,6 +129,7 @@ package corecom.control
 				default:
 					_Style = _NormalStyle;
 			}
+			
 			StyleUpdate();
 		}
 		
@@ -130,11 +140,20 @@ package corecom.control
 			_TextValue = V;
 			if(V != "")
 			{
-				if(null != _Text && this.contains(_Text))
+//				if(null != _Text && this.contains(_Text))
+//				{
+//					removeChild(_Text);
+//				}
+//				_Text = FontTextFactory.Instance.TextByStyle(V,_Style.FontTextStyle);
+				if(null == _Text)
 				{
-					removeChild(_Text);
+					_Text = new UILabel(_TextValue);
+					_Text.FontColor = _Style.FontTextStyle.FontColor;
+					_Text.FontSize = _Style.FontTextStyle.FontSize;
+					_Text.width = width;
+					_Text.height = height;
+					addChild(_Text);
 				}
-				_Text = FontTextFactory.Instance.TextByStyle(V,_Style.FontTextStyle);
 				Update();
 			}
 			else
@@ -154,7 +173,8 @@ package corecom.control
 		public function set FontSize(Value:int):void
 		{
 			_Style.FontTextStyle.FontSize = Value;
-			Text = _TextValue;
+			_Text.FontSize = Value;
+			//Text = _TextValue;
 		}
 		public function get FontSize():int
 		{
@@ -163,8 +183,10 @@ package corecom.control
 		
 		public function set FontColor(Value:uint):void
 		{
+			
 			_Style.FontTextStyle.FontColor = Value;
-			Text = _TextValue;
+			_Text.FontColor = Value;
+			//Text = _TextValue;
 		}
 		public function get FontColor():uint
 		{
@@ -184,8 +206,10 @@ package corecom.control
 				{
 					addChild(_Text);
 				}
-				_Text.y = ((this.height - _Text.textHeight) / 2) +  _Text.textHeight;
-				_Text.x = ((this.width - _Text.textWidth) / 2);
+				//_Text.y = ((this.height - _Text.textHeight) / 2) +  _Text.textHeight;
+				//_Text.x = ((this.width - _Text.textWidth) / 2);
+				_Text.x = ((this.width - _Text.TextWidth) / 2);
+				_Text.y = ((this.height - _Text.TextHeight) / 2);
 			}
 		}
 		
@@ -244,6 +268,31 @@ package corecom.control
 			{
 				Data.writeMultiByte(_TextValue,"cn-gb");
 			}
+		}
+		
+		override public function set ImagePack(Value:Boolean):void
+		{
+			_MouseOverStyle.ImagePack = _MouseDownStyle.ImagePack = _NormalStyle.ImagePack = Value;
+		}
+		
+		override public function AssetComleteNotify(Id:String,Asset:Object):void
+		{
+			//this.BackgroundImage = Asset as Bitmap;
+			
+			if(_NormalStyle.BackgroundImageId == Id)
+			{
+				_NormalStyle.BackgroundImage = Asset as Bitmap;
+			}
+			else if(_MouseOverStyle.BackgroundImageId == Id)
+			{
+				_MouseOverStyle.BackgroundImage = Asset as Bitmap;
+			}
+			else if(_MouseDownStyle.BackgroundImageId == Id)
+			{
+				_MouseDownStyle.BackgroundImage = Asset as Bitmap;
+			}
+			
+			ControlAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
 		}
 	}
 }

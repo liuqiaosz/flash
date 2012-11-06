@@ -21,5 +21,6 @@ package editor.model.asset
 		function AddBitmapFromByteArray(Pixels:ByteArray,ImgWidth:uint,ImgHeight:uint):Asset;
 		function AddBitmap(Image:Bitmap):Asset;
 		function DeleteAsset(Item:Asset):void;
+		function ContainId(Id:String):Boolean;
 	}
 }

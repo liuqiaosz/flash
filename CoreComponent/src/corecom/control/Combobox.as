@@ -91,9 +91,10 @@ package corecom.control
 }
 import corecom.control.ComboboxItem;
 import corecom.control.Container;
-import corecom.control.FontTextFactory;
 import corecom.control.LayoutConstant;
 import corecom.control.UIControl;
+import corecom.control.UILabel;
+import corecom.control.UITextBase;
 import corecom.control.style.FontStyle;
 
 import flash.display.Bitmap;
@@ -191,7 +192,8 @@ class ComboItemList extends Container
 class ComboListItem extends Container
 {
 	private var _Icon:Bitmap = null;
-	private var _Line:TextLine;
+	//private var _Line:TextLine;
+	private var _Line:UITextBase = null;
 	private var _Item:ComboboxItem = null;
 	public function ComboListItem(Data:ComboboxItem,Img:Bitmap = null)
 	{
@@ -199,21 +201,23 @@ class ComboListItem extends Container
 		this.Layout = LayoutConstant.HORIZONTAL;
 		this.BorderThinkness = 0;
 		_Item = Data;
-		_Line = FontTextFactory.Instance.TextByStyle(_Item.Label,Style.FontTextStyle);
+		//_Line = FontTextFactory.Instance.TextByStyle(_Item.Label,Style.FontTextStyle);
+		_Line = new UITextBase(null,_Item.Label);
 		
 		addChild(_Line);
-		_Line.y += _Line.textHeight;
+		//_Line.y += _Line.textHeight;
 	}
 	
 	public function set FontSize(Size:int):void
 	{
-		if(_Line && contains(_Line))
-		{
-			removeChild(_Line);
-		}
+//		if(_Line && contains(_Line))
+//		{
+//			removeChild(_Line);
+//		}
 		this.Style.FontTextStyle.FontSize = Size;	
-		_Line = FontTextFactory.Instance.TextByStyle(_Item.Label,Style.FontTextStyle);
-		_Line.y += _Line.textHeight;
+		//_Line = FontTextFactory.Instance.TextByStyle(_Item.Label,Style.FontTextStyle);
+		_Line.FontSize = Size;
+		//_Line.y += _Line.textHeight;
 		addChild(_Line);
 	}
 	
@@ -232,29 +236,33 @@ class ComboListItem extends Container
 class ComboTextField extends UIControl
 {
 	private var _TextValue:String = "";
-	private var _TextLine:TextLine = null;
-	
+	//private var _TextLine:TextLine = null;
+	private var _TextLine:UILabel = null;
 	public function ComboTextField():void
 	{
 		super();
 		this.BorderThinkness = 0;
 		this.mouseEnabled = false;
+		_TextLine = new UILabel();
+		addChild(_TextLine);
 	}
 	
 	public function set Text(Value:String):void
 	{
-		if(null != _TextLine && contains(_TextLine))
-		{
-			removeChild(_TextLine);
-		}
+//		if(null != _TextLine && contains(_TextLine))
+//		{
+//			removeChild(_TextLine);
+//		}
 		
 		_TextValue = Tools.ReplaceAll(Value," ","");
 		if(_TextValue != "")
 		{
-			_TextLine = FontTextFactory.Instance.TextByStyle(_TextValue,_Style.FontTextStyle);
-			_TextLine.y += _TextLine.textHeight;
+			//_TextLine = FontTextFactory.Instance.TextByStyle(_TextValue,_Style.FontTextStyle);
+			_TextLine.Text = _TextValue;
+			
+			//_TextLine.y += _TextLine.textHeight;
 			_TextLine.x = 5;
-			addChild(_TextLine);
+			//addChild(_TextLine);
 		}
 	}
 }

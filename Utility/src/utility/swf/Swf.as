@@ -19,7 +19,15 @@ package utility.swf
 	{
 		//private var _SwfVersion:int = 9;
 		//private var _Compress:Boolean = true;
-		
+		private var _FileName:String = "";
+		public function set FileName(Value:String):void
+		{
+			_FileName = Value;
+		}
+		public function get FileName():String
+		{
+			return _FileName;
+		}
 		private var _Stream:ByteStream = null;
 		private var _Header:SwfHeader = null;
 		private var _TagArray:Vector.<GenericTag> = null;
@@ -201,10 +209,17 @@ package utility.swf
 					{
 						Class = Symbol.FindSymbolClassById(ChildTag.TagId);
 						_TagDictionary[Class] = ChildTag;
+						_ClassVec.push(Class);
 					}
 				}
 			}
 			
+		}
+		
+		protected var _ClassVec:Vector.<String> = new Vector.<String>();
+		public function get ClassKeyset():Vector.<String>
+		{
+			return _ClassVec;
 		}
 		
 		/**

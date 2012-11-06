@@ -20,19 +20,16 @@ package utility.swf.tag
 		
 		override public function Decode(Stream:ByteStream):void
 		{
-			
 			_TagId = Stream.ReadUI16();
 			_BitFormat = Stream.ReadUI8();
 			_Width = Stream.ReadUI16();
 			_Height = Stream.ReadUI16();
 			if(_BitFormat == 3)
 			{
-				//_ColorTableSize = Stream.ReadUI8();
 				_ColorTableSize = Stream.ReadUI8();
-				trace("ColorTable [" + _ColorTableSize + "]");
 				if(_ColorTableSize > 0)
 				{
-					var TotalSize:int = ((_ColorTableSize + 1) * 3) + (_Width * _Height);
+					var PadWidth:int = _Width + (4 - (_Width % 4));
 					var ColorTable:ByteStream = Stream.ReadBytes();
 					ColorTable.Uncompress();
 					var BitData:BitmapData = new BitmapData(_Width,_Height);
@@ -49,23 +46,20 @@ package utility.swf.tag
 						Green = ColorTable.ReadUI8();
 						Blue = ColorTable.ReadUI8();
 						ColorMap[Idx] = ColorCode.ColorARGB(255,Red,Green,Blue);
-						
-						TotalSize -= 3;
 					}
-					
+					var Index:int = 0;
 					ColorPixel = new Vector.<int>();
-					while(TotalSize > 0)
+					for (var i:int = 0; i < PadWidth * this._Height; i++)
 					{
-						ColorPixel.push(ColorTable.ReadUI8());
-						TotalSize--;
+						if(ColorTable.Available > 0)
+						{
+							Index = ColorTable.ReadUI8();
+							if ((i % PadWidth) < this._Width)
+							{
+								this.ColorPixel.push(Index);
+							}
+						}
 					}
-
-					trace("Width[" + _Width + "] Height[" + _Height + "]");
-					trace("Bit Size[" + (_Width * _Height) + "]");
-					trace("Map Size[" + ColorMap.length + "]");
-					trace("Pixel[" + ColorPixel.length + "]");
-					trace("Remain[" + ColorTable.Available + "]");
-					trace("-------------------------------------");
 				}
 			}
 			else if(_BitFormat == 4 || _BitFormat == 5)
@@ -100,6 +94,10 @@ package utility.swf.tag
 							{
 								for(Widx=0; Widx<_Width; Widx++)
 								{
+									if(seek >= ColorPixel.length)
+									{
+										break;
+									}
 									var Index:int = ColorPixel[seek];
 									if(Index >= 0 && Index < ColorMap.length)
 									{
@@ -116,10 +114,22 @@ package utility.swf.tag
 							_Image = new Bitmap(BitData);
 						}
 						break;
+					case 4:
+						BitData.lock();
+						for(Hidx=0; Hidx<_Height; Hidx++)
+						{
+							for(Widx=0; Widx<_Width; Widx++)
+							{
+								//RGB555 corvert RGB8888
+								BitData.setPixel32(Widx,Hidx,ColorCode.RGB555ToRGB8888(_BitmapBytes.ReadI16()).Pixel);
+							}
+						}
+						BitData.unlock();
+						break;
 					default:
 						var Pixels:ByteArray = _BitmapBytes.Bytes;
 						Pixels.position = 0;
-						Pixels.endian = Endian.BIG_ENDIAN;
+						//Pixels.endian = Endian.BIG_ENDIAN;
 						BitData.lock();
 						for(Hidx=0; Hidx<_Height; Hidx++)
 						{

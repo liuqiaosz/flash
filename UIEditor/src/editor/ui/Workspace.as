@@ -11,6 +11,7 @@ package editor.ui
 	import corecom.control.UIPanel;
 	import corecom.control.event.ControlEditModeEvent;
 	import corecom.control.event.EditModeEvent;
+	import corecom.control.event.UIControlEvent;
 	import corecom.control.utility.Utils;
 	
 	import editor.code.ClassFactory;
@@ -76,6 +77,7 @@ package editor.ui
 			{
 				BuildWorkspace(Profile);
 			}
+			
 			
 			//this.addEventListener(ControlEditModeEvent.CHILDSELECTED,OnControlChildSelect);
 			

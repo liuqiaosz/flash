@@ -30,6 +30,8 @@ import flash.utils.ByteArray;
 import mx.controls.Alert;
 import mx.messaging.messages.CommandMessage;
 
+import utility.System;
+
 class PreferenceImpl implements IPreference
 {
 	public function PreferenceImpl()
@@ -37,44 +39,7 @@ class PreferenceImpl implements IPreference
 		var PreferenceFile:File = new File(Common.INSTALL_DIR + Common.PREFERENCE);
 		if(!PreferenceFile.exists)
 		{
-			var Writer:FileStream = null;
-			try
-			{
-				Writer = new FileStream();
-				Writer.open(PreferenceFile,FileMode.WRITE);
-				var Value:String = Common.OUTPUT;
-				Writer.writeShort(Value.length);
-				Writer.writeUTFBytes(Value);
-				
-				Value = Common.MODEL;
-				Writer.writeShort(Value.length);
-				Writer.writeUTFBytes(Value);
-				
-				Value = Common.ASSETLIB;
-				Writer.writeShort(Value.length);
-				Writer.writeUTFBytes(Value);
-				_AssetPath.push(Value);
-				
-				Value = Common.PACKAGE;
-				Writer.writeShort(Value.length);
-				Writer.writeUTFBytes(Value);
-				_Packages.push(Value);
-				_ScriptExport = Common.OUTPUT;
-				_ModelExport = Common.MODEL;
-				
-			}
-			catch(Err:Error)
-			{
-				Alert.show("操作异常，异常信息[" + Err.message + "]");
-			}
-			finally
-			{
-				if(Writer)
-				{
-					Writer.close();
-					Writer = null;
-				}
-			}
+			FirstInitializer();
 		}
 		else
 		{
@@ -86,8 +51,16 @@ class PreferenceImpl implements IPreference
 				var Data:ByteArray = new ByteArray();
 				Reader.readBytes(Data,0,Reader.bytesAvailable);
 				Data.position = 0;
-				var Len:uint = Data.readShort();
 				
+				var Os:int = Data.readByte();
+				if(Os != System.SystemType)
+				{
+					//配置文件系统版本和当前运行系统版本不一致,重新初始化配置文件
+					FirstInitializer();
+					return;
+				}
+				
+				var Len:uint = Data.readShort();
 				_ScriptExport = Data.readUTFBytes(Len);
 				Len = Data.readShort();
 				_ModelExport = Data.readUTFBytes(Len);
@@ -111,6 +84,54 @@ class PreferenceImpl implements IPreference
 					Reader.close();
 					Reader = null;
 				}
+			}
+		}
+	}
+	
+	protected function FirstInitializer():void
+	{
+		var PreferenceFile:File = new File(Common.INSTALL_DIR + Common.PREFERENCE);
+		var Writer:FileStream = null;
+		try
+		{
+			Writer = new FileStream();
+			Writer.open(PreferenceFile,FileMode.WRITE);
+			var Value:String = Common.OUTPUT;
+			
+			//第一位写入标志为操作系统类型
+			
+			Writer.writeByte(System.SystemType);
+			
+			Writer.writeShort(Value.length);
+			Writer.writeUTFBytes(Value);
+			
+			Value = Common.MODEL;
+			Writer.writeShort(Value.length);
+			Writer.writeUTFBytes(Value);
+			
+			Value = Common.ASSETLIB;
+			Writer.writeShort(Value.length);
+			Writer.writeUTFBytes(Value);
+			_AssetPath.push(Value);
+			
+			Value = Common.PACKAGE;
+			Writer.writeShort(Value.length);
+			Writer.writeUTFBytes(Value);
+			_Packages.push(Value);
+			_ScriptExport = Common.OUTPUT;
+			_ModelExport = Common.MODEL;
+			
+		}
+		catch(Err:Error)
+		{
+			Alert.show("操作异常，异常信息[" + Err.message + "]");
+		}
+		finally
+		{
+			if(Writer)
+			{
+				Writer.close();
+				Writer = null;
 			}
 		}
 	}

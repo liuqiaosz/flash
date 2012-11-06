@@ -94,11 +94,16 @@ package editor.model.asset
 		
 		public function FindAssetById(Id:String):Asset
 		{
-			if(_Assets.hasOwnProperty(Id))
+			if(ContainId(Id))
 			{
 				return _Assets[Id];
 			}
 			return null;
+		}
+		
+		public function ContainId(Id:String):Boolean
+		{
+			return (Id in _Assets);
 		}
 		
 		/**

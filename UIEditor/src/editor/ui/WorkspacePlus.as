@@ -11,6 +11,7 @@ package editor.ui
 	import corecom.control.UIPanel;
 	import corecom.control.event.ControlEditModeEvent;
 	import corecom.control.event.EditModeEvent;
+	import corecom.control.event.UIControlEvent;
 	import corecom.control.utility.Utils;
 	
 	import editor.code.ClassFactory;
@@ -19,7 +20,10 @@ package editor.ui
 	import editor.model.ComponentModel;
 	import editor.model.ModelFactory;
 	import editor.model.ModelFactoryBAJK;
+	import editor.model.asset.Asset;
+	import editor.model.asset.AssetBitmap;
 	import editor.uitility.ui.event.UIEvent;
+	import editor.utils.Globals;
 	
 	import flash.desktop.NativeProcess;
 	import flash.display.DisplayObject;
@@ -90,6 +94,11 @@ package editor.ui
 			
 			//this.addEventListener(ControlEditModeEvent.CHILDSELECTED,OnControlChildSelect);
 			addEventListener(MouseEvent.MOUSE_DOWN,DragStart);
+			addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
+				
+				trace("!!!");
+				
+			});
 		}
 		
 		//		public function IsContainer(Item:UIControl):Boolean
@@ -396,6 +405,14 @@ package editor.ui
 					Control = new Cls() as UIControl;
 					if(Control)
 					{
+						Control.addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
+							var AssetItem:Asset = Globals.FindAssetByAssetId(event.Message) as Asset;
+							if(null != AssetItem && AssetItem is AssetBitmap)
+							{
+								UIControl(event.target).BackgroundImage = AssetBitmap(AssetItem).Image;
+							}
+							
+						},false,0);
 						Control.Decode(Child);
 						Control.EnableEditMode();
 						addChild(Control);

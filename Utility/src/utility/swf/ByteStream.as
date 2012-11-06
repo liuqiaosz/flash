@@ -97,6 +97,10 @@ package utility.swf
 		{
 			return Data.readUnsignedShort();
 		}
+		public function ReadI16():int
+		{
+			return Data.readShort();
+		}
 		public function WriteUI16(Value:int):void
 		{
 			Data.writeShort(Value);

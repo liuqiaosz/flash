@@ -180,18 +180,24 @@ package utility
 			}
 			
 			public static const RGB4444_MASK:uint = parseInt("00001111",2);
-			public static function Pixel8888To4444(Pixel:uint):uint
+			public static const RGB555_MASK:uint = parseInt("00011111",2);
+			
+			public static function Pixel8888To4444(Pixel:uint):RGBA
 			{
-				var PixelRGBA:RGBA = GetRGBA(Pixel);
-				
-				return (PixelRGBA.Alpha >> 4 & RGB4444_MASK) << 12 | 
-					(PixelRGBA.Red >> 4 & RGB4444_MASK) << 8 |
-					(PixelRGBA.Green >> 4 & RGB4444_MASK) << 4 |
-					(PixelRGBA.Blue >> 4 & RGB4444_MASK);
+				return new RGBA((Pixel >> 20 & RGB4444_MASK) << 4,
+					(Pixel >> 12 & RGB4444_MASK) << 4,
+					(Pixel >> 4 & RGB4444_MASK) << 4,
+					(Pixel >> 28 & RGB4444_MASK) << 4);
 			}
-			public static function Pixel16ToRGB4444(Pixel:uint):uint
+			
+			public static function RGB555ToRGB8888(Pixel:uint):RGBA
 			{
-				return 0;
+				//011111 11111 11111
+				var Red:uint = (Pixel >> 10 & RGB555_MASK) << 11;
+				var Green:uint = (Pixel >> 5 & RGB555_MASK) << 6;
+				var Blue:uint = (Pixel & RGB555_MASK) << 1;
+				
+				return new RGBA(Red,Green,Blue);
 			}
 			
 		}

@@ -89,6 +89,7 @@ package corecom.control.style
 		public function set BackgroundImage(Value:Bitmap):void
 		{
 			_BackgroundImage = Value;
+			_HaveImage = true;
 		}
 		public function get BackgroundImage():Bitmap
 		{
@@ -270,6 +271,12 @@ package corecom.control.style
 		{
 			return _ImagePack;
 		}
+		
+		protected var _HaveImage:Boolean = false;
+		public function get HaveImage():Boolean
+		{
+			return _HaveImage;
+		}
 		/**
 		 * 序列化接口
 		 **/
@@ -414,6 +421,7 @@ package corecom.control.style
 				var ImgFlag:int = Data.readByte();
 				if(ImgFlag == 1)
 				{
+					_HaveImage = true;
 					var Len:int = Data.readByte();
 					_BackgroundImageId = Data.readUTFBytes(Len);
 					

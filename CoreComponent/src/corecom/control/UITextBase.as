@@ -34,6 +34,8 @@ package corecom.control
 			_Format.color = _DefaultFontColor;
 			_Format.font = _DefaultFamily;
 			_TextField.defaultTextFormat = _Format;
+			mouseChildren = false;
+			mouseEnabled = false;
 			addChild(_TextField);
 		}
 		
@@ -51,6 +53,15 @@ package corecom.control
 			_Format.font = Value;
 			_TextField.defaultTextFormat = _Format;
 			_TextField.text = _TextField.text;
+		}
+		
+		public function get TextWidth():int
+		{
+			return _TextField.textWidth;
+		}
+		public function get TextHeight():int
+		{
+			return _TextField.textHeight;
 		}
 		
 		public function set FontSize(Value:int):void

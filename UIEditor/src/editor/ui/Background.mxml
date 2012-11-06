@@ -23,6 +23,8 @@
 			protected var BindBackgroundAlphaText:String = "";
 			[Bindable]
 			protected var BindBackgroundImgId:String = "";
+			[Bindable]
+			protected var BindEnabled:Boolean = false;
 			
 			override protected function Initialized():void
 			{
@@ -35,7 +37,12 @@
 				BindBackgroundAlpha = Control.BackgroundAlpha;
 				BindBackgroundAlphaText = BindBackgroundAlpha + "";
 				BindBackgroundImgId = Control.BackgroundImageId;
-				ImageFillType.selectedIndex = Control.BackgroundImageFill;
+				BindEnabled = Control.Style.HaveImage;
+				if(BindEnabled)
+				{
+					ImageFillType.selectedIndex = Control.BackgroundImageFill;
+					ImagePackType.selectedIndex = int(Control.ImagePack);
+				}
 			}
 			
 			/**
@@ -89,7 +96,7 @@
 	</s:HGroup>
 	
 	<s:HGroup>
-		<s:Label text="图片模式" height="100%" verticalAlign="middle" width="60"/>
+		<s:Label text="图片模式" height="100%" verticalAlign="middle" width="60" enabled="{BindEnabled}"/>
 		<s:ComboBox width="90" selectedIndex="1" change="ImageFillTypeChanged(event)" id="ImageFillType">
 			<s:ArrayCollection>
 				<fx:String>拉伸填充</fx:String>
@@ -99,7 +106,7 @@
 	</s:HGroup>
 	
 	<s:HGroup>
-		<s:Label text="资源映射" height="100%" verticalAlign="middle" width="60"/>
+		<s:Label text="资源映射" height="100%" verticalAlign="middle" width="60" enabled="{BindEnabled}"/>
 		<s:ComboBox width="90" selectedIndex="1" change="ImagePackTypeChanged(event)" id="ImagePackType">
 			<s:ArrayCollection>
 				<fx:String>外挂</fx:String>

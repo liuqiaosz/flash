@@ -15,6 +15,9 @@ package utility
 			Alpha = A;
 		}
 		
-		
+		public function get Pixel():uint
+		{
+			return Alpha << 24 | Red << 16 | Green << 8 | Blue;
+		}
 	}
 }

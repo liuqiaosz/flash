@@ -1,6 +1,6 @@
 package corecom.control.style
 {
-	import corecom.control.FontTextFactory;
+	//import corecom.control.FontTextFactory;
 	
 	import flash.utils.ByteArray;
 
@@ -64,6 +64,11 @@ package corecom.control.style
 			super.Decode(Data);
 			_OverStyle.Decode(Data);
 			_PressStyle.Decode(Data);
+		}
+		
+		override public function set ImagePack(Value:Boolean):void
+		{
+			_OverStyle.ImagePack = _PressStyle.ImagePack = Value;
 		}
 	}
 }

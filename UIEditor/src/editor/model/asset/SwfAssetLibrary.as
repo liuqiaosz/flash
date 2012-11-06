@@ -23,77 +23,89 @@ package editor.model.asset
 		{
 			if(!Initialized)
 			{
-				//_BitmapAssets = [];
-				var Idx:int = 0;
-				//获取所有图形TAG
-				var BitmapTagList:Array = _Swf.FindTagByType(Tag.LOSSLESS2);
-				//var JPGTabList:Array = _Swf.FindTagByType(Tag.DEFINEJPEG2);
-				BitmapTagList = BitmapTagList.concat(_Swf.FindTagByType(Tag.LOSSLESS));
-				BitmapTagList = BitmapTagList.concat(_Swf.FindTagByType(Tag.DEFINEJPEG2));
-				
-				var SymbolTag:SymbolClass = _Swf.FindTagByType(Tag.SYMBOLCLASS)[0];
-				
-				//var BitmapTag:BitLossless2 = null;
-				var BitmapTag:GenericBit = null;
-				var SymbolName:String = "";
-				var AssetImage:AssetBitmap = null;
-				
-				
-				for each(BitmapTag in BitmapTagList)
-				{
-					//处理图形
-					SymbolName = SymbolTag.FindSymbolClassById(BitmapTag.TagId);
-					AssetImage = new AssetBitmap();
-					AssetImage.Id = SymbolName;
-					AssetImage.ImageWidth = BitmapTag.BitmapWidth;
-					AssetImage.ImageHeight = BitmapTag.BitmapHeight;
-					
-					AssetImage.Image = BitmapTag.Source as Bitmap;
-					//_BitmapAssets.push(AssetImage);
-					this.AddAsset(AssetImage);
-				}
-				
-//				if(SymbolTag && BitmapTagList.length > 0)
-//				{
-//					for(Idx; Idx<BitmapTagList.length; Idx++)
-//					{
-//						//处理图形
-//						BitmapTag = BitmapTagList[Idx];
-//						SymbolName = SymbolTag.FindSymbolClassById(BitmapTag.TagId);
-//						AssetImage = new AssetBitmap();
-//						AssetImage.Id = SymbolName;
-//						AssetImage.ImageWidth = BitmapTag.BitmapWidth;
-//						AssetImage.ImageHeight = BitmapTag.BitmapHeight;
-//						
-//						AssetImage.Image = BitmapTag.Source as Bitmap;
-//						//_BitmapAssets.push(AssetImage);
-//						this.AddAsset(AssetImage);
-//					}
-//				}
-//				var JPG:BitJPEG2 = null;
-//				for each(JPG in JPGTabList)
-//				{
-//					SymbolName = SymbolTag.FindSymbolClassById(JPG.TagId);
-//					AssetImage = new AssetBitmap();
-//					AssetImage.Id = SymbolName;
-//					AssetImage.ImageWidth = JPG.BitmapWidth;
-//					AssetImage.ImageHeight = JPG.BitmapHeight;
-//					
-//					AssetImage.Image = JPG.Source as Bitmap;
-//					//_BitmapAssets.push(AssetImage);
-//					this.AddAsset(AssetImage);
-//				}
-				Initialized = true;
+				Initializer();
 			}
 			return super.AssetList;
 		}
+		
+		protected function Initializer():void
+		{
+			//_BitmapAssets = [];
+			var Idx:int = 0;
+			//获取所有图形TAG
+			var BitmapTagList:Array = _Swf.FindTagByType(Tag.LOSSLESS2);
+			//var JPGTabList:Array = _Swf.FindTagByType(Tag.DEFINEJPEG2);
+			BitmapTagList = BitmapTagList.concat(_Swf.FindTagByType(Tag.LOSSLESS));
+			BitmapTagList = BitmapTagList.concat(_Swf.FindTagByType(Tag.DEFINEJPEG2));
+			
+			var SymbolTag:SymbolClass = _Swf.FindTagByType(Tag.SYMBOLCLASS)[0];
+			
+			//var BitmapTag:BitLossless2 = null;
+			var BitmapTag:GenericBit = null;
+			var SymbolName:String = "";
+			var AssetImage:AssetBitmap = null;
+			
+			
+			for each(BitmapTag in BitmapTagList)
+			{
+				//处理图形
+				SymbolName = SymbolTag.FindSymbolClassById(BitmapTag.TagId);
+				AssetImage = new AssetBitmap();
+				AssetImage.Id = SymbolName;
+				AssetImage.ImageWidth = BitmapTag.BitmapWidth;
+				AssetImage.ImageHeight = BitmapTag.BitmapHeight;
+				
+				AssetImage.Image = BitmapTag.Source as Bitmap;
+				//_BitmapAssets.push(AssetImage);
+				this.AddAsset(AssetImage);
+			}
+			
+			//				if(SymbolTag && BitmapTagList.length > 0)
+			//				{
+			//					for(Idx; Idx<BitmapTagList.length; Idx++)
+			//					{
+			//						//处理图形
+			//						BitmapTag = BitmapTagList[Idx];
+			//						SymbolName = SymbolTag.FindSymbolClassById(BitmapTag.TagId);
+			//						AssetImage = new AssetBitmap();
+			//						AssetImage.Id = SymbolName;
+			//						AssetImage.ImageWidth = BitmapTag.BitmapWidth;
+			//						AssetImage.ImageHeight = BitmapTag.BitmapHeight;
+			//						
+			//						AssetImage.Image = BitmapTag.Source as Bitmap;
+			//						//_BitmapAssets.push(AssetImage);
+			//						this.AddAsset(AssetImage);
+			//					}
+			//				}
+			//				var JPG:BitJPEG2 = null;
+			//				for each(JPG in JPGTabList)
+			//				{
+			//					SymbolName = SymbolTag.FindSymbolClassById(JPG.TagId);
+			//					AssetImage = new AssetBitmap();
+			//					AssetImage.Id = SymbolName;
+			//					AssetImage.ImageWidth = JPG.BitmapWidth;
+			//					AssetImage.ImageHeight = JPG.BitmapHeight;
+			//					
+			//					AssetImage.Image = JPG.Source as Bitmap;
+			//					//_BitmapAssets.push(AssetImage);
+			//					this.AddAsset(AssetImage);
+			//				}
+			Initialized = true;
+		}
+		
+		
 //		public function get BitmapAssets():Array
 //		{
 //			
 //		}
 		private var _SoundAssets:Array = null;
-		public function SwfAssetLibrary()
+		public function SwfAssetLibrary(SwfLibrary:Swf = null)
 		{
+			_Swf = SwfLibrary;
+			if(_Swf)
+			{
+				Name = _Swf.FileName;
+			}
 		}
 		
 		override public function get Type():uint
@@ -116,6 +128,10 @@ package editor.model.asset
 		{
 			_Swf = SwfFactory.Instance.Decode(Data);
 			//this.Version = _Swf.Header.Version;
+			if(!Initialized)
+			{
+				Initializer();
+			}
 		}
 	}
 }

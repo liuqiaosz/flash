@@ -35,8 +35,6 @@ package corecom.control
 			super(SkinStyle);
 			_Content = new Sprite();
 			_Content.x = _Content.y = _Padding;
-			//_Content.width = _Content.width - _Content.x;
-			//_Content.height = _Content.height - _Content.y;
 			super.addChild(_Content);
 		}
 		

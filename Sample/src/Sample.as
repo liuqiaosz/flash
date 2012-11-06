@@ -9,7 +9,6 @@ package
 	import corecom.control.Combobox;
 	import corecom.control.ComboboxItem;
 	import corecom.control.Container;
-	import corecom.control.FontTextFactory;
 	import corecom.control.HorizontalScroller;
 	import corecom.control.LayoutConstant;
 	import corecom.control.UIButton;
@@ -139,43 +138,38 @@ package
 //			eff.Play();
 			//TweenLite.to(a, 1, {rotation:360});
 			//stage.color = ColorCode.ALICEBLUE;
-			
-			
-//			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
+				ControlAssetManager.Instance.PushQueue("D:\\Git Library\\UIEditor\\bin\\Output\\AssetLibrary\\UI.swf");
 //				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
 //					
-//					var Loader:URLLoader = new URLLoader();
 //					
-//					Loader.dataFormat = URLLoaderDataFormat.BINARY;
-//					Loader.addEventListener(Event.COMPLETE,function(event:Event):void{
-//						var star:int = flash.utils.getTimer();	
-//						var Data:ByteArray = Loader.data as ByteArray;
-//						Data.compress();
-////						var Panel:UIControl = UIControlFactory.Instance.Decode(Data) as UIControl;
-////						stage.addChild(Panel);
-////						
-////						var btn:UIButton = Container(Panel).GetChildById("NextButton") as UIButton;
-////						btn.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-////						
-////							trace("Next page");
-////						});
-//						trace("" + Data.length + "");
-//					});
-//					
-//					Loader.load(new URLRequest("D:\\AssFlash\\UIEditor\\bin-debug\\Output\\Model\\ui.PlayerInfo.mod"));
 //					
 //				});
-//				
-//			
-//			});
-//			
-			ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
+				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,function(event:DownloadEvent):void{
+					var Loader:URLLoader = new URLLoader();
+					
+					Loader.dataFormat = URLLoaderDataFormat.BINARY;
+					Loader.addEventListener(Event.COMPLETE,function(event:Event):void{
+						var star:int = flash.utils.getTimer();	
+						var Data:ByteArray = Loader.data as ByteArray;
+						
+						var Panel:UIControl = UIControlFactory.Instance.Decode(Data).pop();
+						stage.addChild(Panel);
+					});
+					Loader.load(new URLRequest("D:\\Git Library\\Project\\Death\\UI Model\\SmallFix2.mod"));
+					
+				});
 				
-				var Obj:Bitmap = ControlAssetManager.Instance.FindAssetById("ChargeMove") as Bitmap;
-				stage.addChild(Obj);
-				trace(Obj);
 			});
-			ControlAssetManager.Instance.Download(["D:\\Git Library\\Project\\Death\\UI Model\\UI256.swf"]);
+//			
+			
+//			ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
+//				
+//				var Obj:Bitmap = ControlAssetManager.Instance.FindAssetById("ChargeMove") as Bitmap;
+//				stage.addChild(Obj);
+//				trace(Obj);
+//			});
+//			ControlAssetManager.Instance.Download(["D:\\Git Library\\Project\\Death\\UI Model\\UI256.swf"]);
 
 			
 //			var a:Bitmap = new Cls() as Bitmap;
@@ -210,7 +204,8 @@ package
 //			var v:int = 0x80;
 			//trace(v.toString("2"));
 			
-			ARGB8888To565();
+			//ARGB8888To565();
+			ARGB888To4444();
 		}
 		
 		private function ARGB8888To565():void
@@ -224,33 +219,10 @@ package
 		
 		private function ARGB888To4444():void
 		{
-			var mask:int = parseInt("00001111",2);
 			var c:uint = 0xC2A1B2C3;
-			trace(c.toString("2"));
-			var rgba:RGBA = ColorCode.GetRGBA(c);
-			trace("A[" + rgba.Alpha.toString("2") + "]");
-			trace("R[" + rgba.Red.toString("2") + "]");
-			trace("G[" + rgba.Green.toString("2") + "]");
-			trace("B[" + rgba.Blue.toString("2") + "]");
-			var by:ByteArray = new ByteArray();
-			//by.writeShort(
 			
-			var a:uint = c >> 28 & mask;
-			var r:uint = c >> 20 & mask;
-			var g:uint = c >> 12 & mask;
-			var b:uint = c >> 4 & mask;
-			
-			trace("4A[" + a.toString("2"))
-			trace("4R[" + r.toString("2"))
-			trace("4G[" + g.toString("2"))
-			trace("4B[" + b.toString("2"));
-			
-			var tol:uint = ColorCode.Pixel8888To4444(c);
-			var rgba4444:uint = a << 12 | r << 8 | g << 4 | b;
-			trace(rgba4444.toString("2"));
+			var tol:uint = ColorCode.Pixel8888To4444(c).Pixel;
 			trace(tol.toString("2"));
-			var vvv:uint = 0xFC;
-			trace(vvv.toString("2"));
 		}
 		
 		private function cutplus():void

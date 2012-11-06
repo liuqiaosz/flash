@@ -12,6 +12,6 @@ package corecom.control.style
 	 **/
 	public interface IStyle extends ISerializable
 	{
-		function get ToString():String;
+		//function get ToString():String;
 	}
 }

@@ -62,5 +62,7 @@ package corecom.control.style
 		
 		function set ImagePack(Value:Boolean):void;
 		function get ImagePack():Boolean;
+		
+		function get HaveImage():Boolean;
 	}
 }

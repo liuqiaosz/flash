@@ -12,6 +12,17 @@ package corecom.control.event
 		
 		public static const TEXTFILED_VALUE_CHANGED:String = "TextFieldValueChanged";
 		
+		public static const EDIT_LOADRES_OUTSIDE:String = "EditLoadImageOutside";
+		
+		private var _Message:String = "";
+		public function set Message(Value:String):void
+		{
+			_Message = Value;
+		}
+		public function get Message():String
+		{
+			return _Message;
+		}
 		public function UIControlEvent(Type:String,Bubbles:Boolean = false)
 		{
 			super(Type,Bubbles);
