@@ -94,8 +94,8 @@ package
 		private var offset:int = 14;
 		private var last:UIControl = null;
 		
-		[Embed(source="D:\\0_0.png")]
-		private var Cls:Class;
+//		[Embed(source="D:\\0_0.png")]
+//		private var Cls:Class;
 		public function Sample()
 		{
 //			var size:int = 30;

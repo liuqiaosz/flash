@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" width="290" height="30" verticalAlign="middle">
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.WorldLayerItem;
+			import mapassistant.event.NotifyEvent;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			private var _Item:WorldLayerItem = null;
+			public function set Item(Value:WorldLayerItem):void
+			{
+				_Item = Value;
+				BindLayerName = _Item.LayerName;
+			}
+			
+			[Bindable]
+			private var BindLayerName:String = "";
+			[Bindable]
+			private var BindEditable:Boolean = false;
+			protected function EditableActive(event:MouseEvent):void
+			{
+				BindEditable = true
+			}
+			
+			protected function LayerNameEnter(event:FlexEvent):void
+			{
+				BindEditable = false;
+				_Item.LayerName = LayerName.text;
+			}
+			
+			/**
+			 * 选择删除图层
+			 * 
+			 * 
+			 **/
+			protected function OnDeleteLayer(event:MouseEvent):void
+			{
+				Alert.show("是否删除图层 " + _Item.LayerName + " ??","操作确认",Alert.YES | Alert.CANCEL,null,function(event:CloseEvent):void{
+					if(event.detail == Alert.YES)
+					{
+						var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.LAYER_DELETE);
+						Notify.Params.push(_Item);
+						dispatchEvent(Notify);
+					}
+				});
+			}
+		]]>
+	</fx:Script>
+	
+	<s:CheckBox selected="true" />
+	
+	<s:TextInput id="LayerName" width="180" editable="{BindEditable}" borderVisible="{BindEditable}" text="{BindLayerName}"  doubleClick="EditableActive(event)" enter="LayerNameEnter(event)" />
+	
+	<s:Image source="@Embed('../assets/RecycleIcon.png')" width="16" height="16" smooth="true" buttonMode="true" click="OnDeleteLayer(event)" />
+</s:HGroup>

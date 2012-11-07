@@ -46,11 +46,11 @@ package mapassistant
 		
 		public function get WorldWidth():int
 		{
-			return _TileWidth * _TileWidth;
+			return _TileWidth * _Column;
 		}
 		public function get WorldHeight():int
 		{
-			return _TileHeight * _TileHeight;
+			return _TileHeight * _Row;
 		}
 		
 		/**
@@ -68,7 +68,12 @@ package mapassistant
 				LayerItem.LayerName = "Layer" +  _LayerQueue.length;
 				_LayerQueue.push(LayerItem);
 				addChild(Layer  as DisplayObject);
+				if(_TopLayer)
+				{
+					
+				}
 				_TopLayer = Layer;
+				LayerUpdateNotify();
 				return LayerItem;
 			}
 			return null;
@@ -89,10 +94,20 @@ package mapassistant
 				LayerItem.LayerName = "Object" +  _LayerQueue.length;
 				_LayerQueue.push(LayerItem);
 				addChild(Layer as DisplayObject);
+				LayerUpdateNotify();
 				_TopLayer = Layer;
 				return LayerItem;
 			}
 			return null;
+		}
+		
+		public function RemoveLayer(LayerItem:WorldLayerItem):void
+		{
+			if(_LayerQueue.indexOf(LayerItem) >= 0)
+			{
+				_LayerQueue.splice(_LayerQueue.indexOf(LayerItem),1);
+				LayerUpdateNotify();
+			}
 		}
 		
 		/**

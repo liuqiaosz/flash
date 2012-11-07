@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" applicationComplete="AppInitialize(event)" showStatusBar="false"  width="1200" height="800">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" applicationComplete="AppInitialize(event)" showStatusBar="false"  width="1200" height="700">
 	<fx:Declarations>
 		<fx:XMLList >
 			<menuitem label="地图" data="top"> 
@@ -35,6 +35,7 @@
 			import game.sdk.map.tile.TileData;
 			
 			import mapassistant.World;
+			import mapassistant.WorldLayerItem;
 			import mapassistant.data.ITable;
 			import mapassistant.data.SQL;
 			import mapassistant.data.SQLManager;
@@ -57,6 +58,7 @@
 			import mapassistant.symbol.SymbolFactory;
 			import mapassistant.ui.AssetShowcaseItem;
 			import mapassistant.ui.FlexImage;
+			import mapassistant.ui.LayerShowcaseItem;
 			import mapassistant.ui.NewMapProfile;
 			import mapassistant.ui.ResourceDetail;
 			import mapassistant.ui.ResourceLibraryInfo;
@@ -198,12 +200,17 @@
 				//trace(a.TableSQL);
 				//				SymbolLibrary.addEventListener(EventConstant.SYMBOLCHOICE,OnSymbolChoice);
 				//MapWindow.closeButton.enabled = false;
+				this.nativeWindow.x = Screen.mainScreen.visibleBounds.width/2 - this.width/2;
+				this.nativeWindow.y = Screen.mainScreen.visibleBounds.height/2 - this.height/2;
 				
 				WorldGridGroup.addEventListener(EventConstant.CHANGEWORLDGRID,OnChangeWorldGrid);
 				
-				AssetShowcase.addEventListener(NotifyEvent.ASSET_SELECTED,function(event:NotifyEvent):void{
+				addEventListener(NotifyEvent.LAYER_DELETE,function(event:NotifyEvent):void{
 				
-					trace("seee");
+					if(GridWorld)
+					{
+						GridWorld.RemoveLayer(event.Params.pop() as WorldLayerItem);
+					}
 				});
 			}
 			
@@ -486,7 +493,8 @@
 					//var Terrain:GenericLayer = GridWorld.CreateTerrain(NewMapProfile(PopupWindow).MapColumn,NewMapProfile(PopupWindow).MapRow,NewMapProfile(PopupWindow).TileSize);
 					//Terrain.GridLineSwitch();
 					//超大地图
-					
+					LayerShowcaseUpdate();
+					GridWorld.addEventListener(NotifyEvent.WORLD_LAYERUPDATE,OnWorldLayerUpdate);
 					GridContainer.addChild(GridWorld as DisplayObject);
 					MapContainer.addElement(GridContainer);
 					
@@ -539,6 +547,38 @@
 				{
 					//TileGridSwitch.selected = GridWorld.DataGridLayer.visible;
 				}
+			}
+			
+			/**
+			 * 当前编辑地图层更新事件响应
+			 * 
+			 * 
+			 **/
+			private function OnWorldLayerUpdate(event:NotifyEvent):void
+			{
+				LayerShowcaseUpdate();
+			}
+			
+			/**
+			 * 图层面板数据更新
+			 * 
+			 * 
+			 **/
+			private function LayerShowcaseUpdate():void
+			{
+				if(LayerShowcase && GridWorld)
+				{
+					LayerShowcase.removeAllElements();
+					var Vec:Vector.<WorldLayerItem> = GridWorld.Layers;
+					var Layer:WorldLayerItem = null;
+					for each(Layer in Vec)
+					{
+						var Item:LayerShowcaseItem = new LayerShowcaseItem();
+						Item.Item = Layer;
+						LayerShowcase.addElement(Item);
+					}
+				}
+				
 			}
 			
 			private function MapPartition(AreaWidth:uint,AreaHeight:uint):void
@@ -1029,15 +1069,30 @@
 				}
 			}
 			
+			protected function TabStackChanged(event:IndexChangedEvent):void
+			{
+				var Content:NavigatorContent =  event.relatedObject as NavigatorContent;
+				
+				if(Content)
+				{
+					switch(Content.id)
+					{
+						case "LayerNav":
+							LayerShowcaseUpdate();
+							break;
+					}
+				}
+			}
+			
 		]]>
 		
 	</fx:Script>
 	
 	<!--地图编辑面板-->
-	<s:TitleWindow id="MapWindow" x="10" y="60" width="870" height="730"
+	<s:TitleWindow id="MapWindow" x="10" y="60" width="870" height="590"
 				   close="CloseCurrentWorld(event)" dropShadowVisible="false">
 		<!--主视图区-->
-		<s:Scroller width="850" height="680" x="10" y="10">
+		<s:Scroller width="850" height="540" x="10" y="10">
 			<s:Group >
 				<s:BorderContainer id="MapContainer" borderVisible="false" width="100%" height="100%">
 				</s:BorderContainer>
@@ -1062,10 +1117,10 @@
 	</s:TitleWindow>
 	
 
-	<s:VGroup id="RightSpace" width="302" height="730" x="888" y="61" gap="10">
+	<s:VGroup id="RightSpace" width="302" height="590" x="888" y="60" gap="10">
 		<s:VGroup gap="0" width="100%" height="100%">
 			<s:TabBar dataProvider="{myViewStack}"/> 
-			<mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="100%"> 
+			<mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="100%" change="TabStackChanged(event)"> 
 				
 				<s:NavigatorContent id="search" label="分区"> 
 					<s:Scroller width="100%" height="100%">
@@ -1079,7 +1134,11 @@
 				</s:NavigatorContent> 
 				
 				<s:NavigatorContent id="LayerNav" label="图层" width="100%" height="100%"> 
-					
+					<s:Scroller width="100%" height="100%">
+						<s:VGroup paddingLeft="5" paddingTop="5" gap="5" id="LayerShowcase">
+							
+						</s:VGroup>
+					</s:Scroller>
 				</s:NavigatorContent> 
 				<!--
 				<s:NavigatorContent id="symbolLInfo" label="原件库"> 
@@ -1098,7 +1157,7 @@
 						<s:ComboBox id="AssetLibrarySelector" dataProvider="{ResourceProvider}" selectedIndex="0" labelField="Name" change="AssetLibraryChanged(event)"  />
 						
 						<s:Scroller width="95%" height="100%">
-							<s:VGroup width="290" height="270" id="AssetShowcase">
+							<s:VGroup width="290" height="200" id="AssetShowcase">
 								
 							</s:VGroup>
 						</s:Scroller>
