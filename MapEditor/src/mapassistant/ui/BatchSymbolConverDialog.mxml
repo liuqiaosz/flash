@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="400" height="200" title="批量元件转换属性设置">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.symbol.GenericSymbol;
+			
+			public function get SymbolCategory():int
+			{
+				if(Radio2D.selected)
+				{
+					return GenericSymbol.TYPE_IMAGE_2D;
+				}
+				if(Radio3D.selected)
+				{
+					return GenericSymbol.TYPE_IMAGE_3D;
+				}
+				return -1;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout paddingTop="5" paddingLeft="5" paddingRight="5" horizontalAlign="center" gap="20" />
+	</ui:layout>
+	
+	<s:HGroup verticalAlign="middle" width="100%">
+		<s:Label text="元件类型" width="80" />
+		
+		<s:RadioButton groupName="SymbolCategory" id="Radio2D" value="0" label="2D" selected="true" />
+		<s:RadioButton groupName="SymbolCategory" id="Radio3D" value="1" label="3D" enabled="false" />
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Button label="确定" click="Enter(event)" />
+		<s:Button label="取消" click="Close(event)" />
+	</s:HGroup>
+	
+</ui:AdvanceWindow>

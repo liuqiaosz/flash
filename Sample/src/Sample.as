@@ -155,9 +155,21 @@ package
 						
 						var Panel:UIControl = UIControlFactory.Instance.Decode(Data).pop();
 						stage.addChild(Panel);
+						
+						if(Panel is Container)
+						{
+							var s:int = flash.utils.getTimer();
+							trace("Start[" + s + "]");
+							var Children:Vector.<UIControl> = Container(Panel).AllChildren;
+							trace("End[" + (flash.utils.getTimer() - s) + "]");
+							trace("Count[" + Children.length + "]");
+							s = flash.utils.getTimer();
+							var label:UILabel = Container(Panel).GetChildById("PhysiqueLabel",true) as UILabel;
+							trace("End[" + (flash.utils.getTimer() - s) + "]");
+							trace("!!!");
+						}
 					});
 					Loader.load(new URLRequest("D:\\Git Library\\Project\\Death\\UI Model\\SmallFix2.mod"));
-					
 				});
 				
 			});

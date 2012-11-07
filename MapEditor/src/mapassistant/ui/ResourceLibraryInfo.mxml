@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="800" height="600">
+	<fx:Declarations>
+		<!--
+			资源详细内容显示页面
+		-->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.PopUpWindowManager;
+			import editor.uitility.ui.event.UIEvent;
+			
+			import flash.net.dns.AAAARecord;
+			
+			import mapassistant.event.EventConstant;
+			import mapassistant.event.NotifyEvent;
+			import mapassistant.resource.Resource;
+			import mapassistant.resource.ResourceItem;
+			import mapassistant.symbol.BitmapSymbol2D;
+			import mapassistant.symbol.GenericSymbol;
+			import mapassistant.symbol.SymbolFactory;
+			import mapassistant.util.Common;
+			import mapassistant.util.Tools;
+			
+			import mx.core.IFlexDisplayObject;
+			
+			private var _Resource:Resource = null;
+			private var _Items:Vector.<ResourceItemInfo> = new Vector.<ResourceItemInfo>();
+			public function set Resource(Value:Resource):void
+			{
+				_Resource = Value;
+				
+				ItemList.addEventListener(EventConstant.RSITEM_CHECK_SWITCH,OnItemCheckSwitch);
+				
+				var Items:Vector.<ResourceItem> = _Resource.ChildrenItem;
+				
+				for each(var Item:ResourceItem in Items)
+				{
+					var ItemInfo:ResourceItemInfo = new ResourceItemInfo();
+					ItemInfo.Item = Item;
+					ItemList.addElement(ItemInfo);
+					
+					_Items.push(ItemInfo);
+				}
+			}
+			
+			private function OnItemCheckSwitch(event:NotifyEvent):void
+			{
+				var Value:Boolean = event.Params.pop();
+				
+				if(Value)
+				{
+					_SelectedItems.push(event.target);
+				}
+				else
+				{
+					_SelectedItems.splice(_SelectedItems.indexOf(event.target),1);
+				}
+				
+				if(_SelectedItems.length == 0 && BatchCheck.selected)
+				{
+					BatchCheck.selected = false;
+				}
+				else if(_SelectedItems.length > 0 && !BatchCheck.selected)
+				{
+					BatchCheck.selected = true;
+				}
+			}
+			
+			private var _SelectedItems:Vector.<ResourceItemInfo> = new Vector.<ResourceItemInfo>();			
+			private function BatchSelectedSwitch(event:MouseEvent):void
+			{
+				var State:Boolean = BatchCheck.selected;
+				if(State)
+				{
+					_SelectedItems = _Items.concat(new Vector.<ResourceItemInfo>());
+					for(var Idx:int = 0; Idx<_Items.length; Idx++)
+					{
+						_Items[Idx].ChangeCheckState = State;
+					}
+				}
+				else
+				{
+					while(_SelectedItems.length > 0)
+					{
+						_SelectedItems.pop().ChangeCheckState = State;
+					}
+				}
+			}
+			
+			/**
+			 * 资源批量转换元件
+			 **/
+			private function CovertBatchSymbol(event:MouseEvent):void
+			{
+				var Window:IFlexDisplayObject = PopUpWindowManager.PopUp(BatchSymbolConverDialog);
+				Window.addEventListener(UIEvent.WINDOW_ENTER,function(event:UIEvent):void{
+					var SymbolType:int = BatchSymbolConverDialog(Window).SymbolCategory;
+					for(var Idx:int=0; Idx<_SelectedItems.length; Idx++)
+					{
+						var Item:ResourceItemInfo = _SelectedItems[Idx];
+						var Symbol:GenericSymbol = null;
+						var Data:ByteArray = null;
+						switch(SymbolType)
+						{
+							case GenericSymbol.TYPE_IMAGE_2D:
+								Symbol = new BitmapSymbol2D();
+								Symbol.LinkType = GenericSymbol.LINK_SWF;
+								Symbol.Title = Symbol.Class = Item.Item.Id;
+								Symbol.Swf = Item.Item.Owner;
+								break;
+							case GenericSymbol.TYPE_IMAGE_3D:
+								break;
+						}
+						
+						if(SymbolFactory.SymbolExists(Symbol.Class))
+						{
+							continue;
+						}
+						Data = Symbol.Encode();
+						if(Data && Data.length > 0)
+						{
+							Tools.SaveDataToDisk(Data,Common.SYMBOL + Item.Item.Id + ".syb");
+						}
+					}
+				});
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout paddingLeft="5" paddingTop="5" paddingRight="5" />
+	</ui:layout>
+	
+	<s:BorderContainer width="100%">
+		<s:layout>
+			<s:HorizontalLayout verticalAlign="middle" />
+		</s:layout>
+		
+		<s:Button label="批量转换元件" click="CovertBatchSymbol(event)" />
+	</s:BorderContainer>
+	
+	<s:Group width="100%" height="100%">
+		<s:layout>
+			<s:HorizontalLayout/>
+		</s:layout>
+		
+		<s:VGroup width="100%" height="100%">
+			<s:HGroup verticalAlign="middle" paddingLeft="5" paddingRight="5" gap="20">
+				<s:CheckBox width="40" id="BatchCheck" click="BatchSelectedSwitch(event)" />
+				
+				<s:Label width="48" text="资源" textAlign="center" />
+				
+				<s:Label width="60" text="类型" textAlign="center" />
+				
+				<s:Label width="180" text="资源ID" textAlign="center" />
+				
+				<s:Label width="60" text="所属SWF" textAlign="center"/>
+			</s:HGroup>
+			<s:Scroller width="100%" height="100%">
+				<s:VGroup id="ItemList" />
+			</s:Scroller>
+		</s:VGroup>
+		
+	</s:Group>
+</ui:AdvanceWindow>

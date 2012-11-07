@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="500" height="400">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout gap="20" horizontalAlign="center" paddingTop="10" />
+	</ui:layout>
+	
+	<s:HGroup gap="20">
+		<s:Label text="地图类型" width="120" />
+		
+		<s:Label text="2.5D Staggered" color="#ff0000" width="200" />
+	</s:HGroup>
+	
+	<s:HGroup gap="20">
+		<s:Label text="单位宽度" width="120" />
+		
+		<s:Label text="30" color="#ff0000" width="200"/>
+	</s:HGroup>
+	
+	<s:HGroup gap="20">
+		<s:Label text="单位高度" width="120" />
+		
+		<s:Label text="30" color="#ff0000" width="200"/>
+	</s:HGroup>
+	
+	<s:HGroup gap="20">
+		<s:Label text="是否分区编辑" width="120" />
+		
+		<s:Label text="是" color="#ff0000" width="200"/>
+	</s:HGroup>
+	
+	<s:HGroup gap="20">
+		<s:Label text="分区高度" width="120" />
+		
+		<s:Label text="3000" color="#ff0000" width="200"/>
+	</s:HGroup>
+	
+	<s:HGroup gap="20">
+		<s:Label text="分区宽度" width="120" />
+		
+		<s:Label text="3000" color="#ff0000" width="200"/>
+	</s:HGroup>
+</ui:AdvanceWindow>

@@ -55,14 +55,14 @@ package corecom.control
 		{
 			super.RegisterEvent();
 			addEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
-			addEventListener(MouseEvent.MOUSE_MOVE,EventMouseOver);
+			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 		}
 		override protected function RemoveEvent():void
 		{
 			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
-			removeEventListener(MouseEvent.MOUSE_MOVE,EventMouseOver);
+			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut); 
 			removeEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 		}
@@ -117,7 +117,6 @@ package corecom.control
 		public function set State(Value:uint):void
 		{
 			_State = Value;
-			trace("State[" + _State + "]");
 			switch(_State)
 			{
 				case ButtonState.DOWN:

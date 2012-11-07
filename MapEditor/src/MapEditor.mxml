@@ -1,0 +1,1194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" applicationComplete="AppInitialize(event)" showStatusBar="false"  width="1200" height="800">
+	<fx:Declarations>
+		<fx:XMLList >
+			<menuitem label="地图" data="top"> 
+				<menuitem label="新建" data="Create"/> 
+				<menuitem label="打开" data="Open"/> 					
+				<menuitem label="保存" data="Save" enabled="false"/> 
+				<menuitem label="测试" data="Test"/> 
+			</menuitem> 
+			<menuitem label="元件" data="top"> 
+				<menuitem label="新建" data="NewSymbol"/> 
+			</menuitem>
+		</fx:XMLList>
+		
+		
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.PopUpWindowManager;
+			import editor.uitility.ui.event.UIEvent;
+			
+			import flash.net.dns.AAAARecord;
+			import flash.utils.Timer;
+			import flash.utils.getDefinitionByName;
+			
+			import game.sdk.GamePreference;
+			import game.sdk.assets.AssetLibraryManager;
+			import game.sdk.assets.IAssetLibrary;
+			import game.sdk.map.layer.GenericLayer;
+			import game.sdk.map.layer.StaggeredLayer;
+			import game.sdk.map.tile.TileData;
+			
+			import mapassistant.World;
+			import mapassistant.data.ITable;
+			import mapassistant.data.SQL;
+			import mapassistant.data.SQLManager;
+			import mapassistant.data.table.TableSymbol;
+			import mapassistant.event.EventConstant;
+			import mapassistant.event.NotifyEvent;
+			import mapassistant.map.world.AreaPartitionLayer;
+			import mapassistant.map.world.IWorld;
+			import mapassistant.map.world.IsometricWorld;
+			import mapassistant.map.world.StaggeredWorld;
+			import mapassistant.map.world.Tile2DWorld;
+			import mapassistant.map.world.TileLayer;
+			import mapassistant.map.world.TileStaggeredLayer;
+			import mapassistant.map.world.TileWorld;
+			import mapassistant.map.world.WorldMode;
+			import mapassistant.resource.Resource;
+			import mapassistant.resource.ResourceItem;
+			import mapassistant.resource.ResourceManager;
+			import mapassistant.symbol.GenericSymbol;
+			import mapassistant.symbol.SymbolFactory;
+			import mapassistant.ui.AssetShowcaseItem;
+			import mapassistant.ui.FlexImage;
+			import mapassistant.ui.NewMapProfile;
+			import mapassistant.ui.ResourceDetail;
+			import mapassistant.ui.ResourceLibraryInfo;
+			import mapassistant.ui.ResourceLibraryItem;
+			import mapassistant.ui.SaveMapDialog;
+			import mapassistant.ui.SpriteContainer;
+			import mapassistant.ui.SymbolLibraryItem;
+			import mapassistant.ui.SymbolWindow;
+			import mapassistant.ui.TerrainCreateDialog;
+			import mapassistant.ui.WorldGroupItem;
+			import mapassistant.util.Common;
+			import mapassistant.util.GlobalMouse;
+			import mapassistant.util.Tools;
+			import mapassistant.vo.TerrainProperty;
+			
+			import mx.collections.ArrayCollection;
+			import mx.containers.TitleWindow;
+			import mx.controls.Alert;
+			import mx.controls.LinkButton;
+			import mx.controls.menuClasses.MenuBarItem;
+			import mx.core.FlexBitmap;
+			import mx.core.IFlexDisplayObject;
+			import mx.core.IVisualElementContainer;
+			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.events.ItemClickEvent;
+			import mx.events.ListEvent;
+			import mx.events.MenuEvent;
+			import mx.managers.PopUpManager;
+			import mx.utils.StringUtil;
+			
+			import spark.components.Button;
+			import spark.events.IndexChangeEvent;
+			
+			import utility.Tools;
+			import utility.swf.tag.BitLossless2;
+			import utility.swf.tag.GenericTag;
+			import utility.swf.tag.SymbolClass;
+			import utility.swf.tag.Tag;
+			
+			public static const MODE_NORMAL:uint = 0;
+			public static const MODE_WALK:uint = 1;
+			
+			//已选择的菜单
+			private var selectedMenuItem:LinkButton = null;
+			//当前弹出的菜单
+			private var PopupWindow:IFlexDisplayObject = null;
+			//当前窗体类型
+			private var WindowState:int = -1;
+			//当前地图拖拽状态
+			private var MapDragStart:Boolean = false;
+			//开始拖拽坐标
+			private var DragStartPosition:Point = new Point();
+			//当前拖拽的坐标
+			private var DragMovePosition:Point = new Point();
+			//地图网格代理容器
+			private var GridContainer:SpriteContainer = null;
+			//网格地图世界
+			//private var GridWorld:Tile2DWorld = null;
+			//private var GridWorld:IWorld = null;
+			private var GridWorld:World = null;
+			
+			private var ResourceDictionary:Dictionary = null;
+			
+			//当前编辑模式
+			private var EditMode:uint = MODE_NORMAL;
+			
+			[Bindable]
+			private var BindTerrainShow:Boolean = false;
+			[Bindable]
+			private var BindGridShow:Boolean = false;
+			[Bindable]
+			private var BindItemShow:Boolean = false;
+			[Bindable]
+			private var BindLayerOption:Boolean = false;
+			[Bindable]
+			private var BindIsoOption:Boolean = false;
+			[Bindable]
+			private var BindTerrainEnable:Boolean = false;
+			[Bindable]
+			private var BindDataGridEnable:Boolean = false;
+			[Bindable]
+			private var BindOptionPanelEnable:Boolean = false;
+			[Bindable]
+			private var BindOptionPanelShow:Boolean = false;
+			[Bindable]
+			private var BindWalkPointEditShow:Boolean = false;			//路点编辑模式开启标志
+			[Bindable]
+			private var BindWorldGridPreviewShow:Boolean = false;
+			[Bindable]
+			private var BindMenuItemSave:Boolean = false;
+			
+			[Bindable]
+			private var MenuData:Array = [
+				{
+					"label": "Map",
+					children: [
+						{
+							label: "Create",
+							data: "Create"
+						},
+						{
+							label: "Open",
+							data: "Open"
+						},
+						{
+							label: "Save",
+							data: "Save",
+							enabled: false
+						}
+					]
+				},
+				{
+					label: "Symbol",
+					children: [
+						{
+							label: "New",
+							data: "NewSymbol"
+						}
+						
+					]
+				}
+				
+			];
+			
+			private var Preference:String = '<?xml version="1.0" encoding="GBK"?><Preference version="0.0.1"><AssetLibrarys><AssetLibrary id="scene1_0" url="D:\\Code\\Flash\\MapAssistant\\bin-debug\\Resources\\scene1_0.swf" /></AssetLibrarys><Modules><Module name="scene1_0" id="scene1_0" url="D:\\Code\\Flash\\MapAssistant\\bin-debug\\Resources\\scene1_0.swf" format="0" /></Modules></Preference>';
+			//private var MouseFocusTile:GridTile = new GridTile(30);
+			
+			private function AppInitialize(event:FlexEvent):void
+			{
+				InitializeResource();
+				//GamePreference.Instance.Initializer(Preference);
+				//var AssetLibs:Vector.<IAssetLibrary> = GamePreference.Instance.AssetLibraryList;
+				//AssetLibraryManager.Instance.BatchDownloadAssetLibrary(AssetLibs);
+				//var a:TableSymbol = new TableSymbol();
+				//InitializeSymbol();
+				//trace(a.TableSQL);
+				//				SymbolLibrary.addEventListener(EventConstant.SYMBOLCHOICE,OnSymbolChoice);
+				//MapWindow.closeButton.enabled = false;
+				
+				WorldGridGroup.addEventListener(EventConstant.CHANGEWORLDGRID,OnChangeWorldGrid);
+				
+				AssetShowcase.addEventListener(NotifyEvent.ASSET_SELECTED,function(event:NotifyEvent):void{
+				
+					trace("seee");
+				});
+			}
+			
+			private function MenuSelected(event:MenuEvent):void 
+			{ 
+				switch(event.item.data)
+				{
+					case "NewSymbol":
+						//新元件
+						break;
+				}
+				// Don't open the Alert for a menu bar item that  
+				// opens a popup submenu. 
+				if (event.item.data == "Create") 
+				{ 
+					//					PopupWindow = CreateWindowByClass(NewMapProfile);
+					//					PopUpManager.addPopUp(PopupWindow,this,true);
+					//					PopUpManager.centerPopUp(PopupWindow);
+					//					WindowState = 0;
+					//					RightSpace.enabled = true;
+					
+					PopupWindow = PopUpWindowManager.PopUp(NewMapProfile);
+					PopupWindow.addEventListener(UIEvent.WINDOW_ENTER,CreateMapEnter);
+					MenuItemSaveEnable = true;
+				}
+				else if (event.item.data == "Save") 
+				{
+					if(!GridWorld)
+					{
+						Alert.show("请先创建地图才能使用保存功能.","操作错误");
+						return;
+					}
+					SaveWorld();
+					//					if(GridWorld)
+					//					{
+					//GridWorld.WorldToXML();
+					//					PopupWindow = CreateWindowByClass(SaveDialog);
+					//					PopUpManager.addPopUp(PopupWindow,this,true);
+					//					PopUpManager.centerPopUp(PopupWindow);
+					//					PopupWindow.addEventListener(EventConstant.SAVEDATA,OnSaveMap,false,0,true);
+					//					WindowState = 1;
+					//					}
+					
+				}
+				else if (event.item.data == "Open")
+				{
+					var Browser:File = new File();
+					Browser.addEventListener(Event.SELECT,function(event:Event):void{
+						GridContainer = new SpriteContainer();
+						
+						
+//						//GridWorld = new TileWorld(0,0,0);
+//						var Reader:FileStream = new FileStream();
+//						Reader.open(new File(Browser.nativePath),FileMode.READ);
+//						var Data:ByteArray = new ByteArray();
+//						Reader.readBytes(Data,0,Reader.bytesAvailable);
+//						Data.position = 0;
+//						Data.uncompress();
+//						
+//						var Mode:uint = Data.readByte();
+//						
+//						switch(Mode)
+//						{
+//							case WorldMode.TILE_3D_STAGGERED:
+//								GridWorld = new StaggeredWorld();
+//								break;
+//							case WorldMode.TILE_2D:
+//								GridWorld = new TileWorld();
+//						}
+//						GridContainer.addChild(GridWorld as DisplayObject);
+//						MapContainer.addElement(GridContainer);
+//						GridWorld.Decode(Data);
+//						
+//						if(GridWorld.HasPartition)
+//						{
+//							WorldGridGroup.removeAllElements();
+//							WorldGridGroup.requestedColumnCount = GridWorld.WorldWidth / GridWorld.AreaWidth;
+//							WorldGridGroup.requestedRowCount = GridWorld.WorldHeight / GridWorld.AreaHeight;
+//							
+//							var Total:int = ((GridWorld.WorldWidth / GridWorld.AreaWidth) * (GridWorld.WorldHeight / GridWorld.AreaHeight));
+//							
+//							for(var C:int=0; C< GridWorld.WorldWidth / GridWorld.AreaWidth; C++)
+//							{
+//								for(var R:int=0; R < GridWorld.WorldHeight / GridWorld.AreaHeight; R++)
+//								{
+//									var Item:WorldGroupItem = new WorldGroupItem();
+//									//var Bor:BorderContainer = new BorderContainer();
+//									Item.percentWidth = (100 / (GridWorld.WorldWidth / GridWorld.AreaWidth));
+//									Item.percentHeight = (100 / (GridWorld.WorldHeight / GridWorld.AreaHeight));
+//									Item.GridPosition(C,R);
+//									WorldGridGroup.addElement(Item);
+//								}
+//								
+//							}
+//							BindWorldGridPreviewShow = true;
+//							MapContainer.width = GridWorld.AreaWidth
+//							MapContainer.height = GridWorld.AreaHeight;
+//						}
+//						else
+//						{
+//							MapContainer.width = GridWorld.WorldWidth
+//							MapContainer.height = GridWorld.WorldHeight;
+//						}
+//						
+//						
+//						MenuItemSaveEnable = true;
+//						BindGridShow = true;
+//						BindDataGridEnable = true;
+//						
+//						BindOptionPanelEnable = true;
+//						BindOptionPanelShow = true;
+//						BindTerrainShow = true;
+//						BindTerrainEnable = true;
+//						BindItemShow = true;
+//						
+//						BindOptionPanelShow = true;
+					});
+					
+					
+					Browser.browseForOpen("请选择要打开的地图数据文件",[new FileFilter("地图数据","*.md")]);
+					
+				}
+			} 
+			
+			/**
+			 * 保存当前世界数据
+			 * 
+			 * 
+			 **/
+			private function SaveWorld(Callback:Function = null):void
+			{
+				PopupWindow = PopUpWindowManager.PopUp(SaveMapDialog);
+				PopupWindow.addEventListener(UIEvent.WINDOW_ENTER,function(event:UIEvent):void{
+//					var Window:SaveMapDialog = PopupWindow as SaveMapDialog;
+//					if(Window)
+//					{
+//						var Dir:String = Window.SaveNav;
+//						if(Dir == "")
+//						{
+//							Alert.show("必须选择数据保存路径","");
+//							return;
+//						}
+//						var Name:String = Window.FileName;
+//						var Format:uint = Window.Format;
+//						var Zip:uint = Window.ZipType;
+//						GridWorld.WorldName = Window.WorldName;
+//						switch(Format)
+//						{
+//							case 0:
+//								//二进制
+//								var Data:ByteArray = GridWorld.Encode();
+//								if(Zip == 0)
+//								{
+//									//utility.Tools.ByteCompress(Data);
+//									Data.compress();
+//								}
+//								mapassistant.util.Tools.SaveDataToDisk(Data,Dir + Name + Common.MAPDATABINSUFFIX);
+//								break;
+//							case 1:
+//								//XML
+//								break;
+//						}
+//						
+//						Window.CloseWindow();
+//						
+//						if(Callback != null)
+//						{
+//							Callback();
+//						}
+//					}
+				});
+			}
+			
+			/**
+			 * 保存菜单项状态
+			 **/
+			private function set MenuItemSaveEnable(Value:Boolean):void
+			{
+				MenuData[0].children[2].enabled = Value;
+			}
+			
+			private var _OldActivedBlock:WorldGroupItem = null;
+			private function OnChangeWorldGrid(event:NotifyEvent):void
+			{
+				if(null != _OldActivedBlock)
+				{
+					_OldActivedBlock.UnActive();
+					_OldActivedBlock = null;
+				}
+				var Row:int = event.Params.pop();
+				var Column:int = event.Params.pop();
+				
+			//	GridWorld.SetArea(Column,Row);
+				
+				_OldActivedBlock = event.target as WorldGroupItem;
+				_OldActivedBlock.Active();
+			}
+			
+			/**
+			 * 确定创建地图
+			 **/
+			private function CreateMapEnter(event:UIEvent):void
+			{
+				var Window:NewMapProfile = PopupWindow as NewMapProfile;
+				//获取创建地图类型
+				var Mode:int = Window.Mode;
+				GridContainer = new SpriteContainer();
+				//var SizeMode:int = Window.MapSizeMode;
+				BindLayerOption = true;
+				var AreaWidth:uint = Window.SceneWidth;
+				var AreaHeight:uint = Window.SceneHeight;
+				
+				if(Mode == 1)
+				{
+					//MouseFocusTile.visible = false;
+					//MouseFocusTile.BorderColor = 0xFF0000;
+					//MouseFocusTile.Color = 0x00FF00;
+					//MouseFocusTile.Initialize();
+					//GridContainer.addChild(MouseFocusTile);
+					//2.5D
+					//GridWorld = new IsometricWorld(Window.MapRow,Window.MapColumn,Window.TileSize) as Tile2DWorld;
+					//var SizeMode:int = Window.MapSizeMode;
+					//3D
+					//BindIsoOption = true;
+					
+					//GridWorld = new StaggeredWorld(NewMapProfile(PopupWindow).MapRow,NewMapProfile(PopupWindow).MapColumn,NewMapProfile(PopupWindow).TileSize * 2,NewMapProfile(PopupWindow).TileSize);
+					//var Layer:TileStaggeredLayer = new TileStaggeredLayer(NewMapProfile(PopupWindow).MapRow,NewMapProfile(PopupWindow).MapColumn,NewMapProfile(PopupWindow).TileSize * 2,NewMapProfile(PopupWindow).TileSize);
+					GridContainer.addChild(GridWorld as DisplayObject);
+					
+					MapContainer.addElement(GridContainer);
+					if(Window.MapAreaPartition)
+					{
+						//						//地图分割编辑
+						//						GridWorld.AreaPartition(AreaWidth,AreaHeight);
+						//						WorldGridGroup.removeAllElements();
+						//						WorldGridGroup.requestedColumnCount = GridWorld.WorldWidth / AreaWidth;
+						//						WorldGridGroup.requestedRowCount = GridWorld.WorldHeight / AreaHeight;
+						//						
+						//						var Total:int = ((GridWorld.WorldWidth / AreaWidth) * (GridWorld.WorldHeight / AreaHeight));
+						//						
+						//						for(var C:int=0; C< GridWorld.WorldWidth / AreaWidth; C++)
+						//						{
+						//							for(var R:int=0; R < GridWorld.WorldHeight / AreaHeight; R++)
+						//							{
+						//								var Item:WorldGroupItem = new WorldGroupItem();
+						//								Item.percentWidth = (100 / (GridWorld.WorldWidth / AreaWidth));
+						//								Item.percentHeight = (100 / (GridWorld.WorldHeight / AreaHeight));
+						//								Item.GridPosition(C,R);
+						//								WorldGridGroup.addElement(Item);
+						//							}
+						//						}
+						//						BindWorldGridPreviewShow = true;
+						MapPartition(AreaWidth,AreaHeight);
+						MapContainer.width = AreaWidth;
+						MapContainer.height = AreaHeight;
+					}
+					else
+					{
+						//MapContainer.width = GridWorld.WorldWidth
+						//MapContainer.height = GridWorld.WorldHeight;
+						
+						//GridWorld.DataGridLayer.Update();
+					}
+					
+					//GridWorld.Update();
+					//Layer.
+					//GridWorld.DataGridShowSwitch();
+					
+					//MapContainer.addEventListener(MouseEvent.MOUSE_MOVE,OnMouseMove);
+					//激活图层控制面板
+					//LayerOption.enabled = true;
+					
+					MapWindow.closeButton.enabled = true;
+					MapWindow.addEventListener(CloseEvent.CLOSE,MapClose);
+				}
+				else if(Mode == 0)
+				{
+					GridWorld = new World(NewMapProfile(PopupWindow).MapRow,NewMapProfile(PopupWindow).MapColumn,NewMapProfile(PopupWindow).TileSize,NewMapProfile(PopupWindow).TileSize,TileLayer);
+					//GridWorld = new TileWorld(NewMapProfile(PopupWindow).MapRow,NewMapProfile(PopupWindow).MapColumn,NewMapProfile(PopupWindow).TileSize) as Tile2DWorld;
+					//var Terrain:GenericLayer = GridWorld.CreateTerrain(NewMapProfile(PopupWindow).MapColumn,NewMapProfile(PopupWindow).MapRow,NewMapProfile(PopupWindow).TileSize);
+					//Terrain.GridLineSwitch();
+					//超大地图
+					
+					GridContainer.addChild(GridWorld as DisplayObject);
+					MapContainer.addElement(GridContainer);
+					
+					if(Window.MapAreaPartition)
+					{
+						//						if(AreaWidth % Window.TileSize > 0 || AreaHeight % Window.TileSize > 0)
+						//						{
+						//							Alert.show("设置的场景分区宽度或高度必须是单位大小的倍数");
+						//							return;
+						//						}
+						//						
+						//						
+						//						GridWorld.AreaPartition(AreaWidth,AreaHeight);
+						//						WorldGridGroup.removeAllElements();
+						//						WorldGridGroup.requestedColumnCount = GridWorld.WorldWidth / AreaWidth;
+						//						WorldGridGroup.requestedRowCount = GridWorld.WorldHeight / AreaHeight;
+						//						
+						//						var Total:int = ((GridWorld.WorldWidth / AreaWidth) * (GridWorld.WorldHeight / AreaHeight));
+						//						
+						//						for(var C:int=0; C< GridWorld.WorldWidth / AreaWidth; C++)
+						//						{
+						//							for(var R:int=0; R < GridWorld.WorldHeight / AreaHeight; R++)
+						//							{
+						//								var Item:WorldGroupItem = new WorldGroupItem();
+						//								Item.percentWidth = (100 / (GridWorld.WorldWidth / AreaWidth));
+						//								Item.percentHeight = (100 / (GridWorld.WorldHeight / AreaHeight));
+						//								Item.GridPosition(C,R);
+						//								WorldGridGroup.addElement(Item);
+						//							}
+						//						}
+						//						BindWorldGridPreviewShow = true;
+						MapPartition(AreaWidth,AreaHeight);
+						MapContainer.width = AreaWidth;
+						MapContainer.height = AreaHeight;
+					}
+					else
+					{
+						MapContainer.width = GridWorld.WorldWidth
+						MapContainer.height = GridWorld.WorldHeight;
+					}
+					BindGridShow = true;
+					BindDataGridEnable = true;
+					BindOptionPanelEnable = true;
+					BindOptionPanelShow = true;
+					BindItemShow = true;
+					//TileLayer(GridWorld.DataGridLayer).GridShow();
+				}
+				
+				if(GridWorld)
+				{
+					//TileGridSwitch.selected = GridWorld.DataGridLayer.visible;
+				}
+			}
+			
+			private function MapPartition(AreaWidth:uint,AreaHeight:uint):void
+			{
+				//地图分割编辑
+//				GridWorld.AreaPartition(AreaWidth,AreaHeight);
+//				WorldGridGroup.removeAllElements();
+//				WorldGridGroup.requestedColumnCount = GridWorld.WorldWidth / AreaWidth;
+//				WorldGridGroup.requestedRowCount = GridWorld.WorldHeight / AreaHeight;
+//				
+//				var Total:int = ((GridWorld.WorldWidth / AreaWidth) * (GridWorld.WorldHeight / AreaHeight));
+//				
+//				for(var C:int=0; C< GridWorld.WorldWidth / AreaWidth; C++)
+//				{
+//					for(var R:int=0; R < GridWorld.WorldHeight / AreaHeight; R++)
+//					{
+//						var Item:WorldGroupItem = new WorldGroupItem();
+//						Item.percentWidth = (100 / (GridWorld.WorldWidth / AreaWidth));
+//						Item.percentHeight = (100 / (GridWorld.WorldHeight / AreaHeight));
+//						Item.GridPosition(C,R);
+//						WorldGridGroup.addElement(Item);
+//					}
+//				}
+//				BindWorldGridPreviewShow = true;
+			}
+			
+			/**
+			 * 
+			 * 地图数据保存
+			 * 
+			 **/
+			private function OnSaveMap(event:NotifyEvent):void
+			{
+				PopUpWindowManager.PopUp(SaveMapDialog);
+			}
+			
+			
+			/**
+			 * 
+			 * 关闭地图
+			 * 
+			 **/
+			private function MapClose(event:CloseEvent):void
+			{
+				MapContainer.removeAllElements();
+				//GridWorld.Dispose();
+				GridWorld = null;
+			}
+			
+			/**
+			 * 
+			 * 网格层显示切换
+			 * 
+			 **/
+			private function SwitchGrid(event:Event):void
+			{
+				//GridWorld.DataGridShowSwitch();
+			}
+			
+			/**
+			 * 
+			 * 地形层显示切换
+			 * 
+			 **/
+			private function SwitchTerrain(event:Event):void
+			{
+				//GridWorld.TerrainShowSwitch();
+			}
+			
+			/**
+			 * 
+			 * 切换物件层的显示
+			 * 
+			 **/
+			private function SwitchItem(event:Event):void
+			{
+				//GridWorld.ItemShowSwitch();
+				//				if(SpriteSiwtch.selected)
+				//				{
+				//					GridWorld.ShowItem();
+				//				}
+				//				else
+				//				{
+				//					GridWorld.HideItem();
+				//				}
+			}
+			
+			
+			
+			/**
+			 * 
+			 * 初始化资源库
+			 * 初始化说明
+			 * 
+			 * 检查App定义的资源库路径是否有资源文件
+			 * 读取资源XML
+			 * 读取资源SWF
+			 **/
+			private function InitializeResource():void
+			{
+				ResourceManager.Instance.addEventListener(EventConstant.RESCOMPLETE,ResourceCompileComplete);
+				ResourceManager.InitializeLibrary();
+			}
+			
+			[Bindable]
+			private var ResourceProvider:ArrayCollection = new ArrayCollection();
+			private function ResourceCompileComplete(event:Event):void
+			{
+				ResourceDictionary = new Dictionary();
+				var ResArray:Vector.<Resource> = ResourceManager.Instance.SourceVec;
+				for(var NIdx:int=0; NIdx<ResArray.length; NIdx++)
+				{
+					var Res:Resource = ResArray[NIdx];
+					var SourceDict:Dictionary = Res.SourceDictionary;
+					
+					var ResourceLib:Object = {
+						Name: Res.SimpleName,
+							Resource: Res,
+							Children:[]
+					};
+					ResourceProvider.addItem(ResourceLib);
+					for(var Key:* in SourceDict)
+					{
+						ResourceLib.Children.push(SourceDict[Key]);
+					}
+				}
+				
+				//资源库加载完毕.开始从数据库加载元件数据并且用映射已加载的资源库
+				InitializeSymbol();
+			}
+			
+			[Bindable]
+			protected var SymbolProvider:ArrayCollection = new ArrayCollection();
+			/**
+			 * 
+			 * 初始化元件库
+			 * 
+			 **/
+			private function InitializeSymbol():void
+			{
+				var SymbolDir:File = new File(Common.SYMBOL);
+				if(SymbolDir.exists && SymbolDir.isDirectory)
+				{
+					var ChildFiles:Array = SymbolDir.getDirectoryListing();
+					//根据文件总数计算每个文件占用的百分比
+					for(var Idx:int=0; Idx<ChildFiles.length; Idx++)
+					{
+						var ChildFile:File = ChildFiles[Idx];
+						
+						if(ChildFile.isDirectory)
+						{
+							SymbolProvider.addItem(SymbolPackage(ChildFile));
+						}
+						else
+						{
+							var Reader:FileStream = new FileStream();
+							Reader.open(ChildFile,FileMode.READ);
+							var Data:ByteArray = new ByteArray();
+							Reader.readBytes(Data,0,Reader.bytesAvailable);
+							var Symbol:GenericSymbol = SymbolFactory.Decode(Data);
+							SymbolProvider.addItem(Symbol);
+						}
+					}
+				}
+			}
+			
+			private function SymbolPackage(Forld:File):Object
+			{
+				var Pack:Object = {
+					Title: Forld.name,
+						children: []
+				};
+				var Reader:FileStream = new FileStream();
+				var Data:ByteArray = new ByteArray();
+				var Items:Array = Forld.getDirectoryListing();
+				for(var Idx:uint = 0; Idx<Items.length; Idx++)
+				{
+					var Item:File = Items[Idx];
+					Reader.open(Item,FileMode.READ);
+					Reader.readBytes(Data,0,Reader.bytesAvailable);
+					var Symbol:GenericSymbol = SymbolFactory.Decode(Data);
+					Pack.children.push(Symbol);
+					Reader.close();
+					Data.clear();
+				}
+				return Pack;
+			}
+			
+			/**
+			 * 
+			 * 选择资源
+			 * 
+			 **/
+			private function OnResourceItemSelected(event:MouseEvent):void
+			{
+				var Item:ResourceLibraryItem = event.currentTarget as ResourceLibraryItem;
+				if(Item)
+				{
+					//PopupWindow = CreateWindowByClass(ResourceDetail);
+					PopupWindow.addEventListener(EventConstant.NEWSYMBOL,OnCreateSymbol,false,0,true);
+					ResourceDetail(PopupWindow).ResourceData = Item;
+					PopUpManager.addPopUp(PopupWindow,this,true);
+					PopUpManager.centerPopUp(PopupWindow);
+				}
+			}
+			
+			/**
+			 * 
+			 * 创建新元件
+			 * 
+			 **/
+			private function OnCreateSymbol(event:NotifyEvent):void
+			{
+				SymbolWindow(PopupWindow).Resource = event.Params[0];
+				SymbolWindow(PopupWindow).addEventListener(EventConstant.SYMBOLCREATED,OnSymbolCreateComplete);
+				PopUpManager.addPopUp(PopupWindow,this,true);
+				PopUpManager.centerPopUp(PopupWindow);
+			}
+			
+			/**
+			 * 
+			 * 元件创建完成
+			 * 
+			 **/
+			private function OnSymbolCreateComplete(event:NotifyEvent):void
+			{
+				var SymbolData:TableSymbol = event.Params.pop();
+				var SymbolItem:SymbolLibraryItem = new SymbolLibraryItem();
+			}
+			
+			/**
+			 * 创建TILE地表层
+			 **/
+			protected function CreateTerrainLayer(event:MouseEvent):void
+			{
+				var Layer:GenericLayer = null;
+				var Window:IFlexDisplayObject = PopUpWindowManager.PopUp(TerrainCreateDialog);
+				Window.addEventListener(UIEvent.WINDOW_ENTER,function(event:UIEvent):void{
+//					var Property:TerrainProperty = event.Params.pop() as TerrainProperty;
+//					GridWorld.CreateTerrain(GridWorld.WorldHeight / Property.TileSize,GridWorld.WorldWidth / Property.TileSize,Property.TileSize,Property.TileSize);
+//					Layer = GridWorld.TerrainLayer;
+//					BindTerrainShow = true;
+//					BindTerrainEnable = true;
+//					MapContainer.height = GridWorld.AreaHeight;
+//					MapContainer.width = GridWorld.AreaWidth;
+//					var Res:Resource = ResourceManager.Instance.FindResourceBySimpleName("scene1_0");
+//					var Grid:Vector.<Vector.<TileData>> = Layer.Grid;
+//					for(var i:int = 0; i<Grid.length; i++)
+//					{
+//						for(var j:int = 0; j<Grid[0].length; j++)
+//						{
+//							Layer.Grid[i][j].ResourceId = "scene1_0";
+//							Layer.Grid[i][j].ResourceClass = j + "_" + i;
+//							var Item:ResourceItem = Res.FindSourceByClass(Layer.Grid[i][j].ResourceClass);
+//							Layer.Grid[i][j].Resource = Bitmap(Item.Source).bitmapData;
+//						}
+//					}
+//					Layer.Update();
+				});
+			}
+			
+			/**
+			 * 
+			 **/
+			protected function ImportFromDiskImage(event:MouseEvent):void
+			{
+				
+			}
+			
+			/**
+			 * 导入本地SWF为数据元件
+			 **/
+			protected function Import2DFromDiskSwf(event:MouseEvent):void
+			{
+				//var Reader:File = new File();
+				
+				//Reader.addEventListener(FileListEvent.SELECT_MULTIPLE
+			}
+			
+			/**
+			 * 层设置面板状态切换
+			 **/
+//			protected function LayerOptionPanelSwitch(event:MouseEvent):void
+//			{
+//				if(OptionSwitch.selected)
+//				{
+//					BindLayerOption = true;
+//				}
+//				else
+//				{
+//					BindLayerOption = false;
+//				}
+//			}
+			
+			//private var WalkMode:Boolean = false;
+			
+			/**
+			 * 资源库节点选择
+			 **/
+			private function ResourceTreeItemClick(event:ListEvent):void
+			{
+				var Resource:Object = ResourceProvider.getItemAt(event.rowIndex) as Object;
+				var Window:IFlexDisplayObject = PopUpWindowManager.PopUp(ResourceLibraryInfo);
+				ResourceLibraryInfo(Window).Resource = Resource.Resource;
+				
+			}
+			
+			private var _CurrentSymbol:GenericSymbol = null;
+			
+			/**
+			 * 元件选择
+			 **/
+			protected function SymbolChoice(event:ListEvent):void
+			{
+				//var SymbolItem:GenericSymbol = SymbolLibrary.selectedItem as GenericSymbol;
+//				var Item:ResourceItem = null;
+//				if(SymbolItem)
+//				{
+//					if(GridWorld)
+//					{
+//						GridWorld.EnableSymbolEdit(SymbolItem.Class);
+//					}
+//					
+//					if(SymbolItem.LinkType == GenericSymbol.LINK_SWF)
+//					{
+//						var Library:Resource = ResourceManager.Instance.FindResourceBySimpleName(SymbolItem.Swf);
+//						Item = Library.FindSourceByClass(SymbolItem.Class);
+//					}
+//					
+//					var Img:Bitmap = null;
+//					switch(SymbolItem.Type)
+//					{
+//						case GenericSymbol.TYPE_IMAGE_2D:
+//							Img = Item.Source as Bitmap;
+//							break;
+//						case GenericSymbol.TYPE_IMAGE_3D:
+//							Img = Item.Source as Bitmap;
+//							break;
+//					}
+//					
+//					SymbolImg.source = Img;
+//					GlobalMouse.State = GlobalMouse.SYMBOL_SELECTED;
+//					
+//					if(GridWorld)
+//					{
+//						if(GridWorld.TerrainLayer == null )//&& GridWorld.ItemLayer == null)
+//						{
+//							Alert.show("禁止在数据网格层放入元件!");
+//							return;
+//						}
+//						GridWorld.UpdateSymbolSprite(SymbolItem,Item);
+//					}
+//					
+//					SymbolInfo.visible = true;
+//				}
+			}
+			
+			/**
+			 * 路点编辑模式切换
+			 **/
+			//			protected function WalkEditToggle(event:Event):void
+			//			{
+			//				if(GridWorld)
+			//				{
+			//					if(WalkModeToggle.selected)
+			//					{
+			//						GridWorld.EnableWalkEidt();
+			//						//TileWorld(GridWorld).EnableWalkPointEditMode();
+			//					}
+			//					else
+			//					{
+			//						//TileWorld(GridWorld).DisableWalkPointEditMode();
+			//						GridWorld.ResetEditMode();
+			//					}
+			//				}
+			//				else
+			//				{
+			//					WalkModeToggle.selected = false;
+			//				}
+			//			}
+			
+			/**
+			 * 角色创建默认地点(如果未指定的话)
+			 **/
+			protected function RoleCreatorToggle(event:Event):void
+			{
+				
+			}
+			
+			/**
+			 * 关闭当前打开或创建的世界,并且重置所有状态
+			 **/
+			private function ClearWorld():void
+			{
+				if(GridWorld)
+				{
+					GridWorld = null;
+					GridContainer = null;
+					//GridContainer.removeChild(GridWorld);
+					MapContainer.removeAllElements();
+					MenuItemSaveEnable = false;
+					BindGridShow = false;
+					BindDataGridEnable = false;
+					
+					BindOptionPanelEnable = false;
+					BindOptionPanelShow = false;
+					BindTerrainShow = false;
+					BindTerrainEnable = false;
+					BindItemShow = false;
+					
+					BindOptionPanelShow = false;
+				}
+				
+			}
+			
+			/**
+			 * 编辑主窗口关闭事件响应
+			 * 
+			 * 当前有地图数据打开则关闭
+			 **/
+			private function CloseCurrentWorld(event:CloseEvent):void
+			{
+				if(GridWorld)
+				{
+					Alert.okLabel = "保存后关闭";
+					Alert.noLabel = "不保存关闭";
+					Alert.cancelLabel = "取消";
+					Alert.show("关闭当前编辑数据会导致未保存的数据丢失,建议保存然后关闭!","关闭提醒",Alert.OK|Alert.NO|Alert.CANCEL,null,function(event:CloseEvent):void{
+						switch(event.detail)
+						{
+							case Alert.OK:
+								SaveWorld(function():void{
+									ClearWorld();
+								});
+								break;
+							case Alert.NO:
+								ClearWorld();
+								break;
+							case Alert.CANCEL:
+								ClearWorld();
+								break;
+						}
+					});
+				}
+			}
+			
+			//			protected function RoleCreatePointEditToggle(event:Event):void
+			//			{
+			//				if(CreatPoint.selected)
+			//				{
+			//					GridWorld.EnableRoleCreatorEdit();
+			//					
+			//				}
+			//				else
+			//				{
+			//					GridWorld.ResetEditMode();
+			//				}
+			//			}
+			
+			/**
+			 * 查看元件详细信息
+			 * 
+			 **/
+			protected function LookSymbolInfo(event:MouseEvent):void
+			{
+				
+			}
+			
+			/**
+			 * 
+			 * 资源库切换
+			 * 
+			 **/
+			protected function AssetLibraryChanged(event:IndexChangeEvent):void
+			{
+				AssetShowcase.removeAllElements();
+				
+				var Item:Object = ResourceProvider.getItemAt(event.newIndex) as Object;
+				var Library:Resource = Item.Resource;
+				
+				var Items:Vector.<ResourceItem> = Library.ChildrenItem;
+				
+				for each(var AssetItem:ResourceItem in Items)
+				{
+					var ItemInfo:AssetShowcaseItem = new AssetShowcaseItem();
+					ItemInfo.Item = AssetItem;
+					AssetShowcase.addElement(ItemInfo);
+				}
+			}
+			
+		]]>
+		
+	</fx:Script>
+	
+	<!--地图编辑面板-->
+	<s:TitleWindow id="MapWindow" x="10" y="60" width="870" height="730"
+				   close="CloseCurrentWorld(event)" dropShadowVisible="false">
+		<!--主视图区-->
+		<s:Scroller width="850" height="680" x="10" y="10">
+			<s:Group >
+				<s:BorderContainer id="MapContainer" borderVisible="false" width="100%" height="100%">
+				</s:BorderContainer>
+			</s:Group>
+		</s:Scroller>
+		<!--
+		<s:BorderContainer width="150" height="100" x="10" y="8" cornerRadius="5" visible="{BindLayerOption}">
+			<s:Group x="5" y="5" width="100%">
+				<s:layout>
+					<s:VerticalLayout />
+				</s:layout>
+				<s:HGroup verticalAlign="middle" width="100%">
+					<s:CheckBox label="地表层" id="TileTerrainSwitch" width="80%" enabled="{BindTerrainEnable}" selected="{BindTerrainShow}" change="SwitchTerrain(event)"/>
+					<s:Image source="@Embed('../assets/Add.png')" width="16" height="16" smooth="true" useHandCursor="true" buttonMode="true" enabled="{!BindTerrainEnable}" click="CreateTerrainLayer(event)" horizontalAlign="right"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle" width="100%">
+					<s:CheckBox label="数据网格层" id="TileGridSwitch" width="80%" selected="{BindGridShow}" change="SwitchGrid(event)" />
+				</s:HGroup>
+			</s:Group>
+		</s:BorderContainer>
+		-->
+	</s:TitleWindow>
+	
+
+	<s:VGroup id="RightSpace" width="302" height="730" x="888" y="61" gap="10">
+		<s:VGroup gap="0" width="100%" height="100%">
+			<s:TabBar dataProvider="{myViewStack}"/> 
+			<mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="100%"> 
+				
+				<s:NavigatorContent id="search" label="分区"> 
+					<s:Scroller width="100%" height="100%">
+						<s:Group>
+							<s:layout>
+								<s:VerticalLayout paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5" />
+							</s:layout>
+							<s:TileGroup id="WorldGridGroup" width="100%" height="100%" />
+						</s:Group>
+					</s:Scroller>
+				</s:NavigatorContent> 
+				
+				<s:NavigatorContent id="LayerNav" label="图层" width="100%" height="100%"> 
+					
+				</s:NavigatorContent> 
+				<!--
+				<s:NavigatorContent id="symbolLInfo" label="原件库"> 
+					<mx:Tree width="100%" height="100%" id="SymbolLibrary" dataProvider="{SymbolProvider}" labelField="Title" itemClick="SymbolChoice(event)" />
+				</s:NavigatorContent>
+				-->
+			</mx:ViewStack> 
+		</s:VGroup>
+		
+		<s:VGroup width="100%" height="100%">
+			<s:TabBar dataProvider="{TabStack2}" selectedIndex="0"/> 
+			<mx:ViewStack id="TabStack2"  borderStyle="solid" width="100%" height="100%"> 
+				<s:NavigatorContent id="accountInfo" label="资源" width="100%" height="100%"> 
+					<s:VGroup paddingLeft="5" paddingTop="5">
+						<s:Label text="资源库" />
+						<s:ComboBox id="AssetLibrarySelector" dataProvider="{ResourceProvider}" selectedIndex="0" labelField="Name" change="AssetLibraryChanged(event)"  />
+						
+						<s:Scroller width="95%" height="100%">
+							<s:VGroup width="290" height="270" id="AssetShowcase">
+								
+							</s:VGroup>
+						</s:Scroller>
+					</s:VGroup>
+					<!--
+					<mx:Tree id="ResourceLibrary" width="100%" height="100%" borderVisible="false"
+							 dataProvider="{ResourceProvider}" 
+							 labelField="Name" 
+							 itemClick="ResourceTreeItemClick(event)">
+					</mx:Tree>
+					-->
+				</s:NavigatorContent> 
+				
+				<!--
+				<s:NavigatorContent id="custInfo" label="原件预览"> 
+					<s:VGroup width="100%" height="100%" paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5" horizontalAlign="center" gap="10">
+						
+						<s:Scroller width="100%" height="100%">
+							<s:Group>
+								<s:Image id="SymbolImg" />
+							</s:Group>
+						</s:Scroller>
+						<s:Image width="24" height="24" smooth="true" source="@Embed('../assets/Info.png')" left="5" top="5" id="SymbolInfo" visible="false" click="LookSymbolInfo(event)"/>
+					</s:VGroup>
+				</s:NavigatorContent> 
+				-->
+				
+			</mx:ViewStack> 
+		</s:VGroup>
+	</s:VGroup>
+		
+	
+	<!--
+	<s:Scroller width="100%" height="738" x="888" y="61">
+		<s:Group  width="302" height="100%" id="RightSpace">
+			<s:VGroup width="100%" height="100%" gap="10">
+				<s:Panel width="300" height="300" title="分区预览" visible="{BindWorldGridPreviewShow}" includeInLayout="{BindWorldGridPreviewShow}"  borderVisible="true" dropShadowVisible="false">
+					<s:layout>
+						<s:VerticalLayout paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5" horizontalAlign="center" gap="10" />
+					</s:layout>
+					
+					<s:Scroller width="100%" height="100%">
+						
+						<s:Group>
+							<s:layout>
+								<s:VerticalLayout paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5" />
+							</s:layout>
+							<s:TileGroup id="WorldGridGroup" width="100%" height="100%" />
+						</s:Group>
+					</s:Scroller>
+				</s:Panel>
+				
+				<s:Panel width="300" height="300" title="元件预览" id="SymbolPreview" dropShadowVisible="false">
+					
+					<s:Scroller width="100%" height="100%">
+						<s:Group>
+							<s:Image id="SymbolImg" />
+						</s:Group>
+					</s:Scroller>
+					<s:Image width="24" height="24" smooth="true" source="@Embed('../assets/Info.png')" left="5" top="5" id="SymbolInfo" visible="false" click="LookSymbolInfo(event)"/>
+				</s:Panel>
+				<s:Panel width="300" height="200" borderVisible="true" dropShadowVisible="false" title="资源库">
+					<s:layout>
+						<s:VerticalLayout horizontalAlign="center" paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5"/>
+					</s:layout>
+					<mx:Tree id="ResourceLibrary" width="100%" height="100%" dataProvider="{ResourceProvider}" labelField="Name" itemClick="ResourceTreeItemClick(event)">
+					</mx:Tree>
+				</s:Panel>
+				<s:Panel width="300" height="300" title="元件库"  borderVisible="true" dropShadowVisible="false">
+					<s:layout>
+						<s:VerticalLayout paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5" horizontalAlign="center" gap="10" />
+					</s:layout>
+					<mx:Tree width="100%" height="100%" id="SymbolLibrary" dataProvider="{SymbolProvider}" labelField="Title" itemClick="SymbolChoice(event)" />
+				</s:Panel>
+				
+			</s:VGroup>
+		</s:Group>
+	</s:Scroller>
+	-->
+	<mx:MenuBar x="10" y="5" width="1180" 
+				dataProvider="{MenuData}" 
+				labelField="label"
+				
+				itemClick="MenuSelected(event)" id="Menu" /> 
+	<!--
+	<s:Panel x="10" y="35" width="92" height="755" title="工具箱" dropShadowVisible="false">
+		<s:layout>
+			<s:VerticalLayout paddingLeft="5" paddingTop="5" paddingRight="5" gap="10" />
+		</s:layout>
+		<s:CheckBox label="图层面板" id="OptionSwitch" selected="{BindOptionPanelEnable}" enabled="{BindOptionPanelShow}" click="LayerOptionPanelSwitch(event)" />
+	</s:Panel>
+	-->
+</s:WindowedApplication>

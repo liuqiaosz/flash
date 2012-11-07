@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="Initializer(event)"
+				   mouseOver="Over(event)"
+				   mouseOut="Out(event)" click="Selected(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.event.EventConstant;
+			import mapassistant.event.NotifyEvent;
+			
+			import mx.events.FlexEvent;
+			import mx.graphics.SolidColorStroke;
+			
+			private var Stroke:SolidColorStroke = null;
+			
+			private var _Column:int = 0;
+			
+			private var _Active:Boolean = false;
+			public function get Column():int
+			{
+				return _Column;
+			}
+			private var _Row:int = 0;
+			public function get Row():int
+			{
+				return _Row;
+			}
+			
+			protected function Initializer(event:FlexEvent):void
+			{
+				Stroke = new SolidColorStroke(0x000000,2);
+				this.borderStroke = Stroke;
+			}
+			
+			public function GridPosition(C:int,R:int):void
+			{
+				_Column = C;
+				_Row = R;
+			}
+			
+			public function Active():void
+			{
+				_Active = true;
+				Stroke.color = 0xFF0000;
+			}
+			public function UnActive():void
+			{
+				_Active = false;
+				Stroke.color = 0x000000;
+			}
+			
+			protected function Over(event:MouseEvent):void
+			{
+				Stroke.color = 0xFF0000;
+			}
+			
+			protected function Out(event:MouseEvent):void
+			{
+				if(_Active)
+				{
+					Stroke.color = 0xFF0000;
+				}
+				else
+				{
+					Stroke.color = 0x000000;
+				}
+			}
+			
+			protected function Selected(event:MouseEvent):void
+			{
+				var Notify:NotifyEvent = new NotifyEvent(EventConstant.CHANGEWORLDGRID);
+				Notify.Params.push(_Column);
+				Notify.Params.push(_Row);
+				dispatchEvent(Notify);
+			}
+			
+		]]>
+	</fx:Script>
+	
+</s:BorderContainer>

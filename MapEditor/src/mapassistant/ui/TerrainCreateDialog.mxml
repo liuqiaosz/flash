@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="400" height="300" title="地表层属性">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.event.UIEvent;
+			
+			import mapassistant.vo.TerrainProperty;
+			
+			import mx.events.IndexChangedEvent;
+			
+			import spark.events.IndexChangeEvent;
+			override protected function Enter(event:MouseEvent):void
+			{
+				var Property:TerrainProperty = new TerrainProperty();
+				//Property.Row = int(RowCount.text);
+				//Property.Column = int(ColumnCount.text);
+				Property.TileSize = int(TileSize.text);
+				var Notify:UIEvent = new UIEvent(UIEvent.WINDOW_ENTER);
+				Notify.Params.push(Property);
+				dispatchEvent(Notify);
+				this.CloseWindow();
+			}
+			
+			[Bindable]
+			private var BindAreaModeSwitch:Boolean = true;
+			/**
+			 * 地图规模变更
+			 **/
+			protected function AreaModeChanged(event:IndexChangeEvent):void
+			{
+				if(AreaMode.selectedIndex == 1)
+				{
+					BindAreaModeSwitch = true;
+				}
+				else
+				{
+					BindAreaModeSwitch = false;
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout paddingLeft="5" paddingTop="10" gap="20" horizontalAlign="center" />
+	</ui:layout>
+	
+	<s:VGroup  width="100%" verticalAlign="middle">
+		<s:Label text="单元格大小" verticalAlign="middle" height="100%" />
+		<s:TextInput width="150" id="TileSize" restrict="0-9" text="300" />
+	</s:VGroup>
+	<!--
+	<s:VGroup>
+		<s:Label text="列数" verticalAlign="middle" height="100%" />
+		<s:TextInput width="150" id="ColumnCount" restrict="0-9" text="100" />
+	</s:VGroup>
+	
+	<s:VGroup>
+		<s:Label text="行数" verticalAlign="middle" height="100%" />
+		<s:TextInput width="150" id="RowCount" restrict="0-9" text="100"/>
+	</s:VGroup>
+	-->
+	<s:VGroup width="100%" verticalAlign="middle">
+		<s:Label width="100" text="场景分区" />
+		<s:ComboBox id="AreaMode" selectedIndex="1" change="AreaModeChanged(event)" >
+			<s:ArrayCollection>
+				<fx:String>不分区(小于5000像素)</fx:String>
+				<fx:String>分区</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:VGroup>
+	
+	<s:VGroup visible="{BindAreaModeSwitch}" includeInLayout="{BindAreaModeSwitch}">
+		
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="100" text="场景分区宽度" />
+			<s:TextInput id="AreaWidth"  text="3000"/>
+		</s:HGroup>
+		
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="100" text="场景分区高度" />
+			<s:TextInput id="AreaHeight" text="3000" />
+		</s:HGroup>
+	</s:VGroup>
+	
+	<s:HGroup>
+		<s:Button label="确定" click="Enter(event)" />
+		<s:Button label="取消" click="Close(event)" />
+	</s:HGroup>
+</ui:AdvanceWindow>

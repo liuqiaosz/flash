@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:ui="editor.uitility.ui.*"
+			   width="400" height="400" title="Map style" close="OnWindowClose(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.event.EventConstant;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.utils.StringUtil;
+			
+			import spark.events.IndexChangeEvent;
+			
+			/**
+			 * 
+			 * Enter
+			 * 
+			 **/
+			private function OnEnter(event:MouseEvent):void
+			{
+				if(Row.text == "" || Column.text == "" || Size.text == "")
+				{
+					Alert.show("缺乏必填数据","错误");
+				}
+				else
+				{
+//					if(MapAreaPartition)
+//					{
+//						if(MapMode.selectedIndex == 1)
+//						{
+//							//staggered格式地图
+//							if(SceneWidth * 2 != SceneHeight)
+//							{
+//								Alert.show("Staggered地图分割的高度必须等于宽度的两倍");
+//								return;
+//							}
+//						}
+//							
+//					}
+					super.Enter(event);
+				}
+			}
+			
+			public function get MapAreaPartition():Boolean
+			{
+				return BindSizeModeSwitch;
+			}
+			
+			private function OnCancel(event:MouseEvent):void
+			{
+				dispatchEvent(new Event(EventConstant.CANCEL));
+			}
+			
+			public function get MapRow():int
+			{
+				return Number(Row.text);
+			}
+			public function get MapColumn():int
+			{
+				return Number(Column.text);
+			}
+			public function get TileSize():int
+			{
+				return Number(Size.text);
+			}
+			public function get Mode():int
+			{
+				return MapMode.selectedIndex;
+			}
+			
+			public function get MapSizeMode():int
+			{
+				return SizeMode.selectedIndex;
+			}
+			
+			public function get SceneWidth():int
+			{
+				return int(BlockWidth.text);
+			}
+			public function get SceneHeight():int
+			{
+				return int(BlockHeight.text);
+			}
+			
+			private function OnWindowClose(event:CloseEvent):void
+			{
+				dispatchEvent(new Event(EventConstant.CANCEL));
+			}
+			
+			[Bindable]
+			private var BindSizeModeSwitch:Boolean = false;
+			/**
+			 * 地图规模变更
+			 **/
+			protected function SizeModeChanged(event:IndexChangeEvent):void
+			{
+				if(SizeMode.selectedIndex == 1)
+				{
+					BindSizeModeSwitch = true;
+				}
+				else
+				{
+					BindSizeModeSwitch = false;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		.Lable
+		{
+			fontSize: 14px;
+			paddingLeft: 10px;
+			paddingTop: 5px;
+		}
+	</fx:Style>
+	
+	<ui:layout>
+		<s:BasicLayout />
+	</ui:layout>
+	
+	<s:Group width="350" horizontalCenter="1" verticalCenter="1">
+		<s:layout>
+			<s:VerticalLayout />
+		</s:layout>
+		
+		<s:Group >
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+			
+			<s:Label styleName="Lable" text="Tile size" width="100"/>
+			<s:TextInput width="150" id="Size" text="30"/>
+		</s:Group>
+		
+		<s:Group >
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+			
+			<s:Label styleName="Lable" text="Row count" width="100"/>
+			<s:TextInput width="150" id="Row" text="1000" />
+		</s:Group>
+		
+		<s:Group >
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+			<s:Label styleName="Lable" text="Col count" width="100"/>
+			<s:TextInput width="150" id="Column" text="1000" />
+		</s:Group>
+		
+		<s:HGroup>
+			<s:Label text="地图模式" width="100"/>
+			
+			<s:ComboBox id="MapMode" selectedIndex="0" >
+				<s:ArrayCollection>
+					<fx:String>2D</fx:String>
+					<fx:String>2.5D(Staggered)</fx:String>
+					<fx:String>2.5D(Diamond)</fx:String>
+				</s:ArrayCollection>
+			</s:ComboBox>
+		</s:HGroup>
+		
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="100" text="场景分区" />
+			<s:ComboBox id="SizeMode" selectedIndex="0" change="SizeModeChanged(event)" >
+				<s:ArrayCollection>
+					<fx:String>不分区(小于5000像素)</fx:String>
+					<fx:String>分区</fx:String>
+				</s:ArrayCollection>
+			</s:ComboBox>
+		</s:HGroup>
+		
+		<s:VGroup visible="{BindSizeModeSwitch}" includeInLayout="{BindSizeModeSwitch}">
+			
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label width="100" text="场景分区宽度" />
+				<s:TextInput id="BlockWidth"  text="3000"/>
+			</s:HGroup>
+			
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label width="100" text="场景分区高度" />
+				<s:TextInput id="BlockHeight" text="3000" />
+			</s:HGroup>
+		</s:VGroup>
+		
+		<s:Group width="100%" >
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+			
+			<s:Button label="OK" click="OnEnter(event)">
+			</s:Button>
+			
+			<s:Button label="Cancel" click="OnCancel(event)">
+			</s:Button>
+		</s:Group>
+	</s:Group>
+	
+	
+</ui:AdvanceWindow>

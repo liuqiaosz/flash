@@ -130,12 +130,17 @@ package game.sdk.map.layer
 			Initializer();
 		}
 		
-		public function LayerUpdate(Row:int,Column:int,Size:int):void
+		/**
+		 * 层数据更新
+		 * 
+		 * 
+		 **/
+		public function LayerUpdate(Row:int,Column:int,TileWidth:int,TileHeight:int):void
 		{
 			this._GridRow = Row;
 			this._GridColumn = Column;
-			this._GridTileWidth = Size * 2;
-			this._GridTileHeight = Size;
+			this._GridTileWidth = TileWidth;
+			this._GridTileHeight = TileHeight;
 			_LayerWidth = Column * _GridTileWidth;
 			_LayerHeight = Row * _GridTileHeight;
 			Initializer();

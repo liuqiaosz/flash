@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="400" height="260" title="场景数据保存属性设置">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.util.Common;
+			
+			import utility.DateTools;
+
+			[Bindable]
+			private var DefaultDir:String = Common.MAP;
+			
+			private var _Dir:File = null;
+			public function DirBrowser(event:MouseEvent):void
+			{
+				_Dir = new File();
+				
+				_Dir.addEventListener(Event.SELECT,function(event:Event):void{
+					SaveDir.text = _Dir.nativePath;
+				});
+				
+				_Dir.browseForDirectory("请选择保存路径");
+			}
+			
+			public function get Format():uint
+			{
+				return 0;
+			}
+			
+			public function get SaveNav():String
+			{
+				return SaveDir.text; 
+			}
+			
+			public function get ZipType():uint
+			{
+				return 0;
+			}
+			
+			public function get WorldName():String
+			{
+				return SceneName.text;
+			}
+			
+			public function get FileName():String
+			{
+				if(SaveFileName.text == "")
+				{
+					return DateTools.YYYYMMDDHHMMSS;
+				}
+				return SaveFileName.text;
+			}
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout paddingLeft="5" paddingTop="5" paddingRight="5" gap="20" horizontalAlign="center" />
+	</ui:layout>
+	
+	<s:HGroup width="100%" verticalAlign="middle">
+		<s:Label text="保存路径" width="80" />
+		<s:TextInput  width="200" id="SaveDir" enabled="false" text="{DefaultDir}"/>
+		<s:Image source="@Embed('../assets/Folder.png')"  width="24" height="24" smooth="true" buttonMode="true" useHandCursor="true" click="DirBrowser(event)"/>
+	</s:HGroup>
+	
+	<s:HGroup width="100%" verticalAlign="middle">
+		<s:Label text="场景ID" width="80" />
+		<s:TextInput  width="200" id="SceneName" text="Test" />
+	</s:HGroup>
+	
+	<s:HGroup width="100%" verticalAlign="middle">
+		<s:Label text="文件名称" width="80" />
+		<s:TextInput  width="200" id="SaveFileName" />
+	</s:HGroup>
+	
+	<s:HGroup width="100%" verticalAlign="middle">
+		<s:Label text="数据格式" width="80" />
+		<s:RadioButton groupName="FormatGroup" id="Binary" label="二进制" selected="true" />
+		<s:RadioButton groupName="FormatGroup" id="XML" label="XML" enabled="false" />
+	</s:HGroup>
+	
+	<s:HGroup width="100%" verticalAlign="middle">
+		<s:Label text="是否压缩" width="80" />
+		<s:RadioButton groupName="ZipGroup" id="Zip" label="压缩" selected="true" />
+		<s:RadioButton groupName="ZipGroup" id="Unzip" label="不压缩" enabled="false" />
+	</s:HGroup>
+	
+	<s:HGroup gap="40">
+		<s:Image width="36" height="36" smooth="true" source="@Embed('../assets/Right.png')" buttonMode="true" useHandCursor="true" click="Enter(event)"/>
+		<s:Image width="36" height="36" smooth="true" source="@Embed('../assets/Cancel.png')" buttonMode="true" useHandCursor="true" click="Close(event)"/>
+	</s:HGroup>
+</ui:AdvanceWindow>

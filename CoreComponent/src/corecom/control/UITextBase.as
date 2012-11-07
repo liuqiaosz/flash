@@ -34,8 +34,6 @@ package corecom.control
 			_Format.color = _DefaultFontColor;
 			_Format.font = _DefaultFamily;
 			_TextField.defaultTextFormat = _Format;
-			mouseChildren = false;
-			mouseEnabled = false;
 			addChild(_TextField);
 		}
 		

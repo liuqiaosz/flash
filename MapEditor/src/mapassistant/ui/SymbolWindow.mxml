@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="800" height="600" initialize="WIndowInitialize()"  close="OnWindowClose(event)">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.data.SQL;
+			import mapassistant.data.SQLManager;
+			import mapassistant.data.table.TableSymbol;
+			import mapassistant.event.EventConstant;
+			import mapassistant.event.NotifyEvent;
+			import mapassistant.map.world.Tile2DWorld;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.events.CloseEvent;
+			
+			private var GridShowcase:SymbolGridShowcase = null;
+			private var GridContainer:SpriteContainer = null;
+			private var Item:ResourceLibraryItem = null;
+			private var ResourceImage:FlexImage = null; 
+			private function WIndowInitialize():void
+			{
+				ResourceImage = Item.OrignalImage.Clone() as FlexImage;
+				Workspace.addElement(ResourceImage);
+				//Owner.text = Item.Item.Owner;
+				ResClass.text = Item.ResourceId;
+				
+				BindImageWidth = ResourceImage.width + "";
+				BindImageHeight = ResourceImage.height + "";
+			}
+			private function OnWindowClose(event:CloseEvent):void
+			{
+				dispatchEvent(new Event(EventConstant.CANCEL));
+			}
+			public function set Resource(Item:ResourceLibraryItem):void
+			{
+				this.Item = Item;
+			}
+			public function get Resource():ResourceLibraryItem
+			{
+				return Item;
+			}
+			
+			[Bindable]
+			protected var BindIsoPropertyEdit:Boolean = false;
+			
+			[Bindable]
+			protected var BindImageWidth:String = "";
+			[Bindable]
+			protected var BindImageHeight:String = "";
+			
+			[Bindable]
+			private var SymbolTypeData:ArrayList = new ArrayList(
+			[
+				{label: "建筑",data: "0"},
+				{label: "地表",data: "1"},
+				{label: "障碍",data: "2"}
+			]);
+			
+			private function UpdateGird(event:MouseEvent):void
+			{
+				if(null == GridShowcase)
+				{
+					GridShowcase = new SymbolGridShowcase();
+					GridShowcase.EnableDrag();
+					//资源拖拽回调通知.参数为更新的偏移量
+					GridShowcase.OnResourceDragMoveNotify = OnResourceDragMove;
+					GridShowcase.Resource = ResourceImage.Image;
+					GridShowcase.UpdateShowcase(Number(Row.text),Number(Column.text),Number(Size.text),Number(GridHeight.text));
+					GridContainer = new SpriteContainer();
+					GridContainer.addChild(GridShowcase);
+					//Workspace.addElement(GridContainer);
+					Workspace.addElement(GridContainer);
+					Workspace.height = GridShowcase.height << 1;
+					Workspace.width = GridShowcase.width;
+					
+					Workspace.x = (450 - GridShowcase.width) >> 1;
+					Workspace.y = (450 - GridShowcase.height) >> 1;
+				}
+				else
+				{
+					GridShowcase.UpdateShowcase(Number(Row.text),Number(Column.text),Number(Size.text),Number(GridHeight.text));
+				}
+			}
+			
+			private function OnResourceDragMove(OffX:int,OffY:int):void
+			{
+				OffsetX.text = "" + OffX;
+				OffsetY.text = "" + OffY;
+			}
+			
+			/**
+			 * 
+			 * 创建元件
+			 * 
+			 **/
+			private function OnSaveSymbol(event:MouseEvent):void
+			{
+				var Connection:SQL = null;
+				try
+				{
+					Connection = SQLManager.GetConnection();
+					var Name:String = SymbolName.text;
+					
+					var Result:Array = Connection.QueryBySQL("select * from symbol where name='" + Name + "'");
+					if(Result && Result.length > 0)
+					{
+						trace("名称已占用");
+						return;
+					}
+					
+					/**
+					 * 
+					 * 保存参数:
+					 * 
+					 * 元件名称
+					 * 占用行数
+					 * 占用列数
+					 * 占用单元格大小
+					 * 占用单元格高度
+					 * 资源类名称
+					 * 资源所属文件
+					 * 资源图片针对锚点的X偏移
+					 * 资源图片针对锚点的Y偏移
+					 * 
+					 **/
+					var Symbol:TableSymbol = new TableSymbol();
+					Symbol.Name = SymbolName.text;
+					if(Symbol.SymbolCategory == 1)
+					{
+						Symbol.OffsetX = int(OffsetX.text);
+						Symbol.OffsetY = int(OffsetY.text);
+						Symbol.BlockRow = int(Row.text);
+						Symbol.BlockColumn = int(Column.text);
+						Symbol.TileHeight = int(GridHeight.text);
+						Symbol.TileSize = int(Size.text);
+					}
+					
+					//Symbol.ResourceLibrary = Item.Item.OwnerSwf;
+					Symbol.ResourceClass = Item.ResourceId;
+					//Symbol.ResourceName = Item.Item.Owner;
+					Symbol.SymbolType = int(SymbolType.selectedItem.data);
+					Symbol.SymbolCategory = SymbolCategory.selectedIndex;
+					
+					Connection.Save(Symbol);
+					
+					//保存完成发起通知
+					var Notify:NotifyEvent = new NotifyEvent(EventConstant.SYMBOLCREATED);
+					Notify.Params.push(Symbol);
+					dispatchEvent(Notify);
+				}
+				catch(Err:Error)
+				{
+					trace(Err.message);
+				}
+				finally
+				{
+					if(null != Connection)
+					{
+						Connection.Close();
+					}
+				}
+			}
+			
+			private function OnTypeChanged(event:Event):void
+			{
+				if(SymbolCategory.selectedIndex == 1)
+				{
+					this.BindIsoPropertyEdit = true;
+				}
+				else
+				{
+					this.BindIsoPropertyEdit = false;
+				}
+			}
+			
+//			private function CreateSizeGird(event:MouseEvent):void
+//			{
+//				
+//				GridWorld = new GenericWorld(Number(Row.text),Number(Column.text),Number(Size.text));
+//				GridContainer = new SpriteContainer();
+//				GridContainer.addChild(GridWorld);
+//				//Workspace.addElement(GridContainer);
+//				Workspace.addElement(GridContainer);
+//				Workspace.height = GridWorld.height << 1;
+//				Workspace.width = GridWorld.width;
+//				
+//				Workspace.x = (450 - GridWorld.width) >> 1;
+//				Workspace.y = (450 - GridWorld.height) >> 1;
+//			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:BorderContainer x="10" y="10">
+		<s:Scroller width="450" height="450" >
+			<s:Group>
+				<s:BorderContainer id="Workspace" borderVisible="false">
+					<s:layout>
+						<s:BasicLayout />
+					</s:layout>
+				</s:BorderContainer>
+			</s:Group>
+		</s:Scroller>
+	</s:BorderContainer>
+	
+	<s:Group x="7" y="475" visible="{BindIsoPropertyEdit}">
+		<s:layout>
+			<s:HorizontalLayout verticalAlign="middle" />
+		</s:layout>
+		<s:VGroup>
+			<s:Label text="图片偏移量" />
+			<s:HGroup>
+				<s:Label text="X:" />
+				<s:Label text="" id="OffsetX" />
+			</s:HGroup>
+			<s:HGroup>
+				<s:Label text="Y:" />
+				<s:Label text="" id="OffsetY" />
+			</s:HGroup>
+		</s:VGroup>
+		<s:HGroup>
+			<s:Label text="行" textAlign="center"/>
+			<s:TextInput id="Row" width="50" />
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="列"/>
+			<s:TextInput id="Column" width="50"/>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="高度"/>
+			<s:TextInput id="GridHeight" width="50" text="0"/>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="大小"/>
+			<s:TextInput id="Size" width="50"/>
+			<s:Button label="更新" click="UpdateGird(event)" />
+		</s:HGroup>
+	</s:Group>
+	<s:Panel x="470" y="10" width="318" title="元件属性">
+		<s:layout>
+			<s:VerticalLayout paddingTop="10" />
+		</s:layout>
+		
+		<s:Form>
+			<s:FormItem label="所属资源文件">
+				<s:Label id="Owner" />
+			</s:FormItem>
+			<s:FormItem label="资源文件类">
+				<s:Label id="ResClass" />
+			</s:FormItem>
+			<s:FormItem label="图形宽">
+				<s:Label text="{BindImageWidth}" />
+			</s:FormItem>
+			<s:FormItem label="图形高">
+				<s:Label text="{BindImageHeight}" />
+			</s:FormItem>
+			
+			<s:FormItem label="元件名称">
+				<s:TextInput id="SymbolName" />
+			</s:FormItem>
+			
+			<s:FormItem label="元件类型">
+				<s:ComboBox id="SymbolCategory" selectedIndex="0" change="OnTypeChanged(event)" >
+					<s:ArrayCollection>
+						<fx:String>2D</fx:String>
+						<fx:String>2.5D</fx:String>
+					</s:ArrayCollection>
+				</s:ComboBox>
+			</s:FormItem>
+			
+			<s:FormItem label="元件种类" >
+				<s:ComboBox id="SymbolType" selectedIndex="0" dataProvider="{SymbolTypeData}">
+				</s:ComboBox>
+			</s:FormItem>
+			
+			<s:FormItem>
+				<s:Button label="创建元件" click="OnSaveSymbol(event)"/>
+			</s:FormItem>
+		</s:Form>
+	</s:Panel>
+
+</s:TitleWindow>

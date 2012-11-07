@@ -31,6 +31,11 @@ package game.sdk.map.layer
 			return Children;
 		}
 		
+		public function LayerUpdate(Row:int,Column:int,TileWidth:int,TileHeight:int):void
+		{
+			
+		}
+		
 		/**
 		 * 
 		 * 获取TILE组

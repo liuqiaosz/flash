@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<My:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:My="editor.uitility.ui.*" width="400" height="300">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.util.Tools;
+			
+			import utility.swf.ByteStream;
+			import utility.swf.Swf;
+			import utility.swf.tag.GenericTag;
+			import utility.swf.tag.Tag;
+			
+			private var SwfFile:File = null;
+			private var Copy:Boolean = true;
+			private var SwfReader:Swf = null;
+			private function OnSelectSwfFile(event:MouseEvent):void
+			{
+				SwfFile = new File();
+				SwfFile.addEventListener(Event.SELECT,SelectComplete);
+				SwfFile.browse([new FileFilter("SWF","*.swf")]);
+			}
+			
+			private function SelectComplete(event:Event):void
+			{
+				Selected.text = SwfFile.nativePath;
+				var FileReader:FileStream = new FileStream();
+				FileReader.open(new File(Selected.text),FileMode.READ);
+				var Data:ByteArray = new ByteArray();
+				FileReader.readBytes(Data,0,FileReader.bytesAvailable);
+				Data.position = 0;
+				SwfReader = new Swf(new ByteStream(Data));
+			}
+			
+			private function SaveAndClose(event:MouseEvent):void
+			{
+				var Path:String = "";
+				if(Copy)
+				{
+					var AppDirect:File = File.applicationDirectory;
+					var Nav:String = AppDirect.nativePath + Tools.SystemSplitSymbol + "Resources" ;
+					var Local:FileReference = new FileReference();
+					SwfFile.copyTo(new File(Nav + Tools.SystemSplitSymbol + SwfFile.name));
+					Path = Nav + Tools.SystemSplitSymbol + SwfFile.name;
+				}
+				else
+				{
+					Path = SwfFile.nativePath;
+				}
+				
+				if(SwfReader)
+				{
+					var PNGTags:Array = SwfReader.FindTagByType(Tag.LOSSLESS2);
+					var JPGTags:Array = SwfReader.FindTagByType(Tag.DEFINEJPEG2);
+					var TotalTags:Array = PNGTags.concat(JPGTags);
+					for(var Idx:int=0; Idx<TotalTags.length; Idx++)
+					{
+						var ImgTag:GenericTag = TotalTags[Idx];
+						
+						
+					}
+				}
+//				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.IMPORTSWF);
+//				Notify.Message = Path;
+//				dispatchEvent(Notify);
+				CloseWindow();
+			}
+			
+			protected function RadioClick(event:MouseEvent):void
+			{
+				Copy = RadioButton(event.target).value;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<My:layout>
+		<s:VerticalLayout paddingTop="10" paddingLeft="10" horizontalAlign="center" gap="20" />
+	</My:layout>
+	
+	<s:HGroup width="90%">
+		<s:TextInput width="200" id="Selected" editable="false" />
+		<s:Image source="@Embed('../assets/Folder.png')" width="24" height="24" smooth="true" buttonMode="true" click="OnSelectSwfFile(event)" toolTip="点击选择导入的SWF资源库"/>
+		
+	</s:HGroup>
+	
+	<s:VGroup width="90%">
+		<s:Label text="是否将SWF资源库复制到默认的资源库?" />
+		<s:RadioButton groupName="CopyRadio" label="复制" selected="true" value="1" click="RadioClick(event)" />
+		<s:RadioButton groupName="CopyRadio" label="不复制" value="0" click="RadioClick(event)" />
+	</s:VGroup>
+	
+	<s:HGroup gap="30">
+		<s:Image source="@Embed('../assets/Right.png')" width="32" height="32" smooth="true" buttonMode="true" toolTip="确认并且导入" click="SaveAndClose(event)" />
+		<s:Image source="@Embed('../assets/Cancel.png')" width="32" height="32" smooth="true" buttonMode="true" toolTip="取消并且关闭窗口" click="Close(event)"/>
+	</s:HGroup>
+</My:AdvanceWindow>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="550" height="450" title="新建元件">
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.event.UIEvent;
+			
+			import game.sdk.event.GameEvent;
+			import game.sdk.map.layer.DiamondLayer;
+			
+			import mapassistant.resource.ResourceItem;
+			
+			import mx.charts.renderers.DiamondItemRenderer;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import utility.BitmapTools;
+			
+			private var _Resource:ResourceItem = null;
+			private var _Layer:DiamondLayer = null;
+			private var _Img:Bitmap = null;
+			public function set Resource(Value:ResourceItem):void
+			{
+				_Resource = Value;
+				_Img = new Bitmap(BitmapTools.BitmapClone(Bitmap(_Resource.Source).bitmapData));
+				_Img.alpha = 0.5;
+				//IsoContainer.addChild(_Img);
+			}
+			
+			[Bindable]
+			private var IsoEditable:Boolean = false;
+			protected function TypeChanged(event:IndexChangeEvent):void
+			{
+				switch(SymbolType.selectedIndex)
+				{
+					case 0:
+						IsoEditable = false;
+						break;
+					case 1:
+						IsoEditable = true;
+						UpdateBlockTile();
+						break;
+				}
+			}
+			
+			override protected function Initialized(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function BlockRowChanged(event:Event):void
+			{
+				UpdateBlockTile();
+			}
+			protected function BlockColumnChanged(event:Event):void
+			{
+				UpdateBlockTile();
+			}
+			protected function BlockSizeChanged(event:Event):void
+			{
+				UpdateBlockTile();
+			}
+			
+			protected function UpdateBlockTile():void
+			{
+				var Size:int = BlockSize.value;
+				var Row:int = BlockRow.value;
+				var Column:int = BlockColumn.value;
+				
+				if(!_Layer)
+				{
+					_Layer = new DiamondLayer(Row,Column,Size);
+					
+					_Layer.addEventListener(GameEvent.RENDER_OVER,BlockLayerRended);
+					IsoContainer.addChild(_Layer);
+					_Layer.addChild(_Img);
+				}
+				else
+				{
+					_Layer.LayerUpdate(Row,Column,Size,Size);
+				}
+			}
+			
+			protected function UpdateImageOffset():void
+			{
+			}
+			
+			protected function BlockLayerRended(event:GameEvent):void
+			{
+				_Layer.x = (400 - _Layer.width) / 2 + _Layer.GridColumn * _Layer.GridTileHeight;
+				_Layer.y = (300 - _Layer.height) / 2;
+				OffsetX.text = "" + _Img.x;
+				OffsetY.text = "" + _Img.y;
+			}
+			
+			protected function DragStart(event:MouseEvent):void
+			{
+				//trace(event.currentTarget);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				stage.addEventListener(MouseEvent.MOUSE_UP,DragStop);
+				Offset.x = event.stageX;
+				Offset.y = event.stageY;
+				Offset = _Img.globalToLocal(Offset);
+			}
+			private var Offset:Point = new Point();
+			protected function DragMove(event:MouseEvent):void
+			{
+				var Pos:Point = new Point(event.stageX,event.stageY);
+				Pos = _Layer.globalToLocal(Pos);
+				_Img.x = Pos.x - Offset.x;
+				_Img.y = Pos.y - Offset.y;
+				
+				OffsetX.text = "" + _Img.x;
+				OffsetY.text = "" + _Img.y;
+			}
+			
+			protected function DragStop(event:MouseEvent):void
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,DragStop);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup id="Form" horizontalAlign="center" verticalAlign="middle" left="5">
+		<s:HGroup verticalAlign="middle" width="100%">
+			<s:Label styleName="Lable" text="元件类型" width="100" />
+			<s:ComboBox selectedIndex="0" width="100" change="TypeChanged(event)" id="SymbolType">
+				<s:ArrayCollection>
+					<fx:String>2D</fx:String>
+					<fx:String>3D</fx:String>
+				</s:ArrayCollection>
+			</s:ComboBox>
+		</s:HGroup>
+		
+		<s:HGroup verticalAlign="middle" width="100%">
+			<s:Label styleName="Lable" text="允许通行" width="100"/>
+			<s:ComboBox selectedIndex="0" width="100">
+				<s:ArrayCollection>
+					<fx:String>否</fx:String>
+					<fx:String>是</fx:String>
+				</s:ArrayCollection>
+			</s:ComboBox>
+		</s:HGroup>
+		
+		<s:HGroup visible="{IsoEditable}" includeInLayout="{IsoEditable}">
+			<s:VGroup>
+				<s:VGroup>
+					<s:Label styleName="Lable" text="元件Size" width="100"/>
+					<s:HGroup verticalAlign="middle">
+						<s:HSlider width="70" maximum="100" stepSize="1" minimum="10" id="BlockSize" change="BlockSizeChanged(event)"/>
+						<s:Label />
+					</s:HGroup>
+				</s:VGroup>
+				
+				<s:VGroup>
+					<s:Label styleName="Lable" text="元件占用行" width="100"/>
+					<s:HGroup verticalAlign="middle">
+						<s:HSlider width="70" maximum="10" stepSize="1" minimum="1" id="BlockRow" change="BlockRowChanged(event)"/>
+						<s:Label />
+					</s:HGroup>
+				</s:VGroup>
+				
+				<s:VGroup>
+					<s:Label styleName="Lable" text="元件占用列" width="100"/>
+					<s:HGroup verticalAlign="middle">
+						<s:HSlider width="70" maximum="10" stepSize="1" minimum="1" id="BlockColumn" change="BlockColumnChanged(event)"/>
+						<s:Label />
+					</s:HGroup>
+				</s:VGroup>
+				
+				<s:VGroup>
+					<s:Label styleName="Lable" text="X偏移" width="100"/>
+					<s:Label id="OffsetX" />
+				</s:VGroup>
+				
+				<s:VGroup>
+					<s:Label styleName="Lable" text="Y偏移" width="100"/>
+					<s:Label id="OffsetY" />
+				</s:VGroup>
+			</s:VGroup>
+			<s:Scroller  id="IsoEditor" width="400" height="300">
+				<s:Group>
+					<s:SpriteVisualElement id="IsoContainer" mouseDown="DragStart(event)">
+						
+					</s:SpriteVisualElement>
+				</s:Group>
+			</s:Scroller>
+		</s:HGroup>
+		
+		<s:HGroup>
+			<s:Button label="Save" />
+			<s:Button label="Cancel" click="Close(event)" />
+		</s:HGroup>
+	</s:VGroup>
+	
+</ui:AdvanceWindow>

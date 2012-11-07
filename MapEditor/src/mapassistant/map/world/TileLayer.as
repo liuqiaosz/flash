@@ -1,0 +1,158 @@
+package mapassistant.map.world
+{
+	import flash.display.Bitmap;
+	
+	import game.sdk.map.layer.GenericLayer;
+	import game.sdk.map.layer.LayerMode;
+	import game.sdk.map.tile.TileData;
+	import game.sdk.map.tile.TileMode;
+	
+	import mapassistant.resource.Resource;
+	import mapassistant.resource.ResourceManager;
+	import mapassistant.symbol.SymbolFactory;
+	
+	import utility.ColorCode;
+	
+	/**
+	 * Tile层定义
+	 **/
+	public class TileLayer extends AreaPartitionLayer
+	{
+		//可通行TILE渲染颜色
+		protected var _WalkTileFillColor:uint = ColorCode.GREEN;
+		
+		//角色创建TILE渲染颜色
+		protected var _RoleCreatorTileFillColor:uint = ColorCode.BLACK;
+		
+		//建筑TILE渲染颜色
+		protected var _BuildTileFillColor:uint = ColorCode.BLUE;
+		
+		//NPC TILE渲染颜色
+		protected var _NpcTileFillColor:uint = ColorCode.AQUA; 
+		
+		public function TileLayer(Row:int = 0,Column:int = 0,TileSize:int = 0)
+		{
+			super(Row,Column,TileSize,TileSize);
+		}
+		
+		public function ChangeTileMode(Row:uint,Column:uint,Mode:uint):TileData
+		{
+			var Tile:TileData = Grid[Row][Column];
+			
+			if(Tile)
+			{
+				Tile.Mode = Mode;
+				DrawTile(Tile);
+			}
+			
+			return Tile;
+		}
+		
+		public function ChangeTileState(Row:uint,Column:uint,State:uint):TileData
+		{
+			var Tile:TileData = Grid[Row][Column];
+			
+			if(Tile)
+			{
+				Tile.State = State;
+				DrawTile(Tile);
+			}
+			return Tile;
+		}
+		
+		protected function DrawTile(Tile:TileData):void
+		{
+			if(Tile.ResourceId != "" && Tile.Resource == null)
+			{
+				var Res:Resource = ResourceManager.Instance.FindResourceBySimpleName(Tile.ResourceId);
+				if(Res)
+				{
+					Tile.Resource = Bitmap(Res.FindSourceByClass(Tile.ResourceClass).Source).bitmapData;
+				}
+				
+			}
+			if(Tile.Resource)
+			{
+				graphics.beginBitmapFill(Tile.Resource);
+				graphics.drawRect(Tile.BlockColumn * _GridTileWidth,Tile.BlockRow * _GridTileHeight,_GridTileWidth,_GridTileHeight);
+				graphics.endFill();
+				return;
+			}
+			switch(Tile.Mode)
+			{
+				case TileMode.TILE_EMPTY:
+					if(Tile.State == TileMode.TILE_STATE_FREE)
+					{
+						graphics.moveTo(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight);
+						graphics.beginFill(_WalkTileFillColor);
+						graphics.drawRect(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight,_GridTileWidth,_GridTileHeight);
+						graphics.endFill();
+					}
+					break;
+				case TileMode.TILE_BUILD:
+					graphics.moveTo(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight);
+					graphics.beginFill(_BuildTileFillColor);
+					graphics.drawRect(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight,_GridTileWidth,_GridTileHeight);
+					graphics.endFill();
+					break;
+				case TileMode.TILE_ROLECREATOR:
+					graphics.moveTo(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight);
+					graphics.beginFill(_RoleCreatorTileFillColor);
+					graphics.drawRect(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight,_GridTileWidth,_GridTileHeight);
+					graphics.endFill();
+					break;
+				case TileMode.TILE_NPC:
+					graphics.moveTo(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight);
+					graphics.beginFill(_NpcTileFillColor);
+					graphics.drawRect(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight,_GridTileWidth,_GridTileHeight);
+					graphics.endFill();
+					break;
+			}
+		}
+		
+		override public function Render():void
+		{
+			graphics.clear();
+			_GridShow = true;
+			if(_GridShow)
+			{
+				var Grid:Vector.<Vector.<TileData>> = this.Grid;
+				var Row:uint = 0;
+				var Col:uint = 0;
+				var GridRow:uint = Grid.length;
+				var GridColumn:uint = Grid[0].length;
+				var Width:uint = GridColumn * this._GridTileWidth;
+				var Height:uint = GridRow * this._GridTileHeight;
+				graphics.beginFill(_GridFillColor,_GridFillAlpha);
+				graphics.drawRect(0,0,Width,Height);
+				graphics.endFill();
+				
+				graphics.lineStyle(_GridThinkness,_GridLineColor,_GridLineAlpha);
+				
+				for(Row = 0; Row<GridRow; Row++)
+				{
+					graphics.moveTo(0,Row * _GridTileHeight);
+					graphics.lineTo(Width,Row * _GridTileHeight);
+				}
+				
+				for(Col = 0; Col < GridColumn; Col++)
+				{
+					graphics.moveTo(Col * _GridTileHeight,0);
+					graphics.lineTo(Col * _GridTileHeight,Height);
+				}
+				
+				for(Row = 0; Row<GridRow; Row++)
+				{
+					//graphics.moveTo(0,Row * _GridSize);
+					//graphics.lineTo(Width,Row * _GridSize);
+					for(Col = 0; Col < GridColumn; Col++)
+					{
+						//graphics.moveTo(Col * _GridSize,0);
+						//graphics.lineTo(Col * _GridSize,Height);
+						DrawTile(Grid[Row][Col]);
+					}
+				}
+			}
+		}
+	}
+}

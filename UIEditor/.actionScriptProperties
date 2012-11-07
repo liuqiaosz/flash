@@ -25,7 +25,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="D:/AssFlash/AIR证书.p12" airTimestamp="false" anePathSet="true" version="1">
+      <airSettings airCertificatePath="D:/Git Library/Project/Death/AIR证书.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
       </airSettings>

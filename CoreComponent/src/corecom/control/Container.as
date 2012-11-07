@@ -206,7 +206,6 @@ package corecom.control
 			}
 		}
 		
-		
 		/**
 		 * 将子组件添加至管理队列.同时根据当前的布局状态进行布局调整
 		 **/
@@ -275,17 +274,32 @@ package corecom.control
 			UIControl(Child).Owner = this;
 		}
 		
-		public function GetChildById(Id:String):IUIControl
+		public function GetChildById(Id:String,DeepSearch:Boolean = false):IUIControl
 		{
-			for each(var Item:IUIControl in _Children)
+			var Item:IUIControl = null;
+			for each(Item in _Children)
 			{
 				if(Item.Id == Id)
 				{
 					return Item;
 				}
 			}
+			if(DeepSearch)
+			{
+				//深度查询
+				var Vec:Vector.<UIControl> = this.AllChildren;
+				for each(Item in Vec)
+				{
+					if(Item.Id == Id)
+					{
+						return Item;
+					}
+				}
+			}
 			return null;
 		}
+		
+		
 		
 		/**
 		 * 获取真实高度
@@ -335,6 +349,29 @@ package corecom.control
 		{
 			addChild(Control);
 		}
+		
+		/**
+		 * 获取全部子控件,全部层级
+		 * 
+		 * 
+		 **/
+		public function get AllChildren():Vector.<UIControl>
+		{
+			var Vec:Vector.<UIControl> = new Vector.<UIControl>();
+			
+			var Child:UIControl = null;
+			for each(Child in _Children)
+			{
+				Vec.push(Child);
+				if(Child is Container)
+				{
+					Vec = Vec.concat(Container(Child).AllChildren);
+				}
+				
+			}
+			return Vec;
+		}
+		
 		
 		override protected function SpecialEncode(Data:ByteArray):void
 		{

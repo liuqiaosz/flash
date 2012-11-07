@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" width="500" height="60">
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.PopUpWindowManager;
+			import editor.uitility.ui.event.UIEvent;
+			
+			import mapassistant.event.EventConstant;
+			import mapassistant.event.NotifyEvent;
+			import mapassistant.resource.Resource;
+			import mapassistant.resource.ResourceItem;
+			
+			import mx.core.Application;
+			import mx.core.FlexGlobals;
+			import mx.core.IFlexDisplayObject;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.Application;
+			
+			import utility.swf.BitByte;
+			import utility.swf.tag.Tag;
+			
+			[Bindable]
+			protected var BindPreviewImage:Bitmap = null;
+			
+			[Bindable]
+			protected var BindCategoryText:String = "";
+			
+			[Bindable]
+			protected var BindResourceId:String = "";
+			
+			[Bindable]
+			protected var BindOwnerLibrary:String = "";
+			
+			private var _Item:ResourceItem = null;
+			
+			public function set Item(Value:ResourceItem):void
+			{
+				_Item = Value;
+				BindOwnerLibrary = Value.Owner;
+				switch(Value.Type)
+				{
+					case Tag.DEFINEJPEG2:
+						BindPreviewImage = _Item.Source as Bitmap;
+						BindCategoryText = "JPEG";
+						break;
+					case Tag.LOSSLESS2:
+						BindPreviewImage = _Item.Source as Bitmap;
+						BindCategoryText = "PNG";
+						break;
+				}
+				
+				BindResourceId = _Item.Id;
+			}
+			
+			public function get Item():ResourceItem
+			{
+				return _Item;
+			}
+			
+			public function SelectSwitch(event:MouseEvent):void
+			{
+				var Notify:NotifyEvent = new NotifyEvent(EventConstant.RSITEM_CHECK_SWITCH);
+				Notify.Params.push(Check.selected);
+				dispatchEvent(Notify);
+			}
+			
+			public function set ChangeCheckState(Value:Boolean):void
+			{
+				Check.selected = Value;
+			}
+			
+			public function get Checked():Boolean
+			{
+				return Check.selected;
+			}
+			
+			public function CorvertSymbol(event:MouseEvent):void
+			{
+				var Window:IFlexDisplayObject = PopUpWindowManager.PopUp(NewSymbolDialog);
+				Window.addEventListener(UIEvent.WINDOW_ENTER,SaveSymbol);
+				NewSymbolDialog(Window).Resource = _Item;
+			}
+			
+			protected function SaveSymbol(event:UIEvent):void
+			{
+			}
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:HorizontalLayout verticalAlign="middle" paddingLeft="5" paddingRight="5" gap="20" />
+	</s:layout>
+	<s:CheckBox width="18" click="SelectSwitch(event)" id="Check" />
+	<s:Image width="16" height="16" smooth="true" source="@Embed('../assets/Convert.png')" toolTip="转换成元件" useHandCursor="true" click="CorvertSymbol(event)"/>
+	<s:Image width="48" height="48" source="{BindPreviewImage}" smooth="true" />
+	<s:Label width="60" text="{BindCategoryText}" textAlign="center" />
+	<s:Label width="180" text="{BindResourceId}" textAlign="center" />
+	<s:Label width="60" text="{BindOwnerLibrary}" textAlign="center"/>
+</s:Group>

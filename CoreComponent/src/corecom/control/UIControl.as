@@ -130,7 +130,6 @@ package corecom.control
 			
 			if(_StyleChanged)
 			{
-				trace("Stage render");
 				_StyleChanged = false;
 				//样式变更后调用Render进行处理
 				Render();
@@ -206,55 +205,7 @@ package corecom.control
 				{
 					if(Style.BackgroundImage != null)
 					{
-						if(!Style.Scale9Grid)
-						{
-							Pen.beginBitmapFill(Style.BackgroundImage.bitmapData,null,Boolean(Style.ImageFillType));
-						}
-						else
-						{
-							if(Style.Scale9GridLeft == 0 || Style.Scale9GridTop == 0 || Style.Scale9GridRight == 0 || Style.Scale9GridBottom == 0)
-							{
-								//任意参数为0时按默认方式渲染
-								Pen.beginBitmapFill(Style.BackgroundImage.bitmapData,null,Boolean(Style.ImageFillType));
-							}
-							else
-							{
-								if(null == _Scale9Grid)
-								{
-									_Scale9Grid = new Scale9GridBitmap(Style.BackgroundImage);
-									_Scale9Grid.Scale9Grid(Style.Scale9GridLeft,Style.Scale9GridTop,Style.Scale9GridRight,Style.Scale9GridBottom);
-									_Scale9Grid.width = _ActualWidth;
-									_Scale9Grid.height = _ActualHeight;
-									
-								}
-								else
-								{
-									_Scale9Grid.UpdateScale(Style.Scale9GridLeft,Style.Scale9GridTop,Style.Scale9GridRight,Style.Scale9GridBottom);
-								}
-								
-								var Vec:Vector.<ScaleRect> = _Scale9Grid.Rect;
-								var Source:BitmapData = Style.BackgroundImage.bitmapData;
-								var Rect:ScaleRect = null;
-								//var Data:BitmapData = null;
-								var Bit:Bitmap = null;
-								var Pos:Point = new Point();
-								var idx:int = 0;
-								//Data = new BitmapData(width,height);
-								var Mtx:Matrix = new Matrix();
-								for each(Rect in Vec)
-								{
-									Mtx.a = Rect.FillWidth / Rect.width;
-									Mtx.d = Rect.FillHeight / Rect.height;
-									Mtx.tx = Rect.x - Rect.BitX * Mtx.a;
-									Mtx.ty = Rect.y - Rect.BitY * Mtx.d;
-									Pen.beginBitmapFill(Source,Mtx);
-									Pen.drawRect(Rect.x,Rect.y,Rect.FillWidth,Rect.FillHeight);
-									Pen.endFill();
-									idx++;
-									Rect.DrawMatrix.identity();
-								}
-							}
-						}
+						BitmapRender();
 					}
 					else
 					{
@@ -263,12 +214,15 @@ package corecom.control
 							var Img:Bitmap = ControlAssetManager.Instance.FindAssetById(Style.BackgroundImageId) as Bitmap;
 							if(Img)
 							{
-								this.BackgroundImage = Img;
+								//资源已经欲载
+								BackgroundImage = Img;
+								BitmapRender();
 							}
-//							else
-//							{
-//								ControlAssetManager.Instance.AssetHookRegister(Style.BackgroundImageId,this);
-//							}
+							else
+							{
+								//注册资源加载通知
+								ControlAssetManager.Instance.AssetHookRegister(Style.BackgroundImageId,this);
+							}
 						}
 					}
 					
@@ -304,6 +258,60 @@ package corecom.control
 				}
 				graphics.endFill();
 				//trace("Render end");
+			}
+		}
+		
+		protected function BitmapRender():void
+		{
+			var Pen:Graphics = graphics;
+			if(!Style.Scale9Grid)
+			{
+				Pen.beginBitmapFill(Style.BackgroundImage.bitmapData,null,Boolean(Style.ImageFillType));
+			}
+			else
+			{
+				if(Style.Scale9GridLeft == 0 || Style.Scale9GridTop == 0 || Style.Scale9GridRight == 0 || Style.Scale9GridBottom == 0)
+				{
+					//任意参数为0时按默认方式渲染
+					Pen.beginBitmapFill(Style.BackgroundImage.bitmapData,null,Boolean(Style.ImageFillType));
+				}
+				else
+				{
+					if(null == _Scale9Grid)
+					{
+						_Scale9Grid = new Scale9GridBitmap(Style.BackgroundImage);
+						_Scale9Grid.Scale9Grid(Style.Scale9GridLeft,Style.Scale9GridTop,Style.Scale9GridRight,Style.Scale9GridBottom);
+						_Scale9Grid.width = _ActualWidth;
+						_Scale9Grid.height = _ActualHeight;
+						
+					}
+					else
+					{
+						_Scale9Grid.UpdateScale(Style.Scale9GridLeft,Style.Scale9GridTop,Style.Scale9GridRight,Style.Scale9GridBottom);
+					}
+					
+					var Vec:Vector.<ScaleRect> = _Scale9Grid.Rect;
+					var Source:BitmapData = Style.BackgroundImage.bitmapData;
+					var Rect:ScaleRect = null;
+					//var Data:BitmapData = null;
+					var Bit:Bitmap = null;
+					var Pos:Point = new Point();
+					var idx:int = 0;
+					//Data = new BitmapData(width,height);
+					var Mtx:Matrix = new Matrix();
+					for each(Rect in Vec)
+					{
+						Mtx.a = Rect.FillWidth / Rect.width;
+						Mtx.d = Rect.FillHeight / Rect.height;
+						Mtx.tx = Rect.x - Rect.BitX * Mtx.a;
+						Mtx.ty = Rect.y - Rect.BitY * Mtx.d;
+						Pen.beginBitmapFill(Source,Mtx);
+						Pen.drawRect(Rect.x,Rect.y,Rect.FillWidth,Rect.FillHeight);
+						Pen.endFill();
+						idx++;
+						Rect.DrawMatrix.identity();
+					}
+				}
 			}
 		}
 		
@@ -448,7 +456,7 @@ package corecom.control
 		public function AssetComleteNotify(Id:String,Asset:Object):void
 		{
 			this.BackgroundImage = Asset as Bitmap;
-			//ControlAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
+			ControlAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
 		}
 		
 		private var _Id:String = "";

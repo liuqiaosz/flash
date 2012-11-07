@@ -197,12 +197,6 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	
 	private function OnComplete(event:Event):void
 	{
-//		AssetLoader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
-//		AssetLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
-//		AssetLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,OnComplete);
-//		AssetLoader.contentLoaderInfo.removeEventListener(Event.OPEN,OnStart);
-//		_AssetLibArray.push(AssetLoader);
-//		AssetLoader = null;
 		var Data:ByteArray = new ByteArray();
 		Data.writeBytes(ByteArray(Loader.data),0,ByteArray(Loader.data).length);
 		Data.position = 0;

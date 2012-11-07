@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="200" height="90" initialize="Initialized(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<!--
+	<s:SkinnableContainer skinClass="mapassistant.ui.BorderCorner" width="200" height="50" >
+		
+	</s:SkinnableContainer>
+	-->
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.data.table.TableSymbol;
+			import mapassistant.event.EventConstant;
+			import mapassistant.event.NotifyEvent;
+			import mapassistant.resource.ResourceItem;
+			import mapassistant.util.SymbolMode;
+			import mapassistant.util.Tools;
+			
+			import mx.events.FlexEvent;
+			
+			import utility.BitmapTools;
+			
+			private var SymbolData:TableSymbol = null;
+			private var Resource:ResourceItem = null;
+			
+			[Bindable]
+			private var PreviewImgData:BitmapData = null;
+			[Bindable]
+			private var SymbolName:String = "";
+			[Bindable]
+			private var SymbolType:String = "";
+			public function InitializeSymbol(Symbol:TableSymbol,Resource:ResourceItem):void
+			{
+				//初始化元件
+				//var OrignalData:BitmapData = new Resource.Source() as BitmapData;
+				
+				var OrignalData:BitmapData = BitmapTools.BitmapClone(Bitmap(Resource.Source).bitmapData);
+				PreviewImgData = Tools.BitmapScale(OrignalData,45);
+				SymbolData = Symbol;
+				this.Resource = Resource;
+				
+				SymbolName = SymbolData.Name;
+				
+				switch(SymbolData.SymbolType)
+				{
+					case SymbolMode.BUILD:
+						SymbolType = "建筑";
+						break;
+					case SymbolMode.TERRAIN:
+						SymbolType = "地表";
+						break;
+					case SymbolMode.BARRIER:
+						SymbolType = "障碍";
+						break;
+				}
+			}
+			
+			protected function Initialized(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				buttonMode = true;
+				
+				addEventListener(MouseEvent.MOUSE_OVER,Focus,false,0,true);
+				addEventListener(MouseEvent.MOUSE_OUT,Unfocus,false,0,true);
+				addEventListener(MouseEvent.CLICK,Choice);
+			}
+			
+			/**
+			 * 
+			 * 选择该元件
+			 * 
+			 **/
+			private function Choice(event:MouseEvent):void
+			{
+				var Notify:NotifyEvent = new NotifyEvent(EventConstant.SYMBOLCHOICE,true);
+				Notify.Params.push(SymbolData);
+				dispatchEvent(Notify);
+			}
+			private function Focus(event:MouseEvent):void
+			{
+				SolidColorStroke(BorderRect.stroke).color = 0xFF0000;
+			}
+			private function Unfocus(event:MouseEvent):void
+			{
+				SolidColorStroke(BorderRect.stroke).color = 0x000000;
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Rect width="200" height="90" id="BorderRect"
+			topLeftRadiusX="6" 
+			topRightRadiusX="6" 
+			bottomLeftRadiusX="6" 
+			bottomRightRadiusX="6">  
+		<s:stroke>  
+			<s:SolidColorStroke color="0x000000" alpha="1" scaleMode="none"/>  
+		</s:stroke>  
+	</s:Rect>  
+	
+	<s:HGroup left="5" top="5">
+		<s:Image id="Preview" width="48" height="48" source="{PreviewImgData}" />
+		
+		<s:VGroup gap="10">
+			<s:HGroup gap="10">
+				<s:Label text="名称:" />
+				<s:Label text="{SymbolName}" />
+			</s:HGroup>
+			<s:HGroup gap="10">
+				<s:Label text="类型:" />
+				<s:Label text="{SymbolType}" />
+			</s:HGroup>
+		</s:VGroup>
+	</s:HGroup>
+</s:Group>
