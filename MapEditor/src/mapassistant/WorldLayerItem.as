@@ -10,6 +10,10 @@ package mapassistant
 	public class WorldLayerItem
 	{
 		protected var _Layer:ILayer = null;
+		public function get Layer():ILayer
+		{
+			return _Layer;
+		}
 		public function WorldLayerItem(Layer:ILayer)
 		{
 			_Layer = Layer;

@@ -70,9 +70,10 @@ package mapassistant
 				addChild(Layer  as DisplayObject);
 				if(_TopLayer)
 				{
-					
+					Sprite(_TopLayer).mouseEnabled = false;
 				}
 				_TopLayer = Layer;
+				Sprite(_TopLayer).mouseEnabled = true;
 				LayerUpdateNotify();
 				return LayerItem;
 			}
@@ -94,8 +95,13 @@ package mapassistant
 				LayerItem.LayerName = "Object" +  _LayerQueue.length;
 				_LayerQueue.push(LayerItem);
 				addChild(Layer as DisplayObject);
-				LayerUpdateNotify();
+				if(_TopLayer)
+				{
+					Sprite(_TopLayer).mouseEnabled = false;
+				}
 				_TopLayer = Layer;
+				Sprite(_TopLayer).mouseEnabled = true;
+				LayerUpdateNotify();
 				return LayerItem;
 			}
 			return null;
@@ -106,6 +112,20 @@ package mapassistant
 			if(_LayerQueue.indexOf(LayerItem) >= 0)
 			{
 				_LayerQueue.splice(_LayerQueue.indexOf(LayerItem),1);
+				if(_TopLayer == LayerItem.Layer)
+				{
+					if(this.contains(Sprite(LayerItem.Layer)))
+					{
+						removeChild(LayerItem.Layer as Sprite);
+					}
+					Sprite(_TopLayer).mouseEnabled = false;
+					_TopLayer = null;
+					if(_LayerQueue.length > 0)
+					{
+						_TopLayer = _LayerQueue[_LayerQueue.length - 1].Layer;
+						Sprite(_TopLayer).mouseEnabled = true;
+					}
+				}
 				LayerUpdateNotify();
 			}
 		}

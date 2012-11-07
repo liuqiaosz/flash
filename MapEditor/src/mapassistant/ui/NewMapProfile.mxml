@@ -149,7 +149,7 @@
 			</s:layout>
 			
 			<s:Label styleName="Lable" text="Row count" width="100"/>
-			<s:TextInput width="150" id="Row" text="1000" />
+			<s:TextInput width="150" id="Row" text="100" />
 		</s:Group>
 		
 		<s:Group >
@@ -157,7 +157,7 @@
 				<s:HorizontalLayout />
 			</s:layout>
 			<s:Label styleName="Lable" text="Col count" width="100"/>
-			<s:TextInput width="150" id="Column" text="1000" />
+			<s:TextInput width="150" id="Column" text="100" />
 		</s:Group>
 		
 		<s:HGroup>

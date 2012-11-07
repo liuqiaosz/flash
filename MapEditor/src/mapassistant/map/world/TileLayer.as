@@ -1,6 +1,10 @@
 package mapassistant.map.world
 {
 	import flash.display.Bitmap;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	import game.sdk.map.layer.GenericLayer;
 	import game.sdk.map.layer.LayerMode;
@@ -30,9 +34,31 @@ package mapassistant.map.world
 		//NPC TILE渲染颜色
 		protected var _NpcTileFillColor:uint = ColorCode.AQUA; 
 		
-		public function TileLayer(Row:int = 0,Column:int = 0,TileSize:int = 0)
+		public function TileLayer(Row:int = 0,Column:int = 0,TileWidth:int = 0,TileHeight:int = 0)
 		{
-			super(Row,Column,TileSize,TileSize);
+			super(Row,Column,TileWidth,TileHeight);
+			addEventListener(MouseEvent.MOUSE_MOVE,OnMove);
+		}
+		
+		private var Focus:Shape = null;
+		private var Pos:Point = new Point();
+		private function OnMove(event:MouseEvent):void
+		{
+			Pos.x = event.stageX;
+			Pos.y = event.stageY;
+			Pos = globalToLocal(Pos);
+			
+			Pos.x = int((Pos.x / _GridTileWidth)) * _GridTileWidth;
+			Pos.y = int((Pos.y / _GridTileHeight)) * _GridTileHeight;
+			if(Focus == null)
+			{
+				Focus = new Shape();
+				Focus.graphics.beginFill(0xFF0000);
+				Focus.graphics.drawRect(0,0,_GridTileWidth,_GridTileHeight);
+				addChild(Focus);
+			}
+			Focus.x = Pos.x;
+			Focus.y = Pos.y;
 		}
 		
 		public function ChangeTileMode(Row:uint,Column:uint,Mode:uint):TileData

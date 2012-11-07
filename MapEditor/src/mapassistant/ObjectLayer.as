@@ -2,6 +2,8 @@ package mapassistant
 {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import game.sdk.map.layer.ILayer;
@@ -16,6 +18,30 @@ package mapassistant
 		public function ObjectLayer(Row:uint = 0,Column:uint = 0,TileWidth:uint = 0,TileHeight:uint = 0)
 		{
 			super(Row,Column,TileWidth,TileHeight);
+			//addEventListener(MouseEvent.MOUSE_MOVE,OnMove);
+			addEventListener(MouseEvent.MOUSE_DOWN,OnPressDown);
+		}
+		
+		private var _StartPoint:Point = new Point();
+		private var _DragPos:Point = new Point();
+		private var _Drag:Boolean = false;
+		private function OnPressDown(event:MouseEvent):void
+		{
+			_StartPoint.x = event.stageX;
+			_StartPoint.y = event.stageY;
+			_StartPoint = globalToLocal(_StartPoint);
+			_Drag = true;
+			stage.addEventListener(MouseEvent.MOUSE_MOVE,OnDragMove);
+			stage.addEventListener(MouseEvent.MOUSE_UP,OnDrop);
+		}
+		
+		private function OnDrop(event:MouseEvent):void
+		{
+		}
+		
+		private function OnDragMove(event:MouseEvent):void
+		{
+			
 		}
 		
 		public function AddObject(Obj:ObjectItem):void
