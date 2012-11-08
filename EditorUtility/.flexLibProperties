@@ -9,6 +9,7 @@
     <classEntry path="editor.uitility.ui.PopUpWindowManager"/>
     <classEntry path="editor.uitility.Tools"/>
     <classEntry path="editor.uitility.ui.ActiveFrame"/>
+    <classEntry path="editor.uitility.ui.FlexBitmap"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

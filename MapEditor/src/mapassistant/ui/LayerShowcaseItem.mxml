@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
-		  xmlns:mx="library://ns.adobe.com/flex/mx" width="290" height="30" verticalAlign="middle">
+		  xmlns:mx="library://ns.adobe.com/flex/mx" width="290" height="30" verticalAlign="middle" buttonMode="true" click="OnActiveLayer(event)">
 	<fx:Declarations>
 	</fx:Declarations>
 	
@@ -14,19 +14,35 @@
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			private var _Item:WorldLayerItem = null;
+			public function get LayerItem():WorldLayerItem
+			{
+				return _Item;
+			}
 			public function set Item(Value:WorldLayerItem):void
 			{
 				_Item = Value;
 				BindLayerName = _Item.LayerName;
+				BindActived = _Item.Actived;
 			}
 			
 			[Bindable]
 			private var BindLayerName:String = "";
 			[Bindable]
 			private var BindEditable:Boolean = false;
+			[Bindable]
+			private var BindActived:Boolean = false;
 			protected function EditableActive(event:MouseEvent):void
 			{
 				BindEditable = true
+			}
+			
+			public function ActiveLayer():void
+			{
+				BindActived = _Item.Actived = true;
+			}
+			public function UnActiveLayer():void
+			{
+				BindActived = _Item.Actived = false;
 			}
 			
 			protected function LayerNameEnter(event:FlexEvent):void
@@ -51,12 +67,19 @@
 					}
 				});
 			}
+			
+			protected function OnActiveLayer(event:MouseEvent):void
+			{
+				dispatchEvent(new NotifyEvent(NotifyEvent.LAYER_ACTIVE));
+			}
+			
 		]]>
 	</fx:Script>
+	<s:Image source="@Embed('../assets/Edit.png')" width="16" height="16" smooth="true" visible="{BindActived}"/>
 	
 	<s:CheckBox selected="true" />
 	
-	<s:TextInput id="LayerName" width="180" editable="{BindEditable}" borderVisible="{BindEditable}" text="{BindLayerName}"  doubleClick="EditableActive(event)" enter="LayerNameEnter(event)" />
+	<s:TextInput id="LayerName" width="180" selectable="{BindEditable}" editable="{BindEditable}" borderVisible="{BindEditable}" text="{BindLayerName}"  doubleClick="EditableActive(event)" enter="LayerNameEnter(event)" />
 	
 	<s:Image source="@Embed('../assets/RecycleIcon.png')" width="16" height="16" smooth="true" buttonMode="true" click="OnDeleteLayer(event)" />
 </s:HGroup>

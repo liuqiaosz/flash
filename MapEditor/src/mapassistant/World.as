@@ -42,6 +42,7 @@ package mapassistant
 			}
 			
 			CreateObjectLayer();
+			Render();
 		}
 		
 		public function get WorldWidth():int
@@ -79,6 +80,7 @@ package mapassistant
 			}
 			return null;
 		}
+		
 		
 		/**
 		 * 创建新的对象图层
@@ -152,6 +154,47 @@ package mapassistant
 		}
 		public function Decode(Data:ByteArray):void
 		{
+		}
+		
+		public function Render():void
+		{
+			graphics.clear();
+			//var Grid:Vector.<Vector.<TileData>> = this.Grid;
+			var Row:uint = 0;
+			var Col:uint = 0;
+			//var GridRow:uint = Grid.length;
+			//var GridColumn:uint = Grid[0].length;
+			var Width:uint = _Column * this._TileWidth;
+			var Height:uint = _Row * this._TileHeight;
+			graphics.beginFill(0x5D5D5D,0.5);
+			graphics.drawRect(0,0,Width,Height);
+			graphics.endFill();
+			
+			graphics.lineStyle(1,0x5D5D5D);
+			
+			for(Row = 0; Row<_Row; Row++)
+			{
+				graphics.moveTo(0,Row * _TileHeight);
+				graphics.lineTo(Width,Row * _TileHeight);
+			}
+			
+			for(Col = 0; Col < _Column; Col++)
+			{
+				graphics.moveTo(Col * _TileHeight,0);
+				graphics.lineTo(Col * _TileHeight,Height);
+			}
+			
+//			for(Row = 0; Row<_Row; Row++)
+//			{
+//				//graphics.moveTo(0,Row * _GridSize);
+//				//graphics.lineTo(Width,Row * _GridSize);
+//				for(Col = 0; Col < _Column; Col++)
+//				{
+//					//graphics.moveTo(Col * _GridSize,0);
+//					//graphics.lineTo(Col * _GridSize,Height);
+//					DrawTile(Grid[Row][Col]);
+//				}
+//			}
 		}
 	}
 }

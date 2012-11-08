@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="500" height="400">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mapassistant.resource.Resource;
+			import mapassistant.resource.ResourceItem;
+			import mapassistant.resource.ResourceManager;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			[Bindable]
+			private var ResourceProvider:ArrayCollection = null;
+			override protected function Initialized(event:FlexEvent):void
+			{
+				ResourceProvider = new ArrayCollection();
+				var ResArray:Vector.<Resource> = ResourceManager.Instance.SourceVec;
+				for(var NIdx:int=0; NIdx<ResArray.length; NIdx++)
+				{
+					var Res:Resource = ResArray[NIdx];
+					var SourceDict:Dictionary = Res.SourceDictionary;
+					
+					var ResourceLib:Object = {
+						Name: Res.SimpleName,
+							Resource: Res,
+							Children:[]
+					};
+					ResourceProvider.addItem(ResourceLib);
+					for(var Key:* in SourceDict)
+					{
+						ResourceLib.Children.push(SourceDict[Key]);
+					}
+				}
+			}
+			
+			/**
+			 * 
+			 * 资源库切换
+			 * 
+			 **/
+			protected function AssetLibraryChanged(event:IndexChangeEvent):void
+			{
+				AssetShowcase.removeAllElements();
+				
+				var Item:Object = ResourceProvider.getItemAt(event.newIndex) as Object;
+				var Library:Resource = Item.Resource;
+				
+				var Items:Vector.<ResourceItem> = Library.ChildrenItem;
+				
+				for each(var AssetItem:ResourceItem in Items)
+				{
+					var ItemInfo:AssetShowcaseItem = new AssetShowcaseItem();
+					ItemInfo.Item = AssetItem;
+					ItemInfo.height = 60;
+					AssetShowcase.addElement(ItemInfo);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		
+		<s:VerticalLayout paddingTop="5" paddingLeft="5" paddingRight="5" gap="10" />
+	</ui:layout>
+	
+	<s:Label text="资源库"  />
+	<s:ComboBox id="AssetLibrarySelector" 
+				dataProvider="{ResourceProvider}" 
+				selectedIndex="0" 
+				labelField="Name" 
+				change="AssetLibraryChanged(event)"  />
+	
+	<s:Scroller width="100%" height="300" horizontalScrollPolicy="off">
+		<s:VGroup width="100%" height="100%" id="AssetShowcase">
+			
+		</s:VGroup>
+	</s:Scroller>
+</ui:AdvanceWindow>

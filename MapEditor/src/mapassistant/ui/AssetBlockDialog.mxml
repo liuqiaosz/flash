@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="400" height="500" title="创建新图块" xmlns:ui1="mapassistant.ui.*">
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.FlexBitmap;
+			import editor.uitility.ui.PopUpWindowManager;
+			
+			import mapassistant.assetblock.AssetBlock;
+			import mapassistant.event.NotifyEvent;
+			import mapassistant.resource.ResourceItem;
+			
+			import mx.core.IFlexDisplayObject;
+			import mx.events.FlexEvent;
+			
+			private var _Window:AdvanceWindow = null;
+			private var _Block:AssetBlock = new AssetBlock();
+			/**
+			 * Open local swf library choice window
+			 * 
+			 * 
+			 **/
+			protected function OpenLibraryWindow(event:MouseEvent):void
+			{
+				_Window = PopUpWindowManager.PopUp(AssetLibraryWindow) as AdvanceWindow;
+				_Window.addEventListener(NotifyEvent.ASSET_SELECTED,AssetSelected);
+			}
+			
+			protected var _Image:Bitmap = null;
+			
+			protected function AssetSelected(event:NotifyEvent):void
+			{
+				_Window.removeEventListener(NotifyEvent.ASSET_SELECTED,AssetSelected);
+				_Window.CloseWindow();
+				var Item:ResourceItem = event.Params.pop() as ResourceItem;
+				ImageClass.text = Item.Id;
+				var Img:Bitmap = Item.Source as Bitmap;
+				
+				_Image = Img;
+				CutBitmap(Img);
+			}
+			
+			protected function CutBitmap(Image:Bitmap):void
+			{
+				_Block.Image = Image;
+				_Block.UnitWidth = int(Width.text);
+				_Block.UnitHeight = int(Height.text);
+				BlockShowcase.UpdateBlcok(_Block);
+//				BlockShowcase.removeAllElements();
+//				
+//				BlockShowcase.width = Image.width + ((Image.width / int(Width.text)) * 2);
+//				BlockShowcase.height = Image.height + ((Image.height / int(Height.text)) * 2);
+//				BlockShowcase.columnWidth = int(Width.text);
+//				BlockShowcase.rowHeight = int(Height.text);
+//				
+//				var BlockWidth:int = int(Width.text);
+//				var BlockHeight:int = int(Height.text);
+//				
+//				var ImgWidth:int = Image.width;
+//				var ImgHeight:int = Image.height;
+//				
+//				var Row:int = ImgHeight / BlockHeight;
+//				var Col:int = ImgWidth / BlockWidth;
+//				
+//				var Bit:BitmapData = Image.bitmapData;
+//				var Rect:Rectangle = new Rectangle();
+//				Rect.width = BlockWidth;
+//				Rect.height = BlockHeight;
+//				var Pos:Point = new Point();
+//				_Block.ImageCutArray.length = 0;
+//				for(var R:int = 0; R < Row; R++)
+//				{
+//					for(var C:int = 0; C < Col; C++)
+//					{
+//						var Child:BitmapData = new BitmapData(BlockWidth,BlockHeight);
+//						Rect.x = C * BlockWidth;
+//						Rect.y = R * BlockHeight;
+//						
+//						Child.copyPixels(Bit,Rect,Pos);
+//						var FlexImg:FlexBitmap = new FlexBitmap(new Bitmap(Child));
+//						_Block.ImageCutArray.push(FlexImg);
+//						BlockShowcase.addElement(FlexImg);
+//					}
+//				}
+			}
+			
+			protected function OpenLocalFileDisk(event:MouseEvent):void
+			{
+				
+			}
+			
+			protected function SaveAssetBlock(event:MouseEvent):void
+			{
+				_Block.Image = _Image;
+				_Block.UnitWidth = int(Width.text);
+				_Block.UnitHeight = int(Height.text);
+				_Block.OffsetX = int(OffsetX.text);
+				_Block.OffsetY = int(OffsetY.text);
+				_Block.Name = Name.text;
+				_Block.ImageId = ImageClass.text;
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.ASSETBLOCK_SAVE);
+				Notify.Params.push(_Block);
+				dispatchEvent(Notify);
+			}
+			
+			protected function WidthChanged(event:FlexEvent):void
+			{
+				if(null != _Image)
+				{
+					CutBitmap(_Image);
+				}
+			}
+			
+			protected function HeightChanged(event:FlexEvent):void
+			{
+				if(null != _Image)
+				{
+					CutBitmap(_Image);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout gap = "10" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" />
+	</ui:layout>
+	
+	<s:HGroup>
+		
+		<s:VGroup>
+			<s:Label text="Name" />
+			<s:TextInput id="Name"/>
+			
+		</s:VGroup>
+		
+		<s:VGroup>
+			<s:Label text="Image" />
+			<s:HGroup>
+				<s:TextInput id="ImageClass" editable="false" />
+				<s:Image source="@Embed(source='../assets/Folder.png')" width="24" height="24" smooth="true" toolTip="本地图片" click="OpenLocalFileDisk(event)" enabled="false" />
+				<s:Image source="@Embed(source='../assets/Search.png')" width="24" height="24" smooth="true" toolTip="SWF资源库" click="OpenLibraryWindow(event)" />
+			</s:HGroup>
+		</s:VGroup>
+	</s:HGroup>
+	
+	
+	<s:HGroup>
+		<s:VGroup>
+			<s:Label text="Width" />
+			<s:TextInput text="50" id="Width" restrict="0-9" enter="WidthChanged(event)"/>
+		</s:VGroup>
+		
+		<s:VGroup>
+			<s:Label text="Height" />
+			<s:TextInput text="50" id="Height" restrict="0-9" enter="HeightChanged(event)"/>
+		</s:VGroup>
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:VGroup>
+			<s:Label text="OffsetX" />
+			<s:TextInput text="0" restrict="0-9" id="OffsetX"/>
+		</s:VGroup>
+		
+		<s:VGroup>
+			<s:Label text="OffsetY" />
+			<s:TextInput text="0" restrict="0-9" id="OffsetY"/>
+		</s:VGroup>
+	</s:HGroup>
+	
+	<s:BorderContainer>
+		<s:Scroller width="390" height="250">
+			<s:Group>
+				<!--
+				<s:TileGroup id="BlockShowcase" horizontalGap="2" verticalGap="2" />
+				-->
+				<ui1:AssetBlockImage id="BlockShowcase"/>
+			</s:Group>
+			
+		</s:Scroller>
+	</s:BorderContainer>
+	
+	<s:HGroup>
+		<s:Button label="Save" click="SaveAssetBlock(event)" />
+		<s:Button label="Close" click="Close(event)" />
+	</s:HGroup>
+</ui:AdvanceWindow>

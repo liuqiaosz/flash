@@ -136,49 +136,49 @@ package mapassistant.map.world
 			}
 		}
 		
-		override public function Render():void
-		{
-			graphics.clear();
-			_GridShow = true;
-			if(_GridShow)
-			{
-				var Grid:Vector.<Vector.<TileData>> = this.Grid;
-				var Row:uint = 0;
-				var Col:uint = 0;
-				var GridRow:uint = Grid.length;
-				var GridColumn:uint = Grid[0].length;
-				var Width:uint = GridColumn * this._GridTileWidth;
-				var Height:uint = GridRow * this._GridTileHeight;
-				graphics.beginFill(_GridFillColor,_GridFillAlpha);
-				graphics.drawRect(0,0,Width,Height);
-				graphics.endFill();
-				
-				graphics.lineStyle(_GridThinkness,_GridLineColor,_GridLineAlpha);
-				
-				for(Row = 0; Row<GridRow; Row++)
-				{
-					graphics.moveTo(0,Row * _GridTileHeight);
-					graphics.lineTo(Width,Row * _GridTileHeight);
-				}
-				
-				for(Col = 0; Col < GridColumn; Col++)
-				{
-					graphics.moveTo(Col * _GridTileHeight,0);
-					graphics.lineTo(Col * _GridTileHeight,Height);
-				}
-				
-				for(Row = 0; Row<GridRow; Row++)
-				{
-					//graphics.moveTo(0,Row * _GridSize);
-					//graphics.lineTo(Width,Row * _GridSize);
-					for(Col = 0; Col < GridColumn; Col++)
-					{
-						//graphics.moveTo(Col * _GridSize,0);
-						//graphics.lineTo(Col * _GridSize,Height);
-						DrawTile(Grid[Row][Col]);
-					}
-				}
-			}
-		}
+//		override public function Render():void
+//		{
+//			graphics.clear();
+//			_GridShow = true;
+//			if(_GridShow)
+//			{
+//				var Grid:Vector.<Vector.<TileData>> = this.Grid;
+//				var Row:uint = 0;
+//				var Col:uint = 0;
+//				var GridRow:uint = Grid.length;
+//				var GridColumn:uint = Grid[0].length;
+//				var Width:uint = GridColumn * this._GridTileWidth;
+//				var Height:uint = GridRow * this._GridTileHeight;
+//				graphics.beginFill(_GridFillColor,_GridFillAlpha);
+//				graphics.drawRect(0,0,Width,Height);
+//				graphics.endFill();
+//				
+//				graphics.lineStyle(_GridThinkness,_GridLineColor,_GridLineAlpha);
+//				
+//				for(Row = 0; Row<GridRow; Row++)
+//				{
+//					graphics.moveTo(0,Row * _GridTileHeight);
+//					graphics.lineTo(Width,Row * _GridTileHeight);
+//				}
+//				
+//				for(Col = 0; Col < GridColumn; Col++)
+//				{
+//					graphics.moveTo(Col * _GridTileHeight,0);
+//					graphics.lineTo(Col * _GridTileHeight,Height);
+//				}
+//				
+//				for(Row = 0; Row<GridRow; Row++)
+//				{
+//					//graphics.moveTo(0,Row * _GridSize);
+//					//graphics.lineTo(Width,Row * _GridSize);
+//					for(Col = 0; Col < GridColumn; Col++)
+//					{
+//						//graphics.moveTo(Col * _GridSize,0);
+//						//graphics.lineTo(Col * _GridSize,Height);
+//						DrawTile(Grid[Row][Col]);
+//					}
+//				}
+//			}
+//		}
 	}
 }

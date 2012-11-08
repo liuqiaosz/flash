@@ -44,6 +44,14 @@ package mapassistant
 			return _Show;
 		}
 		
-		
+		protected var _Actived:Boolean = false;
+		public function set Actived(Value:Boolean):void
+		{
+			_Actived = Value;
+		}
+		public function get Actived():Boolean
+		{
+			return _Actived;
+		}
 	}
 }

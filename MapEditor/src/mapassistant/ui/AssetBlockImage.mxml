@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TileGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"  horizontalGap="2" verticalGap="2" initialize="Initializer(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		
+	</fx:Declarations>
+	
+	<fx:Metadata>
+		[Event(name="AssetBlockSelected", type="editor.event.NotifyEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.FlexBitmap;
+			
+			import mapassistant.assetblock.AssetBlock;
+			import mapassistant.assetblock.AssetBlockSelectGroup;
+			import mapassistant.assetblock.BlockImageNode;
+			import mapassistant.event.NotifyEvent;
+			
+			import mx.events.FlexEvent;
+			private var _Block:AssetBlock = null;
+			private var _Map:Vector.<Vector.<BlockImageNode>> = null; 
+			public function UpdateBlcok(Block:AssetBlock):void
+			{
+				_Block = Block
+					
+				removeAllElements();
+				
+				width = Block.Image.width + ((Block.Image.width / int(Block.UnitWidth)) * 2);
+				height = Block.Image.height + ((Block.Image.height / int(Block.UnitHeight)) * 2);
+				columnWidth = Block.UnitWidth;
+				rowHeight = Block.UnitHeight;
+				
+				//var BlockWidth:int = int(Width.text);
+				//var BlockHeight:int = int(Height.text);
+				
+				var ImgWidth:int = Block.Image.width;
+				var ImgHeight:int = Block.Image.height;
+				
+				var Row:int = ImgHeight / Block.UnitHeight;
+				var Col:int = ImgWidth / Block.UnitWidth;
+				
+				var Bit:BitmapData = Block.Image.bitmapData;
+				var Rect:Rectangle = new Rectangle();
+				Rect.width = Block.UnitWidth;
+				Rect.height = Block.UnitHeight;
+				var Pos:Point = new Point();
+				//_Block.ImageCutArray.length = 0;
+				_Map = new Vector.<Vector.<BlockImageNode>>(Row);
+				for(var R:int = 0; R < Row; R++)
+				{
+					_Map[R] = new Vector.<BlockImageNode>(Col);
+					for(var C:int = 0; C < Col; C++)
+					{
+						var Child:BitmapData = new BitmapData(Block.UnitWidth,Block.UnitHeight);
+						Rect.x = C * Block.UnitWidth;
+						Rect.y = R * Block.UnitHeight;
+						
+						Child.copyPixels(Bit,Rect,Pos);
+						var Node:BlockImageNode = new BlockImageNode(new Bitmap(Child),_Block);
+						Node.Row = R;
+						Node.Column = C;
+						_Map[R][C] = Node;
+						//var FlexImg:FlexBitmap = new FlexBitmap(new Bitmap(Child));
+						//_Block.ImageCutArray.push(FlexImg);
+						addElement(Node);
+					}
+				}
+			}
+			
+			private var _PickupEnable:Boolean = false;
+			public function set EnablePickup(Value:Boolean):void
+			{
+				_PickupEnable = Value;
+				if(_PickupEnable)
+				{
+					addEventListener(MouseEvent.MOUSE_DOWN,StartDrag);
+				}
+				else
+				{
+					removeEventListener(MouseEvent.MOUSE_DOWN,StartDrag);
+				}
+			}
+			
+			private function StartDrag(event:MouseEvent):void
+			{
+				for each(var Node:BlockImageNode in _Selected)
+				{
+					Node.alpha = 1;
+				}
+				_Selected.length = 0;
+				_ScrollDrag = true;
+				_StartPoint.x = event.stageX;
+				_StartPoint.y = event.stageY;
+				_StartPoint = globalToLocal(_StartPoint);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				stage.addEventListener(MouseEvent.MOUSE_UP,Drop);
+				if(event.target is BlockImageNode)
+				{
+					
+					BlockImageNode(event.target).alpha = 0.6;
+					_Selected.push(BlockImageNode(event.target));
+					//trace(BlockImageNode(event.target).Row + "_" + BlockImageNode(event.target).Column);
+				}
+			}
+			
+			private var _StartPoint:Point = new Point();
+			private var _ScrollDrag:Boolean = false;
+			protected function Initializer(event:FlexEvent):void
+			{
+				
+			}
+			
+			private var _Selected:Vector.<BlockImageNode> = new Vector.<BlockImageNode>();
+			private var _MovePoint:Point = new Point();
+			protected function DragMove(event:MouseEvent):void
+			{
+				for each(var Node:BlockImageNode in _Selected)
+				{
+					Node.alpha = 1;
+				}
+				_Selected.length = 0;
+				_MovePoint.x = event.stageX;
+				_MovePoint.y = event.stageY;
+				_MovePoint = globalToLocal(_MovePoint);
+				
+				var Width:int = Math.abs(_MovePoint.x - _StartPoint.x);
+				var Height:int = Math.abs(_MovePoint.y - _StartPoint.y);
+				
+				var PosX:int = _MovePoint.x < _StartPoint.x ? _MovePoint.x:_StartPoint.x;
+				var PosY:int = _MovePoint.y < _StartPoint.y ? _MovePoint.y:_StartPoint.y;
+				
+				_GroupColumn = Width % _Block.UnitWidth > 0 ? Width / _Block.UnitWidth + 1:Width / _Block.UnitWidth;
+				_GroupRow = Height % _Block.UnitHeight > 0 ? Height / _Block.UnitHeight + 1:Height / _Block.UnitHeight;
+				
+				var SeekR:int = PosY / _Block.UnitHeight;
+				if(SeekR < 0)
+				{
+					SeekR = 0;
+				}
+				var SeekC:int = PosX / _Block.UnitWidth;
+				if(SeekC < 0)
+				{
+					SeekC = 0;
+				}
+				
+				var Child:BlockImageNode = null;
+				for(var R:int = 0 ; R<_GroupRow; R++)
+				{
+					for(var C:int = 0 ; C<_GroupColumn; C++)
+					{
+						if(SeekR + R >= _Map.length || SeekC + C >= _Map[0].length)
+						{
+							continue;
+						}
+						Child = _Map[SeekR + R][SeekC + C];
+						if(_Selected.indexOf(Child) < 0)
+						{
+							_Selected.push(Child);
+						}
+						
+						Child.alpha = 0.5;
+					}	
+				}
+			}
+			
+			private var _GroupRow:int = 0;
+			private var _GroupColumn:int = 0;
+			protected function Drop(event:MouseEvent):void
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,Drop);(MouseEvent.MOUSE_UP,Drop);
+				
+				_ScrollDrag = false;
+				
+				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.ASSETBLOCK_SELECT);
+				var Group:AssetBlockSelectGroup = new AssetBlockSelectGroup(_GroupRow,_GroupColumn,_Selected);
+				Notify.Params.push(Group);
+				dispatchEvent(Notify);
+			}
+		]]>
+	</fx:Script>
+</s:TileGroup>

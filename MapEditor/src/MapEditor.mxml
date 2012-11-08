@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" applicationComplete="AppInitialize(event)" showStatusBar="false"  width="1200" height="700">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" applicationComplete="AppInitialize(event)" showStatusBar="false"  width="1200" height="700" xmlns:ui="mapassistant.ui.*">
 	<fx:Declarations>
 		<fx:XMLList >
 			<menuitem label="地图" data="top"> 
@@ -23,6 +23,7 @@
 			import editor.uitility.ui.PopUpWindowManager;
 			import editor.uitility.ui.event.UIEvent;
 			
+			import flash.display3D.IndexBuffer3D;
 			import flash.net.dns.AAAARecord;
 			import flash.utils.Timer;
 			import flash.utils.getDefinitionByName;
@@ -36,6 +37,9 @@
 			
 			import mapassistant.World;
 			import mapassistant.WorldLayerItem;
+			import mapassistant.assetblock.AssetBlock;
+			import mapassistant.assetblock.AssetBlockDecoder;
+			import mapassistant.assetblock.AssetBlockEncoder;
 			import mapassistant.data.ITable;
 			import mapassistant.data.SQL;
 			import mapassistant.data.SQLManager;
@@ -56,6 +60,7 @@
 			import mapassistant.resource.ResourceManager;
 			import mapassistant.symbol.GenericSymbol;
 			import mapassistant.symbol.SymbolFactory;
+			import mapassistant.ui.AssetBlockDialog;
 			import mapassistant.ui.AssetShowcaseItem;
 			import mapassistant.ui.FlexImage;
 			import mapassistant.ui.LayerShowcaseItem;
@@ -192,6 +197,7 @@
 			private function AppInitialize(event:FlexEvent):void
 			{
 				InitializeResource();
+				
 				//GamePreference.Instance.Initializer(Preference);
 				//var AssetLibs:Vector.<IAssetLibrary> = GamePreference.Instance.AssetLibraryList;
 				//AssetLibraryManager.Instance.BatchDownloadAssetLibrary(AssetLibs);
@@ -212,6 +218,54 @@
 						GridWorld.RemoveLayer(event.Params.pop() as WorldLayerItem);
 					}
 				});
+				
+				addEventListener(NotifyEvent.OBJECT_SELECTED,function(event:NotifyEvent):void{
+					
+				});
+				
+				LayerShowcase.addEventListener(NotifyEvent.LAYER_ACTIVE,function(event:NotifyEvent):void{
+					//Layer change and active
+					var Item:LayerShowcaseItem = event.target as LayerShowcaseItem;
+					
+					for each(var Node:LayerShowcaseItem in _LayerVec)
+					{
+						if(Item == Node)
+						{
+							Node.ActiveLayer();
+						}
+						else
+						{
+							Node.UnActiveLayer();
+						}
+					}
+					
+				});
+			}
+			
+			[Bindable]
+			protected var AssetBlockProvider:ArrayCollection = new ArrayCollection();
+			private function InitializeAssetBlock():void
+			{
+				AssetBlockProvider.removeAll();
+				var Dir:File = new File(Common.ASSETS);
+				if(Dir.exists && Dir.isDirectory)
+				{
+					var FileArray:Array = Dir.getDirectoryListing();
+					
+					var Node:File = null;
+					var Reader:FileStream = new FileStream();
+					for each(Node in FileArray)
+					{
+						if(Node.extension == "asb")
+						{
+							Reader.open(Node,FileMode.READ);
+							var Data:ByteArray = new ByteArray();
+							Reader.readBytes(Data,0,Reader.bytesAvailable);
+							var Item:AssetBlock = AssetBlockDecoder.Decode(Data);
+							AssetBlockProvider.addItem(Item);
+						}
+					}
+				}
 			}
 			
 			private function MenuSelected(event:MenuEvent):void 
@@ -559,6 +613,7 @@
 				LayerShowcaseUpdate();
 			}
 			
+			protected var _LayerVec:Vector.<LayerShowcaseItem> = new Vector.<LayerShowcaseItem>();
 			/**
 			 * 图层面板数据更新
 			 * 
@@ -568,15 +623,20 @@
 			{
 				if(LayerShowcase && GridWorld)
 				{
+					_LayerVec.length = 0;
 					LayerShowcase.removeAllElements();
 					var Vec:Vector.<WorldLayerItem> = GridWorld.Layers;
 					var Layer:WorldLayerItem = null;
+					var Item:LayerShowcaseItem = null;
 					for each(Layer in Vec)
 					{
-						var Item:LayerShowcaseItem = new LayerShowcaseItem();
+						Item = new LayerShowcaseItem();
 						Item.Item = Layer;
+						Layer.Actived = false;
 						LayerShowcase.addElement(Item);
+						_LayerVec.push(Item);
 					}
+					Item.ActiveLayer();
 				}
 				
 			}
@@ -687,6 +747,7 @@
 			private var ResourceProvider:ArrayCollection = new ArrayCollection();
 			private function ResourceCompileComplete(event:Event):void
 			{
+				InitializeAssetBlock();
 				ResourceDictionary = new Dictionary();
 				var ResArray:Vector.<Resource> = ResourceManager.Instance.SourceVec;
 				for(var NIdx:int=0; NIdx<ResArray.length; NIdx++)
@@ -705,7 +766,6 @@
 						ResourceLib.Children.push(SourceDict[Key]);
 					}
 				}
-				
 				//资源库加载完毕.开始从数据库加载元件数据并且用映射已加载的资源库
 				InitializeSymbol();
 			}
@@ -1065,23 +1125,34 @@
 				{
 					var ItemInfo:AssetShowcaseItem = new AssetShowcaseItem();
 					ItemInfo.Item = AssetItem;
+					ItemInfo.width = 290;
+					ItemInfo.height = 60;
 					AssetShowcase.addElement(ItemInfo);
 				}
 			}
 			
-			protected function TabStackChanged(event:IndexChangedEvent):void
+			protected function AssetBlockChanged(event:IndexChangeEvent):void
 			{
-				var Content:NavigatorContent =  event.relatedObject as NavigatorContent;
-				
-				if(Content)
-				{
-					switch(Content.id)
-					{
-						case "LayerNav":
-							LayerShowcaseUpdate();
-							break;
-					}
-				}
+				var Item:AssetBlock = AssetBlockProvider.getItemAt(event.newIndex) as AssetBlock;
+				AssetBlockShowcase.UpdateBlcok(Item);
+			}
+			
+			/**
+			 * 新建图块
+			 * 
+			 * 
+			 **/
+			protected function CreateAssetBlock(event:MouseEvent):void
+			{
+				var Window:AssetBlockDialog = PopUpWindowManager.PopUp(AssetBlockDialog) as AssetBlockDialog;
+				Window.addEventListener(NotifyEvent.ASSETBLOCK_SAVE,function(event:NotifyEvent):void{
+					var Item:AssetBlock = event.Params.pop() as AssetBlock;
+					//保存
+					var Data:ByteArray = AssetBlockEncoder.Encode(Item);
+					mapassistant.util.Tools.SaveDataToDisk(Data,Common.ASSETS + Item.Name + Common.ASSETSUFFIX);
+					Window.CloseWindow();
+					InitializeAssetBlock();
+				});
 			}
 			
 		]]>
@@ -1098,25 +1169,63 @@
 				</s:BorderContainer>
 			</s:Group>
 		</s:Scroller>
-		<!--
-		<s:BorderContainer width="150" height="100" x="10" y="8" cornerRadius="5" visible="{BindLayerOption}">
-			<s:Group x="5" y="5" width="100%">
-				<s:layout>
-					<s:VerticalLayout />
-				</s:layout>
-				<s:HGroup verticalAlign="middle" width="100%">
-					<s:CheckBox label="地表层" id="TileTerrainSwitch" width="80%" enabled="{BindTerrainEnable}" selected="{BindTerrainShow}" change="SwitchTerrain(event)"/>
-					<s:Image source="@Embed('../assets/Add.png')" width="16" height="16" smooth="true" useHandCursor="true" buttonMode="true" enabled="{!BindTerrainEnable}" click="CreateTerrainLayer(event)" horizontalAlign="right"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle" width="100%">
-					<s:CheckBox label="数据网格层" id="TileGridSwitch" width="80%" selected="{BindGridShow}" change="SwitchGrid(event)" />
-				</s:HGroup>
-			</s:Group>
-		</s:BorderContainer>
-		-->
+		
 	</s:TitleWindow>
 	
-
+	<mx:Accordion width="302" height="590" x="888" y="60" creationPolicy="all">
+		<mx:VBox label="图层" horizontalAlign="center" width="100%" height="100%">
+			<s:VGroup paddingLeft="5" paddingTop="5" gap="5" id="LayerShowcase" width="100%" height="100%" />
+		</mx:VBox>
+		
+		<mx:VBox label="分区" horizontalAlign="center" width="100%" height="100%">
+			<s:TileGroup id="WorldGridGroup" width="100%" height="100%" />	
+		</mx:VBox>
+		
+		<mx:VBox label="资源库" width="100%" height="100%" horizontalScrollPolicy="off">
+			<s:HGroup paddingLeft="5" paddingTop="5" verticalAlign="middle">
+				<s:Label text="资源库"  />
+				<s:ComboBox id="AssetLibrarySelector" 
+							dataProvider="{ResourceProvider}" 
+							selectedIndex="0" 
+							labelField="Name" 
+							change="AssetLibraryChanged(event)"  />
+				
+			</s:HGroup>
+			
+			
+			<s:VGroup paddingLeft="5" paddingTop="5">
+				<s:Scroller width="95%" height="470" horizontalScrollPolicy="off">
+					<s:VGroup width="290" height="100%" id="AssetShowcase">
+						
+					</s:VGroup>
+				</s:Scroller>
+			</s:VGroup>
+		</mx:VBox>
+		
+		<mx:VBox label="图块" width="100%" height="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+			<s:HGroup verticalAlign="middle" paddingLeft="5" paddingTop="5">
+				
+				<s:ComboBox id="AssetBlockSelector" 
+							dataProvider="{AssetBlockProvider}" 
+							selectedIndex="0" 
+							labelField="Name"
+							change="AssetBlockChanged(event)"/>
+				<s:HGroup paddingLeft="5" paddingTop="5">
+					<s:Image source="@Embed(source='../assets/Add.png')" width="24" height="24" smooth="true" toolTip="新增图块" buttonMode="true" click="CreateAssetBlock(event)" />
+				</s:HGroup>
+			</s:HGroup>
+			
+			<s:VGroup paddingLeft="5" paddingTop="5">
+				<s:Scroller width="290" height="460" >
+					<s:Group>
+						<ui:AssetBlockImage id="AssetBlockShowcase" EnablePickup="true" />
+					</s:Group>
+					
+				</s:Scroller>
+			</s:VGroup>
+		</mx:VBox>
+	</mx:Accordion>
+	<!--
 	<s:VGroup id="RightSpace" width="302" height="590" x="888" y="60" gap="10">
 		<s:VGroup gap="0" width="100%" height="100%">
 			<s:TabBar dataProvider="{myViewStack}"/> 
@@ -1140,11 +1249,6 @@
 						</s:VGroup>
 					</s:Scroller>
 				</s:NavigatorContent> 
-				<!--
-				<s:NavigatorContent id="symbolLInfo" label="原件库"> 
-					<mx:Tree width="100%" height="100%" id="SymbolLibrary" dataProvider="{SymbolProvider}" labelField="Title" itemClick="SymbolChoice(event)" />
-				</s:NavigatorContent>
-				-->
 			</mx:ViewStack> 
 		</s:VGroup>
 		
@@ -1162,33 +1266,11 @@
 							</s:VGroup>
 						</s:Scroller>
 					</s:VGroup>
-					<!--
-					<mx:Tree id="ResourceLibrary" width="100%" height="100%" borderVisible="false"
-							 dataProvider="{ResourceProvider}" 
-							 labelField="Name" 
-							 itemClick="ResourceTreeItemClick(event)">
-					</mx:Tree>
-					-->
 				</s:NavigatorContent> 
-				
-				<!--
-				<s:NavigatorContent id="custInfo" label="原件预览"> 
-					<s:VGroup width="100%" height="100%" paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5" horizontalAlign="center" gap="10">
-						
-						<s:Scroller width="100%" height="100%">
-							<s:Group>
-								<s:Image id="SymbolImg" />
-							</s:Group>
-						</s:Scroller>
-						<s:Image width="24" height="24" smooth="true" source="@Embed('../assets/Info.png')" left="5" top="5" id="SymbolInfo" visible="false" click="LookSymbolInfo(event)"/>
-					</s:VGroup>
-				</s:NavigatorContent> 
-				-->
-				
 			</mx:ViewStack> 
 		</s:VGroup>
 	</s:VGroup>
-		
+	-->
 	
 	<!--
 	<s:Scroller width="100%" height="738" x="888" y="61">
@@ -1242,12 +1324,4 @@
 				labelField="label"
 				
 				itemClick="MenuSelected(event)" id="Menu" /> 
-	<!--
-	<s:Panel x="10" y="35" width="92" height="755" title="工具箱" dropShadowVisible="false">
-		<s:layout>
-			<s:VerticalLayout paddingLeft="5" paddingTop="5" paddingRight="5" gap="10" />
-		</s:layout>
-		<s:CheckBox label="图层面板" id="OptionSwitch" selected="{BindOptionPanelEnable}" enabled="{BindOptionPanelShow}" click="LayerOptionPanelSwitch(event)" />
-	</s:Panel>
-	-->
 </s:WindowedApplication>
