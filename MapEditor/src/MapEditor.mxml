@@ -35,11 +35,13 @@
 			import game.sdk.map.layer.StaggeredLayer;
 			import game.sdk.map.tile.TileData;
 			
+			import mapassistant.ObjectLayer;
 			import mapassistant.World;
 			import mapassistant.WorldLayerItem;
 			import mapassistant.assetblock.AssetBlock;
 			import mapassistant.assetblock.AssetBlockDecoder;
 			import mapassistant.assetblock.AssetBlockEncoder;
+			import mapassistant.assetblock.AssetBlockSelectGroup;
 			import mapassistant.data.ITable;
 			import mapassistant.data.SQL;
 			import mapassistant.data.SQLManager;
@@ -1155,6 +1157,22 @@
 				});
 			}
 			
+			/**
+			 * 图块资源选择
+			 * 
+			 * 
+			 **/
+			protected function OnAssetBlockGroupSelected(event:mapassistant.event.NotifyEvent):void
+			{
+				for each(var Item:LayerShowcaseItem in _LayerVec)
+				{
+					if(Item.IsActived && !(Item.LayerItem.Layer is ObjectLayer))
+					{
+						AreaPartitionLayer(Item.LayerItem.Layer).SelectedAssetBlockGroup = event.Params.pop() as AssetBlockSelectGroup;
+					}
+				}
+			}
+			
 		]]>
 		
 	</fx:Script>
@@ -1218,7 +1236,7 @@
 			<s:VGroup paddingLeft="5" paddingTop="5">
 				<s:Scroller width="290" height="460" >
 					<s:Group>
-						<ui:AssetBlockImage id="AssetBlockShowcase" EnablePickup="true" />
+						<ui:AssetBlockImage id="AssetBlockShowcase" EnablePickup="true" AssetBlockSelected="OnAssetBlockGroupSelected(event)" />
 					</s:Group>
 					
 				</s:Scroller>

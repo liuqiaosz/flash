@@ -8,7 +8,7 @@
 	</fx:Declarations>
 	
 	<fx:Metadata>
-		[Event(name="AssetBlockSelected", type="editor.event.NotifyEvent")]
+		[Event(name="AssetBlockSelected", type="mapassistant.event.NotifyEvent")]
 	</fx:Metadata>
 	
 	<fx:Script>
@@ -175,7 +175,14 @@
 				stage.removeEventListener(MouseEvent.MOUSE_UP,Drop);(MouseEvent.MOUSE_UP,Drop);
 				
 				_ScrollDrag = false;
+				_MovePoint.x = event.stageX;
+				_MovePoint.y = event.stageY;
+				_MovePoint = globalToLocal(_MovePoint);
 				
+				if(_Selected.length == 1)
+				{
+					_GroupRow = _GroupColumn = 1;
+				}
 				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.ASSETBLOCK_SELECT);
 				var Group:AssetBlockSelectGroup = new AssetBlockSelectGroup(_GroupRow,_GroupColumn,_Selected);
 				Notify.Params.push(Group);

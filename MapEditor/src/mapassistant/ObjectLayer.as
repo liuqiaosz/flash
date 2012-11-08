@@ -22,8 +22,23 @@ package mapassistant
 		{
 			super(Row,Column,TileWidth,TileHeight);
 			//addEventListener(MouseEvent.MOUSE_MOVE,OnMove);
-			addEventListener(MouseEvent.MOUSE_DOWN,OnPressDown);
+			
 			addChild(_ObjectDraw);
+		}
+		
+		/**
+		 * 
+		 * 重写图层激活函数，激活的同时开启对象图层的鼠标操作
+		 **/ 
+		override public function Active():void
+		{
+			addEventListener(MouseEvent.MOUSE_DOWN,OnPressDown);
+			super.Active();
+		}
+		override public function UnActived():void
+		{
+			removeEventListener(MouseEvent.MOUSE_DOWN,OnPressDown);
+			super.UnActived();
 		}
 		
 		private var _SelectItem:ObjectItem = null;
@@ -54,6 +69,29 @@ package mapassistant
 			}
 		}
 		
+		public function RemoveObjectItem(Item:ObjectItem = null):void
+		{
+			if(Item)
+			{
+				if(_ObjectQueue.indexOf(Item) >= 0)
+				{
+					_ObjectQueue.splice(_ObjectQueue.indexOf(Item),1);
+				}
+			}
+			else
+			{
+				if(_SelectedItem)
+				{
+					_ObjectQueue.splice(_ObjectQueue.indexOf(_SelectedItem),1);
+				}
+			}
+		}
+		
+		private var _SelectedItem:ObjectItem = null;
+		/**
+		 * 检测当前鼠标所在的点是否有对象存在
+		 * 
+		 **/
 		private function CheckObjectArea(MouseX:int,MouseY:int):ObjectItem
 		{
 			var Item:ObjectItem = null;
@@ -63,6 +101,7 @@ package mapassistant
 			{
 				if(Item.Rect.containsPoint(Pos))
 				{
+					_SelectedItem = Item;
 					return Item;
 				}
 			}

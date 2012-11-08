@@ -26,6 +26,10 @@ package mapassistant.assetblock
 		}
 		
 		private var _Block:AssetBlock = null;
+		public function get OrignalBlock():AssetBlock
+		{
+			return _Block;
+		}
 		public function BlockImageNode(Image:Bitmap,Block:AssetBlock)
 		{
 			super(Image);

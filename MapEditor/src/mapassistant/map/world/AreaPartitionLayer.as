@@ -1,7 +1,14 @@
 package mapassistant.map.world
 {
+	import flash.display.BitmapData;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	
 	import game.sdk.map.layer.GenericLayer;
 	import game.sdk.map.tile.TileData;
+	
+	import mapassistant.assetblock.AssetBlockSelectGroup;
 	
 	import utility.ColorCode;
 	
@@ -141,6 +148,45 @@ package mapassistant.map.world
 			Update();
 		}
 		
+		protected var _CacheBitmap:BitmapData = null;
+		
+		protected var _AssetBlockGroup:AssetBlockSelectGroup = null;
+		public function set SelectedAssetBlockGroup(Value:AssetBlockSelectGroup):void
+		{
+			_AssetBlockGroup = Value;
+			
+			var Col:int = _AssetBlockGroup.Column;
+			var Row:int =  _AssetBlockGroup.Row;
+			var NodeWidth:int = _AssetBlockGroup.Nodes[0].OrignalBlock.UnitWidth;
+			var NodeHeight:int = _AssetBlockGroup.Nodes[0].OrignalBlock.UnitHeight;
+			
+			//将选择的图块数据按照结构拼成缓存图
+			_CacheBitmap = new BitmapData(Col * NodeWidth,Row * NodeHeight);
+			var Rect:Rectangle = new Rectangle(0,0,NodeWidth,NodeHeight);
+			var Pos:Point = new Point();
+			var Idx:int = 0;
+			for(var R:int = 0; R<Row; R++)
+			{
+				for(var C:int = 0; C<Col; C++)
+				{
+					Pos.y = R * NodeHeight;
+					Pos.x = C * NodeWidth;
+					_CacheBitmap.copyPixels(_AssetBlockGroup.Nodes[Idx].Image.bitmapData,Rect,Pos);
+				}
+			}
+		}
+		
+		
+		protected function OnMousePress(Value:MouseEvent):void
+		{}
+		
+		
+		protected function OnMouseMove(event:MouseEvent):void
+		{
+			trace(this + " move")
+			
+		}
+		
 		//网格是否显示
 		protected var _GridShow:Boolean = false;
 		//网格线宽度
@@ -153,5 +199,19 @@ package mapassistant.map.world
 		protected var _GridFillColor:uint = ColorCode.WHITE;
 		//网格填充透明度
 		protected var _GridFillAlpha:Number = 1;
+		//当前图层是否激活
+		protected var _IsActived:Boolean = false;
+		public function Active():void
+		{
+			_IsActived = true;
+			addEventListener(MouseEvent.MOUSE_DOWN,OnMousePress);
+			addEventListener(MouseEvent.MOUSE_MOVE,OnMouseMove);
+		}
+		public function UnActived():void
+		{
+			_IsActived = false;
+			removeEventListener(MouseEvent.MOUSE_DOWN,OnMousePress);
+			removeEventListener(MouseEvent.MOUSE_MOVE,OnMouseMove);
+		}
 	}
 }

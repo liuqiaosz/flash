@@ -9,6 +9,7 @@
 		<![CDATA[
 			import mapassistant.WorldLayerItem;
 			import mapassistant.event.NotifyEvent;
+			import mapassistant.map.world.AreaPartitionLayer;
 			
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
@@ -39,10 +40,18 @@
 			public function ActiveLayer():void
 			{
 				BindActived = _Item.Actived = true;
+				AreaPartitionLayer(_Item.Layer).Active();
+				
 			}
 			public function UnActiveLayer():void
 			{
 				BindActived = _Item.Actived = false;
+				AreaPartitionLayer(_Item.Layer).UnActived();
+			}
+			
+			public function get IsActived():Boolean
+			{
+				return BindActived;
 			}
 			
 			protected function LayerNameEnter(event:FlexEvent):void

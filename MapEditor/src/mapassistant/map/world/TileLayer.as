@@ -1,16 +1,20 @@
 package mapassistant.map.world
 {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import game.sdk.map.layer.GenericLayer;
 	import game.sdk.map.layer.LayerMode;
 	import game.sdk.map.tile.TileData;
 	import game.sdk.map.tile.TileMode;
 	
+	import mapassistant.assetblock.AssetBlockSelectGroup;
 	import mapassistant.resource.Resource;
 	import mapassistant.resource.ResourceManager;
 	import mapassistant.symbol.SymbolFactory;
@@ -133,6 +137,34 @@ package mapassistant.map.world
 					graphics.drawRect(Tile.BlockColumn * this._GridTileWidth,Tile.BlockRow * _GridTileHeight,_GridTileWidth,_GridTileHeight);
 					graphics.endFill();
 					break;
+			}
+		}
+		protected var _CachePos:Point = new Point();
+		override protected function OnMouseMove(event:MouseEvent):void
+		{
+			if(_AssetBlockGroup && _CacheBitmap)
+			{
+				_CachePos.x = event.localX / this._GridTileWidth;
+				_CachePos.y = event.localY / this._GridTileHeight;
+				Update();
+			}
+		}
+		
+		
+		private var Draw:Graphics = null;
+		override public function Render():void
+		{
+			Draw = graphics;
+			Draw.clear();
+			Draw.beginFill(0xFFFFFF,0.1);
+			Draw.drawRect(0,0,this.LayerWidth,this.LayerHeight);
+			Draw.endFill();
+			
+			if(_CacheBitmap)
+			{
+				Draw.beginBitmapFill(_CacheBitmap);
+				Draw.drawRect(_CachePos.x,_CachePos.y,_CacheBitmap.width,_CacheBitmap.height);
+				Draw.endFill();
 			}
 		}
 		
