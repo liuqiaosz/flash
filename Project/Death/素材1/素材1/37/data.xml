@@ -1,0 +1,13 @@
+<i>
+  <i image="bsc_0.png" delay="100" x="0" y="0"/>
+  <i image="enH0_0.png" delay="100" x="0" y="-37"/>
+  <i image="enH0_1.png" delay="100" x="0" y="-37"/>
+  <i image="enH0_2.png" delay="100" x="0" y="-37"/>
+  <i image="enH1_0.png" delay="100" x="0" y="0"/>
+  <i image="enH1_1.png" delay="100" x="0" y="0"/>
+  <i image="enH1_2.png" delay="100" x="0" y="0"/>
+  <i image="enV0_0.png" delay="100" x="-20" y="0"/>
+  <i image="enV1_0.png" delay="100" x="0" y="0"/>
+  <i image="edU_0.png" delay="100" x="-20" y="-39"/>
+  <i image="edD_0.png" delay="100" x="-17" y="0"/>
+</i>

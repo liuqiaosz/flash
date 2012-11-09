@@ -311,10 +311,12 @@ package editor.ui
 				if(_Children.indexOf(_FocusControl) >= 0)
 				{
 					removeChild(_FocusControl);
+					_FocusControl = null;
 				}
 				else
 				{
 					_FocusControl.Owner.removeChild(_FocusControl);
+					_FocusControl = null;
 				}
 			}
 		}

@@ -54,16 +54,9 @@ package corecom.control
 			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
+			this.mouseChildren =false;
 		}
-		
-//		override protected function RegisterEvent():void
-//		{
-//			super.RegisterEvent();
-//			addEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
-//			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
-//			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
-//			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
-//		}
+
 		override protected function RemoveEvent():void
 		{
 			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
@@ -180,6 +173,7 @@ package corecom.control
 		{
 			_Style.FontTextStyle.FontSize = Value;
 			_Text.FontSize = Value;
+			
 			//Text = _TextValue;
 		}
 		public function get FontSize():int

@@ -141,7 +141,7 @@ package
 			//TweenLite.to(a, 1, {rotation:360});
 			//stage.color = ColorCode.ALICEBLUE;
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
-				ControlAssetManager.Instance.PushQueue("D:\\Git Library\\UIEditor\\bin\\Output\\AssetLibrary\\UI.swf");
+				ControlAssetManager.Instance.PushQueue("D:\\Git Library\\flash\\UIEditor\\bin\\Output\\AssetLibrary\\UI.swf");
 //				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
 //					
 //					
@@ -171,7 +171,7 @@ package
 							trace("!!!");
 						}
 					});
-					Loader.load(new URLRequest("D:\\Git Library\\Project\\Death\\UI Model\\SmallSupportTip.mod"));
+					Loader.load(new URLRequest("D:\\Git Library\\flash\\Project\\Death\\UI Model\\SmallSupportTip.mod"));
 				});
 				
 			});
