@@ -34,6 +34,7 @@ package mapassistant
 		{
 			addEventListener(MouseEvent.MOUSE_DOWN,OnPressDown);
 			super.Active();
+			 
 		}
 		override public function UnActived():void
 		{

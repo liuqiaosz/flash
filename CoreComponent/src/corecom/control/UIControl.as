@@ -84,6 +84,24 @@ package corecom.control
 			this.RegisterEvent();
 		}
 		
+		private var _ToolTip:String = "";
+		public function set ToolTip(Value:String):void
+		{
+			_ToolTip = Value;
+			if(null != _ToolTip && "" != _ToolTip)
+			{
+				ToolTipManager.Instance.Bind(this);
+			}
+			else
+			{
+				ToolTipManager.Instance.UnBind(this);	
+			}
+		}
+		public function get ToolTip():String
+		{
+			return _ToolTip
+		}
+		
 		public function FrameFocus():void
 		{
 			if(_Frame)
@@ -357,14 +375,6 @@ package corecom.control
 		}
 		
 		/**
-		 * 显示标签UI
-		 **/
-		public function ShowTip(CustomerTip:IUIControl = null):void
-		{
-			
-		}
-		
-		/**
 		 * 克隆对象
 		 **/
 //		public function Clone(Prototype:Class = null):Object
@@ -410,6 +420,20 @@ package corecom.control
 			Data.writeShort(x);	//外壳的X
 			//1	Short	Y
 			Data.writeShort(y);	//外壳的Y
+			
+			//2012-11-09新增 ToolTip数据支持
+			if(null != _ToolTip && _ToolTip.length > 0)
+			{
+				Data.writeByte(1);
+				var Len:int = Tools.StringActualLength(_ToolTip);
+				Data.writeShort(Len);
+				Data.writeUTFBytes(_ToolTip);
+			}
+			else
+			{
+				Data.writeByte(0);
+			}
+			
 			var StyleData:ByteArray = Style.Encode();
 			Data.writeBytes(StyleData,0,StyleData.length);
 			
@@ -426,6 +450,15 @@ package corecom.control
 			_ActualHeight = Data.readShort();
 			x = Data.readShort();
 			y = Data.readShort();
+			
+			
+			//2012-11-09ToolTip数据处理
+			if(Data.readByte() == 1)
+			{
+				Len = Data.readShort();
+				ToolTip = Data.readUTFBytes(Len);
+			}
+			
 			_Style.Decode(Data);
 			SpecialDecode(Data);
 			RegisterEvent();

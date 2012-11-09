@@ -41,7 +41,7 @@ package mapassistant
 				_TopLayer = Default;
 			}
 			
-			CreateObjectLayer();
+			//CreateObjectLayer();
 			Render();
 		}
 		

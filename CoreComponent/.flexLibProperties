@@ -78,6 +78,9 @@
     <classEntry path="corecom.control.style.UITextInputStyle"/>
     <classEntry path="corecom.control.style.IBackgroundStyle"/>
     <classEntry path="corecom.control.utility.ScaleRect"/>
+    <classEntry path="corecom.control.IToolTip"/>
+    <classEntry path="corecom.control.ToolTipManager"/>
+    <classEntry path="corecom.control.TextAlign"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

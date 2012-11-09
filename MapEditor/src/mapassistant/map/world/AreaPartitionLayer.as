@@ -172,6 +172,7 @@ package mapassistant.map.world
 					Pos.y = R * NodeHeight;
 					Pos.x = C * NodeWidth;
 					_CacheBitmap.copyPixels(_AssetBlockGroup.Nodes[Idx].Image.bitmapData,Rect,Pos);
+					Idx++;
 				}
 			}
 		}
@@ -203,13 +204,13 @@ package mapassistant.map.world
 		protected var _IsActived:Boolean = false;
 		public function Active():void
 		{
-			_IsActived = true;
+			visible = _IsActived = true;
 			addEventListener(MouseEvent.MOUSE_DOWN,OnMousePress);
 			addEventListener(MouseEvent.MOUSE_MOVE,OnMouseMove);
 		}
 		public function UnActived():void
 		{
-			_IsActived = false;
+			visible = _IsActived = false;
 			removeEventListener(MouseEvent.MOUSE_DOWN,OnMousePress);
 			removeEventListener(MouseEvent.MOUSE_MOVE,OnMouseMove);
 		}

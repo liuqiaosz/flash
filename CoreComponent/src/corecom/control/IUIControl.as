@@ -7,7 +7,7 @@ package corecom.control
 
 	/**
 	 * 
-	 * UI顶级接口
+	 * UI基本接口
 	 * 
 	 **/
 	public interface IUIControl extends IDispose,IEventDispatcher,ISerializable

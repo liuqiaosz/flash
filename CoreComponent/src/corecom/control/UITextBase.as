@@ -7,6 +7,7 @@ package corecom.control
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
@@ -34,6 +35,7 @@ package corecom.control
 			_Format.color = _DefaultFontColor;
 			_Format.font = _DefaultFamily;
 			_TextField.defaultTextFormat = _Format;
+			Align = TextAlign.LEFT;
 			addChild(_TextField);
 		}
 		
@@ -44,6 +46,28 @@ package corecom.control
 		public function get Text():String
 		{
 			return _TextField.text;
+		}
+		private var _AlignValue:int = TextAlign.LEFT;
+		public function set Align(Value:int):void
+		{
+			switch(Value)
+			{
+				case TextAlign.CENTER:
+					_TextField.autoSize = TextFieldAutoSize.CENTER;
+					break;
+				case TextAlign.LEFT:
+					_TextField.autoSize = TextFieldAutoSize.LEFT;
+					break;
+				case TextAlign.RIGHT:
+					_TextField.autoSize = TextFieldAutoSize.RIGHT;
+					break;
+				default:
+			}
+			_AlignValue = Value;
+		}
+		public function get Align():int
+		{
+			return _AlignValue;
 		}
 		
 		public function set FontFamily(Value:String):void
@@ -77,21 +101,11 @@ package corecom.control
 		{
 			_Format.color = Value;
 			_TextField.defaultTextFormat = _Format;
-			_TextField.text = _TextField.text;
+			
 		}
 		public function get FontColor():uint
 		{
 			return uint(_Format.color);
-		}
-		override public function set width(value:Number):void
-		{
-			super.width = value;
-			_TextField.width = value;
-		}
-		override public function set height(value:Number):void
-		{
-			super.height = value;
-			_TextField.height = value;
 		}
 		
 		/**

@@ -11,6 +11,7 @@ package
 	import corecom.control.Container;
 	import corecom.control.HorizontalScroller;
 	import corecom.control.LayoutConstant;
+	import corecom.control.ToolTipManager;
 	import corecom.control.UIButton;
 	import corecom.control.UIControl;
 	import corecom.control.UIControlFactory;
@@ -72,6 +73,7 @@ package
 	import game.sdk.event.GameEvent;
 	import game.sdk.map.layer.DiamondLayer;
 	import game.sdk.map.layer.GenericLayer;
+	import game.sdk.map.terrain.TerrainData;
 	import game.sdk.spr.SpriteManager;
 	import game.sdk.spr.SpriteSheet;
 	
@@ -169,7 +171,7 @@ package
 							trace("!!!");
 						}
 					});
-					Loader.load(new URLRequest("D:\\Git Library\\Project\\Death\\UI Model\\SmallFix2.mod"));
+					Loader.load(new URLRequest("D:\\Git Library\\Project\\Death\\UI Model\\SmallSupportTip.mod"));
 				});
 				
 			});
@@ -217,7 +219,36 @@ package
 			//trace(v.toString("2"));
 			
 			//ARGB8888To565();
-			ARGB888To4444();
+			//ARGB888To4444();
+			//TipTest();
+		}
+		
+		private function TipTest():void
+		{
+			var aaaa:TextField = new TextField();
+			aaaa.text = "aaa";
+			trace("tw[" + aaaa.textWidth);
+			trace("th[" + aaaa.textHeight);
+			
+			ToolTipManager.Instance.LazyTime = 500;
+			var a:UIButton = new UIButton();
+			a.Text = "Test";
+			a.width = 100;
+			a.height = 40;
+			a.x = 100;
+			a.y = 100;
+			a.ToolTip = "测试测试测试测试测试测试测试测试";
+			
+			var b:UIPanel = new UIPanel();
+			b.x = 200;
+			b.y = 250;
+			
+			b.width = 150;
+			b.height = 70;
+			b.ToolTip = "Panel tip";
+			
+			addChild(b);
+			addChild(a);
 		}
 		
 		private function ARGB8888To565():void

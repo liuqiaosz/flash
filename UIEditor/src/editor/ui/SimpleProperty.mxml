@@ -23,6 +23,8 @@
 			protected var _ControlX:int = 0;
 			[Bindable]
 			protected var _ControlY:int = 0;
+			[Bindable]
+			protected var _ControlTip:String = "";
 			
 			private var _Control:UIControl = null;
 			
@@ -73,6 +75,10 @@
 			{
 				this.CurrentControl.y = isNaN(int(PosY.text)) ? 0:int(PosY.text);
 			}
+			protected function ChangeTip(event:FlexEvent):void
+			{
+				this.CurrentControl.ToolTip = ToolTip.text;
+			}
 			
 			override protected function Initialized():void
 			{
@@ -83,7 +89,10 @@
 				_ControlY = Control.y;
 				PosX.text = _ControlX + "";
 				PosY.text = _ControlY + "";
+				_ControlTip = Control.ToolTip;
 			}
+			
+			
 		]]>
 	</fx:Script>
 	
@@ -108,5 +117,10 @@
 	<s:HGroup verticalAlign="middle">
 		<s:Label text="Y" width="60"/>
 		<s:TextInput width="60" id="PosY" text="{_ControlY}" enter="ChangeY(event)" />
+	</s:HGroup>
+	
+	<s:HGroup verticalAlign="middle">
+		<s:Label text="ToolTip" width="60"/>
+		<s:TextInput width="60" id="ToolTip" text="{_ControlTip}" enter="ChangeTip(event)" />
 	</s:HGroup>
 </ui:GenericProperty>

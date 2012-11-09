@@ -49,16 +49,21 @@ package corecom.control
 			width = 50;
 			height = 30;
 			this.buttonMode = true;
-		}
-		
-		override protected function RegisterEvent():void
-		{
-			super.RegisterEvent();
+			
 			addEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
 			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 		}
+		
+//		override protected function RegisterEvent():void
+//		{
+//			super.RegisterEvent();
+//			addEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
+//			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
+//			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
+//			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
+//		}
 		override protected function RemoveEvent():void
 		{
 			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
@@ -149,8 +154,10 @@ package corecom.control
 					_Text = new UILabel(_TextValue);
 					_Text.FontColor = _Style.FontTextStyle.FontColor;
 					_Text.FontSize = _Style.FontTextStyle.FontSize;
-					_Text.width = width;
-					_Text.height = height;
+					_Text.buttonMode = true;
+					_Text.Align = TextAlign.CENTER;
+					//_Text.width = width;
+					//_Text.height = height;
 					addChild(_Text);
 				}
 				Update();
@@ -207,7 +214,7 @@ package corecom.control
 				}
 				//_Text.y = ((this.height - _Text.textHeight) / 2) +  _Text.textHeight;
 				//_Text.x = ((this.width - _Text.textWidth) / 2);
-				_Text.x = ((this.width - _Text.TextWidth) / 2);
+				//_Text.x = ((this.width - _Text.TextWidth) / 2);
 				_Text.y = ((this.height - _Text.TextHeight) / 2);
 			}
 		}
@@ -267,6 +274,15 @@ package corecom.control
 			{
 				Data.writeMultiByte(_TextValue,"cn-gb");
 			}
+		}
+		
+		public function set LabelTextAlign(Value:int):void
+		{
+			_Text.Align = Value;
+		}
+		public function get LabelTextAlign():int
+		{
+			return _Text.Align;
 		}
 		
 		override public function set ImagePack(Value:Boolean):void

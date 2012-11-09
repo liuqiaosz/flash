@@ -32,6 +32,7 @@
 				_FontSizeText = "" + _FontSize;
 				FontColorPicker.selectedColor = Button.FontColor;
 				_BindFontColorText = Tools.Color2Hex(Button.FontColor);
+				//LabelAlign.selectedIndex = Button.LabelTextAlign;
 			}
 			
 			/**
@@ -47,9 +48,19 @@
 				BackgroundStyle.Control = Button;
 			}
 			
+			
+			/**
+			 * 文本定位
+			 **/
+			private function ButtonLabelAlignChanged(event:IndexChangeEvent):void
+			{
+				Button.LabelTextAlign = event.newIndex;
+			}
+			
 			protected function LabelChanged(event:TextOperationEvent):void
 			{
 				Button.Text = ButtonText.text;
+				
 			}
 			
 			[Bindable]
@@ -123,7 +134,18 @@
 		<s:TextInput width="70" enter="FontColorTextChanged(event)" text="{_BindFontColorText}"/>
 		<mx:ColorPicker showTextField="true" id="FontColorPicker" selectedColor="{_BindFontColor}" change="FontColorChanged(event)" />
 	</s:HGroup>
-	
+	<!--
+	<s:HGroup>
+		<s:Label text="文本位置" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox width="80" change="ButtonLabelAlignChanged(event)" id="LabelAlign" selectedIndex="0">
+			<s:ArrayCollection>
+				<fx:String>居中对齐</fx:String>
+				<fx:String>左对齐</fx:String>
+				<fx:String>右对齐</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	-->
 	<s:HGroup id="StateSwitch">
 		<s:Label text="按钮状态" height="100%" verticalAlign="middle" width="60"/>
 		<s:ComboBox width="80" change="ButtonStateChanged(event)" id="ButtonState" selectedIndex="0">
