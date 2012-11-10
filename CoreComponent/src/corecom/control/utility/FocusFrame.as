@@ -21,7 +21,7 @@ package corecom.control.utility
 		//protected var _FrameWidth:int = 0;
 		//protected var _FrameHeight:int = 0;
 		protected var _BorderColor:uint = 0x1B8DEA;
-		protected var _PointSize:int = 5;
+		protected var _PointSize:int = 8;
 		//protected var _Actived:Boolean = false;
 		private var _lt:AnchorPoint = null;
 		private var _lm:AnchorPoint = null;
@@ -126,7 +126,6 @@ package corecom.control.utility
 			{
 				if(event.target is AnchorPoint)
 				{
-					trace("Resize start");
 					_Resizable = true;
 					_ResizablePoint = event.target as AnchorPoint;
 					stage.addEventListener(MouseEvent.MOUSE_MOVE,ResizeMove,true);
@@ -152,7 +151,6 @@ package corecom.control.utility
 			//_bg.visible = _lt.visible = _lm.visible = _lb.visible = _mt.visible = _mb.visible = _rt.visible = _rm.visible = _rb.visible = _Focus;
 			if(_Focus)
 			{
-				trace("Resize start");
 				_Resizable = true;
 				_ResizablePoint = Point as AnchorPoint;
 				if(_ResizablePoint)
@@ -192,10 +190,6 @@ package corecom.control.utility
 			if(_Resizable)
 			{
 				event.stopPropagation();
-				trace("Resize move");
-				//				Pos.x = x;
-				//				Pos.y = y;
-				//				Pos = stage.localToGlobal(Pos);
 				Pos.x = event.stageX - _LastPoint.x;
 				Pos.y = event.stageY - _LastPoint.y;
 				_LastPoint.x = event.stageX;
@@ -203,29 +197,22 @@ package corecom.control.utility
 				
 				if(_ResizablePoint == _mt || _ResizablePoint == _mb)
 				{
-					//_FrameHeight = event.stageY - Pos.y;
 					if(_ResizablePoint == _mt)
 					{
 						Pos.y *= -1;
-						//_FrameHeight = _FrameHeight * -1;
 						_Control.height += Pos.y;
 						parent.y -= Pos.y;
 					}
 					else
 					{
-						//_Control.height = _FrameHeight;
 						_Control.height += Pos.y;
 						
 					}
-					//_FrameHeight = _Control.height;
 				}
 				else if(_ResizablePoint == _lm || _ResizablePoint == _rm)
 				{
-					//_FrameWidth = event.stageX - Pos.x;
-					
 					if(_ResizablePoint == _lm)
 					{
-						//_FrameWidth *= -1;
 						Pos.x *= -1;
 						_Control.width += Pos.x;
 						parent.x -= Pos.x;
@@ -235,7 +222,46 @@ package corecom.control.utility
 						_Control.width += Pos.x;
 						
 					}
-					//_FrameWidth = _Control.width;
+				}
+				else if(_ResizablePoint == _lt || _ResizablePoint == _lb)
+				{
+					if(_ResizablePoint == _lt)
+					{
+						Pos.x *= -1;
+						_Control.width += Pos.x;
+						parent.x -= Pos.x;
+						
+						Pos.y *= -1;
+						_Control.height += Pos.y;
+						parent.y -= Pos.y;
+					}
+					else
+					{
+						Pos.x *= -1;
+						_Control.width += Pos.x;
+						parent.x += Pos.x * -1;
+						
+						_Control.height += Pos.y;
+						//parent.y = Pos.y + _Control.height;
+					}
+				}
+				else if(_ResizablePoint == _rt || _ResizablePoint == _rb)
+				{
+					if(_ResizablePoint == _rt)
+					{
+						//Pos.x *= -1;
+						_Control.width += Pos.x;
+
+						Pos.y *= -1;
+						_Control.height += Pos.y;
+						parent.y -= Pos.y;
+					}
+					else
+					{
+						_Control.width += Pos.x;
+						
+						_Control.height += Pos.y;
+					}
 				}
 				var Notify:EditModeEvent = new EditModeEvent(EditModeEvent.FRAME_RESIZED);
 				dispatchEvent(Notify);

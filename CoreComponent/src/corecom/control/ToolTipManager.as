@@ -193,7 +193,5 @@ class TipPanel extends UIPanel
 		_Label.Text = Value;
 		width = _Label.TextWidth + 5;
 		height = _Label.TextHeight + 5;
-		trace("Width[" + width);
-		trace("Height[" + width);
 	}
 }

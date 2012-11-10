@@ -506,6 +506,7 @@ package corecom.control
 		{
 			//super.width = value;
 			//_Style.Width = value;
+			
 			_ActualWidth = value;
 			if(_Style.Scale9Grid)
 			{
