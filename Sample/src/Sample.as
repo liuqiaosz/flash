@@ -79,23 +79,23 @@ package
 	
 	import mx.graphics.codec.PNGEncoder;
 	
-	import ui.*;
-	
 	import utility.BitmapTools;
 	import utility.ColorCode;
 	import utility.RGBA;
 	import utility.Tools;
 	import utility.bitmap.png.PNGDecoder;
+	import utility.bitmap.tga.TGADecoder;
 
-	[SWF(width="1024",height="600")]
+	[SWF(width="1024",height="600",backgroundColor="0x000000")]
 	public class Sample extends Sprite
 	{
 		private var _Loader:Loader = null;
 		private var _Img:Bitmap = null;
 		
 		private var offset:int = 14;
-		private var last:UIControl = null;
-		
+
+		[Embed(source="assets/bgimg.jpg")]
+		private var BG:Class;
 //		[Embed(source="D:\\0_0.png")]
 //		private var Cls:Class;
 		public function Sample()
@@ -140,41 +140,41 @@ package
 //			eff.Play();
 			//TweenLite.to(a, 1, {rotation:360});
 			//stage.color = ColorCode.ALICEBLUE;
-			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
-				ControlAssetManager.Instance.PushQueue("D:\\Git Library\\flash\\UIEditor\\bin\\Output\\AssetLibrary\\UI.swf");
-//				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
+//			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
+//				ControlAssetManager.Instance.PushQueue("D:\\Git Library\\flash\\UIEditor\\bin\\Output\\AssetLibrary\\UI.swf");
+////				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
+////					
+////					
+////					
+////				});
+//				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,function(event:DownloadEvent):void{
+//					var Loader:URLLoader = new URLLoader();
 //					
-//					
-//					
+//					Loader.dataFormat = URLLoaderDataFormat.BINARY;
+//					Loader.addEventListener(Event.COMPLETE,function(event:Event):void{
+//						var star:int = flash.utils.getTimer();	
+//						var Data:ByteArray = Loader.data as ByteArray;
+//						
+//						var Panel:UIControl = UIControlFactory.Instance.Decode(Data).pop();
+//						stage.addChild(Panel);
+//						
+//						if(Panel is Container)
+//						{
+//							var s:int = flash.utils.getTimer();
+//							trace("Start[" + s + "]");
+//							var Children:Vector.<UIControl> = Container(Panel).AllChildren;
+//							trace("End[" + (flash.utils.getTimer() - s) + "]");
+//							trace("Count[" + Children.length + "]");
+//							s = flash.utils.getTimer();
+//							var label:UILabel = Container(Panel).GetChildById("PhysiqueLabel",true) as UILabel;
+//							trace("End[" + (flash.utils.getTimer() - s) + "]");
+//							trace("!!!");
+//						}
+//					});
+//					Loader.load(new URLRequest("D:\\Git Library\\flash\\Project\\Death\\UI Model\\SmallSupportTip.mod"));
 //				});
-				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,function(event:DownloadEvent):void{
-					var Loader:URLLoader = new URLLoader();
-					
-					Loader.dataFormat = URLLoaderDataFormat.BINARY;
-					Loader.addEventListener(Event.COMPLETE,function(event:Event):void{
-						var star:int = flash.utils.getTimer();	
-						var Data:ByteArray = Loader.data as ByteArray;
-						
-						var Panel:UIControl = UIControlFactory.Instance.Decode(Data).pop();
-						stage.addChild(Panel);
-						
-						if(Panel is Container)
-						{
-							var s:int = flash.utils.getTimer();
-							trace("Start[" + s + "]");
-							var Children:Vector.<UIControl> = Container(Panel).AllChildren;
-							trace("End[" + (flash.utils.getTimer() - s) + "]");
-							trace("Count[" + Children.length + "]");
-							s = flash.utils.getTimer();
-							var label:UILabel = Container(Panel).GetChildById("PhysiqueLabel",true) as UILabel;
-							trace("End[" + (flash.utils.getTimer() - s) + "]");
-							trace("!!!");
-						}
-					});
-					Loader.load(new URLRequest("D:\\Git Library\\flash\\Project\\Death\\UI Model\\SmallSupportTip.mod"));
-				});
-				
-			});
+//				
+//			});
 //			
 			
 //			ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
@@ -221,6 +221,22 @@ package
 			//ARGB8888To565();
 			//ARGB888To4444();
 			//TipTest();
+			TGATest();
+		}
+		
+		private function TGATest():void
+		{
+			var Reader:FileStream = new FileStream();
+			Reader.open(new File("D:\\waterfall014.tga"),FileMode.READ);
+			var Data:ByteArray = new ByteArray();
+			Reader.readBytes(Data,0,Reader.bytesAvailable);
+			Data.position = 0;
+			
+			var Decoder:TGADecoder = new TGADecoder();
+			var img:Bitmap = new Bitmap(Decoder.Decode(Data));
+			BitmapTools.BitmapMirrorY(img);
+			addChild(img);
+			
 		}
 		
 		private function TipTest():void
@@ -255,7 +271,7 @@ package
 		{
 			var c:uint = 0xC2A1B2C3;
 			
-			var value:uint = ColorCode.Pixel8888To565(c);
+			var value:uint = ColorCode.RGB888ToRGB565(c);
 			trace(value.toString("2"));
 		}
 		
@@ -264,7 +280,7 @@ package
 		{
 			var c:uint = 0xC2A1B2C3;
 			
-			var tol:uint = ColorCode.Pixel8888To4444(c).Pixel;
+			var tol:uint = ColorCode.RGB8888ToRGB4444(c).Pixel;
 			trace(tol.toString("2"));
 		}
 		

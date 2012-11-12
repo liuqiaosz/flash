@@ -56,6 +56,9 @@
     <classEntry path="utility.bitmap.png.BlockGenericText"/>
     <classEntry path="utility.CRC"/>
     <classEntry path="utility.RGBA"/>
+    <classEntry path="utility.bitmap.tga.TGADecoder"/>
+    <classEntry path="utility.bitmap.tga.TGAImage"/>
+    <classEntry path="utility.bitmap.tga.TGADescription"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -121,7 +121,7 @@ package utility.swf.tag
 							for(Widx=0; Widx<_Width; Widx++)
 							{
 								//RGB555 corvert RGB8888
-								BitData.setPixel32(Widx,Hidx,ColorCode.RGB555ToRGB8888(_BitmapBytes.ReadI16()).Pixel);
+								BitData.setPixel32(Widx,Hidx,ColorCode.RGB555ToRGB888(_BitmapBytes.ReadI16()).Pixel);
 							}
 						}
 						BitData.unlock();

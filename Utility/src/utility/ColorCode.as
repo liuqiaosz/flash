@@ -162,13 +162,7 @@ package utility
 				return red << 16 | green << 8 | blue;
 			}
 			
-			public static function Pixel8888To565(Pixel:uint):uint
-			{
-				var PixelRGBA:RGBA = GetRGBA(Pixel);
-				return (((PixelRGBA.Red >> 3) << 11) | 
-					((PixelRGBA.Green >> 2) << 5) | 
-					((PixelRGBA.Blue >> 3)));
-			}
+			
 			
 			public static function GetRGB(Pixel:uint):RGBA
 			{
@@ -182,7 +176,7 @@ package utility
 			public static const RGB4444_MASK:uint = parseInt("00001111",2);
 			public static const RGB555_MASK:uint = parseInt("00011111",2);
 			
-			public static function Pixel8888To4444(Pixel:uint):RGBA
+			public static function RGB8888ToRGB4444(Pixel:uint):RGBA
 			{
 				return new RGBA((Pixel >> 20 & RGB4444_MASK) << 4,
 					(Pixel >> 12 & RGB4444_MASK) << 4,
@@ -190,15 +184,74 @@ package utility
 					(Pixel >> 28 & RGB4444_MASK) << 4);
 			}
 			
-			public static function RGB555ToRGB8888(Pixel:uint):RGBA
+			/**
+			 * 
+			 * RGB4444格式数据转换RGB8888
+			 * 
+			 * @param	Pixel	像素数据
+			 * @param	BitFix	是否进行像素补偿
+			 * 
+			 **/
+			public static function RGB4444ToRGB8888(Pixel:uint,BitFix:Boolean = false):RGBA
 			{
-				//011111 11111 11111
-				var Red:uint = (Pixel >> 10 & RGB555_MASK) << 11;
-				var Green:uint = (Pixel >> 5 & RGB555_MASK) << 6;
-				var Blue:uint = (Pixel & RGB555_MASK) << 1;
+				var Alpha:uint = Pixel >> 12 & RGB4444_MASK;
+				var Red:uint = Pixel >> 8 & RGB4444_MASK;
+				var Green:uint = Pixel >> 4 & RGB4444_MASK;
+				var Blue:uint = Pixel & RGB4444_MASK;
+				
+				if(BitFix)
+				{
+					Alpha = Alpha | (Alpha >> 4);
+					Red = Red | (Red >> 4);
+					Green = Green | (Green >> 4);
+					Blue = Blue | (Blue >> 4);
+				}
+				return new RGBA(Red,Green,Blue,Alpha);
+			}
+			
+			public static function RGB888ToRGB565(Pixel:uint):uint
+			{
+				var PixelRGBA:RGBA = GetRGBA(Pixel);
+				return (((PixelRGBA.Red >> 3) << 11) | 
+					((PixelRGBA.Green >> 2) << 5) | 
+					((PixelRGBA.Blue >> 3)));
+			}
+			
+			/**
+			 * RGB555转RGB888
+			 * 
+			 * @param	Pixel	像素数据
+			 * @param	BitFix	是否进行像素补偿
+			 * 
+			 * 
+			 **/
+			public static function RGB555ToRGB888(Pixel:uint,BitFix:Boolean = false):RGBA
+			{
+				var Red:uint = (Pixel >> 10 & RGB555_MASK) << 3;
+				var Green:uint = (Pixel >> 5 & RGB555_MASK) << 3;
+				var Blue:uint = (Pixel & RGB555_MASK) << 3;
+				if(BitFix)
+				{
+					Red = Red | (Red >> 5);
+					Green = Green | (Green >> 5);
+					Blue = Blue | (Blue >> 5);
+				}
 				
 				return new RGBA(Red,Green,Blue);
 			}
 			
+			/**
+			 * 
+			 * 
+			 * 
+			 **/
+			public static function RGB888ToRGB555(Pixel:uint):uint
+			{
+				var PixelRGBA:RGBA = GetRGBA(Pixel);
+				return (((PixelRGBA.Red >> 3) << 10) | 
+					((PixelRGBA.Green >> 3) << 5) | 
+					((PixelRGBA.Blue >> 3)));
+				return null;
+			}
 		}
 }

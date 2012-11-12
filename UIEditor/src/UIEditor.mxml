@@ -697,9 +697,7 @@
 			 **/
 			private function ComponentChildSelect(event:ListEvent):void
 			{
-				
 				var Obj:Object = event.itemRenderer.data;
-				
 				this.EditWorkspace.OnComponentChoice(Obj.Control);
 			}
 			
