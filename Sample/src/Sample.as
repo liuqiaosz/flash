@@ -79,6 +79,8 @@ package
 	
 	import mx.graphics.codec.PNGEncoder;
 	
+	import pixel.core.PixelScreen;
+	
 	import utility.BitmapTools;
 	import utility.ColorCode;
 	import utility.RGBA;
@@ -100,6 +102,7 @@ package
 //		private var Cls:Class;
 		public function Sample()
 		{
+			var a:PixelScreen = new PixelScreen();
 //			var size:int = 30;
 //			var a:DiamondLayer = new DiamondLayer(1,1,size);
 //			addChild(a);

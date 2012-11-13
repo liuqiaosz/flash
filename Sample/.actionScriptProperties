@@ -54,6 +54,7 @@
       <libraryPathEntry kind="3" linkType="1" path="/CoreComponent/bin/CoreComponent.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/EditorUtility/bin/EditorUtility.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
+      <libraryPathEntry kind="3" linkType="1" path="/Pixel/bin/Pixel.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
