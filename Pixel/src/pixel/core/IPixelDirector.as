@@ -2,6 +2,8 @@ package pixel.core
 {
 	import flash.events.IEventDispatcher;
 	
+	import pixel.scene.IPixelScene;
+	
 	import spark.core.IDisplayText;
 
 	/**
@@ -21,5 +23,7 @@ package pixel.core
 		function pause():void;
 		//结束
 		function end():void;
+		
+		function switchScene(prototype:Class,transition:int = -1,duration:Number = 1):IPixelScene;
 	}
 }

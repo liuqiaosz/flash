@@ -11,7 +11,7 @@ package pixel.core
 		}
 		public function get screenWidth():int
 		{
-			return screenWidth;
+			return _screenWidth;
 		}
 		
 		private var _screenHeight:int = 0;

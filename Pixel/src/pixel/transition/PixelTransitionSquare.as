@@ -2,8 +2,13 @@ package pixel.transition
 {
 	import flash.events.EventDispatcher;
 	
+	import pixel.message.PixelMessage;
+	import pixel.core.PixelNs;
+	import pixel.message.PixelMessage;
+	import pixel.message.PixelMessageBus;
 	import pixel.transition.event.PixelTransitionEvent;
-
+	
+	use namespace PixelNs;
 	/**
 	 * 
 	 * 批量过渡
@@ -11,11 +16,11 @@ package pixel.transition
 	 **/
 	public class PixelTransitionSquare extends EventDispatcher
 	{
-		private var _beginQueue:Vector.<IPixelTransition> = null;
+		private var _beginQueue:Array = null;
 		private var _completeCount:int = 0;
-		public function PixelTransitionSquare()
+		public function PixelTransitionSquare(queue:Array)
 		{
-			
+			_beginQueue = queue;
 		}
 		
 		/**
@@ -23,10 +28,8 @@ package pixel.transition
 		 * 
 		 * 
 		 **/
-		public function begin(queue:Array):void
+		public function begin():void
 		{
-			_beginQueue = new Vector.<IPixelTransition>(queue);
-			
 			for each(var transition:IPixelTransition in _beginQueue)
 			{
 				transition.addEventListener(PixelTransitionEvent.TRANS_COMPLETE,onTransitionNodeComplete);

@@ -2,10 +2,12 @@ package pixel.graphic
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import pixel.core.IPixelNode;
 	import pixel.core.IPixelSprite;
 	import pixel.core.PixelLauncher;
 	import pixel.core.PixelModule;
@@ -16,6 +18,8 @@ package pixel.graphic
 
 	/**
 	 * 绘图封装模块
+	 * 
+	 * 该模块只支持场景的全位图渲染
 	 * 
 	 * 
 	 **/
@@ -36,34 +40,14 @@ package pixel.graphic
 		{
 			super.initializer();
 			//获取当前主舞台
-			_screen = PixelLauncher.stage;
-			_gameClip = new BitmapData(_screen.stageWidth,_screen.stageHeight);
-			_gameCanvas = new Bitmap();
-			_gameCanvas.bitmapData = _gameClip;
-			_screen.addChild(_gameCanvas);
+			_screen = PixelLauncher.launcher.stage;
+			
 		}
-		
-		/**
-		 * 渲染模式
-		 * 
-		 **/
-		//protected var _renderMode:int = PixelRenderMode.RENDER_NORMAL;
-		
-		/**
-		 * 变更渲染模式
-		 * 
-		 * @param	mode	渲染模式，建议使用PixelRenderMode静态常量进行设置
-		 * 
-		 **/
-//		public function changeRenderMode(mode:int):void
-//		{
-//			_renderMode = mode;
-//		}
 		
 		//画布
 		protected var _gameCanvas:Bitmap = null;
 		protected var _gameClip:BitmapData = null;
-		protected var _renderNodes:Vector.<IPixelSprite> = null;
+		protected var _renderNodes:Vector.<IPixelNode> = null;
 		protected var _scene:IPixelScene = null;
 		protected var _node:IPixelSprite = null;
 		protected var _nodeClip:BitmapData = null;
@@ -77,9 +61,17 @@ package pixel.graphic
 		 **/
 		public function render(scenes:Vector.<IPixelScene>):void
 		{
-			_gameClip.fillRect(_gameClip.rect,0xFF000000);
 			for each(_scene in scenes)
 			{
+				if(!_gameCanvas)
+				{
+					_gameClip = new BitmapData(_screen.stageWidth,_screen.stageHeight);
+					_gameCanvas = new Bitmap();
+					_gameCanvas.bitmapData = _gameClip;
+					_screen.addChild(_gameCanvas);
+				}
+				_gameClip.fillRect(_gameClip.rect,0xFF000000);
+				
 				/**
 				 * 绘制到画布的位置，场景偏移+当前精灵偏移
 				 * 
@@ -90,10 +82,10 @@ package pixel.graphic
 				 * 
 				 * 
 				 **/
-				_renderNodes = _scene.renderNodes;
+				_renderNodes = _scene.nodes;
 				for each(_node in _renderNodes)
 				{
-					_nodeClip = _node.clip;
+					_nodeClip = _node.image;
 					if(_nodeClip)
 					{
 						_drawDest.x = _scene.x + _node.x;
@@ -131,7 +123,5 @@ package pixel.graphic
 //			}
 //			_nodeClip.clone()
 //		}
-		
-		
 	}
 }

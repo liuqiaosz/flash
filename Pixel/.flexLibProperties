@@ -7,9 +7,9 @@
     <classEntry path="pixel.error.ErrorContants"/>
     <classEntry path="pixel.error.PixelError"/>
     <classEntry path="pixel.core.IPixelModule"/>
-    <classEntry path="pixel.message.MessageBus"/>
-    <classEntry path="pixel.message.IMessageBus"/>
-    <classEntry path="pixel.message.Message"/>
+    <classEntry path="pixel.message.PixelMessageBus"/>
+    <classEntry path="pixel.message.IPixelMessageBus"/>
+    <classEntry path="pixel.message.PixelMessage"/>
     <classEntry path="pixel.util.Config"/>
     <classEntry path="pixel.core.IPixeloduleManager"/>
     <classEntry path="pixel.core.PixelModuleManager"/>
@@ -21,7 +21,7 @@
     <classEntry path="pixel.core.PixelScreen"/>
     <classEntry path="pixel.graphic.PixelRenderMode"/>
     <classEntry path="pixel.scene.IPixelScene"/>
-    <classEntry path="pixel.core.IPixelSprite"/>
+    <classEntry path="pixel.core.IPixelNode"/>
     <classEntry path="pixel.core.IPixelGeneric"/>
     <classEntry path="pixel.core.PixelDirector"/>
     <classEntry path="pixel.transition.IPixelTransition"/>
@@ -31,6 +31,17 @@
     <classEntry path="pixel.transition.PixelTransitionContants"/>
     <classEntry path="pixel.transition.event.PixelTransitionEvent"/>
     <classEntry path="pixel.transition.PixelTransitionFlipX"/>
+    <classEntry path="pixel.core.PixelConfig"/>
+    <classEntry path="pixel.core.PixelSprite"/>
+    <classEntry path="pixel.core.IPixelSprite"/>
+    <classEntry path="pixel.core.IPixelSpriteSheet"/>
+    <classEntry path="pixel.core.PixelSpriteSheet"/>
+    <classEntry path="pixel.core.PixelNode"/>
+    <classEntry path="pixel.codec.spr.SpriteEncoder"/>
+    <classEntry path="pixel.codec.ICoder"/>
+    <classEntry path="pixel.scene.PixelScene"/>
+    <classEntry path="pixel.transition.PixelTransitionHelper"/>
+    <classEntry path="pixel.message.IOMessage"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

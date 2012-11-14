@@ -79,7 +79,11 @@ package
 	
 	import mx.graphics.codec.PNGEncoder;
 	
+	import pixel.core.PixelLauncher;
 	import pixel.core.PixelScreen;
+	import pixel.scene.IPixelScene;
+	import pixel.transition.PixelTransitionContants;
+	import pixel.transition.PixelTransitionFlipX;
 	
 	import utility.BitmapTools;
 	import utility.ColorCode;
@@ -88,8 +92,8 @@ package
 	import utility.bitmap.png.PNGDecoder;
 	import utility.bitmap.tga.TGADecoder;
 
-	[SWF(width="1024",height="600",backgroundColor="0x000000")]
-	public class Sample extends Sprite
+	[SWF(width="1000",height="600")]
+	public class Sample extends PixelLauncher
 	{
 		private var _Loader:Loader = null;
 		private var _Img:Bitmap = null;
@@ -102,7 +106,8 @@ package
 //		private var Cls:Class;
 		public function Sample()
 		{
-			var a:PixelScreen = new PixelScreen();
+			super(DefaultDirector);
+			
 //			var size:int = 30;
 //			var a:DiamondLayer = new DiamondLayer(1,1,size);
 //			addChild(a);
@@ -224,12 +229,22 @@ package
 			//ARGB8888To565();
 			//ARGB888To4444();
 			//TipTest();
-			TGATest();
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				PixelLauncher.director.switchScene(DefaultScene);
+				
+			});
+			
+			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
+				var scene:IPixelScene = PixelLauncher.director.switchScene(SwitchScene,PixelTransitionContants.FLIPX_LEFT,0.3);
+				//scene.x = 100;
+				//scene.y = 100;
+				//PixelLauncher.director.switchScene(SwitchScene);
+			});
 		}
 		
 		private function TGATest():void
 		{
-			var Reader:FileStream = new FileStream();
+			var Reader:FileStream = new FileStream(); 
 			Reader.open(new File("D:\\waterfall014.tga"),FileMode.READ);
 			var Data:ByteArray = new ByteArray();
 			Reader.readBytes(Data,0,Reader.bytesAvailable);

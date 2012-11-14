@@ -4,10 +4,15 @@ package pixel.core
 	import flash.display.Stage;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import flash.utils.getTimer;
 	
 	import pixel.error.ErrorContants;
 	import pixel.error.PixelError;
-	import pixel.message.MessageBus;
+	import pixel.graphic.IPixelGraphicModule;
+	import pixel.graphic.PixelGraphicModule;
+	import pixel.io.IPixelIOModule;
+	import pixel.io.PixelIOModule;
+	import pixel.message.PixelMessageBus;
 	
 	use namespace PixelNs;
 	
@@ -19,38 +24,103 @@ package pixel.core
 	 **/
 	public class PixelLauncher extends Sprite
 	{
-		private static var _stage:Stage = null;
-		private static var _screen:PixelScreen = null;
+		private var _stage:Stage = null;
+		private var _screen:PixelScreen = null;
+		private static var _launcher:PixelLauncher = null;
 		private var _director:IPixelDirector = null;
 		private var _loop:Timer = null;
 		private var _frameRate:int = 30;
 		private var _initialized:Boolean = false;
-		public function PixelLauncher(director:Class,frameRate:int = 30)
+		
+		/**
+		 * 基础模块定义
+		 * 
+		 * 
+		 **/
+		private var _graphicModule:IPixelGraphicModule = null;
+		
+		private var _ioModule:IPixelIOModule = null;
+		public function PixelLauncher(director:Class = null,frameRate:int = 30)
 		{
 			_stage = stage;
 			_frameRate = frameRate;
+			_launcher = this;
 			try
 			{
-				//初始化主控
-				_director = new director() as IPixelDirector;
+				if(!director)
+				{
+					_director = new PixelDirector();
+				}
+				else
+				{
+					//初始化主控
+					_director = new director() as IPixelDirector;
+				}
+				
 				if(!_director)
 				{
 					throw new PixelError(ErrorContants.ERR_DIRECTOR);
 				}
+				
+				trace("初始化消息中心");
+				//初始化消息中心
+				PixelMessageBus.initiazlier();
+				
+				trace("初始化IO模块");
+				_ioModule = new PixelIOModule();
+				//trace("初始化渲染模块");
+				//渲染模块
+				_graphicModule = new PixelGraphicModule();
+				//启动
+				_director.action();
+				_initialized = true;
+				
+				//初始化主循环,启动
+				_loop = new Timer(_frameRate);
+				_loop.addEventListener(TimerEvent.TIMER,onFrameUpdate);
+				_loop.start();
+				
 			}
 			catch(err:Error)
 			{
 				throw new PixelError(err.message);
 			}
-			
-			//初始化主循环,启动
-			_loop = new Timer(_frameRate);
-			_loop.addEventListener(TimerEvent.TIMER,onFrameUpdate);
-			_loop.start();
 		}
 		
+		/**
+		 * IO模块
+		 * 
+		 **/
+		PixelNs function get ioModule():IPixelIOModule
+		{
+			return _ioModule;
+		}
 		
+		/**
+		 * 
+		 * 渲染模块
+		 * 
+		 **/
+		PixelNs function get graphicModule():IPixelGraphicModule
+		{
+			return _graphicModule;
+		}
 		
+		/**
+		 * 获取当前主控
+		 * 
+		 * 
+		 **/
+		public function get director():IPixelDirector
+		{
+			return _director;
+		}
+		public function get frameRate():int
+		{
+			return _frameRate;
+		}
+		
+		private var startSeek:int = 0;
 		/**
 		 * 主循环
 		 * 
@@ -58,17 +128,29 @@ package pixel.core
 		 **/
 		protected function onFrameUpdate(event:TimerEvent):void
 		{
-			if(_initialized)
-			{
-				_director.update();	
-			}
-			else
-			{
-				//进行初始化
-				
-				//初始化消息中心
-				MessageBus.initiazlier();
-			}
+			startSeek = flash.utils.getTimer();
+			_director.update();	
+			//trace((flash.utils.getTimer() - startSeek) + " ms");
+		}
+		
+		/**
+		 * 获取当前主控
+		 * 
+		 * 
+		 **/
+		public static function get director():IPixelDirector
+		{
+			return launcher.director;
+		}
+		
+		public static function get frameRate():int
+		{
+			return launcher.frameRate;
+		}
+		
+		PixelNs static function get launcher():PixelLauncher
+		{
+			return _launcher;
 		}
 		
 		/**
@@ -76,12 +158,12 @@ package pixel.core
 		 * 
 		 * 
 		 **/
-		PixelNs static function get stage():Stage
+		public function get gameStage():Stage
 		{
 			return _stage;
 		}
 		
-		public static function get screen():PixelScreen
+		public function get screen():PixelScreen
 		{
 			if(!_screen)
 			{

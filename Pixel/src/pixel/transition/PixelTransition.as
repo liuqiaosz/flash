@@ -3,7 +3,7 @@ package pixel.transition
 	import flash.events.EventDispatcher;
 	
 	import pixel.core.PixelNs;
-	import pixel.message.MessageBus;
+	import pixel.message.PixelMessageBus;
 	
 	use namespace PixelNs;
 	
@@ -14,10 +14,11 @@ package pixel.transition
 	 **/
 	public class PixelTransition extends EventDispatcher implements IPixelTransition
 	{
+		protected var _vars:PixelTransitionVars = null;
 		public function PixelTransition(param:PixelTransitionVars)
 		{
-			
-		}
+			_vars = param;
+		}	
 		
 		public function begin():void
 		{
@@ -31,7 +32,7 @@ package pixel.transition
 		 **/
 		protected function register(message:String,callback:Function):void
 		{
-			MessageBus.Instance.register(message,callback);
+			PixelMessageBus.Instance.register(message,callback);
 		}
 		
 		/**
@@ -41,7 +42,7 @@ package pixel.transition
 		 **/
 		protected function unRegister(message:String,callback:Function):void
 		{
-			MessageBus.Instance.unRegister(message,callback);
+			PixelMessageBus.Instance.unRegister(message,callback);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package pixel.core
 {
-	import pixel.message.MessageBus;
+	import pixel.message.PixelMessage;
+	import pixel.message.PixelMessageBus;
 
 	use namespace PixelNs;
 	/**
@@ -15,7 +16,7 @@ package pixel.core
 	{
 		public function PixelModule()
 		{
-			
+			initializer();
 		}
 		
 		/**
@@ -30,6 +31,16 @@ package pixel.core
 			
 		}
 		
+		
+		/**
+		 * 模块卸载时的清理方法
+		 * 
+		 * 
+		 **/
+		public function dispose():void
+		{
+		}
+		
 		/**
 		 * 向消息中心注册接收消息
 		 * 
@@ -37,7 +48,7 @@ package pixel.core
 		 **/
 		protected function register(message:String,callback:Function):void
 		{
-			MessageBus.Instance.register(message,callback);
+			PixelMessageBus.Instance.register(message,callback);
 		}
 		
 		/**
@@ -47,7 +58,12 @@ package pixel.core
 		 **/
 		protected function unRegister(message:String,callback:Function):void
 		{
-			MessageBus.Instance.unRegister(message,callback);
+			PixelMessageBus.Instance.unRegister(message,callback);
+		}
+		
+		protected function dispatchMessage(message:PixelMessage):void
+		{
+			PixelMessageBus.Instance.dispatchMessage(message);
 		}
 	}
 }
