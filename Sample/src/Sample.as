@@ -1,10 +1,53 @@
 package
 {
 
-	import com.greensock.*;
-	import com.greensock.easing.*;
 	import com.greensock.plugins.GlowFilterPlugin;
 	import com.greensock.plugins.TweenPlugin;
+	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.BlendMode;
+	import flash.display.DisplayObject;
+	import flash.display.GradientType;
+	import flash.display.Graphics;
+	import flash.display.Loader;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.system.MessageChannel;
+	import flash.system.Security;
+	import flash.system.Worker;
+	import flash.system.WorkerDomain;
+	import flash.text.TextField;
+	import flash.text.TextFieldType;
+	import flash.text.engine.ContentElement;
+	import flash.text.engine.ElementFormat;
+	import flash.text.engine.GroupElement;
+	import flash.text.engine.TextBlock;
+	import flash.text.engine.TextElement;
+	import flash.text.engine.TextLine;
+	import flash.ui.Keyboard;
+	import flash.utils.ByteArray;
+	import flash.utils.CompressionAlgorithm;
+	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
+	
+	import mx.graphics.codec.PNGEncoder;
 	
 	import corecom.control.Combobox;
 	import corecom.control.ComboboxItem;
@@ -33,42 +76,6 @@ package
 	
 	import editor.uitility.ui.ActiveFrame;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.BlendMode;
-	import flash.display.DisplayObject;
-	import flash.display.GradientType;
-	import flash.display.Graphics;
-	import flash.display.Loader;
-	import flash.display.Shape;
-	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
-	import flash.net.URLRequest;
-	import flash.text.TextField;
-	import flash.text.TextFieldType;
-	import flash.text.engine.ContentElement;
-	import flash.text.engine.ElementFormat;
-	import flash.text.engine.GroupElement;
-	import flash.text.engine.TextBlock;
-	import flash.text.engine.TextElement;
-	import flash.text.engine.TextLine;
-	import flash.ui.Keyboard;
-	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
-	import flash.utils.getTimer;
-	
 	import game.sdk.error.GameError;
 	import game.sdk.event.GameEvent;
 	import game.sdk.map.layer.DiamondLayer;
@@ -77,13 +84,7 @@ package
 	import game.sdk.spr.SpriteManager;
 	import game.sdk.spr.SpriteSheet;
 	
-	import mx.graphics.codec.PNGEncoder;
-	
-	import pixel.core.PixelLauncher;
-	import pixel.core.PixelScreen;
-	import pixel.scene.IPixelScene;
-	import pixel.transition.PixelTransitionContants;
-	import pixel.transition.PixelTransitionFlipX;
+	import pixel.worker.core.PixelWorkerGeneric;
 	
 	import utility.BitmapTools;
 	import utility.ColorCode;
@@ -93,8 +94,9 @@ package
 	import utility.bitmap.tga.TGADecoder;
 
 	[SWF(width="1000",height="600")]
-	public class Sample extends PixelLauncher
+	public class Sample extends Sprite
 	{
+		
 		private var _Loader:Loader = null;
 		private var _Img:Bitmap = null;
 		
@@ -102,11 +104,14 @@ package
 
 		[Embed(source="assets/bgimg.jpg")]
 		private var BG:Class;
+		
+		[Embed(source="D:\\FlexWorkspace\\Worker\\bin-debug\\Worker.swf",mimeType="application/octet-stream")]
+		private var SWF:Class;
 //		[Embed(source="D:\\0_0.png")]
 //		private var Cls:Class;
 		public function Sample()
 		{
-			super(DefaultDirector);
+			
 			
 //			var size:int = 30;
 //			var a:DiamondLayer = new DiamondLayer(1,1,size);
@@ -209,7 +214,9 @@ package
 //				}
 //			}
 //			a.bitmapData.unlock();
-//			
+//			B8888To565();
+			//ARGB888To4444();
+			//TipTest();
 //			var code:PNGEncoder = new PNGEncoder();
 //			var pixels:ByteArray = code.encode(t);
 //			
@@ -226,22 +233,38 @@ package
 //			var v:int = 0x80;
 			//trace(v.toString("2"));
 			
-			//ARGB8888To565();
-			//ARGB888To4444();
-			//TipTest();
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				PixelLauncher.director.switchScene(DefaultScene);
-				
-			});
+			//ARG
+		
+			var swf:ByteArray = new SWF() as ByteArray;
 			
-			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
-				var scene:IPixelScene = PixelLauncher.director.switchScene(SwitchScene,PixelTransitionContants.FLIPX_LEFT,0.3);
-				//scene.x = 100;
-				//scene.y = 100;
-				//PixelLauncher.director.switchScene(SwitchScene);
+			var work:Worker = WorkerDomain.current.createWorker(swf);
+			var channel:MessageChannel = work.createMessageChannel(Worker.current);
+			
+			work.setSharedProperty(PixelWorkerGeneric.CHANNEL_DEFAULT,channel);
+			
+			
+			channel.addEventListener(Event.CHANNEL_MESSAGE,function(event:Event):void{
+				
+				if(channel.messageAvailable)
+				{
+					var msg:int = channel.receive() as int;
+					
+					trace(msg + "");
+				}
 			});
+			work.start();
+			
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+			
+				trace(work.state);
+			});
+
+			//loader.load(new URLRequest("C:\Users\\OfficeLocal\\Adobe Flash Builder 4.7\\Worker\\bin-debug\\Worker.swf"));
+			//loader.load(new URLRequest("D:\\FlexWorkspace\\Worker\\bin-debug\\Worker.swf"));
 		}
 		
+	
+
 		private function TGATest():void
 		{
 			var Reader:FileStream = new FileStream(); 
@@ -302,32 +325,6 @@ package
 			trace(tol.toString("2"));
 		}
 		
-		private function cutplus():void
-		{
-			var Dir:File = new File("D:\\PNG");
-			var Files:Array = Dir.getDirectoryListing();
-			var Image:File = null;
-			
-			var loader:Loader = new Loader();
-			var index:int = 0;
-			
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				var total:BitmapData = Bitmap(loader.content).bitmapData;
-				total = BitmapTools.CutAlpha(total);
-				var encoder:PNGEncoder = new PNGEncoder();
-				var data:ByteArray = encoder.encode(total);
-				SaveDataToDisk(data,"D:\\PNG\\Fix\\" + index + ".png");
-				index++;
-				
-				if(Files.length > 0)
-				{
-					Image = Files.pop();
-					loader.load(new URLRequest(Image.nativePath));
-				}
-			});
-			Image = Files.pop();
-			loader.load(new URLRequest(Image.nativePath));
-		}
 		
 		private function fte():void
 		{
@@ -447,70 +444,6 @@ package
 			});
 		}
 		
-		private function deleteAlpha():void
-		{
-			var loader:Loader = new Loader();
-			var w:int = 105;
-			var h:int = 150;
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				var total:BitmapData = Bitmap(loader.content).bitmapData;
-				total = BitmapTools.CutAlpha(total);
-				var encoder:PNGEncoder = new PNGEncoder();
-				var data:ByteArray = encoder.encode(total);
-				SaveDataToDisk(data,"D:\\ltfix.png");
-				
-			});
-			loader.load(new URLRequest("D:\\lt.png"));
-		}
-		
-		private function cut():void
-		{
-			var loader:Loader = new Loader();
-			var w:int = 105;
-			var h:int = 150;
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				var total:BitmapData = Bitmap(loader.content).bitmapData;
-				
-				var r:int = total.height / h;
-				var c:int = total.width / w;
-				var rect:Rectangle = new Rectangle();
-				rect.width = w;
-				rect.height = h;
-				var encoder:PNGEncoder = new PNGEncoder();
-				for(var col:int = 0; col < c; col++)
-				{
-					for(var row:int = 0; row < r; row++)
-					{
-						var img:BitmapData = new BitmapData(w,h);
-						rect.x = col * w;
-						rect.y = row * h;
-						img.copyPixels(total,rect,new Point());
-						
-						var data:ByteArray = encoder.encode(img);
-						
-						SaveDataToDisk(data,"D:\\old\\" + col + "_" + row + ".png");
-					}
-				}
-			
-			});
-			loader.load(new URLRequest("D:\\old.png"));
-		}
-		
-		private function cut2():void
-		{
-			var loader:Loader = new Loader();
-			var w:int = 105;
-			var h:int = 150;
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				var total:BitmapData = Bitmap(loader.content).bitmapData;
-				var encoder:PNGEncoder = new PNGEncoder();
-				var img:BitmapData = BitmapTools.CutAlpha(total);
-				var data:ByteArray = encoder.encode(img);
-				
-				SaveDataToDisk(data,"D:\\0_0.png");
-			});
-			loader.load(new URLRequest("D:\\K\\skill1\\0_0.png"));
-		}
 		
 		public static function SaveDataToDisk(Data:ByteArray,Nav:String):void
 		{

@@ -40,7 +40,7 @@ package pixel.io
 		override protected function initializer():void
 		{
 			PixelLauncher.launcher.gameStage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyboardInput);
-			_sceneQueue = new Vector.<IPixelScene>();
+			//_sceneQueue = new Vector.<IPixelScene>();
 		}
 		
 		/**
@@ -76,7 +76,7 @@ package pixel.io
 //			}
 //		}
 		
-		public function screenRefresh():void
+		public function screenRefresh(scenes:Vector.<IPixelScene>):void
 		{
 			if(PixelConfig.renderMode == PixelRenderMode.RENDER_BITMAP)
 			{
@@ -85,11 +85,11 @@ package pixel.io
 				{
 					_graphic = PixelLauncher.launcher.graphicModule;
 				}
-				_graphic.render(_sceneQueue);
+				_graphic.render(scenes);
 			}
 		}
 		
-		private var _sceneQueue:Vector.<IPixelScene> = null;
+		//private var _sceneQueue:Vector.<IPixelScene> = null;
 		
 		/**
 		 * 将场景加入屏幕
@@ -98,21 +98,16 @@ package pixel.io
 		 **/
 		public function addSceneToScreen(scene:IPixelScene):void
 		{
-			if(_sceneQueue.indexOf(scene) < 0)
-			{
-				_sceneQueue.push(scene);
-			}
+//			if(_sceneQueue.indexOf(scene) < 0)
+//			{
+//				_sceneQueue.push(scene);
+//			}
 
 			if(PixelConfig.renderMode == PixelRenderMode.RENDER_NORMAL)
 			{
 				//传统显示列表,直接将场景加入主舞台
 				PixelLauncher.launcher.gameStage.addChild(scene as DisplayObject);
 			}
-		}
-		
-		public function get screenScenes():Vector.<IPixelScene>
-		{
-			return _sceneQueue;
 		}
 		
 		/**
@@ -122,11 +117,6 @@ package pixel.io
 		 **/
 		public function removeSceneFromScreen(scene:IPixelScene):void
 		{
-			if(_sceneQueue.indexOf(scene) >= 0)
-			{
-				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
-			}
-			
 			if(PixelConfig.renderMode == PixelRenderMode.RENDER_NORMAL)
 			{
 				//传统显示列表,删除场景

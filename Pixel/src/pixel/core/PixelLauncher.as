@@ -12,6 +12,7 @@ package pixel.core
 	import pixel.graphic.PixelGraphicModule;
 	import pixel.io.IPixelIOModule;
 	import pixel.io.PixelIOModule;
+	import pixel.message.PixelMessage;
 	import pixel.message.PixelMessageBus;
 	
 	use namespace PixelNs;
@@ -121,6 +122,7 @@ package pixel.core
 		}
 		
 		private var startSeek:int = 0;
+		private var message:pixel.message.PixelMessage = new pixel.message.PixelMessage(PixelMessage.FRAME_UPDATE,this);
 		/**
 		 * 主循环
 		 * 
@@ -128,8 +130,10 @@ package pixel.core
 		 **/
 		protected function onFrameUpdate(event:TimerEvent):void
 		{
+			PixelMessageBus.Instance.dispatchMessage(message);
 			startSeek = flash.utils.getTimer();
-			_director.update();	
+			//_director.update();	
+			
 			//trace((flash.utils.getTimer() - startSeek) + " ms");
 		}
 		

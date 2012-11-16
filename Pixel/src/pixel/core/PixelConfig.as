@@ -5,7 +5,7 @@ package pixel.core
 	public class PixelConfig
 	{
 		//渲染模式,默认显示列表
-		private static var _renderMode:int = PixelRenderMode.RENDER_NORMAL;
+		private static var _renderMode:int = PixelRenderMode.RENDER_BITMAP;
 		public static function set renderMode(value:int):void
 		{
 			_renderMode = value;

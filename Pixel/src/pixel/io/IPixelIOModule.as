@@ -6,7 +6,7 @@ package pixel.io
 	{
 		function addSceneToScreen(scene:IPixelScene):void;
 		function removeSceneFromScreen(scene:IPixelScene):void;
-		function get screenScenes():Vector.<IPixelScene>;
-		function screenRefresh():void;
+		//function get screenScenes():Vector.<IPixelScene>;
+		function screenRefresh(scenes:Vector.<IPixelScene>):void;
 	}
 }

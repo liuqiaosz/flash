@@ -42,6 +42,9 @@
     <classEntry path="pixel.scene.PixelScene"/>
     <classEntry path="pixel.transition.PixelTransitionHelper"/>
     <classEntry path="pixel.message.IOMessage"/>
+    <classEntry path="pixel.assets.IPixelAssetsManager"/>
+    <classEntry path="pixel.assets.PixelAssetsManager"/>
+    <classEntry path="pixel.thread.PixelThread"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="pixel.worker.core.IPixelWorker"/>
+    <classEntry path="pixel.worker.core.PixelWorkerGeneric"/>
+    <classEntry path="pixel.worker.core.IPixelWorkerHandler"/>
+    <classEntry path="pixel.worker.core.PixelWorkerHelper"/>
+    <classEntry path="pixel.worker.core.IPixelWorkerHelper"/>
+    <classEntry path="pixel.worker.core.PixelWorkerConfig"/>
+    <classEntry path="pixel.worker.core.PixelWorker"/>
+    <classEntry path="pixel.worker.event.PixelWorkerEvent"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

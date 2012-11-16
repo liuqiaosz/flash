@@ -17,8 +17,6 @@ package pixel.core
 	{
 		//开始
 		function action():void;
-		//更新状态
-		function update():void;
 		//暂停
 		function pause():void;
 		//结束

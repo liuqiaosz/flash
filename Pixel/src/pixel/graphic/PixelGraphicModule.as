@@ -74,13 +74,8 @@ package pixel.graphic
 				
 				/**
 				 * 绘制到画布的位置，场景偏移+当前精灵偏移
-				 * 
 				 * 正常情况下场景偏移为0，所以实际绘制的精灵位置与精灵的实际位置相同
-				 * 
 				 * 场景切换过程中场景的偏移会发生改变，这个时候超出屏幕部分的精灵则不予以绘制
-				 * 
-				 * 
-				 * 
 				 **/
 				_renderNodes = _scene.nodes;
 				for each(_node in _renderNodes)
@@ -88,9 +83,6 @@ package pixel.graphic
 					_nodeClip = _node.image;
 					if(_nodeClip)
 					{
-						_drawDest.x = _scene.x + _node.x;
-						_drawDest.y = _scene.y + _node.y;
-						
 						if(_drawDest.x < 0 || _drawDest.x + _nodeClip.width > _gameClip.width || 
 							_drawDest.y < 0 || _drawDest.y + _nodeClip.height > _gameClip.height)
 						{

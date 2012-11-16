@@ -24,6 +24,7 @@ package pixel.core
 		public function PixelDirector()
 		{
 			_cache = new Dictionary();
+			_sceneQueue = new Vector.<IPixelScene>();
 		}
 		
 		/**
@@ -34,7 +35,9 @@ package pixel.core
 		 **/
 		public function action():void
 		{
+			_io = PixelLauncher.launcher.ioModule;
 		
+			PixelMessageBus.Instance.register(PixelMessage.FRAME_UPDATE,frameUpdate);
 		}
 		
 		/**
@@ -55,6 +58,8 @@ package pixel.core
 		 * 
 		 **/
 		protected var _switchScene:IPixelScene = null;
+		
+		protected var _sceneQueue:Vector.<IPixelScene> = null;
 		/**
 		 * 
 		 * 是否切换状态
@@ -75,10 +80,6 @@ package pixel.core
 		{
 			_switchScene = null;
 			
-			if(!_io)
-			{
-				_io = PixelLauncher.launcher.ioModule;
-			}
 			//查找缓存
 			if(prototype in _cache)
 			{
@@ -93,7 +94,7 @@ package pixel.core
 				_switchScene = new prototype() as IPixelScene;
 			}
 			
-			_io.addSceneToScreen(_switchScene);
+			addScene(_switchScene);
 			
 			if(transition >= 0)
 			{
@@ -111,7 +112,7 @@ package pixel.core
 			{
 				if(_activedScene)
 				{
-					_io.removeSceneFromScreen(_activedScene);
+					removeScene(_activedScene);
 				}
 				_activedScene = _switchScene;
 			}
@@ -130,12 +131,30 @@ package pixel.core
 			_square.removeEventListener(PixelTransitionEvent.TRANS_SQUARE_COMPLETE,switchTransitionComplete);
 			_square = null;
 			
-			_io.removeSceneFromScreen(_activedScene);
+			removeScene(_activedScene);
 			_activedScene = _switchScene;
 			_switchScene = null;
 		}
 		
-		private var message:pixel.message.PixelMessage = new pixel.message.PixelMessage(PixelMessage.FRAME_UPDATE,this);
+		
+		
+		
+		protected function addScene(scene:IPixelScene):void
+		{
+			if(_sceneQueue.indexOf(scene) < 0)
+			{
+				_sceneQueue.push(scene);
+			}
+			_io.addSceneToScreen(scene);
+		}
+		protected function removeScene(scene:IPixelScene):void
+		{
+			if(_sceneQueue.indexOf(scene) >= 0)
+			{
+				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
+			}
+			_io.removeSceneFromScreen(scene);
+		}
 		
 		/**
 		 * 更新当前状态
@@ -143,25 +162,28 @@ package pixel.core
 		 * 需要子类覆盖该方法加入自己的业务逻辑
 		 * 
 		 **/
-		public function update():void
+		public function frameUpdate(message:PixelMessage):void
 		{
-			if(_switching)
+			
+//			if(_switching)
+//			{
+//				//正在切换过渡
+//				return;
+//			}
+//			
+//			if(_activedScene)
+//			{
+//				//更新状态
+//				_activedScene.update();
+//			}
+			for each(var scene:IPixelScene in _sceneQueue)
 			{
-				//正在切换过渡
-				return;
+				scene.update();
 			}
 			
-			if(_activedScene)
-			{
-				//更新状态
-				_activedScene.update();
-//				
-//				if(PixelConfig.renderMode == PixelRenderMode.RENDER_BITMAP)
-//				{
-//					
-//				}
-			}
-			PixelMessageBus.Instance.dispatchMessage(message);
+			
+			_io.screenRefresh(_sceneQueue);
+			
 		}
 		
 		/**

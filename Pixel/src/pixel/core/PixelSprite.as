@@ -25,7 +25,7 @@ package pixel.core
 		 **/
 		public function get image():BitmapData
 		{
-			return null;
+			return _source;
 		}
 		
 		private var _canvas:Bitmap = null;
