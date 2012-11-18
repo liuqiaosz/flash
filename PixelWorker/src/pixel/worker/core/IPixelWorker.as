@@ -7,6 +7,7 @@ package pixel.worker.core
 	 */
 	public interface IPixelWorker
 	{
-		function run(handler:Class):void
+		function start():void;
+		function terminal():void;
 	}
 }

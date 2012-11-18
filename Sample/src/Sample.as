@@ -4,6 +4,7 @@ package
 	import com.greensock.plugins.GlowFilterPlugin;
 	import com.greensock.plugins.TweenPlugin;
 	
+	import flash.crypto.generateRandomBytes;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BlendMode;
@@ -84,7 +85,10 @@ package
 	import game.sdk.spr.SpriteManager;
 	import game.sdk.spr.SpriteSheet;
 	
+	import pixel.worker.core.PixelWorker;
 	import pixel.worker.core.PixelWorkerGeneric;
+	import pixel.worker.core.PixelWorkerHelper;
+	import pixel.worker.event.PixelWorkerEvent;
 	
 	import utility.BitmapTools;
 	import utility.ColorCode;
@@ -105,7 +109,7 @@ package
 		[Embed(source="assets/bgimg.jpg")]
 		private var BG:Class;
 		
-		[Embed(source="D:\\FlexWorkspace\\Worker\\bin-debug\\Worker.swf",mimeType="application/octet-stream")]
+		[Embed(source="../../Worker/bin-debug/Worker.swf",mimeType="application/octet-stream")]
 		private var SWF:Class;
 //		[Embed(source="D:\\0_0.png")]
 //		private var Cls:Class;
@@ -234,36 +238,44 @@ package
 			//trace(v.toString("2"));
 			
 			//ARG
-		
 			var swf:ByteArray = new SWF() as ByteArray;
 			
-			var work:Worker = WorkerDomain.current.createWorker(swf);
-			var channel:MessageChannel = work.createMessageChannel(Worker.current);
-			
-			work.setSharedProperty(PixelWorkerGeneric.CHANNEL_DEFAULT,channel);
-			
-			
-			channel.addEventListener(Event.CHANNEL_MESSAGE,function(event:Event):void{
-				
-				if(channel.messageAvailable)
-				{
-					var msg:int = channel.receive() as int;
-					
+			//var work:PixelWorker = PixelWorkerHelper.instance.createWorkerByByteArray(swf);
+			PixelWorkerHelper.instance.createWorkerByURL("D:\\Git Library\\flash\\Worker\\bin-debug\\Worker.swf");
+			PixelWorkerHelper.instance.addEventListener(PixelWorkerEvent.WORKER_COMPLETE,function(event:PixelWorkerEvent):void{
+				var work:PixelWorker = event.message as PixelWorker;
+				work.addEventListener(PixelWorkerEvent.MESSAGE_AVAILABLE,function(event:PixelWorkerEvent):void{
+					var msg:int = event.message as int;
 					trace(msg + "");
-				}
+				});
+				work.start();
+				
+				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+					work.sendMessage(99);
+				});
 			});
-			work.start();
+//			work.addEventListener(PixelWorkerEvent.MESSAGE_AVAILABLE,function(event:PixelWorkerEvent):void{
+//				var msg:int = event.message as int;
+//				trace(msg + "");
+//			});
+//			work.start();
+//			work.setSharedProperty(PixelWorkerGeneric.CHANNEL_SENDER,channel);
+//			channel.addEventListener(Event.CHANNEL_MESSAGE,function(event:Event):void{
+//				
+//				if(channel.messageAvailable)
+//				{
+//					var msg:int = channel.receive() as int;
+//					
+//					trace(msg + "");
+//				}
+//			});
+//			work.start();
+//			
 			
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-			
-				trace(work.state);
-			});
 
 			//loader.load(new URLRequest("C:\Users\\OfficeLocal\\Adobe Flash Builder 4.7\\Worker\\bin-debug\\Worker.swf"));
 			//loader.load(new URLRequest("D:\\FlexWorkspace\\Worker\\bin-debug\\Worker.swf"));
 		}
-		
-	
 
 		private function TGATest():void
 		{

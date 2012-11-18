@@ -6,15 +6,16 @@ package
 	{
 		public function Worker()
 		{
-			super();
+			super(LogicHandler);
 		}
 		
-		override protected function start():void
-		{
-			this.run(LogicHandler)
-		}
+//		override protected function start():void
+//		{
+//			this.run(LogicHandler)
+//		}
 	}
 }
+import flash.events.Event;
 import flash.events.TimerEvent;
 import flash.system.MessageChannel;
 import flash.utils.Timer;
@@ -42,7 +43,15 @@ class LogicHandler implements IPixelWorkerHandler
 	{
 		_recive = recive;
 		_sender = sender;
+		
+		_recive.addEventListener(Event.CHANNEL_MESSAGE,onRecive);
 		_timer.start();
+	}
+	
+	private function onRecive(event:Event):void
+	{
+		var value:int = _recive.receive() as int;
+		trace(value + "");
 	}
 	
 	public function terminal():void
