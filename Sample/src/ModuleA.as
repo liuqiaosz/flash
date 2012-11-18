@@ -1,19 +1,16 @@
 package
 {
 	import flash.display.Sprite;
-	import flash.system.ApplicationDomain;
 	
 	import pixel.core.PixelLauncher;
 
-	public class ModuleA extends Sprite
+
+	public class ModuleA extends PixelLauncher
 	{
 		public function ModuleA()
 		{
-			var vc:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
-			for each(var s:String in vc)
-			{
-				trace(s);
-			}
+			super();
+			trace("!!!");
 		}
 	}
 }
