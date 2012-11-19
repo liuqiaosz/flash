@@ -45,6 +45,7 @@ import utility.swf.Swf;
 
 class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetManager,IDispose
 {
+	
 	private var AssetDictionary:Dictionary = new Dictionary();
 	//加载器
 	//private var AssetLoader:Loader = null;

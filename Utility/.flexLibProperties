@@ -58,6 +58,7 @@
     <classEntry path="utility.bitmap.tga.TGADecoder"/>
     <classEntry path="utility.bitmap.tga.TGAImage"/>
     <classEntry path="utility.bitmap.tga.TGADescription"/>
+    <classEntry path="utility.Version"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

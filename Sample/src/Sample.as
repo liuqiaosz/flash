@@ -26,6 +26,7 @@ package
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UIProgress;
 	
+	import utility.System;
 	import utility.Tools;
 
 //	import flash.display.StageAlign;
@@ -97,7 +98,8 @@ package
 //		private var Cls:Class;
 		public function Sample()
 		{
-			trace("sample");
+			var a:Loader;
+			
 //			var curr:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
 //			for each(var str:String in curr)
 //			{

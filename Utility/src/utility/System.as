@@ -9,6 +9,11 @@ package utility
 		}
 
 		private static var Os:String = Capabilities.os.substr(0, 3);
+		private static var VersionStr:String = Capabilities.version.substr(4);
+		private static var Vers:Array = VersionStr.split(",");
+		private static var Ver:Version = new Version(parseInt(Vers[0]),parseInt(Vers[1]));
+		//private static var major:int = parseInt(Vers[0]);
+		//private static var minor:int = parseInt(Vers[1]);
 		
 		/**
 		 * 
@@ -42,5 +47,12 @@ package utility
 				return "/";
 			}
 		}
+		
+		public static function get playerVersion():Version
+		{
+			return Ver;
+		}
+		
+		
 	}
 }
