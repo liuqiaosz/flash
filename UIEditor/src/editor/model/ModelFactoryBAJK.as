@@ -56,16 +56,16 @@ package editor.model
 	}
 }
 
-import corecom.control.Container;
+import pixel.ui.control.Container;
 import corecom.control.HorizontalPanel;
 import corecom.control.IUIControl;
-import corecom.control.UIButton;
-import corecom.control.UIPanel;
-import corecom.control.UISlider;
-import corecom.control.UIControl;
-import corecom.control.VerticalPanel;
-import corecom.control.utility.ControlType;
-import corecom.control.utility.Utils;
+import pixel.ui.control.UIButton;
+import pixel.ui.control.UIPanel;
+import pixel.ui.control.UISlider;
+import pixel.ui.control.UIControl;
+import pixel.ui.control.VerticalPanel;
+import pixel.ui.control.utility.ControlType;
+import pixel.ui.control.utility.Utils;
 
 import editor.model.ComponentModel;
 import editor.model.IModel;

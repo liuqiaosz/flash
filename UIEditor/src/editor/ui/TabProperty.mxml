@@ -6,7 +6,7 @@
 	<!--Tab标签样式设定-->
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.Tab;
+			import pixel.ui.control.Tab;
 			
 			import spark.events.IndexChangeEvent;
 			

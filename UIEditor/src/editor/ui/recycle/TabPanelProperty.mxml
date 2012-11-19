@@ -13,11 +13,11 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.SimpleTabPanel;
-			import corecom.control.Tab;
-			import corecom.control.TabBar;
-			import corecom.control.TabContent;
-			import corecom.control.event.TabPanelEvent;
+			import pixel.ui.control.SimpleTabPanel;
+			import pixel.ui.control.Tab;
+			import pixel.ui.control.TabBar;
+			import pixel.ui.control.TabContent;
+			import pixel.ui.control.event.TabPanelEvent;
 			import corecom.control.style.IStyle;
 			
 			import editor.event.NotifyEvent;

@@ -14,13 +14,13 @@
 	<fx:Script>
 		<![CDATA[
 			import corecom.control.HorizontalPanel;
-			import corecom.control.UIButton;
-			import corecom.control.UIPanel;
-			import corecom.control.UIControl;
-			import corecom.control.VerticalPanel;
-			import corecom.control.style.ButtonStyle;
+			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UIPanel;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.VerticalPanel;
+			import pixel.ui.control.style.ButtonStyle;
 			import corecom.control.style.IStyle;
-			import corecom.control.style.UIStyle;
+			import pixel.ui.control.style.UIStyle;
 			
 			import editor.event.NotifyEvent;
 			import editor.model.asset.Asset;
@@ -36,9 +36,9 @@
 			
 			import utility.Tools;
 			
-			private var _CurrentControl:corecom.control.UIButton = null;
+			private var _CurrentControl:pixel.ui.control.UIButton = null;
 			
-			public function DisplayControl(Control:corecom.control.UIButton):void
+			public function DisplayControl(Control:pixel.ui.control.UIButton):void
 			{
 				Reset();
 				_CurrentControl = Control;

@@ -54,7 +54,6 @@
     <classEntry path="utility.swf.tag.BitLossless"/>
     <classEntry path="utility.bitmap.png.PNGDecoder"/>
     <classEntry path="utility.bitmap.png.BlockGenericText"/>
-    <classEntry path="utility.CRC"/>
     <classEntry path="utility.RGBA"/>
     <classEntry path="utility.bitmap.tga.TGADecoder"/>
     <classEntry path="utility.bitmap.tga.TGAImage"/>

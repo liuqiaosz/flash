@@ -8,8 +8,8 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.LayoutConstant;
-			import corecom.control.UIWindow;
+			import pixel.ui.control.LayoutConstant;
+			import pixel.ui.control.UIWindow;
 			
 			import mx.events.FlexEvent;
 			

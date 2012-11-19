@@ -1,8 +1,5 @@
 package utility
 {
-	import com.hurlant.crypto.hash.MD5;
-	import com.hurlant.util.Hex;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
@@ -31,14 +28,6 @@ package utility
 			return "#"+Value.substr(Value.length-6);
 		}
 		
-		public static function MD5Encode(Source:ByteArray):String
-		{
-			var Encoder:MD5 = new MD5();
-			var Result:ByteArray = Encoder.hash(Source);
-			Result.position = 0;
-			
-			return Hex.fromArray(Result);
-		}
 		
 		/**
 		 * 获取对象全路径包名

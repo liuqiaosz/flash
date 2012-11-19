@@ -2,7 +2,6 @@ package utility.bitmap.png
 {
 	import flash.utils.ByteArray;
 	
-	import utility.CRC;
 	import utility.ColorCode;
 	import utility.ISerializable;
 

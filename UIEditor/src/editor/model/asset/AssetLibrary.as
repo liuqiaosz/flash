@@ -111,7 +111,7 @@ package editor.model.asset
 		 **/
 		public function AddBitmapFromByteArray(Pixels:ByteArray,ImgWidth:uint,ImgHeight:uint):Asset
 		{
-			var AssetId:String = Tools.MD5Encode(Pixels);
+			var AssetId:String = "";//Tools.MD5Encode(Pixels);
 			if(_Assets.hasOwnProperty(AssetId))
 			{
 				Alert.show("添加的图片在库中已存在，不允许重复添加!","操作禁止");

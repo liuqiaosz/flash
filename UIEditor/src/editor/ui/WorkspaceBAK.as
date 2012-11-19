@@ -1,15 +1,15 @@
 package editor.ui
 {
-	import corecom.control.Container;
+	import pixel.ui.control.Container;
 	import corecom.control.HorizontalPanel;
 	import corecom.control.IUIControl;
-	import corecom.control.UIButton;
-	import corecom.control.UIPanel;
-	import corecom.control.SimpleTabPanel;
-	import corecom.control.UIControl;
-	import corecom.control.VerticalPanel;
-	import corecom.control.event.ControlEditModeEvent;
-	import corecom.control.utility.Utils;
+	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UIPanel;
+	import pixel.ui.control.SimpleTabPanel;
+	import pixel.ui.control.UIControl;
+	import pixel.ui.control.VerticalPanel;
+	import pixel.ui.control.event.ControlEditModeEvent;
+	import pixel.ui.control.utility.Utils;
 	
 	import editor.code.ClassFactory;
 	import editor.code.ComponentClass;

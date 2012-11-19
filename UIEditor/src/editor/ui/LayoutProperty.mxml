@@ -5,7 +5,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.Container;
+			import pixel.ui.control.Container;
 			
 			import mx.events.FlexEvent;
 			

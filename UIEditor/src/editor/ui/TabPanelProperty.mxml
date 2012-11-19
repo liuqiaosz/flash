@@ -8,9 +8,9 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.SimpleTabPanel;
-			import corecom.control.Tab;
-			import corecom.control.TabContent;
+			import pixel.ui.control.SimpleTabPanel;
+			import pixel.ui.control.Tab;
+			import pixel.ui.control.TabContent;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -30,7 +30,7 @@
 			protected var BindTabContentLayout:int = 0;
 			
 			private var TabPanel:SimpleTabPanel = null;
-			private var CurrentTab:corecom.control.Tab = null;
+			private var CurrentTab:pixel.ui.control.Tab = null;
 			private var _CurrentTabContent:TabContent = null;
 			
 			public function set CurrentTabContent(Value:TabContent):void
@@ -73,7 +73,7 @@
 			 **/
 			protected function AddNewTab(event:MouseEvent):void
 			{
-				var NewTab:corecom.control.Tab = TabPanel.CreateTab();
+				var NewTab:pixel.ui.control.Tab = TabPanel.CreateTab();
 				var Idx:int = _TabChildren.length;
 				_TabChildren.addItem({
 					Index: Idx,
@@ -117,7 +117,7 @@
 			{
 				if(event.newIndex >= 0)
 				{
-					var TabChild:corecom.control.Tab = _TabChildren.getItemAt(event.newIndex).Tab;
+					var TabChild:pixel.ui.control.Tab = _TabChildren.getItemAt(event.newIndex).Tab;
 					if(null != TabChild)
 					{
 						CurrentTab = TabChild;

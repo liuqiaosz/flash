@@ -1,11 +1,12 @@
 package
 {
-	import flash.display.Sprite;
+	import pixel.core.PixelLauncher;
 
-	public class ModuleB extends Sprite
+	public class ModuleB extends PixelLauncher
 	{
 		public function ModuleB()
 		{
+			super();
 		}
 	}
 }

@@ -2,15 +2,13 @@ package
 {
 	import flash.display.Sprite;
 	
-	import pixel.core.PixelLauncher;
-
-
-	public class ModuleA extends PixelLauncher
+	import pixel.ui.control.UIButton;
+	
+	import utility.Tools;
+	
+	public class ModuleA extends Sprite
 	{
-		public function ModuleA()
-		{
-			super();
-			trace("!!!");
-		}
+		UIButton;
+		Tools;
 	}
 }

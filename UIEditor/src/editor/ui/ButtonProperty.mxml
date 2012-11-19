@@ -6,8 +6,8 @@
 	<!--Tab标签样式设定-->
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.Tab;
-			import corecom.control.UIButton;
+			import pixel.ui.control.Tab;
+			import pixel.ui.control.UIButton;
 			
 			import mx.controls.Alert;
 			import mx.events.ColorPickerEvent;
@@ -23,7 +23,7 @@
 			private var _Label:String = "";
 			override protected function Initialized():void
 			{
-				Button = Control as corecom.control.UIButton;
+				Button = Control as pixel.ui.control.UIButton;
 //				SimpleStyle.Control = Button;
 //				BorderStyle.Control = Button;
 //				BackgroundStyle.Control = Button;

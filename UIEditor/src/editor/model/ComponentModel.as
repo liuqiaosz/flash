@@ -1,7 +1,7 @@
 package editor.model
 {
-	import corecom.control.Container;
-	import corecom.control.UIControl;
+	import pixel.ui.control.Container;
+	import pixel.ui.control.UIControl;
 	
 	import editor.ui.ComponentProfile;
 	

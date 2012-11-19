@@ -15,20 +15,19 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.Container;
-			import corecom.control.LayoutConstant;
-			import corecom.control.SimpleTabPanel;
-			import corecom.control.Tab;
-			import corecom.control.TabBar;
-			import corecom.control.TabContent;
-			import corecom.control.UIButton;
-			import corecom.control.UIControl;
-			import corecom.control.UIImage;
-			import corecom.control.UIPanel;
-			import corecom.control.UISlider;
-			import corecom.control.UITextInput;
-			import corecom.control.UIWindow;
-			import corecom.control.style.IStyle;
+			import pixel.ui.control.Container;
+			import pixel.ui.control.LayoutConstant;
+			import pixel.ui.control.SimpleTabPanel;
+			import pixel.ui.control.Tab;
+			import pixel.ui.control.TabBar;
+			import pixel.ui.control.TabContent;
+			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.UIImage;
+			import pixel.ui.control.UIPanel;
+			import pixel.ui.control.UISlider;
+			import pixel.ui.control.UITextInput;
+			import pixel.ui.control.UIWindow;
 			
 			import editor.event.NotifyEvent;
 			import editor.model.asset.Asset;
@@ -133,7 +132,7 @@
 //				{
 //					Category.text = "横向面板";
 //				}
-				else if(_CurrentControl is corecom.control.UIButton)
+				else if(_CurrentControl is pixel.ui.control.UIButton)
 				{
 					Category.text = "简单按钮";
 					//					ButtonOverStyle.visible = true;
@@ -154,7 +153,7 @@
 					PanelStyleFlag = true;
 					PanelStyle.Control = _CurrentControl;
 				}
-				else if(_CurrentControl is corecom.control.UILabel)
+				else if(_CurrentControl is pixel.ui.control.UILabel)
 				{
 					Category.text = "文本";
 					CategoryFlag = true;

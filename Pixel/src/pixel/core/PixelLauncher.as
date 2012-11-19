@@ -66,12 +66,11 @@ package pixel.core
 				trace("初始化消息中心");
 				//初始化消息中心
 				PixelMessageBus.initiazlier();
-				
 				trace("初始化IO模块");
 				_ioModule = new PixelIOModule();
-				//trace("初始化渲染模块");
-				//渲染模块
+				trace("初始化渲染模块");
 				_graphicModule = new PixelGraphicModule();
+				
 				//启动
 				_director.action();
 				_initialized = true;

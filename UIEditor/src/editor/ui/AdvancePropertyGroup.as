@@ -1,6 +1,6 @@
 package editor.ui
 {
-	import corecom.control.UIControl;
+	import pixel.ui.control.UIControl;
 	
 	import editor.event.NotifyEvent;
 	import editor.model.asset.Asset;

@@ -1,10 +1,7 @@
 package pixel.core
 {
 	import flash.events.IEventDispatcher;
-	
 	import pixel.scene.IPixelScene;
-	
-	import spark.core.IDisplayText;
 
 	/**
 	 * 

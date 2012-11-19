@@ -1,19 +1,19 @@
 package editor.code
 {
-	import corecom.control.Container;
-	import corecom.control.UIButton;
-	import corecom.control.UISlider;
-	import corecom.control.SimpleTabPanel;
-	import corecom.control.Tab;
-	import corecom.control.TabContent;
-	import corecom.control.UIControl;
-	import corecom.control.style.ContainerStyle;
+	import pixel.ui.control.Container;
+	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UISlider;
+	import pixel.ui.control.SimpleTabPanel;
+	import pixel.ui.control.Tab;
+	import pixel.ui.control.TabContent;
+	import pixel.ui.control.UIControl;
+	import pixel.ui.control.style.ContainerStyle;
 	import corecom.control.style.IStyle;
 	import corecom.control.style.IVisualStyle;
-	import corecom.control.style.ButtonStyle;
-	import corecom.control.style.SliderStyle;
-	import corecom.control.style.UIStyle;
-	import corecom.control.utility.ButtonState;
+	import pixel.ui.control.style.ButtonStyle;
+	import pixel.ui.control.style.SliderStyle;
+	import pixel.ui.control.style.UIStyle;
+	import pixel.ui.control.utility.ButtonState;
 	
 	import editor.model.ComponentModel;
 	import editor.model.ModelFactory;

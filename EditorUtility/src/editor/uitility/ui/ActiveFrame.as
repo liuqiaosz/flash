@@ -1,6 +1,6 @@
 package editor.uitility.ui
 {
-	import corecom.control.UIControl;
+	import pixel.ui.control.UIControl;
 	
 	import editor.uitility.ui.event.UIEvent;
 	

@@ -50,7 +50,7 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.UISlider;
+			import pixel.ui.control.UISlider;
 			
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;

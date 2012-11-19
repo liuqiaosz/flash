@@ -1,18 +1,17 @@
 package editor.ui
 {
-	import corecom.control.Container;
-	import corecom.control.IUIControl;
-	import corecom.control.SimpleTabPanel;
-	import corecom.control.Tab;
-	import corecom.control.TabBar;
-	import corecom.control.TabContent;
-	import corecom.control.UIButton;
-	import corecom.control.UIControl;
-	import corecom.control.UIPanel;
-	import corecom.control.event.ControlEditModeEvent;
-	import corecom.control.event.EditModeEvent;
-	import corecom.control.event.UIControlEvent;
-	import corecom.control.utility.Utils;
+	import pixel.ui.control.Container;
+	import pixel.ui.control.SimpleTabPanel;
+	import pixel.ui.control.Tab;
+	import pixel.ui.control.TabBar;
+	import pixel.ui.control.TabContent;
+	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UIControl;
+	import pixel.ui.control.UIPanel;
+	import pixel.ui.control.event.ControlEditModeEvent;
+	import pixel.ui.control.event.EditModeEvent;
+	import pixel.ui.control.event.UIControlEvent;
+	import pixel.ui.control.utility.Utils;
 	
 	import editor.code.ClassFactory;
 	import editor.code.ComponentClass;

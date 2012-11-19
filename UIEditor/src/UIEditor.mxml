@@ -22,29 +22,27 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.Container;
-			import corecom.control.IUIControl;
-			import corecom.control.SimpleTabPanel;
-			import corecom.control.UIButton;
-			import corecom.control.UIControl;
-			import corecom.control.UIControlFactory;
-			import corecom.control.UIImage;
-			import corecom.control.UILabel;
-			import corecom.control.UIPanel;
-			import corecom.control.UISlider;
-			import corecom.control.UITextInput;
-			import corecom.control.UIWindow;
-			import corecom.control.asset.ControlAssetManager;
-			import corecom.control.event.DownloadEvent;
-			import corecom.control.event.EditModeEvent;
-			import corecom.control.event.UIControlEvent;
-			import corecom.control.style.ButtonStyle;
-			import corecom.control.style.IStyle;
-			import corecom.control.style.SliderStyle;
-			import corecom.control.style.StyleShape;
-			import corecom.control.style.UIStyle;
-			import corecom.control.utility.ControlType;
-			import corecom.control.utility.Utils;
+			import pixel.ui.control.Container;
+			import pixel.ui.control.SimpleTabPanel;
+			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.UIControlFactory;
+			import pixel.ui.control.UIImage;
+			import pixel.ui.control.UILabel;
+			import pixel.ui.control.UIPanel;
+			import pixel.ui.control.UISlider;
+			import pixel.ui.control.UITextInput;
+			import pixel.ui.control.UIWindow;
+			import pixel.ui.control.asset.ControlAssetManager;
+			import pixel.ui.control.event.DownloadEvent;
+			import pixel.ui.control.event.EditModeEvent;
+			import pixel.ui.control.event.UIControlEvent;
+			import pixel.ui.control.style.ButtonStyle;
+			import pixel.ui.control.style.SliderStyle;
+			import pixel.ui.control.style.StyleShape;
+			import pixel.ui.control.style.UIStyle;
+			import pixel.ui.control.utility.ControlType;
+			import pixel.ui.control.utility.Utils;
 			
 			import editor.event.NotifyEvent;
 			import editor.model.ComponentModel;
@@ -58,14 +56,9 @@
 			import editor.ui.ComponentProfile;
 			import editor.ui.ControlLibraryItem;
 			import editor.ui.NewAssetLibrary;
-			import editor.ui.NewComponentProfile;
 			import editor.ui.NotificationManager;
 			import editor.ui.PreferenceWindow;
-			import editor.ui.PreviewWindow;
-			import editor.ui.Shell;
 			import editor.ui.SwfImportWindow;
-			import editor.ui.TreeNode;
-			import editor.ui.Workspace;
 			import editor.ui.WorkspacePlus;
 			import editor.uitility.ui.event.UIEvent;
 			import editor.utils.Common;
@@ -73,22 +66,10 @@
 			import editor.utils.Globals;
 			import editor.utils.Preference;
 			
-			import flash.net.dns.AAAARecord;
-			import flash.net.registerClassAlias;
 			import flash.utils.getQualifiedClassName;
 			
 			import mx.collections.ArrayCollection;
-			import mx.containers.TitleWindow;
 			import mx.controls.Alert;
-			import mx.controls.LinkButton;
-			import mx.controls.ProgressBar;
-			import mx.controls.ProgressBarMode;
-			import mx.controls.menuClasses.MenuBarItem;
-			import mx.core.FlexBitmap;
-			import mx.core.IFlexDisplayObject;
-			import mx.core.IVisualElementContainer;
-			import mx.core.UIComponent;
-			import mx.core.mx_internal;
 			import mx.events.CloseEvent;
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
@@ -487,7 +468,7 @@
 			
 			private function NewButtonToWorkspace(event:MouseEvent):void
 			{
-				var NewButton:corecom.control.UIButton = new corecom.control.UIButton();
+				var NewButton:pixel.ui.control.UIButton = new pixel.ui.control.UIButton();
 				NewButton.width = 100;
 				NewButton.height = 40;
 				EditWorkspace.addChild(NewButton);
@@ -514,7 +495,7 @@
 			
 			private function NewLabelToWorkspace(event:MouseEvent):void
 			{
-				var Label:corecom.control.UILabel = new corecom.control.UILabel("Label",null);
+				var Label:pixel.ui.control.UILabel = new pixel.ui.control.UILabel("Label",null);
 				Label.width = 100;
 				Label.height = 40;
 				EditWorkspace.addChild(Label);
@@ -949,7 +930,7 @@
 						_DragControl.height = 40;
 						break;
 					case "Button":
-						_DragControl = new corecom.control.UIButton();
+						_DragControl = new pixel.ui.control.UIButton();
 						_DragControl.width = 100;
 						_DragControl.height = 40;
 						break;
@@ -965,7 +946,7 @@
 						_DragControl.height = 100;
 						break;
 					case "Label":
-						_DragControl = new corecom.control.UILabel("Label",null);
+						_DragControl = new pixel.ui.control.UILabel("Label",null);
 						_DragControl.width = 100;
 						_DragControl.height = 40;
 						break;

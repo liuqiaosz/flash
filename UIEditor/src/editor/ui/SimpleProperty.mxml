@@ -9,9 +9,9 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.UIControl;
-			import corecom.control.event.EditModeEvent;
-			import corecom.control.event.UIControlEvent;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.event.EditModeEvent;
+			import pixel.ui.control.event.UIControlEvent;
 			
 			import mx.events.FlexEvent;
 			

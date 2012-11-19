@@ -1,12 +1,12 @@
 package ui
 {
 import corecom.control.*;
- import corecom.control.asset.ControlAssetManager;
+ import pixel.ui.control.asset.ControlAssetManager;
 
  import flash.display.Bitmap;
 import flash.display.BitmapData; 
-import corecom.control.style.ContainerStyle; 
-public class c2 extends corecom.control.UIPanel
+import pixel.ui.control.style.ContainerStyle; 
+public class c2 extends pixel.ui.control.UIPanel
 {
 public var Component_0:ui.c1 = new ui.c1();
 

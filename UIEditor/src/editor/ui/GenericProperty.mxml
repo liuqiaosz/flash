@@ -14,9 +14,8 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.UIControl;
-			import corecom.control.event.EditModeEvent;
-			import corecom.control.style.IStyle;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.event.EditModeEvent;
 			
 			import editor.event.NotifyEvent;
 			import editor.model.asset.Asset;

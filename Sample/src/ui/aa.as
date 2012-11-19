@@ -1,12 +1,12 @@
 package ui
 {
 import corecom.control.*;
- import corecom.control.asset.ControlAssetManager;
+ import pixel.ui.control.asset.ControlAssetManager;
 
  import flash.display.Bitmap;
 import flash.display.BitmapData; 
-import corecom.control.style.ContainerStyle; 
-public class aa extends corecom.control.UIPanel
+import pixel.ui.control.style.ContainerStyle; 
+public class aa extends pixel.ui.control.UIPanel
 {
 public var Component_0:ui.c1 = new ui.c1();
 public var Child_0:SimpleTabPanel = new SimpleTabPanel();
@@ -36,8 +36,8 @@ Child_0.width=200;
 Child_0.height=100;
 Child_0.Style.BorderThinkness=0;
 ContainerStyle(Child_0.Style).Layout = 2;
-var tab:corecom.control.Tab = null;
-var content:corecom.control.TabContent = null;
+var tab:pixel.ui.control.Tab = null;
+var content:pixel.ui.control.TabContent = null;
 tab = Child_0.CreateTab();
 content = Child_0.FindContentByTab(tab);tab.width=50;
 tab.height=30;

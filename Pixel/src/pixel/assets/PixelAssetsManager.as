@@ -1,7 +1,5 @@
 package pixel.assets
 {
-	import flash.system.ApplicationDomain;
-	
 	import pixel.core.PixelNs;
 
 	use namespace PixelNs;
@@ -13,6 +11,7 @@ package pixel.assets
 		}
 	}
 }
+import pixel.assets.IAssetsLoader;
 import pixel.assets.IPixelAssetsManager;
 
 /**
@@ -23,5 +22,18 @@ import pixel.assets.IPixelAssetsManager;
  **/
 class PixelAssetsManagerImpl implements IPixelAssetsManager
 {
-	
+	private var _loader:IAssetsLoader = null;
+	/**
+	 *
+	 * 资源管理器
+	 * 
+	 * @param	customerLoader		自定义加载器，允许通过PixelWorker类库封装的多线程加载器
+	 */
+	public function PixelAssetsManagerImpl(customerLoader:Class = null)
+	{
+		if(customerLoader)
+		{
+			_loader
+		}
+	}
 }

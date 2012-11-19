@@ -1,9 +1,9 @@
 package editor.ui
 {
-	import corecom.control.UIPanel;
-	import corecom.control.UIControl;
-	import corecom.control.event.ControlEditModeEvent;
-	import corecom.control.event.UIControlEvent;
+	import pixel.ui.control.UIPanel;
+	import pixel.ui.control.UIControl;
+	import pixel.ui.control.event.ControlEditModeEvent;
+	import pixel.ui.control.event.UIControlEvent;
 	
 	import editor.event.NotifyEvent;
 	import editor.model.ComponentModel;

@@ -9,7 +9,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.utility.Utils;
+			import pixel.ui.control.utility.Utils;
 			
 			import editor.event.NotifyEvent;
 			import editor.utils.Preference;

@@ -8,7 +8,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import corecom.control.UILabel;
+			import pixel.ui.control.UILabel;
 			
 			import mx.controls.Alert;
 			import mx.events.ColorPickerEvent;
@@ -23,7 +23,7 @@
 			
 			override protected function Initialized():void
 			{
-				_Label = Control as corecom.control.UILabel;
+				_Label = Control as pixel.ui.control.UILabel;
 				
 				_Text = _Label.Text;
 				_FontSize = _Label.FontSize;

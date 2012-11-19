@@ -1,9 +1,9 @@
 package editor.code
 {
-	import corecom.control.Container;
-	import corecom.control.UIControl;
+	import pixel.ui.control.Container;
+	import pixel.ui.control.UIControl;
 	import corecom.control.style.IStyle;
-	import corecom.control.style.ButtonStyle;
+	import pixel.ui.control.style.ButtonStyle;
 	
 	import editor.ui.Shell;
 	import editor.utils.Common;
