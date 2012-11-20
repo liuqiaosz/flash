@@ -60,6 +60,7 @@
     <classEntry path="utility.bitmap.tga.TGADescription"/>
     <classEntry path="utility.Version"/>
     <classEntry path="utility.loader.Loader"/>
+    <classEntry path="utility.swf.tag.DoABC"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

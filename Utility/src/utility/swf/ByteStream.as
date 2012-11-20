@@ -109,10 +109,15 @@ package utility.swf
 		{
 			Data.writeBytes(Source.Bytes,0,Source.Length);
 		}
-		public function ReadUI32():int
+		public function ReadUI32():uint
 		{
 			return Data.readUnsignedInt();
 		}
+		public function ReadI32():int
+		{
+			return Data.readInt();
+		}
+			
 		public function WriteUI32(Value:int):void
 		{
 			return Data.writeInt(Value);

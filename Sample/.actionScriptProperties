@@ -47,6 +47,7 @@
   <modules>
     <module application="src/Sample.as" destPath="ModuleB.swf" optimize="true" sourcePath="src/ModuleB.as"/>
     <module application="src/Sample.as" destPath="ModuleA.swf" optimize="false" sourcePath="src/ModuleA.as"/>
+    <module application="src/Sample.as" destPath="ModuleC.swf" optimize="false" sourcePath="src/ModuleC.as"/>
   </modules>
   <workers>
     <worker embed="false" path="src/TestWorker.as"/>

@@ -44,6 +44,8 @@ package
 	import utility.System;
 	import utility.Tools;
 	import utility.loader.Loader;
+	import utility.swf.Swf;
+	import utility.swf.SwfFactory;
 
 //	import flash.display.StageAlign;
 //	import flash.display.StageScaleMode;
@@ -111,6 +113,8 @@ package
 		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
 		private var workerClass:Class;
 		
+		[Embed(source="../bin-debug/ModuleC.swf",mimeType="application/octet-stream")]
+		private var C:Class;
 		public function Sample()
 		{
 			//var a:Date = new Date();
@@ -125,6 +129,15 @@ package
 				var task:PixelAssetTask = new PixelAssetTask("ui","http://175.10.1.144:9200/payplateform/UI.swf");
 				PixelAssetsManager.instance.loader.pushTaskToQueue(task);
 			});
+			
+			readswf();
+		}
+		
+		private function readswf():void
+		{
+			var data:ByteArray = new C() as ByteArray;
+			var swf:Swf = SwfFactory.Instance.Decode(data);
+			
 		}
 
 		private function workerTest():void

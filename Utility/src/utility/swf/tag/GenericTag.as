@@ -1,8 +1,6 @@
 package utility.swf.tag
 {
 	import flash.events.EventDispatcher;
-	import flash.utils.ByteArray;
-	import flash.utils.Endian;
 	
 	import utility.swf.ByteStream;
 

@@ -1,6 +1,5 @@
 package utility.swf.tag
 {
-	import flash.utils.Dictionary;
 
 	public class Tag
 	{
@@ -11,15 +10,16 @@ package utility.swf.tag
 		public static const FILEATTR:int = 69;
 		public static const SETBGCOLOR:int = 9;
 		public static const DEFINEJPEG2:int = 21;
+		public static const DOABC:int = 82;
 		public static function GetTagClassByType(Type:int):Class
 		{
 			switch(Type)
 			{
-				case 20:
+				case LOSSLESS:
 					return BitLossless;
-				case 76:
+				case SYMBOLCLASS:
 					return SymbolClass;
-				case 36:
+				case LOSSLESS2:
 					return BitLossless2;
 				case DEFINEJPEG2:
 					return BitJPEG2;
@@ -29,6 +29,10 @@ package utility.swf.tag
 					return DefineSound;
 				case FILEATTR:
 					return FileAttribute;
+					break;
+				case DOABC:
+					return DoABC;
+					break;
 				default:
 					return null;
 			}
