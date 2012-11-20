@@ -17,17 +17,33 @@ package
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
+	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.system.Worker;
+	import flash.utils.ByteArray;
 	
+	import pixel.assets.PixelAssetTask;
+	import pixel.assets.PixelAssetsManager;
+	import pixel.assets.event.PixelAssetEvent;
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UIProgress;
+	import pixel.worker.core.PixelWorker;
+	import pixel.worker.core.PixelWorkerHelper;
+	import pixel.worker.core.ShareMemory;
+	import pixel.worker.event.PixelWorkerEvent;
+	import pixel.worker.message.PixelWorkerLoaderMessageResponse;
+	import pixel.worker.message.PixelWorkerMessage;
+	import pixel.worker.message.PixelWorkerMessageRequest;
+	import pixel.worker.message.PixelWorkerMessageResponse;
 	
 	import utility.System;
 	import utility.Tools;
+	import utility.loader.Loader;
 
 //	import flash.display.StageAlign;
 //	import flash.display.StageScaleMode;
@@ -88,80 +104,59 @@ package
 //	import utility.Tools;
 //	import utility.bitmap.png.PNGDecoder;
 //	import utility.bitmap.tga.TGADecoder;
-
+	
 
 	public class Sample extends Sprite
 	{
-		//[Embed(source="Worker.swf",mimeType="application/octet-stream")]
-		//private var SWF:Class;
-//		[Embed(source="D:\\0_0.png")]
-//		private var Cls:Class;
+		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
+		private var workerClass:Class;
+		
 		public function Sample()
 		{
-			var a:Loader;
+			//var a:Date = new Date();
+			//workerTest();
+			PixelAssetsManager.instance.changeHandler(WorkerAssetDownloader);
 			
-//			var curr:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
-//			for each(var str:String in curr)
-//			{
-//				trace(str);
-//			}
-			//moduleTest();
-
+			PixelAssetsManager.instance.loader.addEventListener(PixelAssetEvent.ASSET_COMPLETE,function(event:PixelAssetEvent):void{
+				
+				trace("complete");
+			});
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				var task:PixelAssetTask = new PixelAssetTask("ui","http://175.10.1.144:9200/payplateform/UI.swf");
+				PixelAssetsManager.instance.loader.pushTaskToQueue(task);
+			});
 		}
-//		
-//		private function moduleTest():void
-//		{
-//			var curr:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
-//			for each(var n:String in curr)
-//			{
-//				trace(n);
-//			}
-//			trace("-------------End-----------");
-//			var loader:Loader = new Loader();
-//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-//				
-//				curr = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
-//				for each(var n:String in curr)
-//				{
-//					trace(n);
-//				}
-//				trace("-------------End-----------");
-////				var childLoade:Loader = new Loader();
-////				var childctx:LoaderContext = new LoaderContext();
-////				childLoade.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-////					
-////					//stage.addChild(childLoade.content);
-////					curr = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
-////					for each(var n:String in curr)
-////					{
-////						trace(n);
-////					}
-////				
-////				});
-////				childLoade.load(new URLRequest("ModuleA.swf"),childctx);
-//				
-//			});
-//
-//			var ctx:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-//			ctx.applicationDomain = ApplicationDomain.currentDomain;
-//			loader.load(new URLRequest("ModuleA.swf"),ctx);
-//		}
-//		
-//		private function workerTest():void
-//		{
-//			PixelWorkerHelper.instance.createWorkerByURL("Worker.swf");
-//			PixelWorkerHelper.instance.addEventListener(PixelWorkerEvent.WORKER_COMPLETE,function(event:PixelWorkerEvent):void{
-//				var work:PixelWorker = event.message as PixelWorker;
-//				work.addEventListener(PixelWorkerEvent.MESSAGE_AVAILABLE,function(event:PixelWorkerEvent):void{
-//					var msg:int = event.message as int;
-//					trace(msg + "");
-//				});
-//				work.start();
-//				
-//				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//					work.sendMessage(99);
-//				});
-//			});
-//		}
+
+		private function workerTest():void
+		{
+			PixelWorkerHelper.instance.createWorkerByURL("TestWorker.swf");
+			PixelWorkerHelper.instance.addEventListener(PixelWorkerEvent.WORKER_COMPLETE,function(event:PixelWorkerEvent):void{
+				var work:PixelWorker = event.message as PixelWorker;
+				work.addEventListener(PixelWorkerEvent.MESSAGE_AVAILABLE,function(event:PixelWorkerEvent):void{
+					var msg:PixelWorkerLoaderMessageResponse = event.message as PixelWorkerLoaderMessageResponse;
+					
+					if(msg.shareMemory)
+					{
+						var memory:ByteArray = work.getShareProperty(ShareMemory.SHARE_BYTEARRAY) as ByteArray;
+						var a:flash.display.Loader = new flash.display.Loader();
+						var ctx:LoaderContext = new LoaderContext();
+						ctx.applicationDomain = ApplicationDomain.currentDomain;
+						ctx.allowCodeImport = true;
+						a.loadBytes(memory,ctx);
+						a.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+							var vec:Vector.<String> = a.contentLoaderInfo.applicationDomain.getQualifiedDefinitionNames();
+							trace(vec.length + "");
+						});
+					}
+				});
+				work.start();
+				
+				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+					var req:PixelWorkerMessageRequest = new PixelWorkerMessageRequest(PixelWorkerMessage.LOAD_SWF);
+					req.message = "http://175.10.1.144:9200/payplateform/UI.swf";
+					work.sendMessage(req);
+				});
+			});
+		}
 	}
 }

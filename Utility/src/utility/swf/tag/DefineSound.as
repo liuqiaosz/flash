@@ -4,10 +4,6 @@ package utility.swf.tag
 	
 	import flash.events.Event;
 	import flash.media.Sound;
-	
-	import mx.effects.SoundEffect;
-	import mx.effects.effectClasses.SoundEffectInstance;
-
 	public class DefineSound extends GenericTag
 	{
 		private var _SoundFormat:int = 0;

@@ -7,6 +7,7 @@ package pixel.assets
 	 **/
 	public interface IPixelAssetsManager
 	{
-		
+		function changeHandler(handler:Class):void;
+		function get loader():IPixelAssetsMarshal;
 	}
 }

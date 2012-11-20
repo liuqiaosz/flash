@@ -7,8 +7,6 @@ package utility.swf.tag
 	import flash.system.JPEGLoaderContext;
 	import flash.utils.ByteArray;
 	
-	import mx.graphics.codec.JPEGEncoder;
-	
 	import utility.swf.ByteStream;
 	import utility.swf.event.SWFEvent;
 

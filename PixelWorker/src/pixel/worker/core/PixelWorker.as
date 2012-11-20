@@ -2,10 +2,13 @@ package pixel.worker.core
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.net.registerClassAlias;
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	
 	import pixel.worker.event.PixelWorkerEvent;
+	import pixel.worker.message.PixelWorkerMessageRequest;
+	import pixel.worker.message.PixelWorkerMessageResponse;
 
 	public class PixelWorker extends EventDispatcher
 	{
@@ -14,6 +17,8 @@ package pixel.worker.core
 		private var _senderChannel:MessageChannel = null;
 		public function PixelWorker(worker:Worker)
 		{
+			registerClassAlias("pixel.worker.message.PixelWorkerMessageRequest",PixelWorkerMessageRequest);
+			registerClassAlias("pixel.worker.message.PixelWorkerMessageResponse",PixelWorkerMessageResponse);
 			_worker = worker;
 			_reciveChannel = worker.getSharedProperty(PixelWorkerGeneric.CHANNEL_SENDER);
 			_senderChannel = worker.getSharedProperty(PixelWorkerGeneric.CHANNEL_RECIVE);
@@ -30,6 +35,7 @@ package pixel.worker.core
 			var notify:PixelWorkerEvent = new PixelWorkerEvent(PixelWorkerEvent.MESSAGE_AVAILABLE);
 			notify.message = value;
 			dispatchEvent(notify);
+			
 		}
 		
 		public function sendMessage(value:Object):void
@@ -37,6 +43,22 @@ package pixel.worker.core
 			if(_senderChannel)
 			{
 				_senderChannel.send(value);
+			}
+		}
+		
+		public function getShareProperty(name:String):Object
+		{
+			if(_worker)
+			{
+				return _worker.getSharedProperty(name);
+			}
+			return null;
+		}
+		public function setShareProperty(name:String,value:Object):void
+		{
+			if(_worker)
+			{
+				_worker.setSharedProperty(name,value);
 			}
 		}
 		

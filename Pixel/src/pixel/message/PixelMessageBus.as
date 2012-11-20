@@ -1,7 +1,5 @@
 package pixel.message
 {
-	import mx.messaging.AbstractConsumer;
-	
 	import pixel.core.PixelNs;
 
 	use namespace PixelNs;
@@ -32,7 +30,6 @@ import flash.utils.Dictionary;
 import pixel.core.PixelNs;
 import pixel.message.IPixelMessageBus;
 import pixel.message.PixelMessage;
-import pixel.util.Config;
 
 class MessageBusImpl implements IPixelMessageBus
 {

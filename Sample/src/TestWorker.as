@@ -1,12 +1,13 @@
 package
 {
 	import pixel.worker.core.PixelWorkerGeneric;
+	import pixel.worker.handler.PixelLoaderWorkerHandler;
 	
 	public class TestWorker extends PixelWorkerGeneric
 	{
-		public function TestWorker(workerHandler:Class)
+		public function TestWorker()
 		{
-			super(LogicHandler);
+			super(PixelLoaderWorkerHandler);
 		}
 	}
 }

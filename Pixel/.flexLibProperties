@@ -45,10 +45,13 @@
     <classEntry path="pixel.assets.IPixelAssetsManager"/>
     <classEntry path="pixel.assets.PixelAssetsManager"/>
     <classEntry path="pixel.thread.PixelThread"/>
-    <classEntry path="pixel.assets.IAssetsLoader"/>
-    <classEntry path="pixel.assets.DefaultAssetLoader"/>
-    <classEntry path="pixel.assets.AssetTask"/>
-    <classEntry path="pixel.assets.AssetTaskMode"/>
+    <classEntry path="pixel.assets.IPixelAssetsMarshal"/>
+    <classEntry path="pixel.assets.PixelDefaultAssetLoader"/>
+    <classEntry path="pixel.assets.PixelAssetTask"/>
+    <classEntry path="pixel.assets.PixelAssetTaskMode"/>
+    <classEntry path="pixel.assets.PixelAssetNode"/>
+    <classEntry path="pixel.assets.event.PixelAssetEvent"/>
+    <classEntry path="pixel.assets.PixelAssetLoaderMarshal"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

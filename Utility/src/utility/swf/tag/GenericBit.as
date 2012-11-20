@@ -7,8 +7,6 @@ package utility.swf.tag
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
-	import mx.graphics.codec.JPEGEncoder;
-	
 	import utility.swf.ByteStream;
 
 	public class GenericBit  extends GenericTag

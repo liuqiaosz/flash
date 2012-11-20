@@ -7,7 +7,7 @@ package pixel.assets
 
 	use namespace PixelNs;
 	
-	public class AssetTask
+	public class PixelAssetTask
 	{
 		private var _type:int = 0;
 		public function set type(value:int):void
@@ -38,21 +38,32 @@ package pixel.assets
 			return _alias;
 		}
 		
-		PixelNs var _info:Loader = null;
-		PixelNs function set info(value:Loader):void
+		PixelNs var _info:PixelAssetNode = null;
+		PixelNs function set info(value:PixelAssetNode):void
 		{
 			_info = value;
 		}
-		PixelNs function get info():Loader
+		PixelNs function get info():PixelAssetNode
 		{
 			return _info;
 		}
 		
-		public function AssetTask(alias:String = "",url:String = "",type:int = 0)
+		private var _cache:Boolean = true;
+		public function set cache(value:Boolean):void
+		{
+			_cache = value;
+		}
+		public function get cache():Boolean
+		{
+			return _cache;
+		}
+		
+		public function PixelAssetTask(alias:String = "",url:String = "",type:int = 0,cache:Boolean = true)
 		{
 			_url = url;
 			_type = type;
 			_alias = alias;
+			_cache = cache;
 		}
 	}
 }

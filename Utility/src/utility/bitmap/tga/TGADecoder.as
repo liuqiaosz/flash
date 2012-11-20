@@ -4,10 +4,6 @@ package utility.bitmap.tga
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
-	
-	import spark.primitives.Rect;
-	
-	import utility.RGBA;
 
 	public class TGADecoder
 	{

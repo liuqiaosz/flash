@@ -1,5 +1,7 @@
 package pixel.worker.core
 {
+	use namespace PixelWorkerNs;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.system.MessageChannel;
@@ -11,11 +13,14 @@ package pixel.worker.core
 		public static const CHANNEL_RECIVE:String = "ReciveChannel";
 		public static const CHANNEL_SENDER:String = "SenderChannel";
 		
+		
 		protected var _workerHandler:IPixelWorkerHandler = null;
 		protected var _senderChannel:MessageChannel = null;
 		protected var _reciveChannel:MessageChannel = null;
+		protected var _globalMemory:Array = [];
 		public function PixelWorkerGeneric(workerHandler:Class)
 		{
+			ShareMemory.initializer();
 			Worker.current.addEventListener(Event.WORKER_STATE,workerStateChanged);
 			_reciveChannel = getShareProperty(CHANNEL_RECIVE) as MessageChannel;
 			_senderChannel = getShareProperty(CHANNEL_SENDER) as MessageChannel;

@@ -1,10 +1,16 @@
 package pixel.worker.core
 {
+	import flash.net.registerClassAlias;
+	
+	import pixel.worker.message.PixelWorkerMessageRequest;
+	import pixel.worker.message.PixelWorkerMessageResponse;
+
 	public class PixelWorkerHelper
 	{
 		private static var _instance:IPixelWorkerHelper = null;
 		public function PixelWorkerHelper()
 		{
+			
 		}
 		
 		public static function get instance():IPixelWorkerHelper
@@ -18,7 +24,6 @@ package pixel.worker.core
 	}
 }
 
-import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
@@ -46,7 +51,7 @@ class PixelWorkerHelperImpl extends EventDispatcher implements IPixelWorkerHelpe
 	{
 		if(data)
 		{
-			var work:Worker = WorkerDomain.current.createWorker(data);
+			var work:Worker = WorkerDomain.current.createWorker(data,true);
 			//创建当前主SWF的消息接收通道，同时也是子工作线程的数据发送通道
 			var channel:MessageChannel = work.createMessageChannel(Worker.current);
 			work.setSharedProperty(PixelWorkerGeneric.CHANNEL_SENDER,channel);
