@@ -133,6 +133,7 @@ package utility.swf
 				return Data.readUTFBytes(Length);
 			}
 		}
+		
 		public function WriteString(Value:String):void
 		{
 			Data.writeUTFBytes(Value);

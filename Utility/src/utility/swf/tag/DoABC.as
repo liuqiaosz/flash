@@ -17,8 +17,8 @@ package utility.swf.tag
 		{
 			_flag = stream.ReadUI32();
 			_name = stream.FindString();
-			var minor:int = stream.ReadI16();
-			var major:int = stream.ReadI16();
+			var minor:int = stream.ReadUI16();
+			var major:int = stream.ReadUI16();
 			
 			var contantPool:ConstantPool = new ConstantPool(stream);
 		}
@@ -39,7 +39,8 @@ class ConstantPool
 	private var _strCount:int = 0;
 	public function ConstantPool(stream:ByteStream)
 	{
-		_intCount = stream.ReadI32();
+		_intCount = stream.ReadUI8();
+		trace(_intCount.toString("2"));
 		var idx:int = 0;
 		for(idx; idx<_intCount; idx++)
 		{
@@ -58,11 +59,30 @@ class ConstantPool
 			//_unit.push(stream.ReadI32());
 		}
 		
+		var cstr:Array = [];
 		_strCount = stream.ReadUI8();
 		for(idx = 0; idx<_strCount; idx++)
 		{
-			trace(stream.FindString());
+			var len:int = stream.ReadUI8();
+			if(len > 0)
+			{
+				var str:String = stream.ReadString(len);
+				cstr.push(str);
+				trace(idx+ "[" + len + "][" + str + "]");
+			}
+			//trace(stream.FindString());
 		}
+		trace("en");
 		
+		var nsCount:int = stream.ReadUI8();
+		trace("NS [" + nsCount + "]");
+		
+		for(idx = 0; idx<nsCount; idx++)
+		{
+			var kind:int = stream.ReadUI8();
+			var name:int = stream.ReadUI8();
+			
+			trace("Kind[" + kind + "]" + "Idx[" + name + "]Name[" + cstr[name] + "]");
+		}
 	}
 }

@@ -113,22 +113,20 @@ package
 		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
 		private var workerClass:Class;
 		
-		[Embed(source="../bin-debug/ModuleC.swf",mimeType="application/octet-stream")]
+		[Embed(source="D:\\AssFlash\\TowerGuard\\bin-debug\\TowerGuard.swf",mimeType="application/octet-stream")]
 		private var C:Class;
 		public function Sample()
 		{
-			//var a:Date = new Date();
-			//workerTest();
-			PixelAssetsManager.instance.changeHandler(WorkerAssetDownloader);
-			
-			PixelAssetsManager.instance.loader.addEventListener(PixelAssetEvent.ASSET_COMPLETE,function(event:PixelAssetEvent):void{
-				
-				trace("complete");
-			});
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				var task:PixelAssetTask = new PixelAssetTask("ui","http://175.10.1.144:9200/payplateform/UI.swf");
-				PixelAssetsManager.instance.loader.pushTaskToQueue(task);
-			});
+//			PixelAssetsManager.instance.changeHandler(WorkerAssetDownloader);
+//			
+//			PixelAssetsManager.instance.loader.addEventListener(PixelAssetEvent.ASSET_COMPLETE,function(event:PixelAssetEvent):void{
+//				
+//				trace("complete");
+//			});
+//			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+//				var task:PixelAssetTask = new PixelAssetTask("ui","http://175.10.1.144:9200/payplateform/UI.swf");
+//				PixelAssetsManager.instance.loader.pushTaskToQueue(task);
+//			});
 			
 			readswf();
 		}
