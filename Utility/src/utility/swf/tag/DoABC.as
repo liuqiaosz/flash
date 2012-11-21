@@ -1,6 +1,5 @@
 package utility.swf.tag
 {
-	import utility.Tools;
 	import utility.swf.ByteStream;
 
 	public class DoABC extends GenericTag

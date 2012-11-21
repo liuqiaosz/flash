@@ -14,10 +14,16 @@ package
 //	import flash.display.Loader;
 //	import flash.display.Shape;
 //	import flash.display.SpreadMethod;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display.PNGEncoderOptions;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.URLRequest;
 	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
@@ -41,6 +47,8 @@ package
 	import pixel.worker.message.PixelWorkerMessageRequest;
 	import pixel.worker.message.PixelWorkerMessageResponse;
 	
+	import utility.ColorCode;
+	import utility.RGBA;
 	import utility.System;
 	import utility.Tools;
 	import utility.loader.Loader;
@@ -107,14 +115,13 @@ package
 //	import utility.bitmap.png.PNGDecoder;
 //	import utility.bitmap.tga.TGADecoder;
 	
-
+	[SWF(width="1024",height="600")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
 		private var workerClass:Class;
 		
-		[Embed(source="D:\\AssFlash\\TowerGuard\\bin-debug\\TowerGuard.swf",mimeType="application/octet-stream")]
-		private var C:Class;
+		
 		public function Sample()
 		{
 //			PixelAssetsManager.instance.changeHandler(WorkerAssetDownloader);
@@ -128,13 +135,49 @@ package
 //				PixelAssetsManager.instance.loader.pushTaskToQueue(task);
 //			});
 			
-			readswf();
+			bitmap555();
+		}
+		
+		[Embed(source="../bin-debug/assets/img.png")]
+		private var Img:Class;
+		private function bitmap555():void
+		{
+			var img:Bitmap = new Img() as Bitmap;
+			var orgin:BitmapData = img.bitmapData;
+			var small:BitmapData = new BitmapData(img.width,img.height);
+			
+			for(var i:int=0; i<img.height; i++)
+			{
+				for(var j:int=0; j<img.width; j++)
+				{
+					var pixel:uint = orgin.getPixel(j,i);
+					pixel = ColorCode.RGB888ToRGB565(pixel);
+					pixel = ColorCode.RGB565ToRGB888(pixel,true).Pixel;
+					//var rgba:RGBA = ColorCode.RGB8888ToRGB4444(pixel);
+					small.setPixel(j,i,pixel);
+				}
+			}
+			
+			var image:Bitmap = new Bitmap(small);
+			addChild(image);
+			
+			img.x = img.width;
+			addChild(img);
+//			var a:PNGEncoderOptions = new PNGEncoderOptions();
+//			
+//			var data:ByteArray = small.encode(small.rect,a);
+//			
+//			var writer:FileStream = new FileStream();
+//			var file:File = new File("/Users/LiuQiao/small.png");
+//			writer.open(file,FileMode.WRITE);
+//			writer.writeBytes(data,0,data.length);
+//			writer.close();
 		}
 		
 		private function readswf():void
 		{
-			var data:ByteArray = new C() as ByteArray;
-			var swf:Swf = SwfFactory.Instance.Decode(data);
+			//var data:ByteArray = new C() as ByteArray;
+			//var swf:Swf = SwfFactory.Instance.Decode(data);
 			
 		}
 

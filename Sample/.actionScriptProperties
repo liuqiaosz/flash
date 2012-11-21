@@ -36,6 +36,7 @@
       <libraryPathEntry kind="3" linkType="1" path="/Pixel/bin/Pixel.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelWorker/bin/PixelWorker.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelUI/bin/PixelUI.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/Applications/Adobe Flash Builder 4.7/sdks/4.6.0/frameworks/libs/mx/mx.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

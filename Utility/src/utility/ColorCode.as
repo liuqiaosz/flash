@@ -175,6 +175,7 @@ package utility
 			
 			public static const RGB4444_MASK:uint = parseInt("00001111",2);
 			public static const RGB555_MASK:uint = parseInt("00011111",2);
+			public static const RGB565_MASK:uint = parseInt("00111111",2);
 			
 			public static function RGB8888ToRGB4444(Pixel:uint):RGBA
 			{
@@ -215,6 +216,19 @@ package utility
 				return (((PixelRGBA.Red >> 3) << 11) | 
 					((PixelRGBA.Green >> 2) << 5) | 
 					((PixelRGBA.Blue >> 3)));
+			}
+			public static function RGB565ToRGB888(pixel:uint,BitFix:Boolean = false):RGBA
+			{
+				var Red:uint = (pixel >> 11 & RGB555_MASK) << 3;
+				var Green:uint = (pixel >> 5 & RGB565_MASK) << 2;
+				var Blue:uint = (pixel & RGB555_MASK) << 3;
+				if(BitFix)
+				{
+					Red = Red | (Red >> 5);
+					Green = Green | (Green >> 6);
+					Blue = Blue | (Blue >> 5);
+				}
+				return new RGBA(Red,Green,Blue);
 			}
 			
 			/**
