@@ -1,17 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="UIEditor.mxml" projectUUID="b3320326-bc59-439b-8d6f-aa1c4462780a" version="11">
-  <compiler additionalCompilerArguments="-locale en_US -debug=true" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="UIEditor.mxml" projectUUID="50dd3b36-108d-4328-94fe-1ccaf5b80f2a" version="11">
+  <compiler additionalCompilerArguments="-locale en_US -swf-version=18" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
+        <modifiedEntries>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="9" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/advancedgrids.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/advancedgrids_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="advancedgrids_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="5" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/charts.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/charts_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="charts_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="0" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/framework_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="framework_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="7" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/osmf.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/osmf_1.0.0.16316.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="osmf_1.0.0.16316.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="4" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/rpc.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/rpc_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="rpc_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="2" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/spark.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/spark_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="spark_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="3" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/sparkskins.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/sparkskins_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="sparkskins_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="6" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/spark_dmv.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/spark_dmv_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="spark_dmv_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="1" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/textLayout.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/tlf/2.0.0.232/textLayout_2.0.0.232.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="textLayout_2.0.0.232.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="8" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/mx/mx.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="http://fpdownload.adobe.com/pub/swz/crossdomain.xml" rslUrl="http://fpdownload.adobe.com/pub/swz/flex/4.6.0.23201/mx_4.6.0.23201.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="mx_4.6.0.23201.swz"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+        </modifiedEntries>
         <excludedEntries>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/core.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="/Utility/bin/Utility.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/EditorUtility/bin/EditorUtility.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelUI/bin/PixelUI.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin/PixelUtility.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/EditorUtility/bin/EditorUtility.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -26,7 +88,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
-      <airSettings airCertificatePath="D:/Developer/Code/flash/Project/Death/AIR证书.p12" airTimestamp="false" anePathSet="true" version="1">
+      <airSettings airCertificatePath="" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
         <newLaunchParams/>

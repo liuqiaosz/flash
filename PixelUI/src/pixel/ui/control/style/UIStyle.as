@@ -7,7 +7,7 @@ package pixel.ui.control.style
 	import flash.net.registerClassAlias;
 	import flash.utils.ByteArray;
 	
-	import utility.Tools;
+	import pixel.utility.Tools;
 	
 	/**
 	 * 基本样式

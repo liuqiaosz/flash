@@ -9,7 +9,7 @@ package pixel.ui.control
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import utility.Tools;
+	import pixel.utility.Tools;
 
 	/**
 	 * 滑动条

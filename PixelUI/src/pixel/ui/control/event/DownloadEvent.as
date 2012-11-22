@@ -1,6 +1,8 @@
 package pixel.ui.control.event
 {
-	import utility.swf.Swf;
+	import pixel.ui.control.asset.IAssetLibrary;
+	
+	import pixel.utility.swf.Swf;
 
 	public class DownloadEvent extends UIControlEvent
 	{
@@ -61,14 +63,23 @@ package pixel.ui.control.event
 			return _LoadedBytes;
 		}
 		
-		private var _CurrentSwf:Swf = null;
-		public function set CurrentSwf(Value:Swf):void
+//		private var _CurrentSwf:Swf = null;
+//		public function set CurrentSwf(Value:Swf):void
+//		{
+//			_CurrentSwf = Value;
+//		}
+//		public function get CurrentSwf():Swf
+//		{
+//			return _CurrentSwf;
+//		}
+		private var _currentLibrary:IAssetLibrary = null;
+		public function set library(value:IAssetLibrary):void
 		{
-			_CurrentSwf = Value;
+			_currentLibrary = value;
 		}
-		public function get CurrentSwf():Swf
+		public function get library():IAssetLibrary
 		{
-			return _CurrentSwf;
+			return _currentLibrary;
 		}
 		public function DownloadEvent(Type:String,Bubbles:Boolean = false)
 		{

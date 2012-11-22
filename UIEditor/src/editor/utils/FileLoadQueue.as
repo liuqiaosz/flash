@@ -1,12 +1,8 @@
 package editor.utils
 {
-	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
-	import flash.net.URLRequest;
-	
-	import utility.swf.tag.FileAttribute;
 
 	/**
 	 * 文件队列加载工具类
@@ -70,7 +66,8 @@ package editor.utils
 			_CurrentFile = _Files[_Current].FileSource;
 			if(_Extension != null)
 			{
-				if(_CurrentFile.extension == _Extension)
+				var ext:String = _CurrentFile.nativePath.substring(_CurrentFile.nativePath.lastIndexOf("." + 1));
+				if(ext == _Extension)
 				{
 					_CurrentFile.addEventListener(Event.COMPLETE,LoadComplete);
 					_CurrentFile.addEventListener(IOErrorEvent.IO_ERROR,LoadFailure);
@@ -104,7 +101,8 @@ class FileMask
 	
 	public function get extension():String
 	{
-		return _File.extension;
+		
+		return _File.nativePath.substring(_File.nativePath.lastIndexOf("." + 1));
 	}
 	public function get CreateDate():Number
 	{

@@ -11,15 +11,14 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import editor.event.NotifyEvent;
-			import editor.model.asset.AssetLibrary;
-			import editor.model.asset.AssetLibraryType;
-			import editor.model.asset.IAssetLibrary;
-			import editor.model.asset.SwfAssetLibrary;
-			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
+			
+			import editor.event.NotifyEvent;
+			
+			import pixel.ui.control.asset.IAsset;
+			import pixel.ui.control.asset.IAssetLibrary;
 			
 			[Embed(source="assets/AssetLibrary.png")]
 			private var TreeIcon:Class;
@@ -67,11 +66,12 @@
 			 **/
 			private function TreeIconFactory(Item:Object):Class
 			{
-				if(Item is SwfAssetLibrary)
-				{
-					return TreeSwfIcon;
-				}
-				return TreeIcon;	
+//				if(Item is SwfAssetLibrary)
+//				{
+//					return TreeSwfIcon;
+//				}
+//				return TreeIcon;	
+				return TreeSwfIcon;
 			}
 			
 			private var _CurrentLibrary:IAssetLibrary = null;
@@ -85,11 +85,12 @@
 				//var Assets:Array = Library.AssetList;
 				var Idx:int = 0;
 				var AssetChild:AssetItem = null;
-				var Assets:Array = _CurrentLibrary.AssetList;
-				for(Idx=0; Idx<Assets.length; Idx++)
+				//var Assets:Array = _CurrentLibrary.AssetList;
+				var assets:Vector.<IAsset> = _CurrentLibrary.assets;
+				for(Idx=0; Idx<assets.length; Idx++)
 				{
 					AssetChild = new AssetItem();
-					AssetChild.Item = Assets[Idx];
+					AssetChild.Item = assets[Idx];
 					AssetLib.addElement(AssetChild);
 					//AssetLib[Assets[Idx].Id] = AssetChild;
 				}
@@ -124,7 +125,7 @@
 			{
 				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.SELECTEDASSET);
 				Notify.Params.push(event.Params.pop().Id);
-				Notify.Params.push(_CurrentLibrary.Id);
+				Notify.Params.push(_CurrentLibrary.id);
 				dispatchEvent(Notify);
 				CloseWindow();
 			}

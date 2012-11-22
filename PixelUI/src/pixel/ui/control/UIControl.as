@@ -1,14 +1,5 @@
 package pixel.ui.control
 {
-	import pixel.ui.control.asset.ControlAssetManager;
-	import pixel.ui.control.event.UIControlEvent;
-	import pixel.ui.control.style.IVisualStyle;
-	import pixel.ui.control.style.StyleShape;
-	import pixel.ui.control.style.UIStyle;
-	import pixel.ui.control.utility.FocusFrame;
-	import pixel.ui.control.utility.ScaleRect;
-	import pixel.ui.control.utility.Utils;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
@@ -20,9 +11,18 @@ package pixel.ui.control
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
-	import utility.BitmapTools;
-	import utility.ISerializable;
-	import utility.Tools;
+	import pixel.ui.control.asset.AssetImage;
+	import pixel.ui.control.asset.ControlAssetManager;
+	import pixel.ui.control.event.UIControlEvent;
+	import pixel.ui.control.style.IVisualStyle;
+	import pixel.ui.control.style.StyleShape;
+	import pixel.ui.control.style.UIStyle;
+	import pixel.ui.control.utility.FocusFrame;
+	import pixel.ui.control.utility.ScaleRect;
+	import pixel.ui.control.utility.Utils;
+	import pixel.utility.BitmapTools;
+	import pixel.utility.ISerializable;
+	import pixel.utility.Tools;
 	
 	/**
 	 * UI顶层类
@@ -461,7 +461,7 @@ package pixel.ui.control
 			
 			if(!Style.ImagePack)
 			{
-				var Img:Bitmap = ControlAssetManager.Instance.FindAssetById(Style.BackgroundImageId) as Bitmap;
+				var Img:Bitmap = AssetImage(ControlAssetManager.Instance.FindAssetById(Style.BackgroundImageId)).image;
 				if(Img)
 				{
 					this.BackgroundImage = Img;

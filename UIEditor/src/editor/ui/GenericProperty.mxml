@@ -14,15 +14,13 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.UIControl;
-			import pixel.ui.control.event.EditModeEvent;
-			
 			import editor.event.NotifyEvent;
-			import editor.model.asset.Asset;
-			import editor.model.asset.AssetBitmap;
 			import editor.utils.Globals;
-			
-			import mx.events.FlexEvent;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.asset.AssetImage;
+			import pixel.ui.control.asset.IAsset;
+			import pixel.ui.control.asset.IAssetLibrary;
+			import pixel.ui.control.event.EditModeEvent;
 			
 			[Bindable]
 			protected var BindEnable:Boolean = false;
@@ -74,10 +72,10 @@
 			
 			protected function OnImageSelectedNotify(LibraryId:String,AssetId:String):void
 			{
-				var AssetItem:Asset = Globals.FindAssetById(LibraryId,AssetId);
-				if(null != AssetItem && AssetItem is AssetBitmap)
+				var AssetItem:IAsset = Globals.FindAssetById(LibraryId,AssetId);
+				if(null != AssetItem && AssetItem is AssetImage)
 				{
-					ImageSelected(AssetBitmap(AssetItem).Image,AssetId);
+					ImageSelected(AssetImage(AssetItem).image,AssetId);
 				}
 			}
 			

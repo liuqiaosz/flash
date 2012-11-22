@@ -1,15 +1,15 @@
 package pixel.ui.control.effect
 {
-	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
-	import com.greensock.easing.Back;
-	import com.greensock.easing.Bounce;
-	import com.greensock.easing.Circ;
-	import com.greensock.easing.Elastic;
-	import com.greensock.easing.Expo;
-	import com.greensock.plugins.BlurFilterPlugin;
-	import com.greensock.plugins.GlowFilterPlugin;
-	import com.greensock.plugins.TweenPlugin;
+//	import com.greensock.TweenLite;
+//	import com.greensock.TweenMax;
+//	import com.greensock.easing.Back;
+//	import com.greensock.easing.Bounce;
+//	import com.greensock.easing.Circ;
+//	import com.greensock.easing.Elastic;
+//	import com.greensock.easing.Expo;
+//	import com.greensock.plugins.BlurFilterPlugin;
+//	import com.greensock.plugins.GlowFilterPlugin;
+//	import com.greensock.plugins.TweenPlugin;
 
 	public class Effect implements IEffect
 	{

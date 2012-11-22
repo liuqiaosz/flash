@@ -6,7 +6,6 @@
 	<!--Tab标签样式设定-->
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.Tab;
 			import pixel.ui.control.UIButton;
 			
 			import mx.controls.Alert;
@@ -16,7 +15,7 @@
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
-			import utility.Tools;
+			import pixel.utility.Tools;
 			
 			private var Button:UIButton = null;
 			[Bindable]
@@ -89,7 +88,7 @@
 			{
 				Button.FontColor = FontColorPicker.selectedColor;
 				_BindFontColor = FontColorPicker.selectedColor;
-				_BindFontColorText = utility.Tools.Color2Hex(_BindFontColor);
+				_BindFontColorText = pixel.utility.Tools.Color2Hex(_BindFontColor);
 			}
 			
 			/**

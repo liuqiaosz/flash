@@ -2,7 +2,7 @@ package editor.utils
 {
 	import flash.filesystem.File;
 	
-	import utility.System;
+	import pixel.utility.System;
 
 	public class Common
 	{

@@ -1,11 +1,7 @@
 package pixel.ui.control.style
 {
-	import pixel.ui.control.ICloneable;
-	
-	import flash.display.Bitmap;
-	
-	import utility.IClone;
-	import utility.ISerializable;
+	import pixel.utility.IClone;
+	import pixel.utility.ISerializable;
 
 	/**
 	 * 样式接口

@@ -47,13 +47,13 @@ package
 	import pixel.worker.message.PixelWorkerMessageRequest;
 	import pixel.worker.message.PixelWorkerMessageResponse;
 	
-	import utility.ColorCode;
-	import utility.RGBA;
-	import utility.System;
-	import utility.Tools;
-	import utility.loader.Loader;
-	import utility.swf.Swf;
-	import utility.swf.SwfFactory;
+	import pixel.utility.ColorCode;
+	import pixel.utility.RGBA;
+	import pixel.utility.System;
+	import pixel.utility.Tools;
+	import pixel.utility.loader.Loader;
+	import pixel.utility.swf.Swf;
+	import pixel.utility.swf.SwfFactory;
 
 //	import flash.display.StageAlign;
 //	import flash.display.StageScaleMode;
@@ -145,16 +145,20 @@ package
 			var img:Bitmap = new Img() as Bitmap;
 			var orgin:BitmapData = img.bitmapData;
 			var small:BitmapData = new BitmapData(img.width,img.height);
-			
+			//var fff:BitmapData = new BitmapData(img.width,img.height);
 			for(var i:int=0; i<img.height; i++)
 			{
 				for(var j:int=0; j<img.width; j++)
 				{
 					var pixel:uint = orgin.getPixel(j,i);
-					pixel = ColorCode.RGB888ToRGB565(pixel);
-					pixel = ColorCode.RGB565ToRGB888(pixel,true).Pixel;
-					//var rgba:RGBA = ColorCode.RGB8888ToRGB4444(pixel);
-					small.setPixel(j,i,pixel);
+					//pixel = ColorCode.RGB888ToRGB565(pixel);
+					//var fix:uint = ColorCode.RGB565ToRGB888(pixel,false).Pixel;
+					//pixel = ColorCode.RGB565ToRGB888(pixel,false).Pixel;
+					
+					//pixel = ColorCode.RGB4444ToRGB8888(,false).Pixel;
+					var rgba:RGBA = ColorCode.RGB8888ToRGB4444(pixel);
+					small.setPixel(j,i,rgba.Pixel);
+					//fff.setPixel(j,i,fix);
 				}
 			}
 			
@@ -163,15 +167,17 @@ package
 			
 			img.x = img.width;
 			addChild(img);
-//			var a:PNGEncoderOptions = new PNGEncoderOptions();
-//			
-//			var data:ByteArray = small.encode(small.rect,a);
-//			
-//			var writer:FileStream = new FileStream();
-//			var file:File = new File("/Users/LiuQiao/small.png");
-//			writer.open(file,FileMode.WRITE);
-//			writer.writeBytes(data,0,data.length);
-//			writer.close();
+			
+		
+			var a:PNGEncoderOptions = new PNGEncoderOptions();
+			
+			var data:ByteArray = small.encode(small.rect,a);
+			
+			var writer:FileStream = new FileStream();
+			var file:File = new File("D:\\4444.png");
+			writer.open(file,FileMode.WRITE);
+			writer.writeBytes(data,0,data.length);
+			writer.close();
 		}
 		
 		private function readswf():void
@@ -183,6 +189,7 @@ package
 
 		private function workerTest():void
 		{
+			
 			PixelWorkerHelper.instance.createWorkerByURL("TestWorker.swf");
 			PixelWorkerHelper.instance.addEventListener(PixelWorkerEvent.WORKER_COMPLETE,function(event:PixelWorkerEvent):void{
 				var work:PixelWorker = event.message as PixelWorker;

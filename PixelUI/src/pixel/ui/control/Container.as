@@ -11,7 +11,7 @@ package pixel.ui.control
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
-	import utility.Tools;
+	import pixel.utility.Tools;
 	
 	/**
 	 * 基础容器类,不提供视觉渲染

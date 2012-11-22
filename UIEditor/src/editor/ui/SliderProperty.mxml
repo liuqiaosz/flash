@@ -55,7 +55,7 @@
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
 			
-			import utility.Tools;
+			import pixel.utility.Tools;
 			
 			[Bindable]
 			private var Slider:UISlider = null;

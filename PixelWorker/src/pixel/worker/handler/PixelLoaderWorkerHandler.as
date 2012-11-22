@@ -7,7 +7,7 @@ package pixel.worker.handler
 	import pixel.worker.message.PixelWorkerMessage;
 	import pixel.worker.message.PixelWorkerMessageRequest;
 	
-	import utility.loader.Loader;
+	import pixel.utility.loader.Loader;
 
 	/**
 	 * 

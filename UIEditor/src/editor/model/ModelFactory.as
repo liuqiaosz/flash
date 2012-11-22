@@ -80,7 +80,7 @@ import mx.controls.Alert;
 import mx.graphics.codec.PNGEncoder;
 import mx.utils.StringUtil;
 
-import utility.Tools;
+import pixel.utility.Tools;
 
 class ModelParser implements IModel
 {

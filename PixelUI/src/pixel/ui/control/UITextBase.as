@@ -12,7 +12,7 @@ package pixel.ui.control
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	
-	import utility.Tools;
+	import pixel.utility.Tools;
 	
 	use namespace LibraryInternal;
 	public class UITextBase extends UIControl

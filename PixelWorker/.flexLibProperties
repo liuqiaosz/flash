@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
-  <includeClasses>
-    <classEntry path="pixel.worker.core.IPixelWorker"/>
-    <classEntry path="pixel.worker.core.PixelWorkerGeneric"/>
-    <classEntry path="pixel.worker.core.IPixelWorkerHandler"/>
-    <classEntry path="pixel.worker.core.PixelWorkerHelper"/>
-    <classEntry path="pixel.worker.core.IPixelWorkerHelper"/>
-    <classEntry path="pixel.worker.core.PixelWorkerConfig"/>
-    <classEntry path="pixel.worker.core.PixelWorker"/>
-    <classEntry path="pixel.worker.event.PixelWorkerEvent"/>
-    <classEntry path="pixel.worker.handler.PixelLoaderWorkerHandler"/>
-    <classEntry path="pixel.worker.handler.PixelWorkerHandler"/>
-    <classEntry path="pixel.worker.message.PixelWorkerMessage"/>
-    <classEntry path="pixel.worker.message.PixelWorkerLoaderMessageResponse"/>
-    <classEntry path="pixel.worker.core.ShareMemory"/>
-    <classEntry path="pixel.worker.core.PixelWorkerNs"/>
-    <classEntry path="pixel.worker.message.PixelWorkerMessageRequest"/>
-    <classEntry path="pixel.worker.message.PixelWorkerMessageResponse"/>
-  </includeClasses>
+  <includeClasses/>
   <includeResources/>
   <namespaceManifests/>
 </flexLibProperties>

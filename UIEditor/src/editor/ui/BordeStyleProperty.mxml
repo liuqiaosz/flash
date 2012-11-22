@@ -12,7 +12,7 @@
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
 			
-			import utility.Tools;
+			import pixel.utility.Tools;
 			[Bindable]
 			protected var BindBorderThinkness:int = 0;
 			[Bindable]

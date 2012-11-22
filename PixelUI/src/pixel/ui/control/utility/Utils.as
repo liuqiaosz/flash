@@ -12,7 +12,7 @@ package pixel.ui.control.utility
 	import pixel.ui.control.UISlider;
 	import pixel.ui.control.UITextInput;
 	
-	import utility.Tools;
+	import pixel.utility.Tools;
 
 	public class Utils
 	{

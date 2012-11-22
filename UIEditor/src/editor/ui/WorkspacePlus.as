@@ -1,30 +1,5 @@
 package editor.ui
 {
-	import pixel.ui.control.Container;
-	import pixel.ui.control.SimpleTabPanel;
-	import pixel.ui.control.Tab;
-	import pixel.ui.control.TabBar;
-	import pixel.ui.control.TabContent;
-	import pixel.ui.control.UIButton;
-	import pixel.ui.control.UIControl;
-	import pixel.ui.control.UIPanel;
-	import pixel.ui.control.event.ControlEditModeEvent;
-	import pixel.ui.control.event.EditModeEvent;
-	import pixel.ui.control.event.UIControlEvent;
-	import pixel.ui.control.utility.Utils;
-	
-	import editor.code.ClassFactory;
-	import editor.code.ComponentClass;
-	import editor.event.NotifyEvent;
-	import editor.model.ComponentModel;
-	import editor.model.ModelFactory;
-	import editor.model.ModelFactoryBAJK;
-	import editor.model.asset.Asset;
-	import editor.model.asset.AssetBitmap;
-	import editor.uitility.ui.event.UIEvent;
-	import editor.utils.Globals;
-	
-	import flash.desktop.NativeProcess;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.EventPhase;
@@ -44,8 +19,33 @@ package editor.ui
 	
 	import spark.components.Group;
 	
-	import utility.IDispose;
-	import utility.Tools;
+	import editor.code.ClassFactory;
+	import editor.code.ComponentClass;
+	import editor.event.NotifyEvent;
+	import editor.model.ComponentModel;
+	import editor.model.ModelFactory;
+	import editor.model.ModelFactoryBAJK;
+
+	import editor.uitility.ui.event.UIEvent;
+	import editor.utils.Globals;
+	
+	import pixel.ui.control.Container;
+	import pixel.ui.control.SimpleTabPanel;
+	import pixel.ui.control.Tab;
+	import pixel.ui.control.TabBar;
+	import pixel.ui.control.TabContent;
+	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UIControl;
+	import pixel.ui.control.UIPanel;
+	import pixel.ui.control.asset.AssetImage;
+	import pixel.ui.control.asset.IAsset;
+	import pixel.ui.control.event.ControlEditModeEvent;
+	import pixel.ui.control.event.EditModeEvent;
+	import pixel.ui.control.event.UIControlEvent;
+	import pixel.ui.control.utility.Utils;
+	
+	import pixel.utility.IDispose;
+	import pixel.utility.Tools;
 	
 	/**
 	 * 
@@ -407,10 +407,10 @@ package editor.ui
 					if(Control)
 					{
 						Control.addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
-							var AssetItem:Asset = Globals.FindAssetByAssetId(event.Message) as Asset;
-							if(null != AssetItem && AssetItem is AssetBitmap)
+							var AssetItem:IAsset = Globals.FindAssetByAssetId(event.Message) as IAsset;
+							if(null != AssetItem && AssetItem is AssetImage)
 							{
-								UIControl(event.target).BackgroundImage = AssetBitmap(AssetItem).Image;
+								UIControl(event.target).BackgroundImage = AssetImage(AssetItem).image;
 							}
 							
 						},false,0);

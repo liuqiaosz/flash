@@ -10,7 +10,6 @@
 	<fx:Script>
 		<![CDATA[
 			import editor.event.NotifyEvent;
-			import editor.model.asset.AssetFactory;
 			import editor.utils.Common;
 			
 			import mx.controls.Alert;
@@ -21,10 +20,10 @@
 					Alert.show("资源库名称不能为空!",Common.TEXT_ERRORTIP);
 					return;
 				}
-				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.ASSETLIBCREATED);
-				Notify.Params.push(AssetFactory.Instance.CreateLibrary(LibraryName.text));
-				dispatchEvent(Notify);
-				CloseWindow();
+//				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.ASSETLIBCREATED);
+//				Notify.Params.push(AssetFactory.Instance.CreateLibrary(LibraryName.text));
+//				dispatchEvent(Notify);
+//				CloseWindow();
 			}
 		]]>
 	</fx:Script>

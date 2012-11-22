@@ -9,21 +9,15 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import editor.event.NotifyEvent;
-			import editor.model.asset.Asset;
-			import editor.model.asset.AssetFactory;
-			import editor.model.asset.AssetLibrary;
-			import editor.model.asset.IAssetLibrary;
-			import editor.model.asset.SwfAssetLibrary;
-			import utility.swf.tag.BitLossless2;
-			import utility.swf.tag.SymbolClass;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
 			
 			import flashx.textLayout.events.SelectionEvent;
 			
-			import mx.controls.Alert;
-			import mx.core.IVisualElement;
-			import mx.events.CloseEvent;
-			import mx.events.FlexEvent;
+			import pixel.ui.control.asset.IAsset;
+			import pixel.ui.control.asset.IAssetLibrary;
+			import pixel.ui.control.asset.SwfAssetLibrary;
 			
 			private var Item:IAssetLibrary = null;
 			private var NeedInitialize:Boolean = false;
@@ -55,74 +49,84 @@
 			private function Render():void
 			{
 				var Idx:int = 0;
-				Name.text = Item.Name;
+				Name.text = Item.id;
 				var AssetChild:AssetItem = null;
-				if(Item is SwfAssetLibrary)
-				{
-					//加杂的SWF资源
-					IdRow.visible = false;
-					IdRow.includeInLayout = false;
-					TotalRow.visible = false;
-					TotalRow.includeInLayout = false;
-					//AssetList.visible = true;
-					//AssetList.includeInLayout = true;
-					
-					//var ImageAssets:Array = SwfAssetLibrary(Item).BitmapAssets;
-//					var ImageAssets:Array = SwfAssetLibrary(Item).BitmapAssets;
-//					for(Idx=0; Idx<ImageAssets.length; Idx++)
-//					{
-//						AssetChild = new AssetItem();
-//						AssetChild.Item = ImageAssets[Idx];
-//						AssetList.addElement(AssetChild);
-//						//AssetDiction[Assets[Idx].Id] = AssetChild;
-//					}
-				}
-				else(Item)
-				{
-					Id.text = Item.Id;
-					Total.text = Item.Total + "";
-//					var Assets:Array = Item.AssetList;
-//					for(Idx=0; Idx<Assets.length; Idx++)
-//					{
-//						AssetChild = new AssetItem();
-//						AssetChild.Item = Assets[Idx];
-//						AssetList.addElement(AssetChild);
-//						//AssetDiction[Assets[Idx].Id] = AssetChild;
-//					}
-					
-					AssetList.addEventListener(NotifyEvent.DELETEASSET,OnDeleteAsset);
-					//AssetList.visible = true;
-					//AssetList.includeInLayout = true;
-				}
 				
-				var Assets:Array = Item.AssetList;
-				for(Idx=0; Idx<Assets.length; Idx++)
+				var childs:Vector.<IAsset> = Item.assets;
+				
+				for each(var child:IAsset in childs)
 				{
 					AssetChild = new AssetItem();
-					AssetChild.Item = Assets[Idx];
+					AssetChild.Item = child;
 					AssetList.addElement(AssetChild);
-					//AssetDiction[Assets[Idx].Id] = AssetChild;
 				}
+				
+//				if(Item is SwfAssetLibrary)
+//				{
+//					//加杂的SWF资源
+//					IdRow.visible = false;
+//					IdRow.includeInLayout = false;
+//					TotalRow.visible = false;
+//					TotalRow.includeInLayout = false;
+//					//AssetList.visible = true;
+//					//AssetList.includeInLayout = true;
+//					
+//					//var ImageAssets:Array = SwfAssetLibrary(Item).BitmapAssets;
+////					var ImageAssets:Array = SwfAssetLibrary(Item).BitmapAssets;
+////					for(Idx=0; Idx<ImageAssets.length; Idx++)
+////					{
+////						AssetChild = new AssetItem();
+////						AssetChild.Item = ImageAssets[Idx];
+////						AssetList.addElement(AssetChild);
+////						//AssetDiction[Assets[Idx].Id] = AssetChild;
+////					}
+//				}
+//				else(Item)
+//				{
+//					//Id.text = Item.Id;
+//					//Total.text = Item.Total + "";
+////					var Assets:Array = Item.AssetList;
+////					for(Idx=0; Idx<Assets.length; Idx++)
+////					{
+////						AssetChild = new AssetItem();
+////						AssetChild.Item = Assets[Idx];
+////						AssetList.addElement(AssetChild);
+////						//AssetDiction[Assets[Idx].Id] = AssetChild;
+////					}
+//					
+//					//AssetList.addEventListener(NotifyEvent.DELETEASSET,OnDeleteAsset);
+//					//AssetList.visible = true;
+//					//AssetList.includeInLayout = true;
+//				}
+				
+//				var Assets:Vector.<IAsset> = Item.assets;
+//				for(Idx=0; Idx<Assets.length; Idx++)
+//				{
+//					AssetChild = new AssetItem();
+//					AssetChild.Item = Assets[Idx];
+//					AssetList.addElement(AssetChild);
+//					//AssetDiction[Assets[Idx].Id] = AssetChild;
+//				}
 			}
 			
 			/**
 			 * 删除资源
 			 **/
-			private function OnDeleteAsset(event:NotifyEvent):void
-			{
-				Alert.show("是否要删除当前选择的资源?!","删除确认",Alert.YES|Alert.NO,null,function(AlertEvent:CloseEvent):void{
-					if(AlertEvent.detail == Alert.YES)
-					{
-						//保存当前库
-						AssetFactory.Instance.SaveLibrary(Item);
-						NotificationManager.Instance.Show("资源库保存完成!");
-						AssetList.removeElement(event.target as IVisualElement);
-						var Data:Asset = event.Params.pop() as Asset;
-						Item.DeleteAsset(Data);
-						Update = true;
-					}
-				});
-			}
+//			private function OnDeleteAsset(event:NotifyEvent):void
+//			{
+//				Alert.show("是否要删除当前选择的资源?!","删除确认",Alert.YES|Alert.NO,null,function(AlertEvent:CloseEvent):void{
+//					if(AlertEvent.detail == Alert.YES)
+//					{
+//						//保存当前库
+//						AssetFactory.Instance.SaveLibrary(Item);
+//						NotificationManager.Instance.Show("资源库保存完成!");
+//						AssetList.removeElement(event.target as IVisualElement);
+//						var Data:Asset = event.Params.pop() as Asset;
+//						Item.DeleteAsset(Data);
+//						Update = true;
+//					}
+//				});
+//			}
 			
 			private var FileArray:Array = null;;
 			private var FileLoader:Loader = new Loader();
@@ -173,20 +177,20 @@
 			
 			private function LoadAssetComplete(event:Event):void
 			{
-				var AssetData:Asset = Item.AddBitmap(FileLoader.content as Bitmap);
-				FileLoader.unload();
-				if(AssetData)
-				{
-					var AssetChild:AssetItem = new AssetItem();
-					AssetChild.Item = AssetData;
-					AssetList.addElement(AssetChild);
-				}
-				StartLoad();
+//				var AssetData:Asset = Item.AddBitmap(FileLoader.content as Bitmap);
+//				FileLoader.unload();
+//				if(AssetData)
+//				{
+//					var AssetChild:AssetItem = new AssetItem();
+//					AssetChild.Item = AssetData;
+//					AssetList.addElement(AssetChild);
+//				}
+//				StartLoad();
 			}
 			
 			private function Save(event:MouseEvent):void
 			{
-				AssetFactory.Instance.SaveLibrary(Item);
+				//AssetFactory.Instance.SaveLibrary(Item);
 				super.CloseWindow();
 				NotificationManager.Instance.Show("资源库保存完成!");
 			}
@@ -201,7 +205,7 @@
 						if(event.detail == Alert.YES)
 						{
 							//保存当前库
-							AssetFactory.Instance.SaveLibrary(Item);
+							//AssetFactory.Instance.SaveLibrary(Item);
 							NotificationManager.Instance.Show("资源库保存完成!");
 						}
 						//Self.CloseWindow();

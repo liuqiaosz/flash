@@ -28,9 +28,8 @@ import flash.filesystem.FileStream;
 import flash.utils.ByteArray;
 
 import mx.controls.Alert;
-import mx.messaging.messages.CommandMessage;
 
-import utility.System;
+import pixel.utility.System;
 
 class PreferenceImpl implements IPreference
 {

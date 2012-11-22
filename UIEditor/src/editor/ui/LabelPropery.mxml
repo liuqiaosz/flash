@@ -17,7 +17,7 @@
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
-			import utility.Tools;
+			import pixel.utility.Tools;
 			
 			private var _Label:UILabel = null;
 			

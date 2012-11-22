@@ -15,6 +15,12 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import spark.events.TextOperationEvent;
+			
+			import editor.event.NotifyEvent;
+
+			import editor.utils.Globals;
+			
 			import pixel.ui.control.Container;
 			import pixel.ui.control.LayoutConstant;
 			import pixel.ui.control.SimpleTabPanel;
@@ -28,20 +34,10 @@
 			import pixel.ui.control.UISlider;
 			import pixel.ui.control.UITextInput;
 			import pixel.ui.control.UIWindow;
+			import pixel.ui.control.asset.AssetImage;
+			import pixel.ui.control.asset.IAsset;
 			
-			import editor.event.NotifyEvent;
-			import editor.model.asset.Asset;
-			import editor.model.asset.AssetBitmap;
-			import editor.utils.Globals;
-			
-			import mx.controls.Alert;
-			import mx.events.ColorPickerEvent;
-			import mx.utils.StringUtil;
-			
-			import spark.events.IndexChangeEvent;
-			import spark.events.TextOperationEvent;
-			
-			import utility.Tools;
+			import pixel.utility.Tools;
 			private var _CurrentControl:UIControl = null;
 			
 			[Bindable]
@@ -228,10 +224,10 @@
 			 **/
 			private function OnChangeImageResultNotify(LibraryId:String,AssetId:String):void
 			{
-				var AssetItem:Asset = Globals.FindAssetById(LibraryId,AssetId);
-				if(null != AssetItem && AssetItem is AssetBitmap)
+				var AssetItem:IAsset = Globals.FindAssetById(LibraryId,AssetId);
+				if(null != AssetItem && AssetItem is AssetImage)
 				{
-					_CurrentControl.Style.BackgroundImage = AssetBitmap(AssetItem).Image;
+					_CurrentControl.Style.BackgroundImage = AssetImage(AssetItem).image;
 					_CurrentControl.Style.BackgroundImageId = AssetId;
 					_CurrentControl.Update();
 					//BackgroundImg.text = AssetItem.Id;

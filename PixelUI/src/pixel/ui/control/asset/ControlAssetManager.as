@@ -22,12 +22,9 @@ package pixel.ui.control.asset
 		}
 	}
 }
-import pixel.ui.control.UIControl;
-import pixel.ui.control.asset.IControlAssetManager;
-import pixel.ui.control.event.DownloadEvent;
-
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
@@ -35,27 +32,34 @@ import flash.events.ProgressEvent;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
+import flash.system.ApplicationDomain;
+import flash.system.LoaderContext;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
-import utility.IDispose;
-import utility.Tools;
-import utility.swf.ByteStream;
-import utility.swf.Swf;
+import pixel.ui.control.UIControl;
+import pixel.ui.control.asset.IAsset;
+import pixel.ui.control.asset.IAssetLibrary;
+import pixel.ui.control.asset.IControlAssetManager;
+import pixel.ui.control.asset.LoaderAssetLibrary;
+import pixel.ui.control.event.DownloadEvent;
+import pixel.utility.IDispose;
+import pixel.utility.Tools;
+import pixel.utility.swf.Swf;
 
 class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetManager,IDispose
 {
-	
+		
 	private var AssetDictionary:Dictionary = new Dictionary();
 	//加载器
 	//private var AssetLoader:Loader = null;
-	private var Loader:URLLoader = null;
+	private var _Loader:Loader = null;
 	//加载队列
 	private var DownloadQueue:Array = [];
 	//锁定标识
 	private var _Busy:Boolean = false;
 	
-	private var _AssetLibArray:Vector.<Swf> = new Vector.<Swf>();
+	private var _AssetLibArray:Vector.<IAssetLibrary> = new Vector.<IAssetLibrary>();
 	//正在加载的资源
 	private var _LibraryLoading:int = 1;
 	//正在加载的资源URL
@@ -64,12 +68,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	private var _Total:int = 0;
 	public function ControlAssetManagerImpl()
 	{
-		Loader = new URLLoader();
-		Loader.dataFormat = URLLoaderDataFormat.BINARY;
-		Loader.addEventListener(ProgressEvent.PROGRESS,OnProgress);
-		Loader.addEventListener(IOErrorEvent.IO_ERROR,OnError);
-		Loader.addEventListener(Event.COMPLETE,OnComplete);
-		Loader.addEventListener(Event.OPEN,OnStart);
+		
 	}
 	
 	public function Download(Uri:Array):void
@@ -82,7 +81,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 		}
 	}
 	
-	public function get AssetLibrary():Vector.<Swf>
+	public function get Librarys():Vector.<IAssetLibrary>
 	{
 		return _AssetLibArray;
 	}
@@ -90,12 +89,12 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	private var HookDict:Dictionary = new Dictionary();
 	public function AssetHookRegister(Id:String,Target:UIControl):void
 	{
-		for each(var Lib:Swf in _AssetLibArray)
+		for each(var Lib:IAssetLibrary in _AssetLibArray)
 		{
-			if(Lib.ClassKeyset.indexOf(Id) >= 0)
+			if(Lib.hasDefinition(Id))
 			{
 				//当前库资源已加载
-				Target.AssetComleteNotify(Id,Lib.FindObjectById(Id));
+				Target.AssetComleteNotify(Id,Lib.findAssetByName(Id));
 				return;
 			}
 		}
@@ -133,20 +132,20 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 		}
 	}
 	
-	private function CheckHook(NewLibrary:Swf):void
+	private function CheckHook(NewLibrary:IAssetLibrary):void
 	{
 		var Key:String = "";
 		var Vec:Vector.<UIControl> = null;
 		var Hook:UIControl = null;
 		for(Key in HookDict)
 		{
-			if(NewLibrary.IsContain(Key))
+			if(NewLibrary.hasDefinition(Key))
 			{
-				var Obj:Object = NewLibrary.FindObjectById(Key);
+				var asset:IAsset = NewLibrary.findAssetByName(Key);
 				Vec = HookDict[Key];
 				for each(Hook in Vec)
 				{
-					Hook.AssetComleteNotify(Key,Obj);
+					Hook.AssetComleteNotify(Key,asset);
 				}
 			}
 		}
@@ -168,7 +167,16 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	{
 		_Busy = true;
 		_LibraryLoadingUrl = DownloadQueue.pop();
-		Loader.load(new URLRequest(_LibraryLoadingUrl));
+		
+		_Loader = new Loader();
+		//_Loader.dataFormat = URLLoaderDataFormat.BINARY;
+		_Loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,OnProgress);
+		_Loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,OnError);
+		_Loader.contentLoaderInfo.addEventListener(Event.COMPLETE,OnComplete);
+		_Loader.contentLoaderInfo.addEventListener(Event.OPEN,OnStart);
+		var ctx:LoaderContext = new LoaderContext();
+		ctx.allowCodeImport = true;
+		_Loader.load(new URLRequest(_LibraryLoadingUrl),ctx);
 	}
 	
 	/**
@@ -178,14 +186,15 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 		var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_START);
 		Notify.CurrentIndex = _LibraryLoading;
 		Notify.CurrentUri = _LibraryLoadingUrl;
-		Notify.LoadedBytes = Loader.bytesLoaded;
-		Notify.TotalBytes = Loader.bytesTotal;
+		Notify.LoadedBytes = event.bytesLoaded;
+		Notify.TotalBytes = event.bytesTotal;
 		Notify.Total = _Total;
 		dispatchEvent(Notify);
 	}
 	
 	private function OnError(event:IOErrorEvent):void
 	{
+		clearLoader();
 		var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_ERROR);
 		Notify.Message = event.text;
 		dispatchEvent(Notify);
@@ -198,9 +207,23 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	
 	private function OnComplete(event:Event):void
 	{
-		var Data:ByteArray = new ByteArray();
-		Data.writeBytes(ByteArray(Loader.data),0,ByteArray(Loader.data).length);
-		Data.position = 0;
+		var id:String = Tools.getFileName(this._LibraryLoadingUrl);
+		var lib:LoaderAssetLibrary = new LoaderAssetLibrary(_Loader,id);
+		_AssetLibArray.push(lib);
+		CheckHook(lib);
+		clearLoader();
+		if(DownloadQueue.length > 0)
+		{
+			//继续加载下一个资源
+			StartDownloadQueue();
+		}
+		else
+		{
+			var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
+			dispatchEvent(Notify);
+			_Busy = false;
+		}
+		/**
 		var Parse:Swf = new Swf(new ByteStream(Data));
 
 		Parse.FileName = _LibraryLoadingUrl.substring(_LibraryLoadingUrl.lastIndexOf("\\") + 1);
@@ -219,19 +242,54 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 			var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
 			dispatchEvent(Notify);
 			_Busy = false;
-//			
-//			Loader.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
-//			Loader.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
-//			Loader.removeEventListener(Event.COMPLETE,OnComplete);
-//			Loader.removeEventListener(Event.OPEN,OnStart);
-//			Loader = null;
-			
 			return;
 		}
+		**/
 		//继续加载下一个资源
-		StartDownloadQueue();
+		
 	}
 	
+//	private function readToLoader(event:Event):void
+//	{
+//		var id:String = Tools.getFileName(this._LibraryLoadingUrl);
+//		var lib:LoaderAssetLibrary = new LoaderAssetLibrary(_reader,id);
+//		_AssetLibArray.push(lib);
+//		CheckHook(lib);
+//		clearLoader();
+//		_reader.unload();
+//		_reader = null;
+//		if(DownloadQueue.length > 0)
+//		{
+//			//继续加载下一个资源
+//			StartDownloadQueue();
+//		}
+//		else
+//		{
+//			var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
+//			dispatchEvent(Notify);
+//			_Busy = false;
+//		}
+//	}
+	
+	private function clearLoader():void
+	{
+		_Loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
+		_Loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
+		_Loader.contentLoaderInfo.removeEventListener(Event.COMPLETE,OnComplete);
+		_Loader.contentLoaderInfo.removeEventListener(Event.OPEN,OnStart);
+		_Loader.unload();
+		_Loader = null;
+	}
+	
+	private function definitionParse():Vector.<Object>
+	{
+		return null;
+	}
+	
+	private function swfParse():Swf
+	{
+		return null;
+	}
 	/**
 	 * 加载开始
 	 **/
@@ -266,15 +324,15 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 //		}
 	}
 	
-	public function FindAssetById(Id:String):Object
+	public function FindAssetById(Id:String):IAsset
 	{
-		var Lib:Swf = null;
+		var Lib:IAssetLibrary = null;
 		
 		for each(Lib in _AssetLibArray)
 		{
-			if(Lib.IsContain(Id))
+			if(Lib.hasDefinition(Id))
 			{				
-				return Lib.FindObjectById(Id);
+				return Lib.findAssetByName(Id);
 			}
 		}
 		return null;

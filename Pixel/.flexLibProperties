@@ -1,58 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
-  <includeClasses>
-    <classEntry path="pixel.core.PixelLauncher"/>
-    <classEntry path="pixel.core.PixelNs"/>
-    <classEntry path="pixel.core.IPixelDirector"/>
-    <classEntry path="pixel.error.ErrorContants"/>
-    <classEntry path="pixel.error.PixelError"/>
-    <classEntry path="pixel.core.IPixelModule"/>
-    <classEntry path="pixel.message.PixelMessageBus"/>
-    <classEntry path="pixel.message.IPixelMessageBus"/>
-    <classEntry path="pixel.message.PixelMessage"/>
-    <classEntry path="pixel.util.Config"/>
-    <classEntry path="pixel.core.IPixeloduleManager"/>
-    <classEntry path="pixel.core.PixelModuleManager"/>
-    <classEntry path="pixel.core.PixelModule"/>
-    <classEntry path="pixel.io.IPixelIOModule"/>
-    <classEntry path="pixel.io.PixelIOModule"/>
-    <classEntry path="pixel.graphic.PixelGraphicModule"/>
-    <classEntry path="pixel.graphic.IPixelGraphicModule"/>
-    <classEntry path="pixel.core.PixelScreen"/>
-    <classEntry path="pixel.graphic.PixelRenderMode"/>
-    <classEntry path="pixel.scene.IPixelScene"/>
-    <classEntry path="pixel.core.IPixelNode"/>
-    <classEntry path="pixel.core.IPixelGeneric"/>
-    <classEntry path="pixel.core.PixelDirector"/>
-    <classEntry path="pixel.transition.IPixelTransition"/>
-    <classEntry path="pixel.transition.PixelTransitionVars"/>
-    <classEntry path="pixel.transition.PixelTransition"/>
-    <classEntry path="pixel.transition.PixelTransitionSquare"/>
-    <classEntry path="pixel.transition.PixelTransitionContants"/>
-    <classEntry path="pixel.transition.event.PixelTransitionEvent"/>
-    <classEntry path="pixel.transition.PixelTransitionFlipX"/>
-    <classEntry path="pixel.core.PixelConfig"/>
-    <classEntry path="pixel.core.PixelSprite"/>
-    <classEntry path="pixel.core.IPixelSprite"/>
-    <classEntry path="pixel.core.IPixelSpriteSheet"/>
-    <classEntry path="pixel.core.PixelSpriteSheet"/>
-    <classEntry path="pixel.core.PixelNode"/>
-    <classEntry path="pixel.codec.spr.SpriteEncoder"/>
-    <classEntry path="pixel.codec.ICoder"/>
-    <classEntry path="pixel.scene.PixelScene"/>
-    <classEntry path="pixel.transition.PixelTransitionHelper"/>
-    <classEntry path="pixel.message.IOMessage"/>
-    <classEntry path="pixel.assets.IPixelAssetsManager"/>
-    <classEntry path="pixel.assets.PixelAssetsManager"/>
-    <classEntry path="pixel.thread.PixelThread"/>
-    <classEntry path="pixel.assets.IPixelAssetsMarshal"/>
-    <classEntry path="pixel.assets.PixelDefaultAssetLoader"/>
-    <classEntry path="pixel.assets.PixelAssetTask"/>
-    <classEntry path="pixel.assets.PixelAssetTaskMode"/>
-    <classEntry path="pixel.assets.PixelAssetNode"/>
-    <classEntry path="pixel.assets.event.PixelAssetEvent"/>
-    <classEntry path="pixel.assets.PixelAssetLoaderMarshal"/>
-  </includeClasses>
+  <includeClasses/>
   <includeResources/>
   <namespaceManifests/>
 </flexLibProperties>

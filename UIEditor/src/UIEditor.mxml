@@ -22,50 +22,6 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.Container;
-			import pixel.ui.control.SimpleTabPanel;
-			import pixel.ui.control.UIButton;
-			import pixel.ui.control.UIControl;
-			import pixel.ui.control.UIControlFactory;
-			import pixel.ui.control.UIImage;
-			import pixel.ui.control.UILabel;
-			import pixel.ui.control.UIPanel;
-			import pixel.ui.control.UISlider;
-			import pixel.ui.control.UITextInput;
-			import pixel.ui.control.UIWindow;
-			import pixel.ui.control.asset.ControlAssetManager;
-			import pixel.ui.control.event.DownloadEvent;
-			import pixel.ui.control.event.EditModeEvent;
-			import pixel.ui.control.event.UIControlEvent;
-			import pixel.ui.control.style.ButtonStyle;
-			import pixel.ui.control.style.SliderStyle;
-			import pixel.ui.control.style.StyleShape;
-			import pixel.ui.control.style.UIStyle;
-			import pixel.ui.control.utility.ControlType;
-			import pixel.ui.control.utility.Utils;
-			
-			import editor.event.NotifyEvent;
-			import editor.model.ComponentModel;
-			import editor.model.ModelFactory;
-			import editor.model.asset.AssetLibrary;
-			import editor.model.asset.IAssetLibrary;
-			import editor.model.asset.SwfAssetLibrary;
-			import editor.ui.AboutWindow;
-			import editor.ui.AssetLibraryWindow;
-			import editor.ui.AssetSelectWindow;
-			import editor.ui.ComponentProfile;
-			import editor.ui.ControlLibraryItem;
-			import editor.ui.NewAssetLibrary;
-			import editor.ui.NotificationManager;
-			import editor.ui.PreferenceWindow;
-			import editor.ui.SwfImportWindow;
-			import editor.ui.WorkspacePlus;
-			import editor.uitility.ui.event.UIEvent;
-			import editor.utils.Common;
-			import editor.utils.FileLoadQueue;
-			import editor.utils.Globals;
-			import editor.utils.Preference;
-			
 			import flash.utils.getQualifiedClassName;
 			
 			import mx.collections.ArrayCollection;
@@ -87,11 +43,52 @@
 			import spark.events.IndexChangeEvent;
 			import spark.skins.spark.ImageSkin;
 			
-			import utility.MouseManager;
-			import utility.System;
-			import utility.Tools;
-			import utility.swf.Swf;
-			import utility.swf.SwfFactory;
+			import editor.event.NotifyEvent;
+			import editor.model.ComponentModel;
+			import editor.model.ModelFactory;
+			import editor.ui.AboutWindow;
+			import editor.ui.AssetLibraryWindow;
+			import editor.ui.AssetSelectWindow;
+			import editor.ui.ComponentProfile;
+			import editor.ui.ControlLibraryItem;
+			import editor.ui.NewAssetLibrary;
+			import editor.ui.NotificationManager;
+			import editor.ui.PreferenceWindow;
+			import editor.ui.SwfImportWindow;
+			import editor.ui.WorkspacePlus;
+			import editor.uitility.ui.PopUpWindowManager;
+			import editor.uitility.ui.event.UIEvent;
+			import editor.utils.Common;
+			import editor.utils.FileLoadQueue;
+			import editor.utils.Globals;
+			import editor.utils.Preference;
+			
+			import pixel.ui.control.Container;
+			import pixel.ui.control.SimpleTabPanel;
+			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.UIImage;
+			import pixel.ui.control.UILabel;
+			import pixel.ui.control.UIPanel;
+			import pixel.ui.control.UISlider;
+			import pixel.ui.control.UITextInput;
+			import pixel.ui.control.UIWindow;
+			import pixel.ui.control.asset.ControlAssetManager;
+			import pixel.ui.control.asset.IAssetLibrary;
+			import pixel.ui.control.event.DownloadEvent;
+			import pixel.ui.control.event.EditModeEvent;
+			import pixel.ui.control.event.UIControlEvent;
+			import pixel.ui.control.style.ButtonStyle;
+			import pixel.ui.control.style.SliderStyle;
+			import pixel.ui.control.style.StyleShape;
+			import pixel.ui.control.style.UIStyle;
+			import pixel.ui.control.utility.ControlType;
+			import pixel.ui.control.utility.Utils;
+			import pixel.utility.MouseManager;
+			import pixel.utility.System;
+			import pixel.utility.Tools;
+			import pixel.utility.swf.Swf;
+			import pixel.utility.swf.SwfFactory;
 			[Embed(source="assets/AssetLibrary.png")]
 			private var TreeIcon:Class;
 			[Embed(source="assets/AssetSwf.png")]
@@ -179,13 +176,13 @@
 			
 			private function AssetLibraryInitalized(event:DownloadEvent):void
 			{
-				var Vec:Vector.<Swf> = ControlAssetManager.Instance.AssetLibrary;
+				var Vec:Vector.<IAssetLibrary> = ControlAssetManager.Instance.Librarys;
 				
-				for each(var Lib:Swf in Vec)
+				for each(var Lib:IAssetLibrary in Vec)
 				{
-					var Item:SwfAssetLibrary = new SwfAssetLibrary(Lib);
-					Globals.AppendAssetLibrary(Item);
-					AssetLibraryTree.addItem(Item);
+					//var Item:SwfAssetLibrary = new SwfAssetLibrary(Lib);
+					Globals.AppendAssetLibrary(Lib);
+					AssetLibraryTree.addItem(Lib);
 				}
 				ControlAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
 			}
@@ -226,16 +223,18 @@
 			
 			private function OpenPreferenceWindow(event:MouseEvent):void
 			{
-				PopupWindow = CreateWindowByClass(PreferenceWindow);
-				PopUpManager.addPopUp(PopupWindow,this,true);
-				PopUpManager.centerPopUp(PopupWindow);
+				PopUpWindowManager.PopUp(PreferenceWindow);
+//				PopupWindow = CreateWindowByClass(PreferenceWindow);
+//				PopUpManager.addPopUp(PopupWindow,this,true);
+//				PopUpManager.centerPopUp(PopupWindow);
 			}
 			
 			private function OpenAbautWindow(event:MouseEvent):void
 			{
-				PopupWindow = CreateWindowByClass(AboutWindow);
-				PopUpManager.addPopUp(PopupWindow,this,true);
-				PopUpManager.centerPopUp(PopupWindow);
+				PopUpWindowManager.PopUp(AboutWindow);
+//				PopupWindow = CreateWindowByClass(AboutWindow);
+//				PopUpManager.addPopUp(PopupWindow,this,true);
+//				PopUpManager.centerPopUp(PopupWindow);
 			}
 			
 			/**
@@ -292,8 +291,8 @@
 			private function CreateWindowByClass(WindowClass:Class):SkinnableContainer
 			{
 				var Window:SkinnableContainer = new WindowClass() as SkinnableContainer;
-				Window.addEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
-				Window.addEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
+				//Window.addEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
+				//Window.addEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
 				return Window;
 			}
 			
@@ -306,87 +305,11 @@
 			/**
 			 * 窗口确认
 			 * 
-			 **/
+			 
 			private function OnWindowEnter(event:NotifyEvent):void
 			{
-//				PopupWindow.removeEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
-//				PopupWindow.removeEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
-//				PopUpManager.removePopUp(PopupWindow);
-				
-//				switch(WindowState)
-//				{
-//					case 0:
-//						CloseCurrentPopupWindow();
-//						//保存当前控件的基本信息
-//						ComProfile = event.Params.pop() as ComponentProfile;
-//
-//						if(null != EditWorkspace)
-//						{
-//							if(WorkspaceContainer.containsElement(EditWorkspace))
-//							{
-//								WorkspaceContainer.removeElement(EditWorkspace);
-//							}
-//							
-//							ControlProperty.Reset();
-//						}
-//						
-//						EditWorkspace = new WorkspacePlus();
-//						//EditWorkspace.width = 2048;
-//						//EditWorkspace.height = 2048;
-//						BackFill.width = EditWorkspace.width;
-//						BackFill.height = EditWorkspace.height;
-//						
-//						EditWorkspace.addEventListener(NotifyEvent.UPDATECONSTRUCT,function(event:NotifyEvent):void{
-//							ComponentTree = new ArrayCollection(event.Params.pop() as Array);
-//						});
-//						//EditWorkspace.BuildWorkspace(ComProfile);
-//						WorkspaceContainer.enabled = true;
-//						EditWorkspace.x = 10;
-//						EditWorkspace.y = 10;
-//						WorkspaceContainer.addElement(EditWorkspace);
-//						break;
-//				}
-//				CloseCurrentPopupWindow();
-//				//保存当前控件的基本信息
-//				ComProfile = event.Params.pop() as ComponentProfile;
-				
-//				ComponentBar.enabled = true;
-//				if(null != EditWorkspace)
-//				{
-//					if(WorkspaceContainer.containsElement(EditWorkspace))
-//					{
-//						WorkspaceContainer.removeElement(EditWorkspace);
-//					}
-//					
-//					ControlProperty.Reset();
-//				}
-//				
-//				EditWorkspace = new WorkspacePlus();
-//				EditWorkspace.width = 2048;
-//				EditWorkspace.height = 2048;
-//				BackFill.width = EditWorkspace.width;
-//				BackFill.height = EditWorkspace.height;
-//				
-//				EditWorkspace.addEventListener(NotifyEvent.UPDATECONSTRUCT,function(event:NotifyEvent):void{
-//					ComponentTree = new ArrayCollection(event.Params.pop() as Array);
-//				});
-//				//EditWorkspace.BuildWorkspace(ComProfile);
-//				WorkspaceContainer.enabled = true;
-//				EditWorkspace.x = 10;
-//				EditWorkspace.y = 10;
-//				WorkspaceContainer.addElement(EditWorkspace);
-//				WorkspaceContainer.visible = true;
-//				EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
-//				EditWorkspace.addEventListener(UIEvent.FRAME_RESIZED,function(event:EditModeEvent):void{
-//					
-//					EditWorkspace.width = event.target.width > 2048 ? event.target.width + 100:2048;
-//					EditWorkspace.height = event.target.height > 2048 ? event.target.height + 100:2048;
-//					BackFill.width = EditWorkspace.width;
-//					BackFill.height = EditWorkspace.height;
-//					//trace("Resized");
-//				});
 			}
-			
+			**/
 			private var _CurrentSelect:UIControl = null;
 			/**
 			 * 更新当前选择控件的属性面板
@@ -438,25 +361,25 @@
 			/**
 			 * 窗口关闭
 			 **/
-			private function OnWindowClose(event:Event):void
-			{
-				CloseCurrentPopupWindow();
-			}
+//			private function OnWindowClose(event:Event):void
+//			{
+//				CloseCurrentPopupWindow();
+//			}
 			
 			/**
 			 * 关闭当前的弹出窗口
 			 * 
 			 **/
-			private function CloseCurrentPopupWindow():void
-			{
-				if(PopupWindow)
-				{
-					PopupWindow.removeEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
-					PopupWindow.removeEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
-					PopUpManager.removePopUp(PopupWindow);
-					PopupWindow = null;
-				}
-			}
+//			private function CloseCurrentPopupWindow():void
+//			{
+//				if(PopupWindow)
+//				{
+//					PopupWindow.removeEventListener(NotifyEvent.WINDOW_CLOSE,OnWindowClose);
+//					PopupWindow.removeEventListener(NotifyEvent.WINDOW_ENTER,OnWindowEnter);
+//					PopUpManager.removePopUp(PopupWindow);
+//					PopupWindow = null;
+//				}
+//			}
 			
 			private function NewPanelToWorkspace(event:MouseEvent):void
 			{
@@ -563,17 +486,17 @@
 			private function SaveCode(SourceCode:String):void
 			{
 				var Package:String = ComProfile.PackageName;
-				var Nav:String = Package.replace(".",utility.System.SystemSplitSymbol);
+				var Nav:String = Package.replace(".",pixel.utility.System.SystemSplitSymbol);
 				while(Nav.indexOf(".") > 0)
 				{
-					Nav = Nav.replace(".",utility.System.SystemSplitSymbol);
+					Nav = Nav.replace(".",pixel.utility.System.SystemSplitSymbol);
 				}
 				var PackageDir:File = new File(Common.OUTPUT + Nav);
 				if(!PackageDir.exists || !PackageDir.isDirectory)
 				{
 					PackageDir.createDirectory();
 				}
-				var ClassFile:File = new File(Common.OUTPUT + Nav + utility.System.SystemSplitSymbol + ComProfile.ClassName + ".as");
+				var ClassFile:File = new File(Common.OUTPUT + Nav + pixel.utility.System.SystemSplitSymbol + ComProfile.ClassName + ".as");
 				var Writer:FileStream = new FileStream();
 				Writer.open(ClassFile,FileMode.WRITE);
 				Writer.writeUTFBytes(SourceCode);
@@ -601,7 +524,7 @@
 			 **/
 			private function TreeIconFactory(Item:Object):Class
 			{
-				if(Item is SwfAssetLibrary)
+				if(Item is IAssetLibrary)
 				{
 					return TreeSwfIcon;
 				}
@@ -661,10 +584,9 @@
 			private function TreeItemClick(event:ListEvent):void
 			{
 				var Library:IAssetLibrary = AssetLibraryTree.getItemAt(event.rowIndex) as IAssetLibrary;
-				PopupWindow = CreateWindowByClass(AssetLibraryWindow);
-				PopUpManager.addPopUp(PopupWindow,this,true);
-				PopUpManager.centerPopUp(PopupWindow);
-				AssetLibraryWindow(PopupWindow).AssetLibraryItem(Library);
+				var window:AssetLibraryWindow = PopUpWindowManager.PopUp(AssetLibraryWindow) as AssetLibraryWindow;
+
+				window.AssetLibraryItem(Library);
 				//PopupWindow.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
 				//创建资源库
 				//WindowState = 88;
@@ -739,7 +661,7 @@
 			
 			private function OnImportSwfSuccess(event:DownloadEvent):void
 			{
-				var Lib:SwfAssetLibrary = new SwfAssetLibrary(event.CurrentSwf);
+				var Lib:IAssetLibrary = event.library;
 				Globals.AppendAssetLibrary(Lib);
 				AssetLibraryTree.addItem(Lib);
 				ControlAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
@@ -1189,7 +1111,7 @@
 				<mx:HRule width="200" height="1"/>
 				<mx:Tree width="200" height="100%" borderVisible="false" contentBackgroundColor="#FFFFFF"
 						 dataProvider="{AssetLibraryTree}" iconFunction="TreeIconFactory"
-						 itemClick="TreeItemClick(event)" labelField="Name"/>
+						 itemClick="TreeItemClick(event)" labelField="id"/>
 			</mx:VBox>
 			
 			<mx:VBox label="结构视图" horizontalAlign="center" width="100%" height="100%">

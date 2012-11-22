@@ -1,12 +1,12 @@
 package editor.ui
 {
-	import editor.event.NotifyEvent;
-	
 	import flash.events.MouseEvent;
 	
 	import mx.events.CloseEvent;
 	
 	import spark.components.TitleWindow;
+	
+	import editor.uitility.ui.event.UIEvent;
 
 	public class AdvanceTitleWindow extends TitleWindow
 	{
@@ -23,7 +23,7 @@ package editor.ui
 		
 		public function CloseWindow():void
 		{
-			var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.WINDOW_CLOSE);
+			var Notify:UIEvent = new UIEvent(UIEvent.WINDOW_CLOSE);
 			dispatchEvent(Notify);
 		}
 		

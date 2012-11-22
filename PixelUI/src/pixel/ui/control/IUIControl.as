@@ -2,8 +2,8 @@ package pixel.ui.control
 {
 	import flash.events.IEventDispatcher;
 	
-	import utility.IDispose;
-	import utility.ISerializable;
+	import pixel.utility.IDispose;
+	import pixel.utility.ISerializable;
 
 	/**
 	 * 

@@ -12,7 +12,7 @@ package pixel.ui.control
 	import flash.events.MouseEvent;
 	import flash.utils.ByteArray;
 	
-	import utility.Tools;
+	import pixel.utility.Tools;
 
 	/**
 	 * 简单按钮控件
