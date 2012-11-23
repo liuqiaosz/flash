@@ -1,10 +1,13 @@
 package pixel.ui.control
 {
-	import pixel.ui.control.event.ScrollerEvent;
-	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	
+	import pixel.ui.control.event.ScrollerEvent;
 	import pixel.ui.control.style.ScrollerStyle;
+	import pixel.ui.core.NSPixelUI;
+	
+	use namespace NSPixelUI;
 	
 	/**
 	 * 垂直下拉条
@@ -22,16 +25,12 @@ package pixel.ui.control
 		
 		//实际宽度比容器宽度溢出的数量
 		private var _RemainHeight:int = 0;
-		private var _Handler:ScrollHandler = null;
 		
 		private var _PixelUnit:Number = 0;
 		public function VerticalScroller(Skin:Class = null)
 		{
 			var StyleSkin:Class = Skin ? Skin:ScrollerStyle;
 			super(StyleSkin);
-			_Handler = new ScrollHandler();
-			OrignalAddChild(_Handler);
-			
 			this.addEventListener(MouseEvent.MOUSE_DOWN,MouseDrag);
 		}
 		
@@ -67,6 +66,8 @@ package pixel.ui.control
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE,MouseDragMove);
 				stage.removeEventListener(MouseEvent.MOUSE_UP,MouseDrop);
 			}
+			
+			trace("W[" + _Handler.width + "]H[" + _Handler.height + "]");
 		}
 		
 		private var Pos:Point = new Point();
@@ -97,11 +98,13 @@ package pixel.ui.control
 			Notify.ScrollRect.height = _BoxHeight - _parentContainer.Gap;
 			_parentContainer.Content.scrollRect = Notify.ScrollRect;
 			dispatchEvent(Notify);
+			
+			trace("W[" + _Handler.width + "]H[" + _Handler.height + "]");
 		}
 		
 		override protected function Initialize():void
 		{
-			RefreshSize();
+			refresh();
 		}
 		
 		/**
@@ -109,7 +112,7 @@ package pixel.ui.control
 		 * 
 		 * 
 		 **/
-		public function RefreshSize():void
+		override NSPixelUI function refresh():void
 		{
 			_parentContainer = parent as Container;
 			if(_parentContainer)
@@ -140,6 +143,7 @@ package pixel.ui.control
 					{
 						HandlerHeight = HANDLER_MINMIZE;
 					}
+					trace("Change handler height");
 					_Handler.height = HandlerHeight;
 					_PixelUnit = (_RealHeight - _BoxHeight) / (_BoxHeight - HandlerHeight);
 					

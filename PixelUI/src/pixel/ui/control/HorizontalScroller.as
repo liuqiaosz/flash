@@ -19,7 +19,7 @@ package pixel.ui.control
 		
 		//实际宽度比容器宽度溢出的数量
 		private var _RemainWidth:int = 0;
-		private var _Handler:ScrollHandler = null;
+		
 		
 		private var _PixelUnit:Number = 0;
 		
@@ -27,8 +27,7 @@ package pixel.ui.control
 		{
 			var StyleSkin:Class = Skin ? Skin:ContainerStyle;
 			super(StyleSkin);
-			_Handler = new ScrollHandler();
-			OrignalAddChild(_Handler);
+			
 			
 			this.addEventListener(MouseEvent.MOUSE_DOWN,MouseDrag);
 		}

@@ -1,5 +1,9 @@
 package pixel.ui.control
 {
+	import flash.display.Bitmap;
+	import flash.events.MouseEvent;
+	import flash.utils.ByteArray;
+	
 	import pixel.ui.control.asset.ControlAssetManager;
 	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.style.ButtonStyle;
@@ -7,11 +11,6 @@ package pixel.ui.control
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.StyleShape;
 	import pixel.ui.control.utility.ButtonState;
-	
-	import flash.display.Bitmap;
-	import flash.events.MouseEvent;
-	import flash.utils.ByteArray;
-	
 	import pixel.utility.Tools;
 
 	/**
@@ -49,12 +48,15 @@ package pixel.ui.control
 			width = 50;
 			height = 30;
 			this.buttonMode = true;
-			
+			_Text = new UILabel(_TextValue);
+			addChild(_Text);
 			addEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
 			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 			this.mouseChildren =false;
+			
+			
 		}
 
 		override protected function RemoveEvent():void
@@ -68,6 +70,7 @@ package pixel.ui.control
 		override public function EnableEditMode():void
 		{
 			this.buttonMode = false;
+			this.mouseChildren = true;
 			super.EnableEditMode();
 			RemoveEvent();
 		}
@@ -142,17 +145,18 @@ package pixel.ui.control
 //					removeChild(_Text);
 //				}
 //				_Text = FontTextFactory.Instance.TextByStyle(V,_Style.FontTextStyle);
-				if(null == _Text)
-				{
-					_Text = new UILabel(_TextValue);
-					_Text.FontColor = _Style.FontTextStyle.FontColor;
-					_Text.FontSize = _Style.FontTextStyle.FontSize;
-					_Text.buttonMode = true;
-					_Text.Align = TextAlign.CENTER;
-					//_Text.width = width;
-					//_Text.height = height;
-					addChild(_Text);
-				}
+//				if(null == _Text)
+//				{
+//					
+//					_Text.FontColor = _Style.FontTextStyle.FontColor;
+//					_Text.FontSize = _Style.FontTextStyle.FontSize;
+//					_Text.buttonMode = true;
+//					_Text.Align = TextAlign.CENTER;
+//					//_Text.width = width;
+//					//_Text.height = height;
+//					addChild(_Text);
+//				}
+				_Text.Text = Value;
 				Update();
 			}
 			else
@@ -160,9 +164,14 @@ package pixel.ui.control
 				if(null != _Text && this.contains(_Text))
 				{
 					_Text.Text = "";
-					this.removeChild(_Text);
+					//this.removeChild(_Text);
 				}
 			}
+		}
+		
+		public function get textLabel():UILabel
+		{
+			return _Text;
 		}
 		
 		public function get Text():String
@@ -170,29 +179,29 @@ package pixel.ui.control
 			return _TextValue;
 		}
 		
-		public function set FontSize(Value:int):void
-		{
-			_Style.FontTextStyle.FontSize = Value;
-			_Text.FontSize = Value;
-			
-			//Text = _TextValue;
-		}
-		public function get FontSize():int
-		{
-			return _Style.FontTextStyle.FontSize;
-		}
-		
-		public function set FontColor(Value:uint):void
-		{
-			
-			_Style.FontTextStyle.FontColor = Value;
-			_Text.FontColor = Value;
-			//Text = _TextValue;
-		}
-		public function get FontColor():uint
-		{
-			return _Style.FontTextStyle.FontColor;
-		}
+//		public function set FontSize(Value:int):void
+//		{
+//			_Style.FontTextStyle.FontSize = Value;
+//			_Text.FontSize = Value;
+//			
+//			//Text = _TextValue;
+//		}
+//		public function get FontSize():int
+//		{
+//			return _Style.FontTextStyle.FontSize;
+//		}
+//		
+//		public function set FontColor(Value:uint):void
+//		{
+//			
+//			_Style.FontTextStyle.FontColor = Value;
+//			_Text.FontColor = Value;
+//			//Text = _TextValue;
+//		}
+//		public function get FontColor():uint
+//		{
+//			return _Style.FontTextStyle.FontColor;
+//		}
 		
 		/**
 		 * 渲染
@@ -255,30 +264,44 @@ package pixel.ui.control
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			var Len:int = Data.readShort();
-			if(Len > 0)
-			{
-				var Label:String = Data.readMultiByte(Len,"cn-gb");
-				Text = Label;
-			}
+			var labelData:ByteArray = new ByteArray();
+			Data.readBytes(labelData,0,Len);
+			labelData.position = 1;//跳过UILabel类型数据域
+			_Text.Decode(labelData);
+//			if(Len > 0)
+//			{
+//				
+////				var Label:String = Data.readMultiByte(Len,"cn-gb");
+////				Text = Label;
+//				//_Text.applyFontStyle(_Style.FontTextStyle);
+//			}
 		}
 		override protected function SpecialEncode(Data:ByteArray):void
 		{
-			var Len:int = Tools.StringActualLength(_TextValue);
-			Data.writeShort(Len);
-			if(Len > 0)
-			{
-				Data.writeMultiByte(_TextValue,"cn-gb");
-			}
+			var labelData:ByteArray = _Text.Encode();
+			Data.writeShort(labelData.length);
+			Data.writeBytes(labelData,0,labelData.length);
+//			var Len:int = Tools.StringActualLength(_TextValue);
+//			Data.writeShort(Len);
+//			if(Len > 0)
+//			{
+//				Data.writeMultiByte(_TextValue,"cn-gb");
+//			}
 		}
 		
-		public function set LabelTextAlign(Value:int):void
-		{
-			_Text.Align = Value;
-		}
-		public function get LabelTextAlign():int
-		{
-			return _Text.Align;
-		}
+//		public function set LabelTextFamily(value:String):void
+//		{
+//			_Text.FontFamily = value;
+//		}
+//		
+//		public function set LabelTextAlign(Value:int):void
+//		{
+//			_Text.Align = Value;
+//		}
+//		public function get LabelTextAlign():int
+//		{
+//			return _Text.Align;
+//		}
 		
 		override public function set ImagePack(Value:Boolean):void
 		{

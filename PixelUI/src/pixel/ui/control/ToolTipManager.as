@@ -1,8 +1,8 @@
 package pixel.ui.control
 {
-	import pixel.ui.core.LibraryInternal;
+	import pixel.ui.core.NSPixelUI;
 
-	use namespace LibraryInternal
+	use namespace NSPixelUI
 	public class ToolTipManager
 	{
 		private static var _Instance:IToolTip;
@@ -27,7 +27,7 @@ import pixel.ui.control.UILabel;
 import pixel.ui.control.UIPanel;
 import pixel.ui.control.asset.IControlAssetManager;
 import pixel.ui.control.style.IVisualStyle;
-import pixel.ui.core.LibraryInternal;
+import pixel.ui.core.NSPixelUI;
 
 import flash.events.MouseEvent;
 import flash.events.TimerEvent;
@@ -37,7 +37,7 @@ import flash.utils.getTimer;
 
 class ToolTipImpl implements IToolTip
 {
-	use namespace LibraryInternal;
+	use namespace NSPixelUI;
 	
 	private var _Tip:TipPanel = new TipPanel();
 	private var _LazyTime:int = 0;

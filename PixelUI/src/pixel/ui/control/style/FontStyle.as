@@ -1,6 +1,8 @@
 package pixel.ui.control.style
 {
 	import flash.utils.ByteArray;
+	
+	import pixel.utility.Tools;
 
 	public class FontStyle implements IStyle
 	{
@@ -11,14 +13,26 @@ package pixel.ui.control.style
 		public function Decode(Data:ByteArray):void
 		{
 			_FontSize = Data.readByte();
-			_FontColor = Data.readShort();
+			_FontColor = Data.readUnsignedInt();
+			
+			_FontBold = Boolean(Data.readByte());
+			_FontAlign = Data.readByte();
+			var Len:int = Data.readByte();
+			_FontFamily = Data.readMultiByte(Len,"cn-gb");
 		}
 		
 		public function Encode():ByteArray
 		{
 			var Data:ByteArray = new ByteArray();
 			Data.writeByte(_FontSize);
-			Data.writeShort(_FontColor);
+			Data.writeUnsignedInt(_FontColor);
+			
+			//2012-11-23 ADD
+			Data.writeByte(int(_FontBold));
+			Data.writeByte(_FontAlign);
+			var Len:int = Tools.StringActualLength(_FontFamily);
+			Data.writeByte(Len);
+			Data.writeMultiByte(_FontFamily,"cn-gb");
 			return Data;
 		}
 		
@@ -56,7 +70,7 @@ package pixel.ui.control.style
 		{
 			return _FontBold;
 		}
-		protected var _FontAlign:int = FontTextAlignEnmu.ALIGN_CENTER;
+		protected var _FontAlign:int = FontTextAlignEnmu.ALIGN_LEFTTOP;
 		public function set FontAlign(Value:int):void
 		{
 			_FontAlign = Value;
@@ -64,6 +78,16 @@ package pixel.ui.control.style
 		public function get FontAlign():int
 		{
 			return _FontAlign;
+		}
+		
+		protected var _FontFamily:String = "Times New Roman";
+		public function set FontFamily(value:String):void
+		{
+			_FontFamily = value;
+		}
+		public function get FontFamily():String
+		{
+			return _FontFamily;
 		}
 	}
 }

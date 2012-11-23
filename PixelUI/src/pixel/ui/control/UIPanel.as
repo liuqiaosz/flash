@@ -2,10 +2,8 @@ package pixel.ui.control
 {
 	import pixel.ui.control.event.ControlEditModeEvent;
 	import pixel.ui.control.event.EditModeEvent;
-	import pixel.ui.control.style.ContainerStyle;
 	import pixel.ui.control.style.UIPanelStyle;
 	
-	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 

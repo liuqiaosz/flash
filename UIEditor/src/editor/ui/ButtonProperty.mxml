@@ -6,8 +6,6 @@
 	<!--Tab标签样式设定-->
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.UIButton;
-			
 			import mx.controls.Alert;
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
@@ -15,22 +13,42 @@
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
+			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UILabel;
 			import pixel.utility.Tools;
 			
 			private var Button:UIButton = null;
 			[Bindable]
-			private var _Label:String = "";
+			private var _Label:UILabel = null;
+			
+			
+			
+			[Bindable]
+			private var _FamilyArray:ArrayCollection = new ArrayCollection();
 			override protected function Initialized():void
 			{
+//				var fonts:Array = Font.enumerateFonts(true);
+//				
+//				for each(var font:Font in fonts)
+//				{
+//					_FamilyArray.addItem(font.fontName);
+//				}
+				
 				Button = Control as pixel.ui.control.UIButton;
 //				SimpleStyle.Control = Button;
 //				BorderStyle.Control = Button;
 //				BackgroundStyle.Control = Button;
-				_Label = Button.Text;
-				_FontSize = Button.FontSize;
-				_FontSizeText = "" + _FontSize;
-				FontColorPicker.selectedColor = Button.FontColor;
-				_BindFontColorText = Tools.Color2Hex(Button.FontColor);
+				_Label = Button.textLabel;
+//				_FontSize = Button.textLabel.FontSize;
+//				_FontSizeText = "" + _FontSize;
+//				FontColorPicker.selectedColor = Button.textLabel.FontColor;
+//				_BindFontColorText = Tools.Color2Hex(Button.textLabel.FontColor);
+//				var idx:int = _FamilyArray.getItemIndex(Button.textLabel.FontFamily);
+//				if(idx >= 0)
+//				{
+//					LabelFamily.selectedIndex = idx;
+//					LabelFamily.toolTip = _FamilyArray.getItemAt(idx) as String;
+//				}
 				//LabelAlign.selectedIndex = Button.LabelTextAlign;
 			}
 			
@@ -48,75 +66,86 @@
 			}
 			
 			
-			/**
-			 * 文本定位
-			 **/
-			private function ButtonLabelAlignChanged(event:IndexChangeEvent):void
-			{
-				Button.LabelTextAlign = event.newIndex;
-			}
+//			/**
+//			 * 文本定位
+//			 **/
+//			private function ButtonLabelAlignChanged(event:IndexChangeEvent):void
+//			{
+//				Button.textLabel.Align = event.newIndex;
+//			}
+//			
+//			/**
+//			 *
+//			 * 文本字体变更
+//			 */
+//			private function LabelFontFamilyChanged(event:IndexChangeEvent):void
+//			{
+//				Button.textLabel.FontFamily = _FamilyArray.getItemAt(event.newIndex) as String;
+//				LabelFamily.toolTip = Button.textLabel.FontFamily;
+//			}
+//			
+//			protected function LabelChanged(event:TextOperationEvent):void
+//			{
+//				Button.Text = ButtonText.text;
+//				
+//			}
+//			
+//			[Bindable]
+//			private var _FontSizeText:String = "10";
+//			[Bindable]
+//			private var _FontSize:int = 10;
+//			[Bindable]
+//			private var _BindFontColor:uint = 0x000000;
+//			[Bindable]
+//			private var _BindFontColorText:String = "0x000000";
+//			
+//			/**
+//			 * 标签内容面板边框宽度变更
+//			 **/
+//			protected function FontSizeChanged(event:Event):void
+//			{
+//				Button.textLabel.FontSize = _FontSize = FontSize.value;
+//				//_Label.FontSize = _FontSize = FontSize.value;
+//				_FontSizeText = "" + _FontSize;
+//			}
+//			
+//			/**
+//			 * 标签内容面板边框颜色变更
+//			 **/
+//			protected function FontColorChanged(event:ColorPickerEvent):void
+//			{
+//				Button.textLabel.FontColor = FontColorPicker.selectedColor;
+//				_BindFontColor = FontColorPicker.selectedColor;
+//				_BindFontColorText = pixel.utility.Tools.Color2Hex(_BindFontColor);
+//			}
 			
-			protected function LabelChanged(event:TextOperationEvent):void
-			{
-				Button.Text = ButtonText.text;
-				
-			}
-			
-			[Bindable]
-			private var _FontSizeText:String = "10";
-			[Bindable]
-			private var _FontSize:int = 10;
-			[Bindable]
-			private var _BindFontColor:uint = 0x000000;
-			[Bindable]
-			private var _BindFontColorText:String = "0x000000";
-			
-			/**
-			 * 标签内容面板边框宽度变更
-			 **/
-			protected function FontSizeChanged(event:Event):void
-			{
-				Button.FontSize = _FontSize = FontSize.value;
-				//_Label.FontSize = _FontSize = FontSize.value;
-				_FontSizeText = "" + _FontSize;
-			}
-			
-			/**
-			 * 标签内容面板边框颜色变更
-			 **/
-			protected function FontColorChanged(event:ColorPickerEvent):void
-			{
-				Button.FontColor = FontColorPicker.selectedColor;
-				_BindFontColor = FontColorPicker.selectedColor;
-				_BindFontColorText = pixel.utility.Tools.Color2Hex(_BindFontColor);
-			}
-			
-			/**
-			 * 标签内容面板边框颜色文本变更
-			 **/
-			protected function FontColorTextChanged(event:FlexEvent):void
-			{
-				var Value:String = event.currentTarget.text;
-				if(Value.indexOf("#") == 0)
-				{
-					Value = Value.replace("#","0x");
-				}
-				else
-				{
-					if(Value.length != 6)
-					{
-						Alert.show("输入颜色代码非法,请重新输入");
-						return;
-					}
-					Value = "0x" + Value;
-				}
-				var Code:uint = new uint(Value);
-				FontColorPicker.selectedColor = Code;
-				Button.FontColor = Code;
-			}
+//			/**
+//			 * 标签内容面板边框颜色文本变更
+//			 **/
+//			protected function FontColorTextChanged(event:FlexEvent):void
+//			{
+//				var Value:String = event.currentTarget.text;
+//				if(Value.indexOf("#") == 0)
+//				{
+//					Value = Value.replace("#","0x");
+//				}
+//				else
+//				{
+//					if(Value.length != 6)
+//					{
+//						Alert.show("输入颜色代码非法,请重新输入");
+//						return;
+//					}
+//					Value = "0x" + Value;
+//				}
+//				var Code:uint = new uint(Value);
+//				FontColorPicker.selectedColor = Code;
+//				Button.textLabel.FontColor = Code;
+//			}
 		]]>
 	</fx:Script>
-	
+	<ui:LabelPropery Control="{_Label}" /> 
+	<!--
 	<s:HGroup id="Label">
 		<s:Label text="文本" height="100%" verticalAlign="middle" width="60"/>
 		<s:TextInput id="ButtonText" text="{_Label}" change="LabelChanged(event)" />
@@ -133,7 +162,14 @@
 		<s:TextInput width="70" enter="FontColorTextChanged(event)" text="{_BindFontColorText}"/>
 		<mx:ColorPicker showTextField="true" id="FontColorPicker" selectedColor="{_BindFontColor}" change="FontColorChanged(event)" />
 	</s:HGroup>
-	<!--
+	
+	<s:HGroup>
+		<s:Label text="文本字体" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox width="120" change="LabelFontFamilyChanged(event)" id="LabelFamily" selectedIndex="0" dataProvider="{_FamilyArray}">
+			
+		</s:ComboBox>
+	</s:HGroup>
+	
 	<s:HGroup>
 		<s:Label text="文本位置" height="100%" verticalAlign="middle" width="60"/>
 		<s:ComboBox width="80" change="ButtonLabelAlignChanged(event)" id="LabelAlign" selectedIndex="0">

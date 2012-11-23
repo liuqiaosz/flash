@@ -2,9 +2,9 @@ package pixel.ui.control.asset
 {
 	import flash.utils.Dictionary;
 	
-	import pixel.ui.core.LibraryInternal;
+	import pixel.ui.core.NSPixelUI;
 
-	use namespace LibraryInternal;
+	use namespace NSPixelUI;
 	
 	public class AssetLibrary implements IAssetLibrary
 	{

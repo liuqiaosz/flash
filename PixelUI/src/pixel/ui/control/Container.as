@@ -1,18 +1,17 @@
 package pixel.ui.control
 {
 	
-	import pixel.ui.control.style.ContainerStyle;
-	import pixel.ui.control.utility.Utils;
-	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.EventPhase;
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
-	import pixel.utility.Tools;
+	import pixel.ui.control.style.ContainerStyle;
+	import pixel.ui.control.utility.Utils;
+	import pixel.ui.core.NSPixelUI;
 	
+//	import pixel.utility.Tools;
+	
+	use namespace NSPixelUI;
 	/**
 	 * 基础容器类,不提供视觉渲染
 	 * 
@@ -120,9 +119,9 @@ package pixel.ui.control
 			return child;
 		}
 		
-		public function OrignalAddChild(Child:DisplayObject):DisplayObject
+		NSPixelUI function OrignalAddChild(Child:DisplayObject):DisplayObject
 		{
-			_Children.push(Child);
+			//_Children.push(Child);
 			
 			return super.addChild(Child);
 		}

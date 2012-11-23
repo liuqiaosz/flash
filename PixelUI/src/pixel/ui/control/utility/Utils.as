@@ -27,10 +27,10 @@ package pixel.ui.control.utility
 		public static function GetControlPrototype(Control:UIControl):uint
 		{
 			//通过报名判断是否自定义控件类型
-			if(Tools.GetPackage(Control).indexOf("corecom.control") < 0)
-			{
-				return ControlType.CUSTOMER;
-			}
+//			if(Tools.GetPackage(Control).indexOf("corecom.control") < 0)
+//			{
+//				return ControlType.CUSTOMER;
+//			}
 			if(Control is Tab)
 			{
 				return ControlType.TAB;

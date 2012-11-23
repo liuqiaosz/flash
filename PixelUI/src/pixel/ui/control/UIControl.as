@@ -14,16 +14,19 @@ package pixel.ui.control
 	import pixel.ui.control.asset.AssetImage;
 	import pixel.ui.control.asset.ControlAssetManager;
 	import pixel.ui.control.event.UIControlEvent;
+	import pixel.ui.control.style.IStyle;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.StyleShape;
 	import pixel.ui.control.style.UIStyle;
 	import pixel.ui.control.utility.FocusFrame;
 	import pixel.ui.control.utility.ScaleRect;
 	import pixel.ui.control.utility.Utils;
+	import pixel.ui.core.NSPixelUI;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ISerializable;
 	import pixel.utility.Tools;
 	
+	use namespace NSPixelUI;
 	/**
 	 * UI顶层类
 	 **/
@@ -555,6 +558,11 @@ package pixel.ui.control
 		public function get Style():IVisualStyle
 		{
 			return _Style;
+		}
+		public function set Style(value:IVisualStyle):void
+		{
+			_Style = value;
+			StyleUpdate();
 		}
 		
 		public function set BorderColor(Value:uint):void

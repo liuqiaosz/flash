@@ -10,6 +10,7 @@ package pixel.utility.swf.tag
 		public static const FILEATTR:int = 69;
 		public static const SETBGCOLOR:int = 9;
 		public static const DEFINEJPEG2:int = 21;
+		public static const DEFINEJPEG3:int = 35;
 		public static const DOABC:int = 82;
 		public static function GetTagClassByType(Type:int):Class
 		{

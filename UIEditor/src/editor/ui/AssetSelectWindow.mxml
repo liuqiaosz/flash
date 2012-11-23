@@ -124,7 +124,9 @@
 			protected function AssetSelected(event:NotifyEvent):void
 			{
 				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.SELECTEDASSET);
-				Notify.Params.push(event.Params.pop().Id);
+				var asset:IAsset = event.Params.pop() as IAsset;
+				
+				Notify.Params.push(asset.name);
 				Notify.Params.push(_CurrentLibrary.id);
 				dispatchEvent(Notify);
 				CloseWindow();
@@ -139,7 +141,7 @@
 	
 	<s:BorderContainer width="200" height="100%">
 		<mx:Tree width="100%" height="100%" dataProvider="{AssetLibraryTree}" 
-				 labelField="Name" iconFunction="TreeIconFactory" itemClick="TreeItemClick(event)"/>
+				 labelField="id" iconFunction="TreeIconFactory" itemClick="TreeItemClick(event)"/>
 	</s:BorderContainer>
 	
 	<s:BorderContainer width="100%" height="100%">

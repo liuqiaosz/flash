@@ -1,13 +1,6 @@
 package pixel.ui.control
 {
-	import pixel.ui.control.style.FontTextAlignEnmu;
 	import pixel.ui.control.style.LabelStyle;
-	
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
-	import flash.text.engine.TextLine;
-	import flash.utils.ByteArray;
-
 	public class UILabel extends UITextBase //extends UIControl
 	{
 		public function UILabel(TextValue:String = "",Skin:Class = null)

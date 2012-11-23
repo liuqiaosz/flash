@@ -29,6 +29,8 @@ package
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.system.Worker;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	
 	import pixel.assets.PixelAssetTask;
@@ -36,8 +38,21 @@ package
 	import pixel.assets.event.PixelAssetEvent;
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
+	import pixel.ui.control.HorizontalScroller;
+	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
+	import pixel.ui.control.VerticalPanel;
+	import pixel.ui.control.VerticalScroller;
+	import pixel.ui.control.style.VerticalScrollerStyle;
+	import pixel.utility.ColorCode;
+	import pixel.utility.RGBA;
+	import pixel.utility.System;
+	import pixel.utility.Tools;
+	import pixel.utility.loader.Loader;
+	import pixel.utility.swf.Swf;
+	import pixel.utility.swf.SwfFactory;
 	import pixel.worker.core.PixelWorker;
 	import pixel.worker.core.PixelWorkerHelper;
 	import pixel.worker.core.ShareMemory;
@@ -46,14 +61,6 @@ package
 	import pixel.worker.message.PixelWorkerMessage;
 	import pixel.worker.message.PixelWorkerMessageRequest;
 	import pixel.worker.message.PixelWorkerMessageResponse;
-	
-	import pixel.utility.ColorCode;
-	import pixel.utility.RGBA;
-	import pixel.utility.System;
-	import pixel.utility.Tools;
-	import pixel.utility.loader.Loader;
-	import pixel.utility.swf.Swf;
-	import pixel.utility.swf.SwfFactory;
 
 //	import flash.display.StageAlign;
 //	import flash.display.StageScaleMode;
@@ -124,18 +131,43 @@ package
 		
 		public function Sample()
 		{
-//			PixelAssetsManager.instance.changeHandler(WorkerAssetDownloader);
-//			
-//			PixelAssetsManager.instance.loader.addEventListener(PixelAssetEvent.ASSET_COMPLETE,function(event:PixelAssetEvent):void{
-//				
-//				trace("complete");
-//			});
-//			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//				var task:PixelAssetTask = new PixelAssetTask("ui","http://175.10.1.144:9200/payplateform/UI.swf");
-//				PixelAssetsManager.instance.loader.pushTaskToQueue(task);
-//			});
+			var a:VerticalPanel = new VerticalPanel();
+			a.width = 300;
+			a.height = 200;
+			a.Layout = LayoutConstant.VERTICAL;
+			a.Gap = 10;
 			
-			bitmap555();
+			addChild(a);
+			
+			var style:VerticalScrollerStyle = new VerticalScrollerStyle();
+			
+			style.BackgroundColor = 0x5d5d5d;
+			style.BackgroundAlpha = 0.8;
+			style.BorderThinkness = 0;
+			
+			style.handlerStyle.BackgroundColor = 0x00FF00;
+			style.handlerStyle.LeftBottomCorner = style.handlerStyle.RightBottomCorner = style.handlerStyle.RightTopCorner = style.handlerStyle.LeftTopCorner = 4;
+			
+			a.changeScrollStyle(style);
+//			var scroll:VerticalScroller = new VerticalScroller();
+//			
+//			scroll.BackgroundColor = 0x5d5d5d;
+//			scroll.width = 20;
+//			scroll.BorderThinkness = 0;
+//			a.OrignalAddChild(scroll);
+			
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				
+			});
+			
+			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
+				var b:UIButton = new UIButton();
+				b.Text = "6";
+				a.addChild(b);
+			});
+			
+			a.x = 200;
+			a.y = 200;
 		}
 		
 		[Embed(source="../bin-debug/assets/img.png")]

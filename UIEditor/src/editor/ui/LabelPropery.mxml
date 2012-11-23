@@ -23,11 +23,25 @@
 			
 			override protected function Initialized():void
 			{
+				var fonts:Array = Font.enumerateFonts(true);
+				
+				for each(var font:Font in fonts)
+				{
+					_FamilyArray.addItem(font.fontName);
+				}
+				
 				_Label = Control as pixel.ui.control.UILabel;
 				
 				_Text = _Label.Text;
 				_FontSize = _Label.FontSize;
 				_FontSizeText = "" + _Label.FontSize;
+				
+				var idx:int = _FamilyArray.getItemIndex(_Label.FontFamily);
+				if(idx >= 0)
+				{
+					LabelFamily.selectedIndex = idx;
+					LabelFamily.toolTip = _FamilyArray.getItemAt(idx) as String;
+				}
 				
 				FontColorPicker.selectedColor = _Label.FontColor;
 				_BindFontColor = _Label.FontColor;
@@ -101,6 +115,18 @@
 				_Label.Mutiline = Boolean(event.newIndex);
 			}
 			
+			[Bindable]
+			private var _FamilyArray:ArrayCollection = new ArrayCollection();
+			
+			/**
+			 *
+			 * 文本字体变更
+			 */
+			private function LabelFontFamilyChanged(event:IndexChangeEvent):void
+			{
+				_Label.FontFamily = _FamilyArray.getItemAt(event.newIndex) as String;
+				LabelFamily.toolTip = _Label.FontFamily;
+			}
 		]]>
 	</fx:Script>
 	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
@@ -120,6 +146,12 @@
 		<s:Label text="字体颜色" height="100%" verticalAlign="middle" width="60"/>
 		<s:TextInput width="70" text="{_BindFontColorText}"/>
 		<mx:ColorPicker showTextField="true" id="FontColorPicker" selectedColor="{_BindFontColor}" change="FontColorChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup>
+		<s:Label text="文本字体" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox width="120" change="LabelFontFamilyChanged(event)" id="LabelFamily" selectedIndex="0" dataProvider="{_FamilyArray}">
+		</s:ComboBox>
 	</s:HGroup>
 	
 	<s:HGroup>

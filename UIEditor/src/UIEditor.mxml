@@ -26,21 +26,12 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
+			import mx.core.IFlexDisplayObject;
 			import mx.events.CloseEvent;
-			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
-			import mx.events.IndexChangedEvent;
-			import mx.events.ItemClickEvent;
 			import mx.events.ListEvent;
-			import mx.events.MenuEvent;
-			import mx.events.SliderEvent;
-			import mx.managers.CursorManager;
-			import mx.managers.PopUpManager;
-			import mx.utils.StringUtil;
 			
-			import spark.components.Button;
 			import spark.components.SkinnableContainer;
-			import spark.events.IndexChangeEvent;
 			import spark.skins.spark.ImageSkin;
 			
 			import editor.event.NotifyEvent;
@@ -77,18 +68,11 @@
 			import pixel.ui.control.asset.IAssetLibrary;
 			import pixel.ui.control.event.DownloadEvent;
 			import pixel.ui.control.event.EditModeEvent;
-			import pixel.ui.control.event.UIControlEvent;
-			import pixel.ui.control.style.ButtonStyle;
 			import pixel.ui.control.style.SliderStyle;
-			import pixel.ui.control.style.StyleShape;
-			import pixel.ui.control.style.UIStyle;
 			import pixel.ui.control.utility.ControlType;
 			import pixel.ui.control.utility.Utils;
 			import pixel.utility.MouseManager;
 			import pixel.utility.System;
-			import pixel.utility.Tools;
-			import pixel.utility.swf.Swf;
-			import pixel.utility.swf.SwfFactory;
 			[Embed(source="assets/AssetLibrary.png")]
 			private var TreeIcon:Class;
 			[Embed(source="assets/AssetSwf.png")]
@@ -142,7 +126,6 @@
 				});
 				InitializeAssetLib();
 				InitializeModelLib();
-				
 			}
 			
 			/**
@@ -180,7 +163,6 @@
 				
 				for each(var Lib:IAssetLibrary in Vec)
 				{
-					//var Item:SwfAssetLibrary = new SwfAssetLibrary(Lib);
 					Globals.AppendAssetLibrary(Lib);
 					AssetLibraryTree.addItem(Lib);
 				}
@@ -610,20 +592,20 @@
 			private function CreateAssetLibrary(event:MouseEvent):void
 			{
 				
-				PopupWindow = CreateWindowByClass(NewAssetLibrary);
-				PopUpManager.addPopUp(PopupWindow,this,true);
-				PopUpManager.centerPopUp(PopupWindow);
-				PopupWindow.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
+				var window:IFlexDisplayObject = PopUpWindowManager.PopUp(NewAssetLibrary);
+				//PopUpManager.addPopUp(PopupWindow,this,true);
+				//PopUpManager.centerPopUp(PopupWindow);
+				window.addEventListener(NotifyEvent.ASSETLIBCREATED,AssetLibraryCreated);
 				//创建资源库
 				//WindowState = 1;
 			}
 			
 			private function ImportSwfLibrary(event:MouseEvent):void
 			{
-				PopupWindow = CreateWindowByClass(SwfImportWindow);
-				PopUpManager.addPopUp(PopupWindow,this,true);
-				PopUpManager.centerPopUp(PopupWindow);
-				PopupWindow.addEventListener(NotifyEvent.IMPORTSWF,OnImportSwfLibrary);
+				var window:IFlexDisplayObject = PopUpWindowManager.PopUp(SwfImportWindow);
+				//PopUpManager.addPopUp(PopupWindow,this,true);
+				//PopUpManager.centerPopUp(PopupWindow);
+				window.addEventListener(NotifyEvent.IMPORTSWF,OnImportSwfLibrary);
 			}
 			
 			/**
@@ -741,8 +723,8 @@
 				Enabled = true;
 				ComponentBar.enabled = true;
 				EditWorkspace = new WorkspacePlus();
-				EditWorkspace.width = 2048;
-				EditWorkspace.height = 2048;
+				EditWorkspace.width = 5000;
+				EditWorkspace.height = 5000;
 				BackFill.width = EditWorkspace.width;
 				BackFill.height = EditWorkspace.height;
 				
@@ -758,10 +740,10 @@
 				EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
 				EditWorkspace.addEventListener(UIEvent.FRAME_RESIZED,function(event:EditModeEvent):void{
 					
-					EditWorkspace.width = event.target.width > 2048 ? event.target.width + 100:2048;
-					EditWorkspace.height = event.target.height > 2048 ? event.target.height + 100:2048;
-					BackFill.width = EditWorkspace.width;
-					BackFill.height = EditWorkspace.height;
+					//EditWorkspace.width = event.target.width > 5000 ? event.target.width + 100:5000;
+					//EditWorkspace.height = event.target.height > 5000 ? event.target.height + 100:5000;
+					//BackFill.width = EditWorkspace.width;
+					//BackFill.height = EditWorkspace.height;
 				});
 			}
 			
@@ -824,11 +806,12 @@
 			 **/
 			private function OnChangeControlImage(event:NotifyEvent):void
 			{
-				PopupWindow = CreateWindowByClass(AssetSelectWindow);
-				PopUpManager.addPopUp(PopupWindow,this,true);
-				PopUpManager.centerPopUp(PopupWindow);
-				AssetSelectWindow(PopupWindow).Item = AssetLibraryTree;
-				PopupWindow.addEventListener(NotifyEvent.SELECTEDASSET,function(event:NotifyEvent):void{
+				var window:IFlexDisplayObject = PopUpWindowManager.PopUp(AssetSelectWindow);
+//				PopUpManager.addPopUp(PopupWindow,this,true);
+//				PopUpManager.centerPopUp(PopupWindow);
+				AssetSelectWindow(window).Item = AssetLibraryTree;
+				window.addEventListener(NotifyEvent.SELECTEDASSET,function(event:NotifyEvent):void{
+					AssetSelectWindow(window).CloseWindow();
 					//资源选择完成
 					var LibId:String = event.Params.pop();
 					var AssId:String = event.Params.pop();
@@ -946,6 +929,7 @@
 							UIControl(_DragControl).EnableEditMode();
 							EditWorkspace.addChild(_DragControl as DisplayObject);
 						}
+						
 					}
 					
 					else if(_DragControl is ComponentModel)

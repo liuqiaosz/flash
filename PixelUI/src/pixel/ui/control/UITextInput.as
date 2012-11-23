@@ -1,11 +1,11 @@
 package pixel.ui.control
 {
 	import pixel.ui.control.style.UITextInputStyle;
-	import pixel.ui.core.LibraryInternal;
+	import pixel.ui.core.NSPixelUI;
 	
 	import flash.events.FocusEvent;
 	
-	use namespace LibraryInternal;
+	use namespace NSPixelUI;
 	
 	public class UITextInput extends UITextBase
 	{

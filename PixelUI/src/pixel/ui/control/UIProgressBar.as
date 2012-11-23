@@ -1,9 +1,9 @@
 package pixel.ui.control
 {
 	import pixel.ui.control.style.UIProgressBarStyle;
-	import pixel.ui.core.LibraryInternal;
+	import pixel.ui.core.NSPixelUI;
 
-	use namespace LibraryInternal;
+	use namespace NSPixelUI;
 	
 	internal class UIProgressBar extends UIControl
 	{
