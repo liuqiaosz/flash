@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
-  <includeClasses/>
+  <includeClasses>
+    <classEntry path="pixel.particle.IPixelParticle"/>
+    <classEntry path="pixel.particle.PixelParticle"/>
+    <classEntry path="pixel.particle.IPixelParticleEmitter"/>
+    <classEntry path="pixel.particle.PixelParticleEmitter"/>
+    <classEntry path="pixel.particle.PixelParticleShapeEmu"/>
+    <classEntry path="pixel.particle.event.PixelParticleEvent"/>
+    <classEntry path="pixel.particle.PixelBitmapParticle"/>
+  </includeClasses>
   <includeResources/>
   <namespaceManifests/>
 </flexLibProperties>
