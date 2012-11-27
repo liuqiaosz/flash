@@ -7,7 +7,6 @@ package pixel.scene
 	{
 		function reset():void;
 		function get nodes():Vector.<IPixelNode>;
-		function update():void;
 		
 		function addNode(value:IPixelNode):void;
 		function removeNode(value:IPixelNode):void;

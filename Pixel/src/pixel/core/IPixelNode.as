@@ -1,7 +1,5 @@
 package pixel.core
 {
-	import flash.display.BitmapData;
-
 	/**
 	 * Pixel精灵节点接口
 	 * 
@@ -10,11 +8,5 @@ package pixel.core
 	 **/
 	public interface IPixelNode extends IPixelGeneric
 	{
-		/**
-		 * 状态更新
-		 * 
-		 * 
-		 **/
-		function update():void;
 	}
 }

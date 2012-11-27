@@ -1,11 +1,16 @@
 package pixel.particle
 {
-	import flash.events.IEventDispatcher;
+	import pixel.core.IPixel;
 
-	public interface IPixelParticleBase extends IEventDispatcher
+	public interface IPixelParticleBase extends IPixel
 	{
 		function reset():void;
-		function update():void;
+		//更新粒子生命状态
+		function updateHealth(attenuation:Number = 0):Number;
 		
+		function set x(value:Number):void;
+		function set y(value:Number):void;
+		
+		function get redian():Number;
 	}
 }

@@ -4,6 +4,7 @@ package pixel.particle
 	import flash.display.Shape;
 	
 	import pixel.core.PixelNs;
+	import pixel.particle.event.PixelParticleEvent;
 
 	use namespace PixelNs;
 
@@ -17,6 +18,7 @@ package pixel.particle
 		/**类属性定义**/
 		protected var _hasUpdate:Boolean = false;
 		protected var _draw:Graphics = null;
+		protected var _death:Boolean = false;
 		
 		/**粒子属性定义**/
 		protected var _size:int = 0;					//大小
@@ -33,7 +35,10 @@ package pixel.particle
 		
 		protected var _color:uint = 0xFFFFFF;			//颜色
 		protected var _health:Number = 0;				//粒子生命
-		protected var _attenuation:Number = 0;		//衰减率
+		public function get health():Number
+		{
+			return _health;
+		}
 		protected var _radian:Number = 0;
 
 		
@@ -68,11 +73,33 @@ package pixel.particle
 		
 		public function update():void
 		{
-			if(_hasUpdate)
+			if(!_death)
 			{
-				render();
-				_hasUpdate = false;
+				if(_hasUpdate)
+				{
+					render();
+					_hasUpdate = false;
+				}
 			}
+		}
+		
+		/**
+		 * 更新发射器生命周期
+		 */
+		public function updateHealth(attenuation:Number = 0):Number
+		{
+			_health -= attenuation;
+			if(_health <= 0)
+			{
+				_death = true;
+				//dispatchEvent(new PixelParticleEvent(PixelParticleEvent.PARTICLE_DEATH));
+			}
+			return _health;
+		}
+		
+		public function get redian():Number
+		{
+			return _radian;
 		}
 		
 		/**
@@ -80,6 +107,7 @@ package pixel.particle
 		 */
 		public function reset():void
 		{
+			_death = false;
 		}
 	}
 }

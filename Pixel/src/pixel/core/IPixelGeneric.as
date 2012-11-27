@@ -1,6 +1,6 @@
 package pixel.core
 {
-	public interface IPixelGeneric
+	public interface IPixelGeneric extends IPixel
 	{
 		function get x():Number;
 		function get y():Number;

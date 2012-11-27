@@ -49,6 +49,7 @@ package
 	import pixel.assets.event.PixelAssetEvent;
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
+	import pixel.particle.PixelParticlePropertie;
 	import pixel.ui.control.HorizontalScroller;
 	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
@@ -285,56 +286,22 @@ package
 
 		private function emitter():void
 		{
-			var maxCount:int = 100;
-			var current:int = 0;
-			var reCycle:Vector.<Particle> = new Vector.<Particle>();
-			var active:Vector.<Particle> = new Vector.<Particle>();
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				
-				var firePos:Point = new Point(event.stageX,event.stageY);
-				
-				stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
-					
-					if(current < maxCount)
-					{
-						var radius:Number = Tools.degreesToRadius(Math.random() * 360);//随机弧度
-						var node:Particle = null;
-						if(reCycle.length > 0)
-						{
-							node = reCycle.shift();
-						}
-						else
-						{
-							node = new Particle(2);
-							node.angle = radius;
-						}
-						
-						node.x = firePos.x;
-						node.y = firePos.y;
-						queue.push(node);
-						stage.addChild(node);
-					}
-					
-					for each(var no:Particle in queue)
-					{
-						no.x += Math.cos(no.angle) * node.velocityX;
-						no.y += Math.sin(no.angle) * node.velocityY;
-						no.health -= 2;
-						if(no.health <= 0)
-						{
-							no.health = 100;
-							reCycle.push(no);
-						}
-						else
-						{
-							active.push(no);
-						}
-					}
-					
-					queue = active;
-					active = new Vector.<Particle>();
-					
-				});
+			var propertie:PixelParticlePropertie = new PixelParticlePropertie();
+			propertie.attenuation = 1;
+			propertie.health = 100;
+			propertie.maxmizeParticle = 100;
+			propertie.particleCount = 30;
+			propertie.poolable = true;
+			propertie.size = 2;
+			propertie.velocityX = 5;
+			propertie.velocityY = 5;
+			
+			var emitter:Emitter = new Emitter(propertie);
+			emitter.x = center.x;
+			emitter.y = center.y;
+			addChild(emitter);
+			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
+				emitter.update();			
 			});
 		}
 		

@@ -7,6 +7,29 @@ package pixel.particle
 	 */
 	public class PixelParticlePropertie
 	{
+		
+		//粒子发射器生命
+		protected var _emitterHealth:Number = 0;
+		public function set emitterHealth(value:Number):void
+		{
+			_emitterHealth = value;
+		}
+		public function get emitterHealth():Number
+		{
+			return _emitterHealth;
+		}
+		
+		//发射器衰减率
+		protected var _emitterAttenuation:Number = 0;
+		public function set emitterAttenuation(value:Number):void
+		{
+			_emitterAttenuation = value;
+		}
+		public function get emitterAttenuation():Number
+		{
+			return _emitterAttenuation;
+		}
+		
 		protected var _size:int = 0;											//粒子初始大小
 		public function set size(value:int):void
 		{
@@ -26,7 +49,23 @@ package pixel.particle
 			return _color;
 		}
 		protected var _health:Number = 0;										//粒子生命
+		public function set health(value:Number):void
+		{
+			_health = value;
+		}
+		public function get health():Number
+		{
+			return _health;
+		}
 		protected var _attenuation:Number = 0;									//衰减率
+		public function set attenuation(value:Number):void
+		{
+			_attenuation = value;
+		}
+		public function get attenuation():Number
+		{
+			return _attenuation;
+		}
 		protected var _alpha:Number = 1;
 		protected var _accelerationX:Number = 0;								//X轴加速度
 		public function set accelerationX(value:Number):void

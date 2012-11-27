@@ -10,6 +10,7 @@
     <classEntry path="pixel.particle.PixelBitmapParticle"/>
     <classEntry path="pixel.particle.IPixelParticleBase"/>
     <classEntry path="pixel.particle.PixelParticlePropertie"/>
+    <classEntry path="pixel.core.IPixel"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
