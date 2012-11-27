@@ -5,9 +5,11 @@
     <classEntry path="pixel.particle.PixelParticle"/>
     <classEntry path="pixel.particle.IPixelParticleEmitter"/>
     <classEntry path="pixel.particle.PixelParticleEmitter"/>
-    <classEntry path="pixel.particle.PixelParticleShapeEmu"/>
+    <classEntry path="pixel.particle.PixelParticleTypeEmu"/>
     <classEntry path="pixel.particle.event.PixelParticleEvent"/>
     <classEntry path="pixel.particle.PixelBitmapParticle"/>
+    <classEntry path="pixel.particle.IPixelParticleBase"/>
+    <classEntry path="pixel.particle.PixelParticlePropertie"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -9,7 +9,7 @@ package pixel.utility
 	import flash.utils.getQualifiedClassName;
 	
 	import pixel.utility.swf.tag.FileAttribute;
-
+	
 	public class Tools
 	{
 		public function Tools()
@@ -245,8 +245,25 @@ package pixel.utility
 			Rect.width = Right;
 			Rect.height = Bottom;
 			Vec.push(Rect);
-
+			
 			return Vec;
+		}
+		
+		/**
+		 * 
+		 * 弧度转角度
+		 */
+		public static function radiusCoverDegrees(radius:Number):Number
+		{
+			return radius * 180 / Math.PI;
+		}
+		
+		/**
+		 * 角度转弧度
+		 */
+		public static function degreesToRadius(degrees:Number):Number
+		{
+			return degrees * Math.PI / 180;
 		}
 		
 		public static function getExtension(nav:String):String

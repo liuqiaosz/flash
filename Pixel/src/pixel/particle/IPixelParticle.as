@@ -3,9 +3,8 @@ package pixel.particle
 	/**
 	 * 粒子接口
 	 */
-	public interface IPixelParticle
+	public interface IPixelParticle extends IPixelParticleBase
 	{
-		function update():void;
 		function render():void;
 	}
 }
