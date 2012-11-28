@@ -1,6 +1,7 @@
 package pixel.particle
 {
 	import flash.display.DisplayObject;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.utils.getTimer;
 	
@@ -25,13 +26,15 @@ package pixel.particle
 		//交换队列
 		protected var _swapPool:Vector.<IPixelParticleBase> = null;
 		//粒子属性设置
-		protected var _propertie:PixelParticlePropertie = null;
+		protected var _propertie:PixelParticleEmitterPropertie = null;
 		
 		protected var _particleSource:Class = null;
 		
-		public function PixelParticleEmitter(propertie:PixelParticlePropertie)
+		public function PixelParticleEmitter(propertie:PixelParticleEmitterPropertie)
 		{
 			_propertie = propertie;
+			_particleAttenuation = _propertie.attenuation;
+			_totalPool = new Vector.<IPixelParticleBase>();
 			if(_propertie.poolable)
 			{
 				_reCyclePool = new Vector.<IPixelParticleBase>();
@@ -39,6 +42,16 @@ package pixel.particle
 				_swapPool = new Vector.<IPixelParticleBase>();
 			}
 		}
+		
+		public function get isDeath():Boolean
+		{
+//			if(_health <= 0)
+//			{
+//				return true;
+//			}
+			return false;
+		}
+		
 		
 		protected var _lastFire:int = 0;
 		protected var _time:int = 0;
@@ -56,13 +69,17 @@ package pixel.particle
 				if(_time - _lastFire >= _propertie.emitterLazy)
 				{
 					fireParticle();
+					_lastFire = _time;
 				}
 				
 				for each(_particle in _activePool)
 				{
 					particleUpdate(_particle);
 					//_particle.update();
-					if(_particle.updateHealth(_particleAttenuation) > 0)
+					
+					//Shape(_particle).alpha -= 0.01;
+					//if(_particle.updateHealth(_particleAttenuation) > 0)
+					if(!_particle.isDeath)
 					{
 						//放入交换池
 						_swapPool.push(_particle);
@@ -73,10 +90,11 @@ package pixel.particle
 						{
 							//放入回收池
 							_reCyclePool.push(_particle);
-							if(contains(_particle as DisplayObject))
-							{
-								removeChild(_particle as DisplayObject);
-							}
+							
+						}
+						if(contains(_particle as DisplayObject))
+						{
+							removeChild(_particle as DisplayObject);
 						}
 					}
 				}
@@ -95,10 +113,7 @@ package pixel.particle
 		
 		protected function fireParticle():void
 		{
-			if(_propertie.maxmizeParticle > 0 && _totalPool.length >= _propertie.maxmizeParticle)
-			{
-				return;
-			}
+			
 			
 			var node:IPixelParticleBase = null;
 			for(var idx:int = 0; idx<_propertie.particleCount; idx++)
@@ -110,20 +125,27 @@ package pixel.particle
 				}
 				else
 				{
+					if(_propertie.maxmizeParticle > 0 && _totalPool.length >= _propertie.maxmizeParticle)
+					{
+						return;
+					}
+					
 					node = newParticle();
 					if(!node)
 					{
 						return;
 					}
+					_totalPool.push(node);
 				}
 				addChild(node as DisplayObject);
 				
+				_activePool.push(node);
 			}
 		}
 		
 		protected function newParticle():IPixelParticleBase
 		{
-			return new PixelParticle(_propertie.size,_propertie.color,_propertie.health);
+			return new PixelParticle(_propertie);
 		}
 		
 		/**
@@ -146,15 +168,15 @@ package pixel.particle
 		 */
 		public function updateHealth(attenuation:Number = 0):Number
 		{
-			if(!_death)
-			{
-				this._emitterHealth -= _propertie.emitterAttenuation;
-				if(this._emitterHealth <= 0)
-				{
-					//dispatchEvent(new PixelParticleEvent(PixelParticleEvent.EMITTER_DEATH));
-					_death = true;
-				}
-			}
+//			if(!_death)
+//			{
+//				this._emitterHealth -= _propertie.emitterAttenuation;
+//				if(this._emitterHealth <= 0)
+//				{
+//					//dispatchEvent(new PixelParticleEvent(PixelParticleEvent.EMITTER_DEATH));
+//					_death = true;
+//				}
+//			}
 			return _emitterHealth;
 		}
 		

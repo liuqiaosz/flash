@@ -9,8 +9,9 @@
     <classEntry path="pixel.particle.event.PixelParticleEvent"/>
     <classEntry path="pixel.particle.PixelBitmapParticle"/>
     <classEntry path="pixel.particle.IPixelParticleBase"/>
-    <classEntry path="pixel.particle.PixelParticlePropertie"/>
+    <classEntry path="pixel.particle.PixelParticleEmitterPropertie"/>
     <classEntry path="pixel.core.IPixel"/>
+    <classEntry path="pixel.particle.PixelParticlePropertie"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

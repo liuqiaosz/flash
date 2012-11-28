@@ -30,6 +30,7 @@ package
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.filters.BlurFilter;
+	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -49,7 +50,7 @@ package
 	import pixel.assets.event.PixelAssetEvent;
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
-	import pixel.particle.PixelParticlePropertie;
+	import pixel.particle.PixelParticleEmitterPropertie;
 	import pixel.ui.control.HorizontalScroller;
 	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
@@ -152,9 +153,28 @@ package
 			center.y = stage.stageHeight / 2;
 			
 			emitter();
-			
+			//circlett();
 			var s:Stat = new Stat();
 			addChild(s);
+		}
+		
+		private function circlett():void
+		{
+			var bit:BitmapData = new BitmapData(8,30);
+			var s:Sprite = new Sprite();
+			s.graphics.beginFill(ColorCode.ORANGE,0.4);
+			s.graphics.drawEllipse(0,0,8,30);
+			s.graphics.endFill();
+			var glow:GlowFilter = new GlowFilter(ColorCode.ORANGE,1,10,10);
+			var blur:BlurFilter = new BlurFilter(6,6,2);
+			s.filters = [blur,glow];
+			
+			bit.draw(s);
+			
+			var img:Bitmap = new Bitmap(bit);
+			img.x = center.x;
+			img.y = center.y;
+			addChild(img);
 		}
 		
 		private function angleGetTest():void
@@ -283,27 +303,71 @@ package
 				
 			});
 		}
-
+		
+		[Embed(source="e1.png")]
+		private var E1:Class;
 		private function emitter():void
 		{
-			var propertie:PixelParticlePropertie = new PixelParticlePropertie();
-			propertie.attenuation = 1;
+			var img:Bitmap = new E1() as Bitmap;
+			
+			//addChild(s);
+			var propertie:PixelParticleEmitterPropertie = new PixelParticleEmitterPropertie();
+			propertie.attenuation = 0.1;
 			propertie.health = 100;
-			propertie.maxmizeParticle = 100;
-			propertie.particleCount = 30;
+			propertie.maxmizeParticle = 1;
+			propertie.particleCount = 1;
 			propertie.poolable = true;
 			propertie.size = 2;
-			propertie.velocityX = 5;
-			propertie.velocityY = 5;
+			propertie.color = 0x000000;
+			//propertie.texture = img.bitmapData;
+			//propertie.type = 1;
+			//propertie.randomAttenuation = true;
+			//propertie.randomAttenuationScope = [2,3];
+			//propertie.allowGradientColor = true;
+			//propertie.gradientColor = [0x000000,0xFF0000];
+			//propertie.randomColor = true;
+			//propertie.randomAlpha = true;
+			propertie.velocityX = 250;
+			propertie.velocityY = 80;
+			propertie.gravity = 0.5;
+			//propertie.randomX = true;
+			//propertie.randomXScope = [-200,100];
+		
+			propertie.size = 5;
+			//propertie.randomRedian = true;
+			//propertie.randomRedianSceop = [260,290];
+			//propertie.randomSize = true;
+			//propertie.randomSizeScope = [2,5];
+			propertie.accelerationX = -0.1;
+			propertie.accelerationY = 0.1;
+			propertie.radianAttenuation = 0.1;
+			//propertie.emitterLazy = 300;
 			
 			var emitter:Emitter = new Emitter(propertie);
 			emitter.x = center.x;
 			emitter.y = center.y;
 			addChild(emitter);
 			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
-				emitter.update();			
+				emitter.update();
+				//emitter.rotation += 2;
 			});
+			
+			stage.addEventListener(MouseEvent.MOUSE_DOWN,function(event:MouseEvent):void{
+				
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,drag);
+				stage.addEventListener(MouseEvent.MOUSE_UP,drop);
+			});
+			
+			var drag:Function = function(event:MouseEvent):void{
+				emitter.x = event.stageX;
+				emitter.y = event.stageY;
+			};
+			var drop:Function = function(event:MouseEvent):void{
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,drag);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,drop);
+			};
 		}
+		
 		
 		private function rotateE():void
 		{

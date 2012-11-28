@@ -266,6 +266,11 @@ package pixel.utility
 			return degrees * Math.PI / 180;
 		}
 		
+		public static function random(max:Number,min:Number):Number
+		{
+			return (Math.random() * (max - min) + min);
+		}
+		
 		public static function getExtension(nav:String):String
 		{
 			return nav.substring(nav.lastIndexOf("." + 1));

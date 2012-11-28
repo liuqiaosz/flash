@@ -11,7 +11,7 @@ package pixel.particle
 		public function PixelBitmapParticle(image:Bitmap,health:int = 0,radian:Number = 0)
 		{
 			_image = image;
-			super(0,0,health,radian);
+			super(_propertie);
 		}
 		
 		override public function update():void
