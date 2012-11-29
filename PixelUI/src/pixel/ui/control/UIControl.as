@@ -55,6 +55,11 @@ package pixel.ui.control
 			//this.mouseEnabled = false;
 		}
 		
+		public function initializer():void
+		{
+			
+		}
+		
 		protected var _Owner:UIControl = null;
 		public function set Owner(Value:UIControl):void
 		{

@@ -12,7 +12,7 @@ package pixel.ui.control
 	 * 
 	 * 
 	 **/
-	public class UIWindow extends Container
+	public class UIWindow extends UIContainer
 	{
 		
 		//标题栏

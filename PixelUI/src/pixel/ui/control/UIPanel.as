@@ -7,7 +7,7 @@ package pixel.ui.control
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
-	public class UIPanel extends Container
+	public class UIPanel extends UIContainer
 	{
 		public function UIPanel(Skin:Class = null)
 		{

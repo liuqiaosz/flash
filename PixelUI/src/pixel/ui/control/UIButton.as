@@ -55,8 +55,6 @@ package pixel.ui.control
 			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 			this.mouseChildren =false;
-			
-			
 		}
 
 		override protected function RemoveEvent():void
@@ -74,6 +72,7 @@ package pixel.ui.control
 			super.EnableEditMode();
 			RemoveEvent();
 		}
+		
 		override public function set width(value:Number):void
 		{
 			super.width = value;
@@ -234,7 +233,7 @@ package pixel.ui.control
 		/**
 		 * 普通状态的样式
 		 **/
-		public function get NormalStyle():IStyle
+		public function get NormalStyle():IVisualStyle
 		{
 			return _Style;
 		}
@@ -242,7 +241,7 @@ package pixel.ui.control
 		/**
 		 * 鼠标悬停时的状态
 		 **/
-		public function get MouseOverStyle():IStyle
+		public function get MouseOverStyle():IVisualStyle
 		{
 			return _MouseOverStyle;
 		}
@@ -256,7 +255,7 @@ package pixel.ui.control
 		/**
 		 * 鼠标按下时的样式s
 		 **/
-		public function get MouseDownStyle():IStyle
+		public function get MouseDownStyle():IVisualStyle
 		{
 			return _MouseDownStyle;
 		}

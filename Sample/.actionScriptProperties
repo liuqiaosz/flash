@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="Sample.as" projectUUID="3b71d252-148c-4d1b-a97e-f38883b5069d" version="11">
-  <compiler additionalCompilerArguments="-locale en_US" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="Sample.as" projectUUID="7ee425ca-9829-4040-b3c2-b9f579845838" version="10">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -30,10 +30,11 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin/PixelUtility.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/Pixel/bin/Pixel.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelUI/bin/PixelUI.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin/PixelUtility.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelWorker/bin/PixelWorker.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/Pixel/bin/Pixel.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/player/11.5/playerglobal.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -45,18 +46,13 @@
   <modules>
     <module application="src/Sample.as" destPath="TestWorker.swf" optimize="true" sourcePath="src/TestWorker.as"/>
   </modules>
-  <workers/>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
-    <buildTarget buildTargetName="default" platformId="default">
-      <airSettings airCertificatePath="" airTimestamp="true" anePathSet="true" version="1">
+    <buildTarget buildTargetName="default">
+      <airSettings airCertificatePath="" airTimestamp="true" anePathSet="false" version="1">
         <airExcludes/>
         <anePaths/>
-        <newLaunchParams/>
-        <modifiedLaunchParams/>
-        <newPackagingParams/>
-        <modifiedPackagingParams/>
       </airSettings>
       <actionScriptSettings version="1"/>
     </buildTarget>

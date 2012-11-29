@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import pixel.ui.control.UICombobox;
+			import pixel.ui.control.UIControl;
+			
+			[Bindable]
+			private var _btn:UIControl = null;
+			
+			[Bindable]
+			private var _pop:UIControl = null;
+			
+			override protected function Initialized():void
+			{
+				_btn = UICombobox(CurrentControl).popButton;
+				_pop = UICombobox(CurrentControl).popPanel;
+			}
+		]]>
+	</fx:Script>
+	
+	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
+	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
+	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
+	
+	<s:Label text="下拉框数据" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
+	
+	<s:Label text="下拉框按钮样式" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
+	<ui:ButtonProperty Control="{_btn}" enableSimpleStyle="false" />
+	
+	<s:Label text="弹出框样式" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
+	<ui:PanelProperty Control="{_pop}" enableSimpleStyle="false" />
+</ui:GenericProperty>

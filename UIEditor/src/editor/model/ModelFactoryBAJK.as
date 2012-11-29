@@ -56,7 +56,7 @@ package editor.model
 	}
 }
 
-import pixel.ui.control.Container;
+import pixel.ui.control.UIContainer;
 import corecom.control.HorizontalPanel;
 import corecom.control.IUIControl;
 import pixel.ui.control.UIButton;
@@ -256,10 +256,10 @@ class ModelParser implements IModel
 			if(Component.Category == 1)
 			{
 				var Child:UIControl = null;
-				var Len:int = Container(Component.Control).Children.length;
+				var Len:int = UIContainer(Component.Control).Children.length;
 				for(var Idx:int=0; Idx<Len; Idx++)
 				{
-					Child = Container(Component.Control).Children.shift();
+					Child = UIContainer(Component.Control).Children.shift();
 					Component.Control.removeChild(Child);
 					Component.Children.push(Child);
 				}

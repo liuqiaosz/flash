@@ -5,7 +5,7 @@ package pixel.ui.control
 	
 	import pixel.ui.control.style.UIProgressStyle;
 
-	public class UIProgress extends Container
+	public class UIProgress extends UIContainer
 	{
 		private var _ProgressBar:UIProgressBar = null;
 		public function UIProgress(Style:Class = null)

@@ -44,7 +44,7 @@ package pixel.utility{
 			
 			mem_max = 0;
 			
-			xml = <xml><fps>FPS:</fps><ms>MS:</ms><mem>MEM:</mem><memMax>MAX:</memMax></xml>;
+			xml = <xml><fps>FPS:</fps><ms>MS:</ms><mem>MEM:</mem><memMax>MAX:</memMax><version></version></xml>;
 			
 			style = new StyleSheet();
 			style.setStyle('xml', {fontSize:'9px', fontFamily:'_sans', leading:'-2px'});
@@ -52,16 +52,16 @@ package pixel.utility{
 			style.setStyle('ms', {color: hex2css(colors.ms)});
 			style.setStyle('mem', {color: hex2css(colors.mem)});
 			style.setStyle('memMax', {color: hex2css(colors.memmax)});
-			
+			style.setStyle('version',{color: hex2css(colors.version)});
 			text = new TextField();
 			text.width = WIDTH;
-			text.height = 50;
+			text.height = 80;
 			text.styleSheet = style;
 			text.condenseWhite = true;
 			text.selectable = false;
 			text.mouseEnabled = false;
 			
-			rectangle = new Rectangle(WIDTH - 1, 0, 1, HEIGHT - 50);			
+			rectangle = new Rectangle(WIDTH - 1, 0, 1, HEIGHT - 80);			
 			
 			addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy, false, 0, true);
@@ -76,9 +76,9 @@ package pixel.utility{
 			
 			addChild(text);
 			
-			graph = new BitmapData(WIDTH, HEIGHT - 50, false, colors.bg);
-			graphics.beginBitmapFill(graph, new Matrix(1, 0, 0, 1, 0, 50));
-			graphics.drawRect(0, 50, WIDTH, HEIGHT - 50);
+			graph = new BitmapData(WIDTH, HEIGHT - 80, false, colors.bg);
+			graphics.beginBitmapFill(graph, new Matrix(1, 0, 0, 1, 0, 80));
+			graphics.drawRect(0, 50, WIDTH, HEIGHT - 80);
 			
 			addEventListener(MouseEvent.CLICK, onClick);
 			addEventListener(Event.ENTER_FRAME, update);
@@ -124,7 +124,7 @@ package pixel.utility{
 				xml.fps = "FPS: " + fps + " / " + stage.frameRate; 
 				xml.mem = "MEM: " + mem;
 				xml.memMax = "MAX: " + mem_max;			
-				
+				xml.version = "VER:" + pixel.utility.System.playerVersion.major + "." + pixel.utility.System.playerVersion.minor;
 				fps = 0;
 				
 			}
@@ -164,5 +164,6 @@ class Colors {
 	public var ms : uint = 0x00ff00;
 	public var mem : uint = 0x00ffff;
 	public var memmax : uint = 0xff0070;
+	public var version : uint = 0x00ff00;
 	
 }

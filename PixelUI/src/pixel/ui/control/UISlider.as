@@ -14,7 +14,7 @@ package pixel.ui.control
 	/**
 	 * 滑动条
 	 **/
-	public class UISlider extends Container
+	public class UISlider extends UIContainer
 	{
 		/**
 		 * 

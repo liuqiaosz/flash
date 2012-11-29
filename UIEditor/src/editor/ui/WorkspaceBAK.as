@@ -1,6 +1,6 @@
 package editor.ui
 {
-	import pixel.ui.control.Container;
+	import pixel.ui.control.UIContainer;
 	import corecom.control.HorizontalPanel;
 	import corecom.control.IUIControl;
 	import pixel.ui.control.UIButton;
@@ -209,7 +209,7 @@ package editor.ui
 		 **/
 		private function OnSelectClick(event:MouseEvent):void
 		{
-			if(event.target is Container || event.target is Shell)
+			if(event.target is UIContainer || event.target is Shell)
 			{
 				if(_LastShell)
 				{
@@ -307,9 +307,9 @@ package editor.ui
 				ChildNode = new TreeNode();
 				ChildNode.label = Tools.ClassSimpleName(ChildControl);
 				ChildNode.Data = ChildShell;
-				if(ChildControl is Container)
+				if(ChildControl is UIContainer)
 				{
-					ChildNode.children = GetChildTreeNode(ChildControl as Container);
+					ChildNode.children = GetChildTreeNode(ChildControl as UIContainer);
 				}
 				RootNode.children.push(ChildNode);
 			}
@@ -328,7 +328,7 @@ package editor.ui
 //			}
 		}
 		
-		private function GetChildTreeNode(Root:Container):Array
+		private function GetChildTreeNode(Root:UIContainer):Array
 		{
 			var Nodes:Array = [];
 			var Children:Array = Root.Children;
@@ -339,9 +339,9 @@ package editor.ui
 				Node.Data = Children[Idx];
 				Nodes.push(Node);
 				
-				if(Children[Idx] is Container)
+				if(Children[Idx] is UIContainer)
 				{
-					Node.children = GetChildTreeNode(Children[Idx] as Container);
+					Node.children = GetChildTreeNode(Children[Idx] as UIContainer);
 				}
 			}
 			return Nodes;

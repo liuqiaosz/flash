@@ -9,6 +9,7 @@ package pixel.ui.control.style
 //			this.Height = 30;
 			this.BorderThinkness = 0;
 			this.BackgroundAlpha = 0;
+			this.BackgroundColor = 0xFF0000;
 		}
 	}
 }

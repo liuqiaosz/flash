@@ -7,6 +7,7 @@ package pixel.ui.control
 		{
 			var SkinClass:Class = Skin ? Skin:LabelStyle;
 			super(SkinClass,TextValue);
+			this.mouseChildren = false;
 		}
 		
 //		private var _Text:String = "";

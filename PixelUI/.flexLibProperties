@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
-    <classEntry path="pixel.ui.control.style.UIScrollerStyle"/>
-    <classEntry path="pixel.ui.control.style.VerticalScrollerStyle"/>
+    <classEntry path="pixel.ui.control.UIComboboxItem"/>
+    <classEntry path="pixel.ui.control.UIComboboxPop"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

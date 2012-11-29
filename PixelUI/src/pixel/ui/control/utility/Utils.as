@@ -5,17 +5,38 @@ package pixel.ui.control.utility
 	import pixel.ui.control.TabBar;
 	import pixel.ui.control.TabContent;
 	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UICombobox;
+	import pixel.ui.control.UIComboboxPop;
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIImage;
 	import pixel.ui.control.UILabel;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UISlider;
 	import pixel.ui.control.UITextInput;
-	
 	import pixel.utility.Tools;
 
 	public class Utils
 	{
+		public static const SIMPLEBUTTON:uint = 0;		//按钮
+		public static const SIMPLEPANEL:uint = 1;		//面板
+		public static const HORIZONTALPANEL:uint = 2;	//横向面板
+		public static const VERTICALPANEL:uint = 3;		//纵向面板
+		public static const GRIDPANEL:uint = 4;			//网格面板
+		public static const PROGRESS:uint = 5;			//加载进度条
+		public static const TABPANEL:uint = 6;			//TAB面板
+		public static const SLIDER:uint = 7;			//拖拉条
+		public static const TABBAR:uint = 9;			//标签栏
+		public static const TAB:uint = 10;
+		public static const TABCONTENT:uint = 11;
+		public static const LABEL:int = 12;			//文本
+		public static const IMAGE:int = 13;			//图形
+		public static const TEXTINPUT:int = 14;		//文本输入
+		public static const WINDOW:int = 15;			//窗口
+		public static const COMBOBOX:int = 16;		//下拉框
+		public static const COMBOBOXPOP:int = 17;		//下拉框弹出面板
+		
+		public static const CUSTOMER:uint = 99;			//自定义控件
+		
 		public function Utils()
 		{
 			throw new Error(ErrorConstant.ONLYSINGLTON);
@@ -33,43 +54,51 @@ package pixel.ui.control.utility
 //			}
 			if(Control is Tab)
 			{
-				return ControlType.TAB;
+				return TAB;
 			}
 			else if(Control is TabBar)
 			{
-				return ControlType.TABBAR;
+				return TABBAR;
 			}
 			else if(Control is TabContent)
 			{
-				return ControlType.TABCONTENT;
+				return TABCONTENT;
 			}
 			else if(Control is SimpleTabPanel)
 			{
-				return ControlType.TABPANEL;
+				return TABPANEL;
 			}
 			else if(Control is UISlider)
 			{
-				return ControlType.SLIDER;
+				return SLIDER;
 			}
 			else if(Control is UIButton)
 			{
-				return ControlType.SIMPLEBUTTON;
+				return SIMPLEBUTTON;
 			}
 			else if(Control is UIPanel)
 			{
-				return ControlType.SIMPLEPANEL;
+				return SIMPLEPANEL;
 			}
 			else if(Control is UILabel)
 			{
-				return ControlType.LABEL;
+				return LABEL;
 			}
 			else if(Control is UIImage)
 			{
-				return ControlType.IMAGE;
+				return IMAGE;
 			}
 			else if(Control is UITextInput)
 			{
-				return ControlType.TEXTINPUT;
+				return TEXTINPUT;
+			}
+			else if(Control is UICombobox)
+			{
+				return COMBOBOX;
+			}
+			else if(Control is UIComboboxPop)
+			{
+				return COMBOBOXPOP;
 			}
 			
 			return 99;
@@ -109,6 +138,14 @@ package pixel.ui.control.utility
 			{
 				return UILabel;
 			}
+			else if(Control is UICombobox)
+			{
+				return UICombobox;
+			}
+			else if(Control is UIComboboxPop)
+			{
+				return UIComboboxPop;
+			}
 			return null;
 		}
 		
@@ -116,35 +153,41 @@ package pixel.ui.control.utility
 		{
 			switch(Type)
 			{
-				case ControlType.SIMPLEBUTTON:
+				case SIMPLEBUTTON:
 					return UIButton;
 					break;
-				case ControlType.TABPANEL:
+				case TABPANEL:
 					return SimpleTabPanel;
 					break;
-				case ControlType.TAB:
+				case TAB:
 					return Tab;
 					break;
-				case ControlType.TABBAR:
+				case TABBAR:
 					return TabBar;
 					break;
-				case ControlType.TABCONTENT:
+				case TABCONTENT:
 					return TabContent;
 					break;
-				case ControlType.SLIDER:
+				case SLIDER:
 					return UISlider;
 					break;
-				case ControlType.SIMPLEPANEL:
+				case SIMPLEPANEL:
 					return UIPanel;
 					break;
-				case ControlType.LABEL:
+				case LABEL:
 					return UILabel;
 					break;
-				case ControlType.IMAGE:
+				case IMAGE:
 					return UIImage;
 					break;
-				case ControlType.TEXTINPUT:
+				case TEXTINPUT:
 					return UITextInput;
+					break;
+				case COMBOBOX:
+					return UICombobox;
+					break;
+				case COMBOBOXPOP:
+					return UIComboboxPop;
 					break;
 			}
 			return null;

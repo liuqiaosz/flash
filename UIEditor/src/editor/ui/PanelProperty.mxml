@@ -22,10 +22,17 @@
 			{
 				Panel = Control as UIPanel;
 			}
+			
+			[Bindable]
+			private var _simpleStyleEnable:Boolean = true;
+			public function set enableSimpleStyle(value:Boolean):void
+			{
+				_simpleStyleEnable = value;
+			}
 		]]>
 	</fx:Script>
 	
-	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
+	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}" />
 	<!--
 	<s:HGroup>
 		<s:Label text="布局" height="100%" verticalAlign="middle" width="60"/>
@@ -42,7 +49,7 @@
 		<s:TextInput id="GapProperty" text="{_Gap}" enter="GapEnter(event)" width="90"/>
 	</s:HGroup>
 	-->
-	<ui:LayoutProperty id="LayoutStyle" Control="{CurrentControl}" />
+	<ui:LayoutProperty id="LayoutStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"/>
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" />
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}" />
 	<ui:ScaleProperty id="ScaleStyle" Control="{CurrentControl}" />

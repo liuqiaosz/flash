@@ -1,6 +1,6 @@
 package editor.ui
 {
-	import pixel.ui.control.Container;
+	import pixel.ui.control.UIContainer;
 	import corecom.control.IUIControl;
 	import pixel.ui.control.SimpleTabPanel;
 	import pixel.ui.control.Tab;
@@ -57,7 +57,7 @@ package editor.ui
 		private var _Children:Array = [];
 		//新创建组件的基本信息
 		private var _ComponentProfile:ComponentProfile = null;
-		private var _Container:Container = null;
+		private var _Container:UIContainer = null;
 		private var _ContainerControl:UIControl = null;
 		
 		//是否复合组件
@@ -106,7 +106,7 @@ package editor.ui
 					switch(_ComponentProfile.Container)
 					{
 						case 0:
-							_Container = addChild(new UIPanel()) as Container;
+							_Container = addChild(new UIPanel()) as UIContainer;
 							_Container.width = 500;
 							_Container.height = 500;
 							//_Container.graphics.clear();
@@ -428,7 +428,7 @@ package editor.ui
 //			}
 		}
 		
-		private function GetChildTreeNode(Root:Container):Array
+		private function GetChildTreeNode(Root:UIContainer):Array
 		{
 			var Nodes:Array = [];
 			var Children:Array = Root.Children;
@@ -439,9 +439,9 @@ package editor.ui
 				Node.Data = Children[Idx];
 				Nodes.push(Node);
 				
-				if(Children[Idx] is Container)
+				if(Children[Idx] is UIContainer)
 				{
-					Node.children = GetChildTreeNode(Children[Idx] as Container);
+					Node.children = GetChildTreeNode(Children[Idx] as UIContainer);
 				}
 			}
 			return Nodes;
@@ -678,7 +678,7 @@ package editor.ui
 			if(_ComponentProfile.Category == 1)
 			{
 				IsComplex = true;
-				_Container = addChild(Component.Control) as Container;
+				_Container = addChild(Component.Control) as UIContainer;
 				_ContainerControl = _Container;
 				_Container.EnableEditMode();
 				_Container.addEventListener(MouseEvent.MOUSE_DOWN,function(event:MouseEvent):void{
@@ -777,7 +777,7 @@ package editor.ui
 				if(_ComponentProfile.Category == 1)
 				{
 					IsComplex = true;
-					_Container = addChild(Component.Control) as Container;
+					_Container = addChild(Component.Control) as UIContainer;
 					_ContainerControl = _Container as UIControl;
 					for(var Idx:int=0; Idx<Component.Children.length; Idx++)
 					{

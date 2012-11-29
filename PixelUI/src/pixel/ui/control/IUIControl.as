@@ -19,6 +19,7 @@ package pixel.ui.control
 		function set Id(Value:String):void;
 		function get Version():uint;
 		function set Version(Value:uint):void;
+		function initializer():void;
 		//以中心为注册点进行缩放
 		//function CenterScale(Value:Number):void;
 	}

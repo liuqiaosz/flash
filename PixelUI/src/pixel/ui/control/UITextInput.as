@@ -14,7 +14,6 @@ package pixel.ui.control
 			super(Skin?Skin:UITextInputStyle,Text);
 			//允许文本输入
 			this.Input = true;
-			
 		}
 		
 		override protected function RegisterEvent():void

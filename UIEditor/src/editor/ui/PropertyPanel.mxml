@@ -7,6 +7,7 @@
 		 >
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		
 	</fx:Declarations>
 	
 	<fx:Metadata>
@@ -15,19 +16,17 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import spark.events.TextOperationEvent;
-			
 			import editor.event.NotifyEvent;
-
 			import editor.utils.Globals;
 			
-			import pixel.ui.control.Container;
 			import pixel.ui.control.LayoutConstant;
 			import pixel.ui.control.SimpleTabPanel;
 			import pixel.ui.control.Tab;
 			import pixel.ui.control.TabBar;
 			import pixel.ui.control.TabContent;
 			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UICombobox;
+			import pixel.ui.control.UIContainer;
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.UIImage;
 			import pixel.ui.control.UIPanel;
@@ -36,8 +35,9 @@
 			import pixel.ui.control.UIWindow;
 			import pixel.ui.control.asset.AssetImage;
 			import pixel.ui.control.asset.IAsset;
-			
 			import pixel.utility.Tools;
+			
+			import spark.events.TextOperationEvent;
 			private var _CurrentControl:UIControl = null;
 			
 			[Bindable]
@@ -60,6 +60,8 @@
 			private var ImageStyleFlag:Boolean = false;
 			[Bindable]
 			private var TextInputStyleFlag:Boolean = false;
+			[Bindable]
+			private var ComboboxStyleFlag:Boolean = false;
 			
 			override protected function Initialized():void
 			{
@@ -174,6 +176,12 @@
 					TextInputStyleFlag = true;
 					TextInputStyle.Control = _CurrentControl;
 				}
+				else if(_CurrentControl is UICombobox)
+				{
+					Category.text = "下拉框";
+					ComboboxStyleFlag = true;
+					ComboboxStyle.Control = _CurrentControl;
+				}
 				
 				Name.text = _CurrentControl.Id;
 			}
@@ -190,6 +198,7 @@
 				LabelStyleFlag = false;
 				ImageStyleFlag = false;
 				TextInputStyleFlag = false;
+				ComboboxStyleFlag = false;
 				Name.text = "";
 			}
 
@@ -276,6 +285,7 @@
 			<My:LabelPropery id="LabelStyle" visible="{LabelStyleFlag}" includeInLayout="{LabelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
 			<My:UIImageProperty id="ImageStyle" visible="{ImageStyleFlag}" includeInLayout="{ImageStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
 			<My:TextInputProperty id="TextInputStyle" visible="{TextInputStyleFlag}" includeInLayout="{TextInputStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+			<My:ComboboxPropertie id="ComboboxStyle" visible="{ComboboxStyleFlag}" includeInLayout="{ComboboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
 		</s:VGroup>
 	</s:Scroller>
 </ui:GenericProperty>

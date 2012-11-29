@@ -1,6 +1,6 @@
 package pixel.ui.control.style
 {
-	import pixel.ui.control.Container;
+	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.LayoutConstant;
 
 	public class UIWindowStyle extends ContainerStyle

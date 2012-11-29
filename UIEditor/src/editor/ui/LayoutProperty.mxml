@@ -5,7 +5,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.Container;
+			import pixel.ui.control.UIContainer;
 			
 			import mx.events.FlexEvent;
 			
@@ -19,15 +19,15 @@
 			
 			override protected function Initialized():void
 			{
-				_Gap = Container(CurrentControl).Gap + "";
-				ControlLayout.selectedIndex = Container(CurrentControl).Layout;
+				_Gap = UIContainer(CurrentControl).Gap + "";
+				ControlLayout.selectedIndex = UIContainer(CurrentControl).Layout;
 			}
 			
 			protected function GapEnter(event:FlexEvent):void
 			{
 				if(GapProperty.text != "")
 				{
-					Container(CurrentControl).Gap = int(GapProperty.text);
+					UIContainer(CurrentControl).Gap = int(GapProperty.text);
 				}
 			}
 			
@@ -36,7 +36,7 @@
 			 **/
 			protected function LayoutChange(event:IndexChangeEvent):void
 			{
-				Container(CurrentControl).Layout = ControlLayout.selectedIndex;
+				UIContainer(CurrentControl).Layout = ControlLayout.selectedIndex;
 				
 				if(ControlLayout.selectedIndex > 0)
 				{

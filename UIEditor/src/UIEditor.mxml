@@ -17,29 +17,23 @@
 			fontSize: 12;
 			color: "0x66CCFF";
 		}
+		global
+		{
+			font-family: "微软雅黑";
+			font-size: 12;
+		}
 		
 	</fx:Style>
 	
 	<fx:Script>
 		<![CDATA[
-			import flash.utils.getQualifiedClassName;
-			
-			import mx.collections.ArrayCollection;
-			import mx.controls.Alert;
-			import mx.core.IFlexDisplayObject;
-			import mx.events.CloseEvent;
-			import mx.events.FlexEvent;
-			import mx.events.ListEvent;
-			
-			import spark.components.SkinnableContainer;
-			import spark.skins.spark.ImageSkin;
-			
 			import editor.event.NotifyEvent;
 			import editor.model.ComponentModel;
 			import editor.model.ModelFactory;
 			import editor.ui.AboutWindow;
 			import editor.ui.AssetLibraryWindow;
 			import editor.ui.AssetSelectWindow;
+			import editor.ui.ComboboxDataGridWindow;
 			import editor.ui.ComponentProfile;
 			import editor.ui.ControlLibraryItem;
 			import editor.ui.NewAssetLibrary;
@@ -54,9 +48,20 @@
 			import editor.utils.Globals;
 			import editor.utils.Preference;
 			
-			import pixel.ui.control.Container;
+			import flash.utils.getQualifiedClassName;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.IFlexDisplayObject;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			
+			import pixel.ui.control.IUIControl;
 			import pixel.ui.control.SimpleTabPanel;
 			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UICombobox;
+			import pixel.ui.control.UIContainer;
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.UIImage;
 			import pixel.ui.control.UILabel;
@@ -69,10 +74,12 @@
 			import pixel.ui.control.event.DownloadEvent;
 			import pixel.ui.control.event.EditModeEvent;
 			import pixel.ui.control.style.SliderStyle;
-			import pixel.ui.control.utility.ControlType;
 			import pixel.ui.control.utility.Utils;
 			import pixel.utility.MouseManager;
 			import pixel.utility.System;
+			
+			import spark.components.SkinnableContainer;
+			import spark.skins.spark.ImageSkin;
 			[Embed(source="assets/AssetLibrary.png")]
 			private var TreeIcon:Class;
 			[Embed(source="assets/AssetSwf.png")]
@@ -126,6 +133,8 @@
 				});
 				InitializeAssetLib();
 				InitializeModelLib();
+				
+				PopUpWindowManager.PopUp(ComboboxDataGridWindow);
 			}
 			
 			/**
@@ -281,7 +290,7 @@
 			//组件基本信息
 			private var ComProfile:ComponentProfile = null;
 			//复合组件的底层容器
-			private var ParentContainer:Container;
+			private var ParentContainer:UIContainer;
 			//private var EditWorkspace:Workspace = null;
 			private var EditWorkspace:WorkspacePlus = null;
 			/**
@@ -304,7 +313,7 @@
 				
 				ComponentTree.removeAll();
 				
-				if(_CurrentSelect is Container)
+				if(_CurrentSelect is UIContainer)
 				{
 //					var Children:Array = Container(_CurrentSelect).Children;
 //					
@@ -317,11 +326,11 @@
 //						});
 //					}
 					
-					ComponentTree.addAll(CreateTreeNodes(Container(_CurrentSelect)));
+					ComponentTree.addAll(CreateTreeNodes(UIContainer(_CurrentSelect)));
 				}
 			}
 			
-			private function CreateTreeNodes(Parent:Container):ArrayCollection
+			private function CreateTreeNodes(Parent:UIContainer):ArrayCollection
 			{
 				var List:ArrayCollection = new ArrayCollection();
 				var Children:Array = Parent.Children;
@@ -333,7 +342,7 @@
 						Id: Child.Id,
 						Type: Utils.GetControlPrototype(Child),
 						Control: Child,
-						children: (Child is Container ? CreateTreeNodes(Container(Child)):[])
+						children: (Child is UIContainer ? CreateTreeNodes(UIContainer(Child)):[])
 					});
 				}
 				
@@ -515,19 +524,19 @@
 				{
 					switch(Item.Type)
 					{
-						case ControlType.SIMPLEBUTTON:
+						case Utils.SIMPLEBUTTON:
 							return ButtonIcon;
 							break;
-						case ControlType.SIMPLEPANEL:
+						case Utils.SIMPLEPANEL:
 							return PanelIcon;
 							break;
-						case ControlType.SLIDER:
+						case Utils.SLIDER:
 							return SliderIcon;
 							break;
-						case ControlType.TABPANEL:
+						case Utils.TABPANEL:
 							return TabPanelIcon;
 							break;
-						case ControlType.LABEL:
+						case Utils.LABEL:
 							return LabelIcon;
 							break;
 					}
@@ -819,7 +828,7 @@
 				});
 			}
 			
-			private var _DragControl:Object = null;
+			private var _DragControl:UIControl = null;
 			private var _DefaultCursor:String = "";
 			private var _CursorName:String = "";
 			/**
@@ -870,9 +879,15 @@
 						_DragControl.width = 48;
 						_DragControl.height = 48;
 						break;
+					case "Combobox":
+						_DragControl = new UICombobox();
 						
 				}
-				
+				if(_DragControl)
+				{
+					_DragControl.initializer();
+				}
+				_DragControl.initializer();
 				MouseManager.Instance.Register("Drag",[ImageSkin(event.target).imageDisplay.bitmapData],true);
 				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
 				this.stage.addEventListener(MouseEvent.MOUSE_UP,DropControl);
@@ -880,7 +895,7 @@
 			
 			private function ComponentStartDrag(event:NotifyEvent):void
 			{
-				_DragControl = ComponentModel(event.Params.pop());
+				_DragControl = ComponentModel(event.Params.pop()) as UIControl;
 				//MouseManager.Instance.Register("Drag",[Bitmap(new ComponentIcon()).bitmapData],true);
 				
 				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
@@ -918,10 +933,10 @@
 						_DragControl.x = event.localX;
 						_DragControl.y = event.localY;
 						var Target:UIControl = null;
-						if(event.target is Container)
+						if(event.target is UIContainer)
 						{
 							UIControl(_DragControl).EnableEditMode();
-							Container(event.target).OnDrop(_DragControl as UIControl);
+							UIContainer(event.target).OnDrop(_DragControl as UIControl);
 							this.EditWorkspace.OnComponentChoice(_DragControl);
 						}
 						else if(event.target == WorkspaceContainer)
@@ -952,7 +967,7 @@
 						Control.y = event.localY;
 						
 						Control.EnableEditMode();
-						Container(event.target).OnDrop(Control);
+						UIContainer(event.target).OnDrop(Control);
 						
 						//var CopyObj:ComponentModel = ModelFactory.Instance.Decode(ComponentModel(_DragControl).ModelByte);
 						//EditWorkspace.BuildComponent(_DragControl as ComponentModel);
@@ -1019,14 +1034,16 @@
 								</s:VGroup>
 								
 								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Combobox.png')" id="Combobox" mouseDown="StartDrag(event)" />
+									<s:Label text="Combobox"/>
+								</s:VGroup>
+								
+								<s:VGroup horizontalAlign="center">
 									<s:Image source="@Embed('../assets/Progress.png')" id="Progress" enabled="false"/>
 									<s:Label text="Progress" enabled="false" />
 								</s:VGroup>
 								
-								<s:VGroup horizontalAlign="center">
-									<s:Image source="@Embed('../assets/Combobox.png')" id="Combobox" enabled="false"/>
-									<s:Label text="Combobox" enabled="false" />
-								</s:VGroup>
+								
 							</s:VGroup>
 						</s:Scroller>
 					</mx:VBox>

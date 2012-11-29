@@ -29,7 +29,7 @@ package editor.ui
 	import editor.uitility.ui.event.UIEvent;
 	import editor.utils.Globals;
 	
-	import pixel.ui.control.Container;
+	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.SimpleTabPanel;
 	import pixel.ui.control.Tab;
 	import pixel.ui.control.TabBar;

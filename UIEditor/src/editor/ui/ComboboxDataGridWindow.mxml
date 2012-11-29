@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="650" height="500" creationComplete="initializer(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.DataGridEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			
+			import pixel.ui.control.ComboboxItem;
+			import pixel.ui.control.UICombobox;
+			
+			private var dataProvider:ArrayCollection = null;
+			protected function initializer(event:FlexEvent):void
+			{
+				var aa:ArrayCollection = new ArrayCollection();
+				
+				aa.addItem({
+					
+					label : "Label",
+					value : "Value",
+					fontColorHex : "0xFFFFFF",
+					fontColor : 0xffffff,
+					fontSize : "12",
+					fontBold : "是"
+				});
+				
+				grid.dataProvider = aa;
+			}
+			
+			private var control:UICombobox = null;
+			public function set combobox(value:UICombobox):void
+			{
+				control = value;
+				dataProvider = new ArrayCollection();
+				var items:Vector.<ComboboxItem> = control.items;
+				for each(var item:ComboboxItem in items)
+				{
+					dataProvider.addItem(item);
+				}
+			}
+			
+			protected function grid_mouseOverHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			private var focusItem:ComboboxItem = null;
+			protected function itemFocus(event:ListEvent):void
+			{
+				trace(event.rowIndex);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<ui:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
+	</ui:layout>
+	<s:HGroup>
+		<s:Button label="New" width="100" height="20" />	
+	</s:HGroup>
+	
+	<mx:DataGrid left="5" top="5" right="5" bottom="5" width="100%" height="100%" id="grid" borderVisible="true" itemRollOver="itemFocus(event)"  >
+		<mx:columns>
+				<mx:DataGridColumn headerText="文本" dataField="Label" width="80"/>
+				<mx:DataGridColumn headerText="数据" dataField="Value" width="50" />
+				<mx:DataGridColumn headerText="文本颜色" width="50">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:HBox verticalAlign="middle" paddingLeft="5">
+								<mx:ColorPicker color="{data.fontColor}" showTextField="true"/>
+							</mx:HBox>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn headerText="文本大小" width="100">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:HBox verticalAlign="middle" paddingLeft="5">
+								<s:Label text="{data.fontSize}" />
+								<s:HSlider width="120" maximum="30" stepSize="1" minimum="10" value="10" />
+							</mx:HBox>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn headerText="粗体" width="50">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:HBox verticalAlign="middle" paddingLeft="5" >
+								<s:ComboBox width="40">
+									<s:ArrayCollection>
+										<fx:String>是</fx:String>
+										<fx:String>否</fx:String>
+									</s:ArrayCollection>
+								</s:ComboBox>
+							</mx:HBox>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			
+			<mx:DataGridColumn headerText="" width="30">
+				<mx:itemRenderer>
+					<fx:Component>
+						<mx:HBox verticalAlign="middle" paddingLeft="5" >
+							<s:Image source="@Embed('../assets/Delete.png')" smooth="true" width="24" height="24"/>
+						</mx:HBox>
+					</fx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+		
+	</mx:DataGrid>
+</ui:AdvanceTitleWindow>

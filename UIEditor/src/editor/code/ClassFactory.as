@@ -1,6 +1,6 @@
 package editor.code
 {
-	import pixel.ui.control.Container;
+	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControl;
 	import corecom.control.style.IStyle;
 	import pixel.ui.control.style.ButtonStyle;

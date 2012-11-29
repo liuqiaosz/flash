@@ -1,6 +1,6 @@
 package editor.model
 {
-	import pixel.ui.control.Container;
+	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControl;
 	
 	import editor.ui.ComponentProfile;

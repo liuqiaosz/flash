@@ -33,6 +33,9 @@ package pixel.ui.control
 			_TextField.defaultTextFormat = _Format;
 			Align = TextAlign.LEFT;
 			addChild(_TextField);
+			
+			//_TextField.width = width - _Style.BorderThinkness * 2;
+			//_TextField.height = height - _Style.BorderThinkness * 2;
 		}
 		
 		public function set Text(Value:String):void
@@ -121,7 +124,7 @@ package pixel.ui.control
 		 * 是否允许输入
 		 * 
 		 **/
-		NSPixelUI function set Input(Value:Boolean):void
+		public function set Input(Value:Boolean):void
 		{
 			_TextField.type = Value ? TextFieldType.INPUT:TextFieldType.DYNAMIC;
 		}

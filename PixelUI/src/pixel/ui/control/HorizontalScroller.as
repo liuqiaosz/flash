@@ -9,7 +9,7 @@ package pixel.ui.control
 	
 	public class HorizontalScroller extends Scroller
 	{
-		private var _parentContainer:Container = null;
+		private var _parentContainer:UIContainer = null;
 		
 		//容器的宽度和高度
 		private var _BoxWidth:int = 0;
@@ -108,7 +108,7 @@ package pixel.ui.control
 		 **/
 		public function RefreshSize():void
 		{
-			_parentContainer = parent as Container;
+			_parentContainer = parent as UIContainer;
 			if(_parentContainer)
 			{
 				

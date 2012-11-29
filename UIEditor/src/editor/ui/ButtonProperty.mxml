@@ -4,27 +4,35 @@
 					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
 	
 	<!--Tab标签样式设定-->
+	<fx:Metadata>
+	</fx:Metadata>
 	<fx:Script>
 		<![CDATA[
+			
 			import mx.controls.Alert;
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
-			
-			import spark.events.IndexChangeEvent;
-			import spark.events.TextOperationEvent;
 			
 			import pixel.ui.control.UIButton;
 			import pixel.ui.control.UILabel;
 			import pixel.utility.Tools;
 			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
 			private var Button:UIButton = null;
 			[Bindable]
 			private var _Label:UILabel = null;
 			
-			
-			
 			[Bindable]
 			private var _FamilyArray:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var _simpleStyleEnable:Boolean = true;
+			public function set enableSimpleStyle(value:Boolean):void
+			{
+				_simpleStyleEnable = value;
+			}
 			override protected function Initialized():void
 			{
 //				var fonts:Array = Font.enumerateFonts(true);
@@ -33,7 +41,7 @@
 //				{
 //					_FamilyArray.addItem(font.fontName);
 //				}
-				
+				ButtonState.selectedIndex = 0;
 				Button = Control as pixel.ui.control.UIButton;
 //				SimpleStyle.Control = Button;
 //				BorderStyle.Control = Button;
@@ -142,9 +150,10 @@
 //				FontColorPicker.selectedColor = Code;
 //				Button.textLabel.FontColor = Code;
 //			}
+			
 		]]>
 	</fx:Script>
-	<ui:LabelPropery Control="{_Label}" /> 
+	<ui:LabelPropery Control="{_Label}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"/> 
 	<!--
 	<s:HGroup id="Label">
 		<s:Label text="文本" height="100%" verticalAlign="middle" width="60"/>
@@ -192,7 +201,7 @@
 		</s:ComboBox>
 	</s:HGroup>
 	
-	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
-	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
+	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"  />
+	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"/>
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
 </ui:GenericProperty>

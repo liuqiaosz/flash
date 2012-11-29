@@ -1,6 +1,6 @@
 package editor.code
 {
-	import pixel.ui.control.Container;
+	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UISlider;
 	import pixel.ui.control.SimpleTabPanel;
@@ -146,9 +146,9 @@ package editor.code
 				VarCode += "public var " + InstanceName + ":" + ChildClassName + " = new " + ChildClassName + "();\n";
 				
 				//如果为容器对象则继续对子对象进行对象初始化处理
-				if(Control is Container)
+				if(Control is UIContainer)
 				{
-					InitializeVars(Container(Control).Children,InstanceName);
+					InitializeVars(UIContainer(Control).Children,InstanceName);
 				}
 			}
 		}

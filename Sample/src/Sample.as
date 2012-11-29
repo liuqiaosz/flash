@@ -51,6 +51,8 @@ package
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
 	import pixel.particle.PixelParticleEmitterPropertie;
+	import pixel.ui.control.UICombobox;
+	import pixel.ui.control.ComboboxItem;
 	import pixel.ui.control.HorizontalScroller;
 	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
@@ -59,6 +61,7 @@ package
 	import pixel.ui.control.VerticalPanel;
 	import pixel.ui.control.VerticalScroller;
 	import pixel.ui.control.style.VerticalScrollerStyle;
+	import pixel.utility.BitmapTools;
 	import pixel.utility.ColorCode;
 	import pixel.utility.RGBA;
 	import pixel.utility.Stat;
@@ -140,7 +143,12 @@ package
 	[SWF(width="1280",height="600",frameRate="30")]
 	public class Sample extends Sprite
 	{
-		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
+		[Embed(source="arrow_down.png")]
+		private var ARROW_DOWN:Class;
+		[Embed(source="arrow_up.png")]
+		private var ARROW_UP:Class;
+		
+		[Embed(source="bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
 		private var workerClass:Class;
 		private var sid:String = "";
 		private var center:Point = new Point();
@@ -152,10 +160,69 @@ package
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
 			
-			emitter();
+			combotest();
 			//circlett();
+			
 			var s:Stat = new Stat();
 			addChild(s);
+		}
+		
+		public function pngTo4444():void
+		{
+			var png:Bitmap = new ARROW_UP() as Bitmap;
+			
+			var bmp:BitmapData = png.bitmapData;
+			
+			var bmp4:BitmapData = new BitmapData(bmp.width,bmp.height);
+			
+			for(var i:int = 0; i<bmp4.height; i++)
+			{
+				for(var j:int = 0; j<bmp4.width; j++)
+				{
+					var pixel:uint = bmp.getPixel32(j,i);
+					pixel = ColorCode.RGB8888ToRGB4444(pixel).Pixel;
+					bmp4.setPixel32(j,i,pixel);
+				}
+			}
+			var op:PNGEncoderOptions = new PNGEncoderOptions();
+			var data:ByteArray = BitmapTools.BitmapEncodeToPNG(bmp4);
+			
+			var writer:FileStream = new FileStream();
+			writer.open(new File("D:\\arrow_up4444.png"),FileMode.WRITE);
+			writer.writeBytes(data,0,data.length);
+			writer.close();
+		}
+		
+		private function combotest():void
+		{
+			var comb:UICombobox = new UICombobox();
+			comb.initializer();
+			//comb.width = 100;
+			//comb.height = 30;
+			var item:ComboboxItem = new ComboboxItem("111","1111");
+			var vec:Vector.<ComboboxItem> = new Vector.<ComboboxItem>();
+			vec.push(item);
+			item = new ComboboxItem("222","222");
+			vec.push(item);
+			item = new ComboboxItem("333","222",0xFF0000,15,true);
+			vec.push(item);
+			item = new ComboboxItem("444","222");
+			vec.push(item);
+			item = new ComboboxItem("555","222",0x00FF00);
+			vec.push(item);
+			item = new ComboboxItem("666","222");
+			vec.push(item);
+			item = new ComboboxItem("777","222");
+			vec.push(item);
+			item = new ComboboxItem("888","222");
+			vec.push(item);
+			item = new ComboboxItem("999","222");
+			
+			comb.items = vec;
+			comb.x = 100;
+			comb.y = 300;
+			
+			addChild(comb);
 		}
 		
 		private function circlett():void
@@ -469,7 +536,7 @@ package
 			});
 		}
 		
-		[Embed(source="../bin-debug/assets/img.png")]
+		[Embed(source="bin-debug/assets/img.png")]
 		private var Img:Class;
 		private function bitmap555():void
 		{

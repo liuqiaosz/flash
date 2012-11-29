@@ -55,7 +55,7 @@ package editor.model
 	}
 }
 
-import pixel.ui.control.Container;
+import pixel.ui.control.UIContainer;
 import pixel.ui.control.UIButton;
 import pixel.ui.control.UIControl;
 import pixel.ui.control.UIImage;
@@ -64,7 +64,6 @@ import pixel.ui.control.UIPanel;
 import pixel.ui.control.UISlider;
 import pixel.ui.control.UITextInput;
 import pixel.ui.control.UIWindow;
-import pixel.ui.control.utility.ControlType;
 import pixel.ui.control.utility.Utils;
 
 import editor.model.ComponentModel;
@@ -184,25 +183,25 @@ class ModelParser implements IModel
 		//1	Short	控件类型
 		switch(Type)
 		{
-			case ControlType.SIMPLEBUTTON:
+			case Utils.SIMPLEBUTTON:
 				Control = new UIButton();
 				break;
-			case ControlType.SIMPLEPANEL:
+			case Utils.SIMPLEPANEL:
 				Control = new UIPanel();
 				break;
-			case ControlType.SLIDER:
+			case Utils.SLIDER:
 				Control = new UISlider();
 				break;
-			case ControlType.LABEL:
+			case Utils.LABEL:
 				Control = new UILabel();
 				break;
-			case ControlType.TEXTINPUT:
+			case Utils.TEXTINPUT:
 				Control = new UITextInput();
 				break;
-			case ControlType.IMAGE:
+			case Utils.IMAGE:
 				Control = new UIImage();
 				break;
-			case ControlType.WINDOW:
+			case Utils.WINDOW:
 				Control = new UIWindow();
 				break;
 		}

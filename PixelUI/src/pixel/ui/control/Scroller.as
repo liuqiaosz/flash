@@ -15,7 +15,7 @@ package pixel.ui.control
 	 * 滑动条
 	 * 
 	 **/
-	internal class Scroller extends Container
+	internal class Scroller extends UIContainer
 	{
 		public static const HANDLER_MINMIZE:int = 40;
 		//当前控制的容器
