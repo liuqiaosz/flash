@@ -3,15 +3,15 @@ package pixel.ui.control.asset
 	/**
 	 * 组件资源加载管理
 	 **/
-	public class ControlAssetManager
+	public class PixelAssetManager
 	{
-		private static var _Instance:IControlAssetManager = null;
+		private static var _Instance:IPixelAssetManager = null;
 		
-		public function ControlAssetManager()
+		public function PixelAssetManager()
 		{
 		}
 		
-		public static function get Instance():IControlAssetManager
+		public static function get Instance():IPixelAssetManager
 		{
 			if(null == _Instance)
 			{
@@ -40,14 +40,14 @@ import flash.utils.Dictionary;
 import pixel.ui.control.UIControl;
 import pixel.ui.control.asset.IAsset;
 import pixel.ui.control.asset.IAssetLibrary;
-import pixel.ui.control.asset.IControlAssetManager;
-import pixel.ui.control.asset.LoaderAssetLibrary;
+import pixel.ui.control.asset.IPixelAssetManager;
+import pixel.ui.control.asset.PixelLoaderAssetLibrary;
 import pixel.ui.control.event.DownloadEvent;
 import pixel.utility.IDispose;
 import pixel.utility.Tools;
 import pixel.utility.swf.Swf;
 
-class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetManager,IDispose
+class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetManager,IDispose
 {
 		
 	private var AssetDictionary:Dictionary = new Dictionary();
@@ -208,7 +208,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IControlAssetMa
 	private function OnComplete(event:Event):void
 	{
 		var id:String = Tools.getFileName(this._LibraryLoadingUrl);
-		var lib:LoaderAssetLibrary = new LoaderAssetLibrary(_Loader,id);
+		var lib:PixelLoaderAssetLibrary = new PixelLoaderAssetLibrary(_Loader,id);
 		_AssetLibArray.push(lib);
 		CheckHook(lib);
 		clearLoader();

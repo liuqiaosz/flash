@@ -142,6 +142,19 @@ package pixel.ui.control
 			return _Content.addChildAt(Child,Index);
 		}
 		
+		public function removeAllChildren():void
+		{
+			for each(var child:DisplayObject in _Children)
+			{
+				if(Content.contains(child))
+				{
+					Content.removeChild(child);
+				}
+			}
+			
+			_Children = [];
+		}
+		
 		/**
 		 * 更新布局,对所以子对象重新进行排序
 		 **/

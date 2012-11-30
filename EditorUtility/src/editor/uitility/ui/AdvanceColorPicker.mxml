@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  minWidth="80" minHeight="30" verticalAlign="middle">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+
+	</fx:Declarations>
+	
+	<fx:Metadata>
+		[Event(name="change", type="mx.events.ColorPickerEvent")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.ColorPickerEvent;
+			
+			import pixel.utility.Tools;
+			
+			[Bindable]
+			private var showColorTextBind:Boolean = true;
+			
+			[Bindable]
+			private var colorEditableBind:Boolean = true;
+			
+			public function get color():uint
+			{
+				return picker.selectedColor;
+			}
+			
+			public function set color(value:uint):void
+			{
+				picker.selectedColor = value;
+				colorText.text = Tools.Color2Hex(value);
+			}
+			
+			public function set editable(value:Boolean):void
+			{
+				colorEditableBind = value;	
+			}
+			
+			protected function colorChanged(event:ColorPickerEvent):void
+			{
+				colorText.text = Tools.Color2Hex(event.color);
+				dispatchEvent(event);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<mx:ColorPicker id="picker" showTextField="true" change="colorChanged(event)" editable="{colorEditableBind}" color="0x000000" />
+	<s:Label id="colorText" visible="{showColorTextBind}" includeInLayout="{showColorTextBind}" text="0x000000" />
+</s:HGroup>

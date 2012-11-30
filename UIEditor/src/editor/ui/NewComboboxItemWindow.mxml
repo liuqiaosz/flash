@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="400" height="400" xmlns:utility="editor.uitility.ui.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.uitility.ui.PopUpWindowManager;
+			
+			import mx.collections.ArrayCollection;
+			import mx.core.IFlexDisplayObject;
+			
+			import pixel.ui.control.ComboboxItem;
+			import pixel.ui.control.asset.AssetImage;
+			import pixel.ui.control.asset.PixelAssetManager;
+			import pixel.ui.control.asset.IAssetLibrary;
+			
+			[Bindable]
+			private var enableIcon:Boolean = false;
+			[Bindable]
+			private var importIcon:Boolean = false;
+			[Bindable]
+			private var iconPreview:Bitmap = null;
+			
+			
+			private function browserAssetLibrary(event:MouseEvent):void
+			{
+				//从UI资源库获取资源库
+				var Vec:Vector.<IAssetLibrary> = PixelAssetManager.Instance.Librarys;
+				var libs:ArrayCollection = new ArrayCollection();
+				for each(var Lib:IAssetLibrary in Vec)
+				{
+					libs.addItem(Lib);
+				}
+				var window:IFlexDisplayObject = PopUpWindowManager.PopUp(AssetSelectWindow);
+				AssetSelectWindow(window).Item = libs;
+				window.addEventListener(NotifyEvent.SELECTEDASSET,function(event:NotifyEvent):void{
+					AssetSelectWindow(window).CloseWindow();
+					//资源选择完成
+					var libId:String = event.Params.pop();
+					var assId:String = event.Params.pop();
+					var ass:AssetImage = event.Params.pop() as AssetImage;
+					iconId.text = assId;
+					iconPreview = ass.image;
+				});
+			}
+			
+			/**
+			 * 
+			 * 
+			 * 小图标开启切换
+			 * 
+			 **/
+			protected function switchEnableIcon(event:MouseEvent):void
+			{
+				enableIcon = !enableIcon;
+			}
+			
+			/**
+			 * 
+			 * 图标资源打包切换
+			 * 
+			 **/
+			protected function switchImportIcon(event:MouseEvent):void
+			{
+				importIcon = !importIcon;
+			}
+			
+			/**
+			 * 
+			 * 保存数据
+			 * 
+			 **/
+			public function saveComboboxItem(event:MouseEvent):void
+			{
+				var item:ComboboxItem = new ComboboxItem(itemLabel.text,itemValue.text,fontColor.color,fontSize.value);
+				if(enableIcon)
+				{
+					item.iconId = iconId.text;
+					item.importIcon = importIcon;
+					item.icon = iconPreview.bitmapData;
+				}
+				var notify:NotifyEvent = new NotifyEvent(NotifyEvent.COMBOBOX_NEWITEM);
+				notify.Params.push(item);
+				dispatchEvent(notify);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup gap="15" width="90%" horizontalCenter="1" verticalCenter="1" height="90%">
+		
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="文本" width="100" />
+			<s:TextInput id="itemLabel" />
+		</s:HGroup>
+		
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="数据"  width="100"/>
+			<s:TextInput id="itemValue" />
+		</s:HGroup>
+		
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="文本大小"  width="100"/>
+			<utility:AdvanceHSlider width="120" id="fontSize" stepSize="1" minimum="10" maximum="30"/>
+		</s:HGroup>
+		
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="文本颜色"  width="100"/>
+			<utility:AdvanceColorPicker id="fontColor" />
+		</s:HGroup>
+		
+		<!--
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="粗体"  width="100"/>
+			<s:RadioButton groupName="radioBold" value="1" label="是" />
+			<s:RadioButton groupName="radioBold" value="0" label="否" />
+		</s:HGroup>
+		-->
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="开启小图标"  width="100"/>
+			<s:CheckBox selected="{enableIcon}" click="switchEnableIcon(event)" />
+		</s:HGroup>
+		
+		<s:VGroup visible="{enableIcon}" includeInLayout="{enableIcon}">
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="图标ID"  width="100"/>
+				<s:TextInput editable="false" id="iconId" />
+				<s:Image source="@Embed('../assets/Search.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="browserAssetLibrary(event)" />
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="图标预览"  width="100"/>
+				<s:Image width="24" height="24" smooth="true" smoothingQuality="high" source="{iconPreview}"/>
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle" >
+				<s:Label text="资源打包"  width="100"/>
+				<s:CheckBox selected="{importIcon}" click="switchImportIcon(event)" />
+			</s:HGroup>
+		</s:VGroup>
+		
+		<s:HGroup horizontalAlign="center" width="100%">
+			<s:Image width="24" height="24" source="@Embed('../assets/Save.png')" smooth="true" buttonMode="true" click="saveComboboxItem(event)" />
+		</s:HGroup>
+	</s:VGroup>
+	
+</ui:AdvanceTitleWindow>

@@ -8,8 +8,12 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import editor.uitility.ui.PopUpWindowManager;
+			
 			import pixel.ui.control.UICombobox;
 			import pixel.ui.control.UIControl;
+			
+			private var combobox:UICombobox = null;
 			
 			[Bindable]
 			private var _btn:UIControl = null;
@@ -17,10 +21,45 @@
 			[Bindable]
 			private var _pop:UIControl = null;
 			
+			[Bindable]
+			private var _textField:UIControl = null;
+			
 			override protected function Initialized():void
 			{
-				_btn = UICombobox(CurrentControl).popButton;
-				_pop = UICombobox(CurrentControl).popPanel;
+				combobox = CurrentControl as UICombobox;
+				_btn = combobox.popButton;
+				_pop = combobox.popPanel;
+				_textField = combobox.labelField;
+				popDirection.selectedIndex = combobox.popDirection;
+				
+				for each(var i:UIControl in combobox.Children)
+				{
+					trace(i);
+				}
+			}
+			
+			private function editComboboxItem(event:MouseEvent):void
+			{
+				var window:ComboboxDataGridWindow = PopUpWindowManager.PopUp(ComboboxDataGridWindow) as ComboboxDataGridWindow;
+				window.combobox = CurrentControl as UICombobox;
+			}
+			
+			private function switchPopPanel(event:Event):void
+			{
+				if(showPop.selectedIndex == 1)
+				{
+					UICombobox(CurrentControl).showPop();
+				}
+				else
+				{
+					UICombobox(CurrentControl).hidePop();
+				}
+			}
+			
+			private function switchPopDirection(event:Event):void
+			{
+				combobox.popDirection = popDirection.selectedIndex;
+				combobox.showPop();
 			}
 		]]>
 	</fx:Script>
@@ -29,11 +68,34 @@
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
 	
-	<s:Label text="下拉框数据" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
+	<s:Label text="文本区域样式" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
+	<ui:LabelPropery Control="{_textField}" enableSimpleStyle="false" />
 	
 	<s:Label text="下拉框按钮样式" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
 	<ui:ButtonProperty Control="{_btn}" enableSimpleStyle="false" />
 	
 	<s:Label text="弹出框样式" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
+	<s:HGroup verticalAlign="middle">
+		<s:Label width="80" text="显示弹出框" />
+		<s:ComboBox selectedIndex="1" change="switchPopPanel(event)" id="showPop" width="60">
+			<s:ArrayCollection>
+				<fx:String>隐藏</fx:String>
+				<fx:String>显示</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	<s:HGroup verticalAlign="middle">
+		<s:Label width="80" text="弹出方向" />
+		<s:ComboBox selectedIndex="1" change="switchPopDirection(event)" id="popDirection" width="60">
+			<s:ArrayCollection>
+				<fx:String>向上</fx:String>
+				<fx:String>向下</fx:String>
+			</s:ArrayCollection>
+		</s:ComboBox>
+	</s:HGroup>
+	<s:HGroup verticalAlign="middle">
+		<s:Label width="80" text="下拉框数据" />
+		<s:Image width="24" height="24" source="@Embed('../assets/Edit.png')" smooth="true" click="editComboboxItem(event)" buttonMode="true"/>	
+	</s:HGroup>
 	<ui:PanelProperty Control="{_pop}" enableSimpleStyle="false" />
 </ui:GenericProperty>

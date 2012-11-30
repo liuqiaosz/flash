@@ -18,6 +18,7 @@ package pixel.ui.control
 			super();
 			this.Layout = LayoutConstant.HORIZONTAL;
 			this.BorderThinkness = 0;
+			this.BackgroundAlpha = 0;
 			_Item = Data;
 			_text = new UILabel();
 			addChild(_text);

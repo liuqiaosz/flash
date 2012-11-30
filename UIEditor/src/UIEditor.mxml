@@ -69,7 +69,7 @@
 			import pixel.ui.control.UISlider;
 			import pixel.ui.control.UITextInput;
 			import pixel.ui.control.UIWindow;
-			import pixel.ui.control.asset.ControlAssetManager;
+			import pixel.ui.control.asset.PixelAssetManager;
 			import pixel.ui.control.asset.IAssetLibrary;
 			import pixel.ui.control.event.DownloadEvent;
 			import pixel.ui.control.event.EditModeEvent;
@@ -134,7 +134,7 @@
 				InitializeAssetLib();
 				InitializeModelLib();
 				
-				PopUpWindowManager.PopUp(ComboboxDataGridWindow);
+				
 			}
 			
 			/**
@@ -162,20 +162,20 @@
 						}
 					}
 				}
-				ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
-				ControlAssetManager.Instance.Download(Url);
+				PixelAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
+				PixelAssetManager.Instance.Download(Url);
 			}
 			
 			private function AssetLibraryInitalized(event:DownloadEvent):void
 			{
-				var Vec:Vector.<IAssetLibrary> = ControlAssetManager.Instance.Librarys;
+				var Vec:Vector.<IAssetLibrary> = PixelAssetManager.Instance.Librarys;
 				
 				for each(var Lib:IAssetLibrary in Vec)
 				{
 					Globals.AppendAssetLibrary(Lib);
 					AssetLibraryTree.addItem(Lib);
 				}
-				ControlAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
+				PixelAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
 			}
 			
 			/**
@@ -633,9 +633,9 @@
 				{
 					//清除该事件引用,因为响应事件的同时窗口已经关闭
 					PopupWindow.removeEventListener(NotifyEvent.IMPORTSWF,AssetLibraryCreated);
-					ControlAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
+					PixelAssetManager.Instance.addEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
 					//var Lib:IAssetLibrary = AssetFactory.Instance.OpenLibrary(event.Message);
-					ControlAssetManager.Instance.PushQueue(event.Message);
+					PixelAssetManager.Instance.PushQueue(event.Message);
 //					if(Lib)
 //					{
 //						Globals.AppendAssetLibrary(Lib);
@@ -655,7 +655,7 @@
 				var Lib:IAssetLibrary = event.library;
 				Globals.AppendAssetLibrary(Lib);
 				AssetLibraryTree.addItem(Lib);
-				ControlAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
+				PixelAssetManager.Instance.removeEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
 			}
 			
 			/**
@@ -887,7 +887,7 @@
 				{
 					_DragControl.initializer();
 				}
-				_DragControl.initializer();
+				//_DragControl.initializer();
 				MouseManager.Instance.Register("Drag",[ImageSkin(event.target).imageDisplay.bitmapData],true);
 				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
 				this.stage.addEventListener(MouseEvent.MOUSE_UP,DropControl);

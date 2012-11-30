@@ -8,18 +8,18 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.UILabel;
-			
 			import mx.controls.Alert;
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
 			
+			import pixel.ui.control.UILabel;
+			import pixel.ui.control.UITextBase;
+			import pixel.utility.Tools;
+			
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
-			import pixel.utility.Tools;
-			
-			private var _Label:UILabel = null;
+			private var _Label:UITextBase = null;
 			
 			override protected function Initialized():void
 			{
@@ -30,7 +30,7 @@
 					_FamilyArray.addItem(font.fontName);
 				}
 				
-				_Label = Control as pixel.ui.control.UILabel;
+				_Label = Control as pixel.ui.control.UITextBase;
 				
 				_Text = _Label.Text;
 				_FontSize = _Label.FontSize;
@@ -127,9 +127,16 @@
 				_Label.FontFamily = _FamilyArray.getItemAt(event.newIndex) as String;
 				LabelFamily.toolTip = _Label.FontFamily;
 			}
+			
+			[Bindable]
+			private var _simpleStyleEnable:Boolean = true;
+			public function set enableSimpleStyle(value:Boolean):void
+			{
+				_simpleStyleEnable = value;
+			}
 		]]>
 	</fx:Script>
-	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
+	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}" />
 	
 	<s:HGroup>
 		<s:Label text="文本" height="100%" verticalAlign="middle" width="60"/>

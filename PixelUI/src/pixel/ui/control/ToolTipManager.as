@@ -25,7 +25,7 @@ import pixel.ui.control.TextAlign;
 import pixel.ui.control.UIControl;
 import pixel.ui.control.UILabel;
 import pixel.ui.control.UIPanel;
-import pixel.ui.control.asset.IControlAssetManager;
+import pixel.ui.control.asset.IPixelAssetManager;
 import pixel.ui.control.style.IVisualStyle;
 import pixel.ui.core.NSPixelUI;
 

@@ -4,7 +4,7 @@ package pixel.ui.control
 	import flash.events.MouseEvent;
 	import flash.utils.ByteArray;
 	
-	import pixel.ui.control.asset.ControlAssetManager;
+	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.style.ButtonStyle;
 	import pixel.ui.control.style.IStyle;
@@ -324,7 +324,7 @@ package pixel.ui.control
 				_MouseDownStyle.BackgroundImage = Asset as Bitmap;
 			}
 			
-			ControlAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
+			PixelAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
 		}
 	}
 }

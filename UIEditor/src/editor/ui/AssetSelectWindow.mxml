@@ -126,8 +126,10 @@
 				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.SELECTEDASSET);
 				var asset:IAsset = event.Params.pop() as IAsset;
 				
+				Notify.Params.push(asset);
 				Notify.Params.push(asset.name);
 				Notify.Params.push(_CurrentLibrary.id);
+				
 				dispatchEvent(Notify);
 				CloseWindow();
 			}

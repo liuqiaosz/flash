@@ -24,7 +24,7 @@ import pixel.ui.control.UIButton;
 import pixel.ui.control.UIControl;
 import pixel.ui.control.UIPanel;
 import pixel.ui.control.UISlider;
-import pixel.ui.control.asset.IControlAssetManager;
+import pixel.ui.control.asset.IPixelAssetManager;
 import pixel.ui.control.utility.Utils;
 
 import flash.events.EventDispatcher;

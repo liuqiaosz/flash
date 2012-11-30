@@ -22,6 +22,8 @@ package editor.event
 		public static const CHANGESTYLE_TABBAR:String = "ChangeStyleTabBar";
 		public static const UPDATECONSTRUCT:String = "UpdateConstruct";
 		public static const SHELLSELECTED:String = "ShellSelected";
+		
+		public static const COMBOBOX_NEWITEM:String = "NewComboboxItem";
 		private var _Message:String = "";
 		public function set Message(Value:String):void
 		{

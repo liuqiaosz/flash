@@ -6,12 +6,12 @@ package pixel.ui.control.asset
 	
 	import pixel.utility.System;
 
-	public class LoaderAssetLibrary extends AssetLibrary
+	public class PixelLoaderAssetLibrary extends AssetLibrary
 	{
 		private var _initialized:Boolean = false;
 		private var _loader:Loader = null;
 		
-		public function LoaderAssetLibrary(loader:Loader,id:String)
+		public function PixelLoaderAssetLibrary(loader:Loader,id:String)
 		{
 			super(id);
 			_loader = loader;

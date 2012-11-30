@@ -73,7 +73,7 @@ package pixel.ui.control
 		{
 			var Item:UIComboboxItem = new UIComboboxItem(Data);
 			addChild(Item);
-			
+			_Items.push(Data);
 			Item.width = width - 10;
 			Item.height = _ItemHeight;
 			Item.x = 5;
@@ -99,6 +99,32 @@ package pixel.ui.control
 		public function set ItemFocusColor(Value:uint):void
 		{
 			_FocusColor = Value;
+		}
+		
+		public function set items(value:Vector.<ComboboxItem>):void
+		{
+			_Items = value;
+			this.removeAllChildren();
+			for each(var item:ComboboxItem in value)
+			{
+				var Item:UIComboboxItem = new UIComboboxItem(item);
+				addChild(Item);
+				Item.width = width - 10;
+				Item.height = _ItemHeight;
+				Item.x = 5;
+				Item.y += 5;
+				height = (this.Children.length + 1) * _ItemHeight + this.Children.length * 5;
+			}
+			/**
+			 * var Item:UIComboboxItem = new UIComboboxItem(Data);
+			addChild(Item);
+			_Items.push(Data);
+			Item.width = width - 10;
+			Item.height = _ItemHeight;
+			Item.x = 5;
+			Item.y += 5;
+			height = (this.Children.length + 1) * _ItemHeight + this.Children.length * 5;
+			 **/
 		}
 		
 		public function get items():Vector.<ComboboxItem>

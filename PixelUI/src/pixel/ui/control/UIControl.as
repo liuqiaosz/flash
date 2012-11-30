@@ -12,7 +12,7 @@ package pixel.ui.control
 	import flash.utils.getTimer;
 	
 	import pixel.ui.control.asset.AssetImage;
-	import pixel.ui.control.asset.ControlAssetManager;
+	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.style.IStyle;
 	import pixel.ui.control.style.IVisualStyle;
@@ -233,7 +233,7 @@ package pixel.ui.control
 					{
 						if(!Style.ImagePack)
 						{
-							var Img:Bitmap = ControlAssetManager.Instance.FindAssetById(Style.BackgroundImageId) as Bitmap;
+							var Img:Bitmap = PixelAssetManager.Instance.FindAssetById(Style.BackgroundImageId) as Bitmap;
 							if(Img)
 							{
 								//资源已经欲载
@@ -243,7 +243,7 @@ package pixel.ui.control
 							else
 							{
 								//注册资源加载通知
-								ControlAssetManager.Instance.AssetHookRegister(Style.BackgroundImageId,this);
+								PixelAssetManager.Instance.AssetHookRegister(Style.BackgroundImageId,this);
 							}
 						}
 					}
@@ -469,7 +469,7 @@ package pixel.ui.control
 			
 			if(!Style.ImagePack)
 			{
-				var Img:Bitmap = AssetImage(ControlAssetManager.Instance.FindAssetById(Style.BackgroundImageId)).image;
+				var Img:Bitmap = AssetImage(PixelAssetManager.Instance.FindAssetById(Style.BackgroundImageId)).image;
 				if(Img)
 				{
 					this.BackgroundImage = Img;
@@ -493,7 +493,7 @@ package pixel.ui.control
 		public function AssetComleteNotify(Id:String,Asset:Object):void
 		{
 			this.BackgroundImage = Asset as Bitmap;
-			ControlAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
+			PixelAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
 		}
 		
 		private var _Id:String = "";

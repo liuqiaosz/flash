@@ -38,7 +38,6 @@ package pixel.ui.control
 			var StyleSkin:Class = Skin ? Skin:CombStyle;
 			super(StyleSkin);
 			addEventListener(MouseEvent.MOUSE_DOWN,popup);
-			
 		}
 		
 		override public function initializer():void
@@ -48,6 +47,7 @@ package pixel.ui.control
 			_LabelField.width = 100;
 			_LabelField.BorderThinkness = 0;
 			_LabelField.BackgroundAlpha = 0;
+			
 			buttonMode = true;
 			//_LabelField.
 			
@@ -83,13 +83,17 @@ package pixel.ui.control
 		{
 			return _List;
 		}
+		public function get labelField():UITextInput
+		{
+			return _LabelField;
+		}
 		
 		override public function EnableEditMode():void
 		{
 			super.EnableEditMode();
 			removeEventListener(MouseEvent.MOUSE_DOWN,popup);
 			this.mouseChildren = false;
-			listPopUp();
+			showPop();
 		}
 		
 		/**
@@ -102,6 +106,10 @@ package pixel.ui.control
 		{
 			_popDirection = value;
 			
+		}
+		public function get popDirection():int
+		{
+			return _popDirection;
 		}
 		
 		override public function set width(value:Number):void
@@ -125,8 +133,10 @@ package pixel.ui.control
 			_LabelField.height = height;
 			
 			_LabelField.x = _LabelField.y = 0;
+			_LabelField.y = (height - _LabelField.height) / 2;
 			_openButton.x = _LabelField.width;
 			_openButton.y = 0;
+			positionUpdate();
 		}
 		
 		private function popup(event:MouseEvent):void
@@ -144,32 +154,41 @@ package pixel.ui.control
 				}
 			}
 			
-			listPopUp();
+			showPop();
 		}
 		
-		private function listPopUp():void
+		public function showPop():void
+		{
+			positionUpdate();
+			_List.visible = _Popup = true;
+		}
+		
+		private function positionUpdate():void
 		{
 			if(_popDirection == 0)
 			{
-				_List.y = (_List.height + 2) * -1;
-				_List.visible = !_Popup;
-				_Popup = _List.visible;
+				_List.y = (_List.height + 2 + _Style.BorderThinkness) * -1;
 			}
 			else
 			{
 				_List.y = (height + 2);
-				_List.visible = !_Popup;
-				_Popup = _List.visible;
 			}
+		}
+		
+		public function hidePop():void
+		{
+			_Popup = _List.visible = false;
 		}
 		
 		public function set items(value:Vector.<ComboboxItem>):void
 		{
+			_List.items = value;
+			showPop();
 			//_Items = Value;
-			for each(var Item:ComboboxItem in value)
-			{
-				_List.AddItem(Item);
-			}
+//			for each(var Item:ComboboxItem in value)
+//			{
+//				_List.AddItem(Item);
+//			}
 		}
 		public function get items():Vector.<ComboboxItem>
 		{
@@ -204,6 +223,7 @@ package pixel.ui.control
 		override protected function SpecialDecode(data:ByteArray):void
 		{
 			data.readByte();
+			_popDirection = data.readByte();
 			_LabelField = new UITextInput();
 			_LabelField.Decode(data);
 			_LabelField.Input = false;
@@ -224,6 +244,7 @@ package pixel.ui.control
 		}
 		override protected function SpecialEncode(data:ByteArray):void
 		{
+			data.writeByte(_popDirection);
 			var childData:ByteArray = _LabelField.Encode();
 			data.writeBytes(childData,0,childData.length);
 			childData = _List.Encode();
@@ -233,105 +254,4 @@ package pixel.ui.control
 		}
 	}
 }
-//import flash.display.Bitmap;
-//import flash.display.Sprite;
-//import flash.events.MouseEvent;
-//import flash.text.engine.TextLine;
-//import flash.ui.Mouse;
-//import flash.ui.MouseCursor;
-//
-//import pixel.ui.control.ComboboxItem;
-//import pixel.ui.control.LayoutConstant;
-//import pixel.ui.control.UIComboboxItem;
-//import pixel.ui.control.UIContainer;
-//import pixel.ui.control.UIControl;
-//import pixel.ui.control.UILabel;
-//import pixel.ui.control.UITextBase;
-//import pixel.ui.control.style.FontStyle;
-//import pixel.ui.core.NSPixelUI;
-//import pixel.utility.Tools;
-//
-//use namespace NSPixelUI;
-//
-//class ComboItemList extends UIContainer
-//{
-//	private var _Items:Vector.<UIComboboxItem> = new Vector.<UIComboboxItem>();
-//	private var _LastMove:UIComboboxItem = null;
-//	private var _FocusColor:uint = 0xFFFFFF;
-//	
-//	public function ComboItemList()
-//	{
-//		
-//		super();
-//		this.Layout = LayoutConstant.VERTICAL;
-//		this.BorderThinkness = 1;
-//		width = 150;
-//		//height = 150;
-//		this.addEventListener(MouseEvent.MOUSE_OVER,FocusMove);
-//		this.addEventListener(MouseEvent.MOUSE_OUT,function(event:MouseEvent):void{
-//			
-//			Mouse.cursor = MouseCursor.AUTO;
-//		});
-//	}
-//	
-//	private function FocusMove(event:MouseEvent):void
-//	{
-//		Mouse.cursor = MouseCursor.BUTTON;
-//		if(event.target is UIComboboxItem)
-//		{
-//			if(_LastMove == event.target)
-//			{
-//				return;
-//			}
-//			if(_LastMove)
-//			{
-//				_LastMove.BackgroundColor = 0xFFFFFF;
-//				_LastMove.BackgroundAlpha = 1;
-//			}
-//			
-//			_LastMove = event.target as UIComboboxItem;
-//			_LastMove.BackgroundColor = _FocusColor;
-//			_LastMove.BackgroundAlpha = 0.6;
-//		}
-//	}
-//	
-//	
-//	override public function Dispose():void
-//	{
-//		this.removeEventListener(MouseEvent.MOUSE_OVER,FocusMove);
-//		_Items = null;
-//		_LastMove = null;
-//	}
-//	
-//	public function AddItem(Data:ComboboxItem):UIComboboxItem
-//	{
-//		var Item:UIComboboxItem = new UIComboboxItem(Data);
-//		addChild(Item);
-//		
-//		Item.width = width - 10;
-//		Item.height = _ItemHeight;
-//		Item.x = 5;
-//		Item.y += 5;
-//		height = (this.Children.length + 1) * _ItemHeight + this.Children.length * 5;
-//		return Item;
-//	}
-//	
-//	protected var _ItemHeight:int = 15;
-//	public function set ItemHeight(Value:int):void
-//	{
-//		_ItemHeight = Value;
-//		for each( var Child:UIComboboxItem in _Items)
-//		{
-//			Child.height = Value;
-//		}
-//	}
-//	public function get ItemHeight():int
-//	{
-//		return _ItemHeight;
-//	}
-//	
-//	public function set ItemFocusColor(Value:uint):void
-//	{
-//		_FocusColor = Value;
-//	}
-//}
+

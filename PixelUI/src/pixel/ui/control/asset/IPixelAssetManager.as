@@ -5,7 +5,7 @@ package pixel.ui.control.asset
 	import flash.display.Bitmap;
 	import flash.events.IEventDispatcher;
 
-	public interface IControlAssetManager extends IEventDispatcher
+	public interface IPixelAssetManager extends IEventDispatcher
 	{
 
 		function Download(Uri:Array):void;

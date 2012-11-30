@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="650" height="500" creationComplete="initializer(event)">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="650" height="500" creationComplete="initializer(event)" xmlns:utility="editor.uitility.ui.*">
 	<fx:Script>
 		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.uitility.ui.AdvanceHSlider;
+			import editor.uitility.ui.PopUpWindowManager;
+			
 			import mx.collections.ArrayCollection;
+			import mx.events.ColorPickerEvent;
 			import mx.events.DataGridEvent;
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
@@ -12,85 +17,154 @@
 			import pixel.ui.control.ComboboxItem;
 			import pixel.ui.control.UICombobox;
 			
-			private var dataProvider:ArrayCollection = null;
+			[Bindable]
+			private var dataProvider:ArrayCollection = new ArrayCollection();
 			protected function initializer(event:FlexEvent):void
 			{
-				var aa:ArrayCollection = new ArrayCollection();
-				
-				aa.addItem({
-					
-					label : "Label",
-					value : "Value",
-					fontColorHex : "0xFFFFFF",
-					fontColor : 0xffffff,
-					fontSize : "12",
-					fontBold : "是"
-				});
-				
-				grid.dataProvider = aa;
 			}
-			
+			private var items:Vector.<ComboboxItem> = null;
 			private var control:UICombobox = null;
 			public function set combobox(value:UICombobox):void
 			{
 				control = value;
 				dataProvider = new ArrayCollection();
-				var items:Vector.<ComboboxItem> = control.items;
+				items = control.items;
 				for each(var item:ComboboxItem in items)
 				{
 					dataProvider.addItem(item);
 				}
 			}
 			
-			protected function grid_mouseOverHandler(event:MouseEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
 			private var focusItem:ComboboxItem = null;
+			private var focusIndex:int = 0;
 			protected function itemFocus(event:ListEvent):void
 			{
-				trace(event.rowIndex);
+				focusIndex = event.rowIndex;
+				focusItem = dataProvider[focusIndex];
 			}
 			
+			public function fontSizeChanged(event:Event):void
+			{
+				
+				focusItem.fontSize = AdvanceHSlider(event.target).value;
+			}
+			public function colorChanged(event:ColorPickerEvent):void
+			{
+				focusItem.fontColor = event.color;
+			}
+			
+			protected function createComboboxItem(event:MouseEvent):void
+			{
+				var window:NewComboboxItemWindow = PopUpWindowManager.PopUp(NewComboboxItemWindow) as NewComboboxItemWindow;
+				window.addEventListener(NotifyEvent.COMBOBOX_NEWITEM,onNewComboboxItem);
+			}
+			
+			private function onNewComboboxItem(event:NotifyEvent):void
+			{
+				var window:NewComboboxItemWindow = event.target as NewComboboxItemWindow;
+				window.CloseWindow();
+				window.removeEventListener(NotifyEvent.COMBOBOX_NEWITEM,onNewComboboxItem);
+				var item:ComboboxItem = event.Params.pop() as ComboboxItem;
+				dataProvider.addItem(item);
+			}
+			
+			public function deleteItem(event:MouseEvent):void
+			{
+				if(focusItem)
+				{
+					dataProvider.removeItemAt(focusIndex);
+				}
+			}
+			
+			/**
+			 * 
+			 * 子项上移
+			 * 
+			 **/
+			public function itemUp(event:MouseEvent):void
+			{
+				if(focusIndex == 0)
+				{
+					return;
+				}
+				dataProvider.removeItemAt(focusIndex);
+				dataProvider.addItemAt(focusItem,focusIndex - 1);
+			}
+			
+			/**
+			 * 
+			 * 子项下移
+			 * 
+			 **/
+			public function itemDown(event:MouseEvent):void
+			{
+				if(focusIndex == dataProvider.length - 1)
+				{
+					return;
+				}
+				dataProvider.removeItemAt(focusIndex);
+				dataProvider.addItemAt(focusItem,focusIndex + 1);
+			}
+			
+			/**
+			 * 
+			 * 保存
+			 * 
+			 * 
+			 **/
+			private function save(event:MouseEvent):void
+			{
+				var items:Vector.<ComboboxItem> = new Vector.<ComboboxItem>();
+				
+				for(var idx:int = 0; idx<dataProvider.length; idx++)
+				{
+					items.push(dataProvider.getItemAt(idx));
+				}
+				control.items = items;
+				CloseWindow();
+			}
 		]]>
 	</fx:Script>
-	<fx:Declarations>
-		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
-	</fx:Declarations>
+	
 	<ui:layout>
 		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
 	</ui:layout>
-	<s:HGroup>
-		<s:Button label="New" width="100" height="20" />	
-	</s:HGroup>
 	
-	<mx:DataGrid left="5" top="5" right="5" bottom="5" width="100%" height="100%" id="grid" borderVisible="true" itemRollOver="itemFocus(event)"  >
+	<mx:DataGrid width="630" height="410" id="grid" borderVisible="true" itemRollOver="itemFocus(event)" dataProvider="{dataProvider}"  >
 		<mx:columns>
-				<mx:DataGridColumn headerText="文本" dataField="Label" width="80"/>
-				<mx:DataGridColumn headerText="数据" dataField="Value" width="50" />
-				<mx:DataGridColumn headerText="文本颜色" width="50">
+				<mx:DataGridColumn headerText="图标" dataField="Label" width="50">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:HBox verticalAlign="middle" horizontalAlign="center">
+								<s:Image width="16" height="16" smooth="true" source="{data.icon}" />	
+							</mx:HBox>
+								
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="文本" dataField="Label" width="100"/>
+				<mx:DataGridColumn headerText="数据" dataField="Value" width="100" />
+				<mx:DataGridColumn headerText="文本颜色" width="100">
 					<mx:itemRenderer>
 						<fx:Component>
 							<mx:HBox verticalAlign="middle" paddingLeft="5">
-								<mx:ColorPicker color="{data.fontColor}" showTextField="true"/>
+								
+								<utility:AdvanceColorPicker color="{data.fontColor}" change="outerDocument.colorChanged(event)" />
 							</mx:HBox>
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
 				
-				<mx:DataGridColumn headerText="文本大小" width="100">
+				<mx:DataGridColumn headerText="文本大小" width="160">
 					<mx:itemRenderer>
 						<fx:Component>
-							<mx:HBox verticalAlign="middle" paddingLeft="5">
-								<s:Label text="{data.fontSize}" />
-								<s:HSlider width="120" maximum="30" stepSize="1" minimum="10" value="10" />
+							<mx:HBox paddingLeft="5">
+								<utility:AdvanceHSlider width="140" value="{data.fontSize}" stepSize="1" minimum="10" maximum="30" change="outerDocument.fontSizeChanged(event)" />
 							</mx:HBox>
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				
+				<!--
 				<mx:DataGridColumn headerText="粗体" width="50">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -105,12 +179,15 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-			
-			<mx:DataGridColumn headerText="" width="30">
+				-->
+			<mx:DataGridColumn headerText="">
 				<mx:itemRenderer>
 					<fx:Component>
+						
 						<mx:HBox verticalAlign="middle" paddingLeft="5" >
-							<s:Image source="@Embed('../assets/Delete.png')" smooth="true" width="24" height="24"/>
+							<s:Image source="@Embed('../assets/Up.png')" smooth="true" width="24" height="24" buttonMode="true" click="outerDocument.itemUp(event)"/>
+							<s:Image source="@Embed('../assets/Down.png')" smooth="true" width="24" height="24" buttonMode="true" click="outerDocument.itemDown(event)"/>
+							<s:Image source="@Embed('../assets/Delete.png')" smooth="true" width="24" height="24" buttonMode="true" click="outerDocument.deleteItem(event)"/>
 						</mx:HBox>
 					</fx:Component>
 				</mx:itemRenderer>
@@ -118,4 +195,9 @@
 		</mx:columns>
 		
 	</mx:DataGrid>
+	
+	<s:HGroup width="100%" height="30" horizontalAlign="center" gap="30">
+		<s:Image width="24" height="24" source="@Embed('../assets/Add.png')" smooth="true" toolTip="新增项" click="createComboboxItem(event)" buttonMode="true"/>
+		<s:Image width="24" height="24" source="@Embed('../assets/Save.png')" smooth="true" toolTip="保存列表" click="save(event)" />
+	</s:HGroup>
 </ui:AdvanceTitleWindow>
