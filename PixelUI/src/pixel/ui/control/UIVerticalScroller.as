@@ -58,7 +58,7 @@ package pixel.ui.control
 			_scrollDown.width = _scrollDown.height = DEFAULT_WIDTH;
 			
 			_scrollHandlerPanel = new UIContainer();
-			_scrollHandlerPanel.BorderThinkness = 2;
+			_scrollHandlerPanel.BorderThinkness = 0;
 			_scrollHandler = new UIButton();
 			_scrollHandler.borderThinknessForAllState = 0;
 			_scrollHandlerPanel.width = _scrollHandler.width = DEFAULT_WIDTH;
