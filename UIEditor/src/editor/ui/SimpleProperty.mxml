@@ -101,22 +101,22 @@
 	
 	<s:HGroup verticalAlign="middle">
 		<s:Label text="宽度" width="60"/>
-		<s:TextInput width="60" id="SliderWidth" text="{_ControlWidth}" enter="WidthChanged(event)" />
+		<s:TextInput width="60" id="SliderWidth" text="{_ControlWidth}" enter="WidthChanged(event)"  restrict="0-9"/>
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="middle">
 		<s:Label text="高度" width="60"/>
-		<s:TextInput width="60" id="SliderHeight" text="{_ControlHeight}" enter="HeightChanged(event)" />
+		<s:TextInput width="60" id="SliderHeight" text="{_ControlHeight}" enter="HeightChanged(event)" restrict="0-9" />
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="middle">
 		<s:Label text="X" width="60"/>
-		<s:TextInput width="60" id="PosX" text="{_ControlX}" enter="ChangeX(event)"  />
+		<s:TextInput width="60" id="PosX" text="{_ControlX}" enter="ChangeX(event)"   restrict="0-9"/>
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="middle">
 		<s:Label text="Y" width="60"/>
-		<s:TextInput width="60" id="PosY" text="{_ControlY}" enter="ChangeY(event)" />
+		<s:TextInput width="60" id="PosY" text="{_ControlY}" enter="ChangeY(event)"  restrict="0-9"/>
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="middle">

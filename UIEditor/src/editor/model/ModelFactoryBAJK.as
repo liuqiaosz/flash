@@ -63,7 +63,7 @@ import pixel.ui.control.UIButton;
 import pixel.ui.control.UIPanel;
 import pixel.ui.control.UISlider;
 import pixel.ui.control.UIControl;
-import pixel.ui.control.VerticalPanel;
+import pixel.ui.control.UIVerticalPanel;
 import pixel.ui.control.utility.ControlType;
 import pixel.ui.control.utility.Utils;
 
@@ -369,7 +369,7 @@ class ModelParser implements IModel
 					Control = new HorizontalPanel();
 					break;
 				case ControlType.VERTICALPANEL:
-					Control = new VerticalPanel();
+					Control = new UIVerticalPanel();
 				case ControlType.SLIDER:
 					Control = new UISlider();
 //				case ControlType.CUSTOMER:

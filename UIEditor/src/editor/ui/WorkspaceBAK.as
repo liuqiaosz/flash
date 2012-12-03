@@ -7,7 +7,7 @@ package editor.ui
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.SimpleTabPanel;
 	import pixel.ui.control.UIControl;
-	import pixel.ui.control.VerticalPanel;
+	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.event.ControlEditModeEvent;
 	import pixel.ui.control.utility.Utils;
 	
@@ -111,7 +111,7 @@ package editor.ui
 							_Container = addChild(new HorizontalPanel()) as Shell;
 							break;
 						case 2:
-							_Container = addChild(new VerticalPanel()) as Shell;
+							_Container = addChild(new UIVerticalPanel()) as Shell;
 							break;
 					}
 					

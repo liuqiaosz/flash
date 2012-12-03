@@ -3,6 +3,9 @@
   <includeClasses>
     <classEntry path="pixel.ui.control.UIComboboxItem"/>
     <classEntry path="pixel.ui.control.UIComboboxPop"/>
+    <classEntry path="pixel.ui.control.IUIScroller"/>
+    <classEntry path="pixel.ui.control.UIVerticalScroller"/>
+    <classEntry path="pixel.ui.control.style.UIVerticalScrollerStyle"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -39,7 +39,7 @@ package pixel.ui.control
 		override public function set Style(value:IVisualStyle):void
 		{
 			super.Style = value;
-			_Handler.Style = UIScrollerStyle(value).handlerStyle;
+			//_Handler.Style = UIScrollerStyle(value).handlerStyle;
 		}
 		
 //		override public function addChild(Child:DisplayObject):DisplayObject

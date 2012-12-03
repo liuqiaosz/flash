@@ -69,8 +69,8 @@
 			import pixel.ui.control.UISlider;
 			import pixel.ui.control.UITextInput;
 			import pixel.ui.control.UIWindow;
-			import pixel.ui.control.asset.PixelAssetManager;
 			import pixel.ui.control.asset.IAssetLibrary;
+			import pixel.ui.control.asset.PixelAssetManager;
 			import pixel.ui.control.event.DownloadEvent;
 			import pixel.ui.control.event.EditModeEvent;
 			import pixel.ui.control.style.SliderStyle;
@@ -437,6 +437,12 @@
 				Image.width = 48;
 				Image.height = 48;
 				EditWorkspace.addChild(Image);
+			}
+			
+			private function newComboboxToWorkspace(event:MouseEvent):void
+			{
+				var combobox:UICombobox = new UICombobox();
+				EditWorkspace.addChild(combobox);
 			}
 
 			
@@ -1034,7 +1040,7 @@
 								</s:VGroup>
 								
 								<s:VGroup horizontalAlign="center">
-									<s:Image source="@Embed('../assets/Combobox.png')" id="Combobox" mouseDown="StartDrag(event)" />
+									<s:Image source="@Embed('../assets/Combobox.png')" id="Combobox" mouseDown="StartDrag(event)" click="newComboboxToWorkspace(event)" />
 									<s:Label text="Combobox"/>
 								</s:VGroup>
 								

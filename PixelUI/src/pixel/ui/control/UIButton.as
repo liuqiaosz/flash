@@ -218,7 +218,7 @@ package pixel.ui.control
 				//_Text.y = ((this.height - _Text.textHeight) / 2) +  _Text.textHeight;
 				//_Text.x = ((this.width - _Text.textWidth) / 2);
 				//_Text.x = ((this.width - _Text.TextWidth) / 2);
-				_Text.y = ((this.height - _Text.TextHeight) / 2);
+				//_Text.y = ((this.height - _Text.TextHeight) / 2);
 			}
 		}
 		
@@ -325,6 +325,25 @@ package pixel.ui.control
 			}
 			
 			PixelAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
+		}
+		
+		/**
+		 * 为按钮所有状态指定同一样图片
+		 * 
+		 * 
+		 **/
+		public function set backgroundImageForAllState(value:Bitmap):void
+		{
+			ButtonStyle(_NormalStyle).BackgroundImage = value;
+			ButtonStyle(_NormalStyle).OverStyle.BackgroundImage = value;
+			ButtonStyle(_NormalStyle).PressStyle.BackgroundImage = value;
+		}
+		
+		public function set borderThinknessForAllState(value:int):void
+		{
+			ButtonStyle(_NormalStyle).BorderThinkness = value;
+			ButtonStyle(_NormalStyle).OverStyle.BorderThinkness = value;
+			ButtonStyle(_NormalStyle).PressStyle.BorderThinkness = value;
 		}
 	}
 }

@@ -630,6 +630,7 @@ package pixel.ui.control
 			_Style.BackgroundImage = Image;
 			StyleUpdate();
 		}
+		
 		public function set BackgroundImageId(Value:String):void
 		{
 			_Style.BackgroundImageId = Value;
@@ -687,6 +688,11 @@ package pixel.ui.control
 		public function get Scale9GridBottom():int
 		{
 			return _Style.Scale9GridLeft;
+		}
+		
+		public function set Scale9GridAll(value:int):void
+		{
+			_Style.Scale9GridBottom = _Style.Scale9GridLeft = _Style.Scale9GridRight = _Style.Scale9GridTop = value;
 		}
 		public function set LeftTopCorner(Value:int):void
 		{

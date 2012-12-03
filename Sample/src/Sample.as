@@ -51,15 +51,15 @@ package
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
 	import pixel.particle.PixelParticleEmitterPropertie;
-	import pixel.ui.control.UICombobox;
 	import pixel.ui.control.ComboboxItem;
 	import pixel.ui.control.HorizontalScroller;
 	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UICombobox;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
-	import pixel.ui.control.VerticalPanel;
-	import pixel.ui.control.VerticalScroller;
+	import pixel.ui.control.UIVerticalScroller;
+	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.style.VerticalScrollerStyle;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ColorCode;
@@ -140,7 +140,7 @@ package
 	//	import utility.Tools;
 	//	import utility.bitmap.png.PNGDecoder;
 	//	import utility.bitmap.tga.TGADecoder;
-	[SWF(width="1280",height="600",frameRate="30")]
+	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0x000000")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="arrow_down.png")]
@@ -148,7 +148,12 @@ package
 		[Embed(source="arrow_up.png")]
 		private var ARROW_UP:Class;
 		
-		[Embed(source="bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
+		[Embed(source="scrollup.png")]
+		private var SCROLLERARROW_UP:Class;
+		[Embed(source="scrolldown.png")]
+		private var SCROLLERARROW_DOWN:Class;
+		
+		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
 		private var workerClass:Class;
 		private var sid:String = "";
 		private var center:Point = new Point();
@@ -157,19 +162,44 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			//rotateTest();
+			
+			scrollTest();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
-			
-			combotest();
-			//circlett();
 			
 			var s:Stat = new Stat();
 			addChild(s);
 		}
 		
+		[Embed(source="scrollup.png")]
+		private var UP:Class;
+		private function scrollTest():void
+		{
+			var p:UIVerticalPanel = new UIVerticalPanel();
+
+			p.width = 400;
+			p.height = 200;
+			p.x = 200;
+			p.y = 100;
+			p.Padding = 5;
+			p.Gap = 5;
+			var idx:int = 0;
+			for(idx; idx< 20; idx++)
+			{
+				var btn:UIButton = new UIButton();
+				btn.Text = "[" + idx + "]";
+				btn.width = 50;
+				btn.height = 30;
+				p.addChild(btn);
+				idx++;
+			}
+			addChild(p);
+			//addChild(s);
+		}
+		
 		public function pngTo4444():void
 		{
-			var png:Bitmap = new ARROW_UP() as Bitmap;
+			var png:Bitmap = new SCROLLERARROW_DOWN() as Bitmap;
 			
 			var bmp:BitmapData = png.bitmapData;
 			
@@ -188,7 +218,7 @@ package
 			var data:ByteArray = BitmapTools.BitmapEncodeToPNG(bmp4);
 			
 			var writer:FileStream = new FileStream();
-			writer.open(new File("D:\\arrow_up4444.png"),FileMode.WRITE);
+			writer.open(new File("D:\\scrolldown.png"),FileMode.WRITE);
 			writer.writeBytes(data,0,data.length);
 			writer.close();
 		}

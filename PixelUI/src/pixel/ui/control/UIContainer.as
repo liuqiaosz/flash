@@ -64,6 +64,19 @@ package pixel.ui.control
 			_Content.x = _Content.y = _Padding;
 			this.UpdateLayout();
 		}
+		public function get padding():int
+		{
+			return _Padding;
+		}
+		
+		public function get contentWidth():int
+		{
+			return width - (_Padding * 2);
+		}
+		public function get contentHeight():int
+		{
+			return height - (_Padding * 2);
+		}
 		
 		/**
 		 * 变更当前布局
@@ -163,6 +176,8 @@ package pixel.ui.control
 			var Idx:int = 0;
 			var Len:int = _Children ? _Children.length:0;
 			var Seek:int = 0;
+			var conWidth:int = contentWidth;
+			var conHeight:int = contentHeight;
 			switch(Layout)
 			{
 				case LayoutConstant.HORIZONTAL:
@@ -235,7 +250,7 @@ package pixel.ui.control
 				case LayoutConstant.HORIZONTAL:
 					if(Last)
 					{
-						Child.x = Last.x + Last.width + Gap;
+						Child.x = Last.x + Last.width + Gap + _Padding;
 						Child.y = Last.y;
 					}
 					else
@@ -331,12 +346,12 @@ package pixel.ui.control
 				{
 					size += child.height;
 				}
-				size += (_Children.length) * Gap;
+				size += (_Children.length) * Gap + _Content.y;
 				return size;
 			}
 			else
 			{
-				return super.RealHeight;
+				return super.height;
 			}
 		}
 		
@@ -350,7 +365,7 @@ package pixel.ui.control
 				{
 					size += child.width;
 				}
-				size += (_Children.length) * Gap;
+				size += (_Children.length) * Gap + _Content.x;
 				return size;
 			}
 			else

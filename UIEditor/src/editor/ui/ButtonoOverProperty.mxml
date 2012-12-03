@@ -17,7 +17,7 @@
 			import pixel.ui.control.UIButton;
 			import pixel.ui.control.UIPanel;
 			import pixel.ui.control.UIControl;
-			import pixel.ui.control.VerticalPanel;
+			import pixel.ui.control.UIVerticalPanel;
 			import pixel.ui.control.style.ButtonStyle;
 			import corecom.control.style.IStyle;
 			import pixel.ui.control.style.UIStyle;

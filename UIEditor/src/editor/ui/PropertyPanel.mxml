@@ -272,8 +272,8 @@
 					
 				</s:HGroup>
 				<s:HGroup>
-					<s:Label text="控件名称" height="100%" verticalAlign="middle" width="60" />
-					<s:TextInput id="Name" change="ControlNameChangeEnter(event)" width="100"/>
+					<s:Label text="控件ID" height="100%" verticalAlign="middle" width="60" />
+					<s:TextInput id="Name" change="ControlNameChangeEnter(event)" width="100" restrict="a-z A-Z 0-9"/>
 				</s:HGroup>
 			</s:VGroup>
 			<My:WindowProperty id="WindowStyle" visible="{WindowStyleFlag}" includeInLayout="{WindowStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
