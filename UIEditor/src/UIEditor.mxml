@@ -66,8 +66,10 @@
 			import pixel.ui.control.UIImage;
 			import pixel.ui.control.UILabel;
 			import pixel.ui.control.UIPanel;
+			import pixel.ui.control.UIProgress;
 			import pixel.ui.control.UISlider;
 			import pixel.ui.control.UITextInput;
+			import pixel.ui.control.UIVerticalPanel;
 			import pixel.ui.control.UIWindow;
 			import pixel.ui.control.asset.IAssetLibrary;
 			import pixel.ui.control.asset.PixelAssetManager;
@@ -442,9 +444,26 @@
 			private function newComboboxToWorkspace(event:MouseEvent):void
 			{
 				var combobox:UICombobox = new UICombobox();
+				combobox.initializer();
 				EditWorkspace.addChild(combobox);
 			}
-
+			
+			private function newVPanelToWorkspace(event:MouseEvent):void
+			{
+				var vpanel:UIVerticalPanel = new UIVerticalPanel();
+				vpanel.initializer();
+				vpanel.width = 150;
+				vpanel.height = 100;
+				EditWorkspace.addChild(vpanel);
+			}
+			
+			private function newProgressToWorkspace(event:MouseEvent):void
+			{
+				var progress:UIProgress = new UIProgress();
+				progress.width = 150;
+				progress.height = 30;
+				EditWorkspace.addChild(progress);
+			}
 			
 			/**
 			 * 组件转换成代码
@@ -887,6 +906,16 @@
 						break;
 					case "Combobox":
 						_DragControl = new UICombobox();
+						break;
+					case "VPanel":
+						_DragControl = new UIVerticalPanel();
+						_DragControl.width = 150;
+						_DragControl.height = 100;
+						break;
+					case "Progress":
+						_DragControl = new UIProgress();
+						_DragControl.width = 150;
+						_DragControl.height = 30;
 						
 				}
 				if(_DragControl)
@@ -895,6 +924,7 @@
 				}
 				//_DragControl.initializer();
 				MouseManager.Instance.Register("Drag",[ImageSkin(event.target).imageDisplay.bitmapData],true);
+				_DragControl.EnableEditMode();
 				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
 				this.stage.addEventListener(MouseEvent.MOUSE_UP,DropControl);
 			}
@@ -904,8 +934,8 @@
 				_DragControl = ComponentModel(event.Params.pop()) as UIControl;
 				//MouseManager.Instance.Register("Drag",[Bitmap(new ComponentIcon()).bitmapData],true);
 				
-				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
-				this.stage.addEventListener(MouseEvent.MOUSE_UP,DropControl);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+				stage.addEventListener(MouseEvent.MOUSE_UP,DropControl);
 			}
 			
 			private function ComponentChoice(event:NotifyEvent):void
@@ -950,7 +980,6 @@
 							UIControl(_DragControl).EnableEditMode();
 							EditWorkspace.addChild(_DragControl as DisplayObject);
 						}
-						
 					}
 					
 					else if(_DragControl is ComponentModel)
@@ -1045,7 +1074,12 @@
 								</s:VGroup>
 								
 								<s:VGroup horizontalAlign="center">
-									<s:Image source="@Embed('../assets/Progress.png')" id="Progress" enabled="false"/>
+									<s:Image source="@Embed('../assets/VerticalPanel.png')" id="VPanel" mouseDown="StartDrag(event)" width="24" height="24" smooth="true" click="newVPanelToWorkspace(event)"/>
+									<s:Label text="VerticalPanel"/>
+								</s:VGroup>
+								
+								<s:VGroup horizontalAlign="center">
+									<s:Image source="@Embed('../assets/Progress.png')" id="Progress" mouseDown="StartDrag(event)" click="newProgressToWorkspace(event)"/>
 									<s:Label text="Progress" enabled="false" />
 								</s:VGroup>
 								

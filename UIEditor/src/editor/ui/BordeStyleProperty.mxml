@@ -148,25 +148,25 @@
 	
 	<s:HGroup>
 		<s:Label text="左上角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="0.1" minimum="0" id="LeftTopCorner" change="BorderCornerChanged(event)" toolTip="左上角" />
+		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="LeftTopCorner" change="BorderCornerChanged(event)" toolTip="左上角" />
 		<s:Label id = "LeftTopLabel" />
 	</s:HGroup>
 	
 	<s:HGroup>
 		<s:Label text="右上角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="0.1" minimum="0" id="RightTopCorner" change="BorderCornerChanged(event)" toolTip="右上角" />
+		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="RightTopCorner" change="BorderCornerChanged(event)" toolTip="右上角" />
 		<s:Label id = "RightTopLabel" />
 	</s:HGroup>
 	
 	<s:HGroup>
 		<s:Label text="左下角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="0.1" minimum="0" id="LeftBottomCorner" change="BorderCornerChanged(event)" toolTip="左下角" />
+		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="LeftBottomCorner" change="BorderCornerChanged(event)" toolTip="左下角" />
 		<s:Label id = "LeftBottomLabel" />
 	</s:HGroup>
 	
 	<s:HGroup>
 		<s:Label text="右上角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="0.1" minimum="0" id="RightBottomCorner" change="BorderCornerChanged(event)" toolTip="右下角" />
+		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="RightBottomCorner" change="BorderCornerChanged(event)" toolTip="右下角" />
 		<s:Label id = "RightBottomLabel" />
 	</s:HGroup>
 </ui:GenericProperty>

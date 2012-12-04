@@ -8,19 +8,27 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.UIPanel;
-			
 			import mx.events.FlexEvent;
+			
+			import pixel.ui.control.LayoutConstant;
+			import pixel.ui.control.UIPanel;
 			
 			import spark.events.IndexChangeEvent;
 			[Bindable]
 			protected var BindTabContentLayout:int = 0;
 			[Bindable]
 			private var Panel:UIPanel = null;
+			[Bindable]
+			private var gapVisible:Boolean = false;
 			
 			override protected function Initialized():void
 			{
 				Panel = Control as UIPanel;
+	
+				if(Panel.Layout != LayoutConstant.ABSOLUTE)
+				{
+					gapVisible = true;	
+				}
 			}
 			
 			[Bindable]
@@ -29,26 +37,14 @@
 			{
 				_simpleStyleEnable = value;
 			}
+			
+			[Bindable]
+			private var _gap:int = 0;
+			
 		]]>
 	</fx:Script>
 	
 	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}" />
-	<!--
-	<s:HGroup>
-		<s:Label text="布局" height="100%" verticalAlign="middle" width="60"/>
-		<s:ComboBox id="ControlLayout" selectedIndex="{BindTabContentLayout}" change="LayoutChange(event)" width="80" >
-			<s:ArrayCollection>
-				<fx:String>绝对布局</fx:String>
-				<fx:String>横向布局</fx:String>
-				<fx:String>纵向布局</fx:String>
-			</s:ArrayCollection>
-		</s:ComboBox>
-	</s:HGroup>
-	<s:HGroup visible="{BindGapVisible}" includeInLayout="{BindGapVisible}">
-		<s:Label text="子控件间隔" height="100%" verticalAlign="middle" width="60"/>
-		<s:TextInput id="GapProperty" text="{_Gap}" enter="GapEnter(event)" width="90"/>
-	</s:HGroup>
-	-->
 	<ui:LayoutProperty id="LayoutStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"/>
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" />
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}" />

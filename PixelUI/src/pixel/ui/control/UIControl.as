@@ -52,12 +52,18 @@ package pixel.ui.control
 			}
 			RegisterEvent();
 			Update();
+			addEventListener(Event.REMOVED_FROM_STAGE,onRemoveFromStage);
 			//this.mouseEnabled = false;
 		}
 		
 		public function initializer():void
 		{
 			
+		}
+		
+		protected function onRemoveFromStage(event:Event):void
+		{
+			this.Dispose();
 		}
 		
 		protected var _Owner:UIControl = null;
@@ -214,7 +220,6 @@ package pixel.ui.control
 			if(Style)
 			{
 				var Pen:Graphics = graphics;
-				//trace(this.Id + "[" + this + "]" + "Render begin");
 				Pen.clear();
 				if(Style.BorderThinkness > 0)
 				{
@@ -222,7 +227,6 @@ package pixel.ui.control
 					Pen.lineStyle(Style.BorderThinkness,Style.BorderColor,Style.BorderAlpha);
 				}
 				//设置了背景图片则进行图片填充,否则用背景颜色填充
-				//if(Style.BackgroundImage)
 				if(Style.HaveImage)
 				{
 					if(Style.BackgroundImage != null)
@@ -521,11 +525,11 @@ package pixel.ui.control
 		
 		protected function get ContentWidth():Number
 		{
-			return (width - _Style.BorderThinkness);
+			return (width - _Style.BorderThinkness * 2);
 		}
 		protected function get ContentHeight():Number
 		{
-			return (height - _Style.BorderThinkness);
+			return (height - _Style.BorderThinkness * 2);
 		}
 		
 		public function get RealWidth():Number

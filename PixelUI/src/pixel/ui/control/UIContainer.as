@@ -35,7 +35,8 @@ package pixel.ui.control
 			_Content = new Sprite();
 			
 			super.addChild(_Content);
-			_Content.x = _Content.y = _Padding = _Style.BorderThinkness;
+			//_Content.x = _Content.y = _Padding = _Style.BorderThinkness;
+			_Content.x = _Content.y = _Style.BorderThinkness;
 		}
 		
 		override public function EnableEditMode():void
@@ -61,7 +62,7 @@ package pixel.ui.control
 		public function set Padding(Value:int):void
 		{
 			_Padding = Value;
-			_Content.x = _Content.y = _Padding;
+			_Content.x = _Content.y = _Padding + _Style.BorderThinkness;
 			this.UpdateLayout();
 		}
 		public function get padding():int
@@ -193,7 +194,7 @@ package pixel.ui.control
 					{
 						_Children[Idx].x = 0;
 						_Children[Idx].y = Seek;
-						Seek += (_Children[Idx].y + _Children[Idx].height + Gap);
+						Seek = (_Children[Idx].y + _Children[Idx].height + Gap);
 					}
 					break;
 				case LayoutConstant.GRID:

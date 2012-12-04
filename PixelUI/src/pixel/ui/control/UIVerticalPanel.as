@@ -1,26 +1,41 @@
 package pixel.ui.control
 {
 	import flash.display.DisplayObject;
+	import flash.utils.ByteArray;
 	
 	import pixel.ui.control.style.IVisualStyle;
+	import pixel.ui.control.style.UIVerticalPanelStyle;
 	import pixel.ui.core.NSPixelUI;
 
 	use namespace NSPixelUI;
 	
-	public class UIVerticalPanel extends UIPanel
+	public class UIVerticalPanel extends UIContainer
 	{
 		private var _scroller:UIVerticalScroller = null;
 		public function UIVerticalPanel(Skin:Class = null)
 		{
-			super(Skin);
+			super(Skin?Skin:UIVerticalPanelStyle);
 			super.Layout = LayoutConstant.VERTICAL;
 			
 //			_scroller = new VerticalScroller();
 //			_scroller.width = 15;
 //			OrignalAddChild(_scroller);
 			_scroller = new UIVerticalScroller();
-			//_scroller.width = 15;
+			_scroller.initializer();
 			OrignalAddChild(_scroller);
+		}
+		
+		override public function initializer():void
+		{
+			
+			//_scroller.width = 15;
+			
+		}
+		
+		override public function EnableEditMode():void
+		{
+			super.EnableEditMode();
+			//this.mouseChildren = false;
 		}
 		
 		/**
@@ -51,12 +66,36 @@ package pixel.ui.control
 			return Child;
 		}
 		
+		public function get scroller():UIVerticalScroller
+		{
+			return _scroller;
+		}
+		
 		/**
 		 * 覆写,防止更改布局
 		 **/
 		override public function set Layout(Value:uint):void
 		{
 			
+		}
+		
+		override public function Encode():ByteArray
+		{
+			return super.Encode();
+		}
+		
+		override protected function SpecialEncode(Data:ByteArray):void
+		{
+			super.SpecialEncode(Data);
+			var data:ByteArray = _scroller.Encode();
+			Data.writeBytes(data);
+		}
+		override protected function SpecialDecode(Data:ByteArray):void
+		{
+			super.SpecialDecode(Data);
+			Data.readByte();
+			_scroller.Decode(Data);
+			_scroller.refresh();
 		}
 	}
 }

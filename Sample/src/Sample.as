@@ -56,10 +56,13 @@ package
 	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UICombobox;
+	import pixel.ui.control.UIControl;
+	import pixel.ui.control.UIControlFactory;
+	import pixel.ui.control.UIImage;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
-	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.UIVerticalPanel;
+	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.style.VerticalScrollerStyle;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ColorCode;
@@ -67,6 +70,8 @@ package
 	import pixel.utility.Stat;
 	import pixel.utility.System;
 	import pixel.utility.Tools;
+	import pixel.utility.bitmap.gif.GIFDecoder;
+	import pixel.utility.bitmap.gif.GIFFrame;
 	import pixel.utility.loader.Loader;
 	import pixel.utility.swf.Swf;
 	import pixel.utility.swf.SwfFactory;
@@ -153,8 +158,14 @@ package
 		[Embed(source="scrolldown.png")]
 		private var SCROLLERARROW_DOWN:Class;
 		
+		[Embed(source="map2.jpg")]
+		private var IMG:Class;
+		
 		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
 		private var workerClass:Class;
+		
+		[Embed(source="monkey.gif",mimeType="application/octet-stream")]
+		private var GIF:Class;
 		private var sid:String = "";
 		private var center:Point = new Point();
 		public function Sample()
@@ -163,12 +174,49 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			//rotateTest();
 			
-			scrollTest();
+			gifTest();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
 			
 			var s:Stat = new Stat();
 			addChild(s);
+			s.x = stage.stageWidth - s.width;
+		}
+		
+		private function gifTest():void
+		{
+			var file:File = new File("C:\\Users\\OfficeLocal\\Desktop\\11111.mod");
+			var reader:FileStream = new FileStream();
+			reader.open(file,FileMode.READ);
+			var data:ByteArray = new ByteArray();
+			reader.readBytes(data,0,reader.bytesAvailable);
+			
+			var vec:Vector.<UIControl> = UIControlFactory.Instance.Decode(data);
+			
+			addChild(vec.pop());
+		}
+		
+		private function progressTest():void
+		{
+			//UIControlFactory
+			var file:File = new File("C:\\Users\\OfficeLocal\\Desktop\\11111.mod");
+			var reader:FileStream = new FileStream();
+			reader.open(file,FileMode.READ);
+			var data:ByteArray = new ByteArray();
+			reader.readBytes(data,0,reader.bytesAvailable);
+			
+			var vec:Vector.<UIControl> = UIControlFactory.Instance.Decode(data);
+			
+			var a:UIProgress = vec.pop() as UIProgress;
+			
+			a.x = 200;
+			a.y = 50;
+			addChild(a);
+			var v:int = 0;
+			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
+				v += 10;
+				a.UpdateProgress(v,100);
+			});
 		}
 		
 		[Embed(source="scrollup.png")]
@@ -566,7 +614,7 @@ package
 			});
 		}
 		
-		[Embed(source="bin-debug/assets/img.png")]
+		[Embed(source="img.png")]
 		private var Img:Class;
 		private function bitmap555():void
 		{

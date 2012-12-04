@@ -68,7 +68,7 @@
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
 	
-	<s:Label text="文本区域样式" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>
+	<s:Label text="文本区域样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
 	<ui:LabelPropery Control="{_textField}" enableSimpleStyle="false" />
 	
 	<s:Label text="下拉框按钮样式" color="0xFF0000" fontSize="16" fontFamily="微软雅黑" paddingTop="20"/>

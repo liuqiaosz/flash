@@ -3,11 +3,13 @@ package pixel.ui.control
 	import flash.display.Bitmap;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.utils.ByteArray;
 	
 	import pixel.ui.control.event.ScrollerEvent;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UIVerticalScrollerStyle;
 	import pixel.ui.core.NSPixelUI;
+	import pixel.utility.BitmapTools;
 
 	use namespace NSPixelUI;
 	
@@ -26,29 +28,17 @@ package pixel.ui.control
 		[Embed(source="Scrollup.png")]
 		private var UP:Class;
 		
-		protected var _minHeight:int = 0;
+		//protected var _minHeight:int = 0;
 		protected var _scrollUp:UIButton = null;
 		protected var _scrollDown:UIButton = null;
 		protected var _scrollHandlerPanel:UIContainer = null;
 		protected var _scrollHandler:UIButton = null;
-		public function UIVerticalScroller(skin:Class = null,initiazlier:Boolean = true)
+		public function UIVerticalScroller(skin:Class = null)
 		{
 			super(skin?skin:UIVerticalScrollerStyle);
-			_minHeight = DEFAULT_HANDLER_MIN;
-			if(initiazlier)
-			{
-				initializer();
-			}
 			
 			this.addEventListener(MouseEvent.MOUSE_DOWN,MouseDrag);
-		}
-		
-		/**
-		 * 默认样式初始化
-		 * 
-		 **/
-		override public function initializer():void
-		{
+			
 			width = DEFAULT_WIDTH;
 			
 			_scrollUp = new UIButton();
@@ -82,6 +72,7 @@ package pixel.ui.control
 			_scrollUp.width = DEFAULT_WIDTH;
 			_scrollUp.height = DEFAULT_WIDTH;
 			
+			
 			_scrollDown.backgroundImageForAllState = new DOWN() as Bitmap;
 			//_scrollDown.Scale9Grid = true;
 			//_scrollDown.Scale9GridAll = 4;
@@ -91,6 +82,57 @@ package pixel.ui.control
 			
 			_scrollUp.addEventListener(MouseEvent.CLICK,clickUp);
 			_scrollDown.addEventListener(MouseEvent.CLICK,clickDown);
+		}
+		
+		/**
+		 * 默认样式初始化
+		 * 
+		 **/
+		override public function initializer():void
+		{
+//			width = DEFAULT_WIDTH;
+//			
+//			_scrollUp = new UIButton();
+//			_scrollUp.width = _scrollUp.height = DEFAULT_WIDTH;
+//			
+//			_scrollDown = new UIButton();
+//			_scrollDown.width = _scrollDown.height = DEFAULT_WIDTH;
+//			
+//			_scrollHandlerPanel = new UIContainer();
+//			_scrollHandlerPanel.BorderThinkness = 0;
+//			_scrollHandler = new UIButton();
+//			_scrollHandler.borderThinknessForAllState = 0;
+//			_scrollHandlerPanel.width = _scrollHandler.width = DEFAULT_WIDTH;
+//			_scrollHandlerPanel.height = _scrollHandler.height = height - DEFAULT_WIDTH * 2;
+//			_scrollHandlerPanel.BackgroundAlpha = 0;
+//			
+//			_scrollHandlerPanel.addChild(_scrollHandler);
+//			//_scrollHandler.BackgroundColor = 0xff0000;
+//			
+//			addChild(_scrollUp);
+//			addChild(_scrollDown);
+//			addChild(_scrollHandlerPanel);
+//			
+//			_scrollDown.y = height - DEFAULT_WIDTH;
+//			_scrollHandlerPanel.y = DEFAULT_WIDTH; 
+//			
+//			_scrollUp.backgroundImageForAllState = new UP() as Bitmap;
+//			//_scrollUp.Scale9Grid = true;
+//			//_scrollUp.Scale9GridAll = 4;
+//			_scrollUp.borderThinknessForAllState = 0;
+//			_scrollUp.width = DEFAULT_WIDTH;
+//			_scrollUp.height = DEFAULT_WIDTH;
+//			
+//			
+//			_scrollDown.backgroundImageForAllState = new DOWN() as Bitmap;
+//			//_scrollDown.Scale9Grid = true;
+//			//_scrollDown.Scale9GridAll = 4;
+//			_scrollDown.width = DEFAULT_WIDTH;
+//			_scrollDown.height = DEFAULT_WIDTH;
+//			_scrollDown.borderThinknessForAllState = 0;
+//			
+//			_scrollUp.addEventListener(MouseEvent.CLICK,clickUp);
+//			_scrollDown.addEventListener(MouseEvent.CLICK,clickDown);
 		}
 		
 		private function clickUp(event:MouseEvent):void
@@ -226,9 +268,9 @@ package pixel.ui.control
 					//计算手柄的高度
 					var handlerHeight:int = _scrollHandlerPanel.height - _remainValue;
 					
-					if(handlerHeight < _minHeight)
+					if(handlerHeight < DEFAULT_HANDLER_MIN)
 					{
-						handlerHeight = _minHeight;
+						handlerHeight = DEFAULT_HANDLER_MIN;
 					}
 
 					_scrollHandler.height = handlerHeight;
@@ -253,17 +295,37 @@ package pixel.ui.control
 			}
 		}
 		
-		public function get handlerStyle():IVisualStyle
+		public function get scrollHandler():UIButton
 		{
-			return _scrollHandler.Style;
+			return _scrollHandler;
 		}
-		public function get buttonUpStyle():IVisualStyle
+		public function get buttonUp():UIButton
 		{
-			return _scrollUp.Style;
+			return _scrollUp;
 		}
-		public function get buttonDownStyle():IVisualStyle
+		public function get buttonDown():UIButton
 		{
-			return _scrollDown.Style;
+			return _scrollDown;
+		}
+		
+		override protected function SpecialEncode(Data:ByteArray):void
+		{
+			var data:ByteArray = _scrollHandler.Encode();
+			Data.writeBytes(data);
+			data = _scrollUp.Encode();
+			Data.writeBytes(data);
+			data = _scrollDown.Encode();
+			Data.writeBytes(data);
+		}
+		
+		override protected function SpecialDecode(Data:ByteArray):void
+		{
+			Data.readByte();
+			_scrollHandler.Decode(Data);
+			Data.readByte();
+			_scrollUp.Decode(Data);
+			Data.readByte();
+			_scrollDown.Decode(Data);
 		}
 	}
 }

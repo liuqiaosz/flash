@@ -9,10 +9,12 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.events.ColorPickerEvent;
+			import mx.events.FlexEvent;
+			
+			import pixel.ui.control.asset.PixelAssetManager;
+			import pixel.utility.Tools;
 			
 			import spark.events.IndexChangeEvent;
-			
-			import pixel.utility.Tools;
 			[Bindable]
 			protected var BindBackgroundColor:uint = 0;
 			[Bindable]
@@ -83,6 +85,14 @@
 				Control.ImagePack = Boolean(event.newIndex);
 			}
 			
+			protected function backgroundImageEnterChanged(event:FlexEvent):void
+			{
+				var id:String = BackgroundImg.text;
+				var img:Bitmap = PixelAssetManager.Instance.FindBitmapById(id);
+				Control.BackgroundImage = img;
+				Control.BackgroundImageId = id;
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -91,7 +101,7 @@
 	
 	<s:HGroup>
 		<s:Label text="背景图片" height="100%" verticalAlign="middle" width="60"/>
-		<s:TextInput width="90" id="BackgroundImg" editable="false" text="{BindBackgroundImgId}" />
+		<s:TextInput width="90" id="BackgroundImg" enter="backgroundImageEnterChanged(event)" text="{BindBackgroundImgId}" />
 		<s:Image source="@Embed('../assets/Search.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="BrowserImage(event)" />
 	</s:HGroup>
 	

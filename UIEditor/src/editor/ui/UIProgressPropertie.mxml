@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.UIProgress;
+			//import pixel.ui.control.UIProgressBar;
+			
+			[Bindable]
+			private var progressBar:UIControl = null;
+			
+			override protected function Initialized():void
+			{
+				progressBar = UIProgress(CurrentControl).progressBar;
+			}
+		]]>
+	</fx:Script>
+	
+	<ui:SimpleProperty id="simple" Control="{CurrentControl}"/>
+	
+	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" />
+	<ui:Background id="BackgroundStyle" Control="{CurrentControl}" />
+	<ui:ScaleProperty id="ScaleStyle" Control="{CurrentControl}" />
+	
+	<s:Label text="加载条样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
+	<ui:BordeStyleProperty  Control="{progressBar}" />
+	<ui:Background  Control="{progressBar}" />
+	<ui:ScaleProperty  Control="{progressBar}" />
+</ui:GenericProperty>

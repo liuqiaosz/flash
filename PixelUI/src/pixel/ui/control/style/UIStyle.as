@@ -89,7 +89,14 @@ package pixel.ui.control.style
 		public function set BackgroundImage(Value:Bitmap):void
 		{
 			_BackgroundImage = Value;
-			_HaveImage = true;
+			if(Value)
+			{
+				_HaveImage = true;
+			}
+			else
+			{
+				_HaveImage = false;
+			}
 		}
 		public function get BackgroundImage():Bitmap
 		{

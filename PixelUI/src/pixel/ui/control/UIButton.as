@@ -49,6 +49,7 @@ package pixel.ui.control
 			height = 30;
 			this.buttonMode = true;
 			_Text = new UILabel(_TextValue);
+			_Text.mouseEnabled = false;
 			addChild(_Text);
 			addEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
 			addEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
@@ -68,7 +69,7 @@ package pixel.ui.control
 		override public function EnableEditMode():void
 		{
 			this.buttonMode = false;
-			this.mouseChildren = true;
+			
 			super.EnableEditMode();
 			RemoveEvent();
 		}
@@ -156,6 +157,7 @@ package pixel.ui.control
 //					addChild(_Text);
 //				}
 				_Text.Text = Value;
+				//addChild(_Text);
 				Update();
 			}
 			else
@@ -211,7 +213,7 @@ package pixel.ui.control
 			
 			if(null != _Text)
 			{
-				if(!contains(_Text))
+				if(!contains(_Text) && _TextValue != "")
 				{
 					addChild(_Text);
 				}

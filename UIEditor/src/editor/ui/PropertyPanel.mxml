@@ -30,8 +30,10 @@
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.UIImage;
 			import pixel.ui.control.UIPanel;
+			import pixel.ui.control.UIProgress;
 			import pixel.ui.control.UISlider;
 			import pixel.ui.control.UITextInput;
+			import pixel.ui.control.UIVerticalPanel;
 			import pixel.ui.control.UIWindow;
 			import pixel.ui.control.asset.AssetImage;
 			import pixel.ui.control.asset.IAsset;
@@ -62,11 +64,16 @@
 			private var TextInputStyleFlag:Boolean = false;
 			[Bindable]
 			private var ComboboxStyleFlag:Boolean = false;
+			[Bindable]
+			private var VerticalPanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var ProgressStyleFlag:Boolean = false;
 			
 			override protected function Initialized():void
 			{
 				Reset();
 				_CurrentControl = Control;
+				Name.text = _CurrentControl.Id;
 				//类型
 				
 				if(_CurrentControl is UISlider)
@@ -137,24 +144,27 @@
 					//					ButtonPressStyle.visible = true;
 					//					ButtonStateSwitch.visible = true;
 					ButtonStyleFlag = true;
-					CategoryFlag = true;
 					ButtonStyle.Control = _CurrentControl;
 					//ButtonOverStyle.DisplayControl(_CurrentControl as corecom.control.SimpleButton);
 					//ButtonPressStyle.DisplayControl(_CurrentControl as corecom.control.SimpleButton);
 					
 					//Scroll.verticalScrollBar.visible = true;
 				}
+				else if(_CurrentControl is UIVerticalPanel)
+				{
+					Category.text = "垂直滚动面板";
+					VerticalPanelStyleFlag = true;
+					VPanelStyle.Control = _CurrentControl;
+				}
 				else if(_CurrentControl is UIPanel)
 				{
 					Category.text = "简单面板";
-					CategoryFlag = true;
 					PanelStyleFlag = true;
 					PanelStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is pixel.ui.control.UILabel)
 				{
 					Category.text = "文本";
-					CategoryFlag = true;
 					LabelStyleFlag = true;
 					LabelStyle.Control = _CurrentControl;
 				}
@@ -182,8 +192,13 @@
 					ComboboxStyleFlag = true;
 					ComboboxStyle.Control = _CurrentControl;
 				}
-				
-				Name.text = _CurrentControl.Id;
+				else if(_CurrentControl is UIProgress)
+				{
+					Category.text = "加载条";
+					ProgressStyleFlag = true;
+					ProgressStyle.Control = _CurrentControl;
+				}
+				CategoryFlag = true;
 			}
 			
 			override public function Reset():void
@@ -199,6 +214,8 @@
 				ImageStyleFlag = false;
 				TextInputStyleFlag = false;
 				ComboboxStyleFlag = false;
+				VerticalPanelStyleFlag = false;
+				ProgressStyleFlag = false;
 				Name.text = "";
 			}
 
@@ -286,6 +303,8 @@
 			<My:UIImageProperty id="ImageStyle" visible="{ImageStyleFlag}" includeInLayout="{ImageStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
 			<My:TextInputProperty id="TextInputStyle" visible="{TextInputStyleFlag}" includeInLayout="{TextInputStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
 			<My:ComboboxPropertie id="ComboboxStyle" visible="{ComboboxStyleFlag}" includeInLayout="{ComboboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+			<My:UIVerticalScrollPropertie id="VPanelStyle" visible="{VerticalPanelStyleFlag}" includeInLayout="{VerticalPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+			<My:UIProgressPropertie id="ProgressStyle" visible="{ProgressStyleFlag}" includeInLayout="{ProgressStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
 		</s:VGroup>
 	</s:Scroller>
 </ui:GenericProperty>

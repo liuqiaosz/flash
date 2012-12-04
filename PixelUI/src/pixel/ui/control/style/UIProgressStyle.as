@@ -5,8 +5,8 @@ package pixel.ui.control.style
 		public function UIProgressStyle()
 		{
 			super();
-//			Width = 100;
-//			Height = 30;
+			
+			//this.LeftTopCorner = this.LeftBottomCorner = this.RightBottomCorner = this.RightTopCorner = 4;
 		}
 	}
 }

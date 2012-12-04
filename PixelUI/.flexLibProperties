@@ -6,6 +6,8 @@
     <classEntry path="pixel.ui.control.IUIScroller"/>
     <classEntry path="pixel.ui.control.UIVerticalScroller"/>
     <classEntry path="pixel.ui.control.style.UIVerticalScrollerStyle"/>
+    <classEntry path="pixel.ui.control.style.UIVerticalPanelStyle"/>
+    <classEntry path="pixel.ui.control.style.UIImageStyle"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

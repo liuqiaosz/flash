@@ -11,8 +11,10 @@ package pixel.ui.control.utility
 	import pixel.ui.control.UIImage;
 	import pixel.ui.control.UILabel;
 	import pixel.ui.control.UIPanel;
+	import pixel.ui.control.UIProgress;
 	import pixel.ui.control.UISlider;
 	import pixel.ui.control.UITextInput;
+	import pixel.ui.control.UIVerticalPanel;
 	import pixel.utility.Tools;
 
 	public class Utils
@@ -34,6 +36,7 @@ package pixel.ui.control.utility
 		public static const WINDOW:int = 15;			//窗口
 		public static const COMBOBOX:int = 16;		//下拉框
 		public static const COMBOBOXPOP:int = 17;		//下拉框弹出面板
+		public static const VPANEL:int = 18;
 		
 		public static const CUSTOMER:uint = 99;			//自定义控件
 		
@@ -100,7 +103,14 @@ package pixel.ui.control.utility
 			{
 				return COMBOBOXPOP;
 			}
-			
+			else if(Control is UIVerticalPanel)
+			{
+				return VPANEL;
+			}
+			else if(Control is UIProgress)
+			{
+				return PROGRESS;
+			}
 			return 99;
 		}
 		
@@ -146,6 +156,14 @@ package pixel.ui.control.utility
 			{
 				return UIComboboxPop;
 			}
+			else if(Control is UIVerticalPanel)
+			{
+				return UIVerticalPanel;
+			}
+			else if(Control is UIProgress)
+			{
+				return UIProgress;
+			}
 			return null;
 		}
 		
@@ -188,6 +206,12 @@ package pixel.ui.control.utility
 					break;
 				case COMBOBOXPOP:
 					return UIComboboxPop;
+					break;
+				case VPANEL:
+					return UIVerticalPanel;
+					break;
+				case PROGRESS:
+					return UIProgress;
 					break;
 			}
 			return null;

@@ -5,9 +5,10 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import pixel.ui.control.UIContainer;
-			
 			import mx.events.FlexEvent;
+			
+			import pixel.ui.control.LayoutConstant;
+			import pixel.ui.control.UIContainer;
 			
 			import spark.events.IndexChangeEvent;
 			
@@ -16,11 +17,27 @@
 			
 			[Bindable]
 			private var _Gap:String = "";
+			[Bindable]
+			private var _padding:int = 0;
+			
+			[Bindable]
+			private var _allowLayoutEdit:Boolean = true;
+			
+			public function set enableLayoutEdit(value:Boolean):void
+			{
+				_allowLayoutEdit = value;
+			}
 			
 			override protected function Initialized():void
 			{
 				_Gap = UIContainer(CurrentControl).Gap + "";
 				ControlLayout.selectedIndex = UIContainer(CurrentControl).Layout;
+
+				if(UIContainer(CurrentControl).Layout != LayoutConstant.ABSOLUTE)
+				{
+					BindGapVisible = true;
+					_padding = UIContainer(CurrentControl).padding;
+				}
 			}
 			
 			protected function GapEnter(event:FlexEvent):void
@@ -29,6 +46,11 @@
 				{
 					UIContainer(CurrentControl).Gap = int(GapProperty.text);
 				}
+			}
+			
+			protected function paddingEnter(event:FlexEvent):void
+			{
+				UIContainer(CurrentControl).Padding = int(paddingPropertie.text);
 			}
 			
 			/**
@@ -52,7 +74,7 @@
 	
 	<s:HGroup>
 		<s:Label text="布局" height="100%" verticalAlign="middle" width="60"/>
-		<s:ComboBox id="ControlLayout" change="LayoutChange(event)" width="80" >
+		<s:ComboBox id="ControlLayout" change="LayoutChange(event)" width="80" enabled="{_allowLayoutEdit}" >
 			<s:ArrayCollection>
 				<fx:String>绝对布局</fx:String>
 				<fx:String>横向布局</fx:String>
@@ -63,7 +85,12 @@
 	</s:HGroup>
 	<s:HGroup visible="{BindGapVisible}" includeInLayout="{BindGapVisible}">
 		<s:Label text="子控件间隔" height="100%" verticalAlign="middle" width="60"/>
-		<s:TextInput id="GapProperty" text="{_Gap}" enter="GapEnter(event)" width="90"/>
+		<s:TextInput id="GapProperty" text="{_Gap}" enter="GapEnter(event)" width="90"  restrict="0-9"/>
+	</s:HGroup>
+	
+	<s:HGroup visible="{BindGapVisible}" includeInLayout="{BindGapVisible}">
+		<s:Label text="Padding" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput id="paddingPropertie" text="{_padding}" enter="paddingEnter(event)" width="90" restrict="0-9"/>
 	</s:HGroup>
 	
 </ui:GenericProperty>

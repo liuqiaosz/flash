@@ -3,6 +3,8 @@ package pixel.ui.control
 	import com.greensock.TweenLite;
 	import com.greensock.core.TweenCore;
 	
+	import flash.utils.ByteArray;
+	
 	import pixel.ui.control.style.UIProgressStyle;
 
 	public class UIProgress extends UIContainer
@@ -12,11 +14,11 @@ package pixel.ui.control
 		{
 			super(Style?Style:UIProgressStyle);
 			_ProgressBar =  new UIProgressBar();
-			_ProgressBar.x =_ProgressBar.y = this.BorderThinkness;
+			
 			addChild(_ProgressBar);
 		}
 		
-		private var _TweenEnable:Boolean = false;
+		private var _TweenEnable:Boolean = true;
 		public function set TweenEnable(Value:Boolean):void
 		{
 			_TweenEnable = Value;
@@ -24,6 +26,11 @@ package pixel.ui.control
 		public function get TweenEnable():Boolean
 		{
 			return _TweenEnable;
+		}
+		
+		public function get progressBar():UIProgressBar
+		{
+			return _ProgressBar;
 		}
 		
 		/**
@@ -48,6 +55,17 @@ package pixel.ui.control
 		{
 			super.height = value;
 			_ProgressBar.height = ContentHeight;
+		}
+		
+		override protected function SpecialEncode(Data:ByteArray):void
+		{
+			var data:ByteArray = _ProgressBar.Encode();
+			Data.writeBytes(data);
+		}
+		override protected function SpecialDecode(Data:ByteArray):void
+		{
+			Data.readByte();
+			_ProgressBar.Decode(Data);
 		}
 	}
 }

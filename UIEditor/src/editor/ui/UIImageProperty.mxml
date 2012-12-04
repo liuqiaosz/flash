@@ -3,7 +3,32 @@
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
 	
+	<fx:Script>
+		<![CDATA[
+			import pixel.ui.control.UIImage;
+			private function browserGif(event:MouseEvent):void
+			{
+				var browser:File = new File();
+				browser.addEventListener(Event.SELECT,function(event:Event):void{
+					var reader:FileStream = new FileStream();
+					reader.open(browser,FileMode.READ);
+					var data:ByteArray = new ByteArray();
+					reader.readBytes(data);
+					UIImage(CurrentControl).gif = data;
+					
+				});
+				browser.browse([new FileFilter("gif","*.gif")]);
+			}
+		]]>
+	</fx:Script>
+	
 	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
+	
+	<s:HGroup>
+		<s:Label text="导入GIF" height="100%" verticalAlign="middle" width="60"/>
+		<s:TextInput width="90" id="BackgroundImg"/>
+		<s:Image source="@Embed('../assets/Search.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="browserGif(event)" />
+	</s:HGroup>
 </ui:GenericProperty>
