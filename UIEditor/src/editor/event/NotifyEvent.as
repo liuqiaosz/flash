@@ -24,6 +24,9 @@ package editor.event
 		public static const SHELLSELECTED:String = "ShellSelected";
 		
 		public static const COMBOBOX_NEWITEM:String = "NewComboboxItem";
+		
+		public static const STYLE_SELECTED:String = "StyleSelected";
+		public static const STYLE_SAVED:String = "StyleSaved";
 		private var _Message:String = "";
 		public function set Message(Value:String):void
 		{

@@ -82,6 +82,7 @@
 			import pixel.ui.control.utility.Utils;
 			import pixel.utility.MouseManager;
 			import pixel.utility.System;
+			import pixel.utility.Tools;
 			
 			import spark.components.SkinnableContainer;
 			import spark.skins.spark.ImageSkin;
@@ -215,7 +216,7 @@
 			}
 			
 			private var Total:int = 10;
-			private var ModelFile:FileReference = null;
+			
 			
 			private function OpenPreferenceWindow(event:MouseEvent):void
 			{
@@ -249,42 +250,77 @@
 			
 			[Bindable]
 			private var Enabled:Boolean = false;
+			
+			//private var ModelFile:FileReference = null;
+			private var modelBrowser:File = null;
 			/**
 			 * 选择打开指定的组件数据模型
 			 **/
 			private function OnModelFileSelected(event:Event):void
 			{
-				ModelFile.load();
-				ModelFile.addEventListener(Event.COMPLETE,function(event:Event):void{
-					
-					if(WorkspaceContainer.containsElement(EditWorkspace))
-					{
-						WorkspaceContainer.removeElement(EditWorkspace);
-					}
-					EditWorkspace = null;
-					//WorkspaceContainer.closeButton.visible = false;
-					ComponentBar.enabled = false;
-					ControlProperty.Reset();
-					ControlProperty.enabled = false;
-					//SaveButton.enabled = true;
-					//CloseButton.enabled = true;
-					Enabled = true;
-					//EditWorkspace = new Workspace();
-					EditWorkspace = new WorkspacePlus();
-					EditWorkspace.width = 2048;
-					EditWorkspace.height = 2048;
-					EditWorkspace.x = 10;
-					EditWorkspace.y = 10;
-					BackFill.width = EditWorkspace.width;
-					BackFill.height = EditWorkspace.height;
-					EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
-					WorkspaceContainer.enabled = true;
-					WorkspaceContainer.visible = true;
-					WorkspaceContainer.addElement(EditWorkspace);
-					ComponentBar.enabled = true;
-					Enabled = true;
-					EditWorkspace.DecodeWorkspaceByModel(ModelFile.data);
-				});
+				var reader:FileStream = new FileStream();
+				reader.open(modelBrowser,FileMode.READ);
+				var model:ByteArray = new ByteArray();
+				reader.readBytes(model);
+				
+				if(WorkspaceContainer.containsElement(EditWorkspace))
+				{
+					WorkspaceContainer.removeElement(EditWorkspace);
+				}
+				EditWorkspace = null;
+				//WorkspaceContainer.closeButton.visible = false;
+				ComponentBar.enabled = false;
+				ControlProperty.Reset();
+				ControlProperty.enabled = false;
+				//SaveButton.enabled = true;
+				//CloseButton.enabled = true;
+				Enabled = true;
+				//EditWorkspace = new Workspace();
+				EditWorkspace = new WorkspacePlus();
+				EditWorkspace.width = 2048;
+				EditWorkspace.height = 2048;
+				EditWorkspace.x = 10;
+				EditWorkspace.y = 10;
+				BackFill.width = EditWorkspace.width;
+				BackFill.height = EditWorkspace.height;
+				EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
+				WorkspaceContainer.enabled = true;
+				WorkspaceContainer.visible = true;
+				WorkspaceContainer.addElement(EditWorkspace);
+				ComponentBar.enabled = true;
+				Enabled = true;
+				EditWorkspace.DecodeWorkspaceByModel(model,modelBrowser.nativePath);
+//				ModelFile.load();
+//				ModelFile.addEventListener(Event.COMPLETE,function(event:Event):void{
+//					
+//					if(WorkspaceContainer.containsElement(EditWorkspace))
+//					{
+//						WorkspaceContainer.removeElement(EditWorkspace);
+//					}
+//					EditWorkspace = null;
+//					//WorkspaceContainer.closeButton.visible = false;
+//					ComponentBar.enabled = false;
+//					ControlProperty.Reset();
+//					ControlProperty.enabled = false;
+//					//SaveButton.enabled = true;
+//					//CloseButton.enabled = true;
+//					Enabled = true;
+//					//EditWorkspace = new Workspace();
+//					EditWorkspace = new WorkspacePlus();
+//					EditWorkspace.width = 2048;
+//					EditWorkspace.height = 2048;
+//					EditWorkspace.x = 10;
+//					EditWorkspace.y = 10;
+//					BackFill.width = EditWorkspace.width;
+//					BackFill.height = EditWorkspace.height;
+//					EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
+//					WorkspaceContainer.enabled = true;
+//					WorkspaceContainer.visible = true;
+//					WorkspaceContainer.addElement(EditWorkspace);
+//					ComponentBar.enabled = true;
+//					Enabled = true;
+//					EditWorkspace.DecodeWorkspaceByModel(ModelFile.data);
+//				});
 			}
 			
 			private function CreateWindowByClass(WindowClass:Class):SkinnableContainer
@@ -443,17 +479,35 @@
 			
 			protected function CreateModel(event:MouseEvent):void
 			{
-				var Browser:File = new File();
-				Browser.addEventListener(Event.SELECT,function(event:Event):void{
-					var Data:ByteArray = EditWorkspace.GenerateControlModel();
-					var ModelFile:File = new File(Browser.nativePath + ".mod");
-					var Writer:FileStream = new FileStream();
-					Writer.open(ModelFile,FileMode.WRITE);
-					Writer.writeBytes(Data,0,Data.length);
-					Writer.close();
-				});
-
-				Browser.browseForSave("请选择保存控件模型的目标路径");
+				var original:ByteArray = this.EditWorkspace.originalModel;
+				var originalNav:String = EditWorkspace.originalNav;
+				var current:ByteArray = EditWorkspace.GenerateControlModel();
+				
+				if(original && originalNav != "")
+				{
+					//保存数据至原文件
+					var modFile:File = new File(originalNav);
+					var writer:FileStream = new FileStream();
+					writer.open(modFile,FileMode.WRITE);
+					writer.writeBytes(current);
+					writer.close();
+					
+					EditWorkspace.DecodeWorkspaceByModel(current,originalNav);
+				}
+				else
+				{
+					var Browser:File = new File();
+					Browser.addEventListener(Event.SELECT,function(event:Event):void{
+						var Data:ByteArray = EditWorkspace.GenerateControlModel();
+						var ModelFile:File = new File(Browser.nativePath + ".mod");
+						var Writer:FileStream = new FileStream();
+						Writer.open(ModelFile,FileMode.WRITE);
+						Writer.writeBytes(current);
+						Writer.close();
+					});
+	
+					Browser.browseForSave("请选择保存控件模型的目标路径");
+				}
 			}
 			
 			private function SaveCode(SourceCode:String):void
@@ -744,10 +798,13 @@
 			 **/
 			private function OnOpenAssetModel(event:MouseEvent):void
 			{
-				ModelFile = new FileReference();
-				var Filter:FileFilter = new FileFilter("组件模型","*.mod");
-				ModelFile.browse([Filter]);
-				ModelFile.addEventListener(Event.SELECT,OnModelFileSelected);
+				modelBrowser = new File();
+				modelBrowser.addEventListener(Event.SELECT,OnModelFileSelected);
+				modelBrowser.browseForOpen("请选择要打开的组件模型",[new FileFilter("UI Module","*.mod")]);
+				//ModelFile = new FileReference();
+				//var Filter:FileFilter = new FileFilter("组件模型","*.mod");
+				//ModelFile.browse([Filter]);
+				
 				//WorkspaceContainer.closeButton.visible = true;
 				//SaveButton.enabled = true;
 				//CloseButton.enabled = true;
@@ -755,34 +812,85 @@
 			
 			private function OnCloseAsset(event:MouseEvent):void
 			{
-				Alert.show("关闭前是否先保存当前修改数据？","关闭提醒",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
-					
-					if(event.detail == Alert.YES)
-					{
-						var Browser:File = new File();
-						Browser.addEventListener(Event.SELECT,function(event:Event):void{
+				var original:ByteArray = this.EditWorkspace.originalModel;
+				var originalNav:String = EditWorkspace.originalNav;
+				var current:ByteArray = EditWorkspace.GenerateControlModel();
+				var file:File = null;
+				var writer:FileStream = null;
+				
+				//校验原始数据和当前数据是否不一致
+				if(original && !Tools.compareByteArray(original,current))
+				{
+					//不一致，数据有修改，询问是否先保存再关闭
+					Alert.show("关闭前是否先保存当前已修改数据？","关闭提醒",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
 						
-							var Data:ByteArray = EditWorkspace.GenerateControlModel();
-							var ModelFile:File = new File(Browser.nativePath + ".mod");
-							var Writer:FileStream = new FileStream();
-							Writer.open(ModelFile,FileMode.WRITE);
-							Writer.writeBytes(Data,0,Data.length);
-							Writer.close();
-							
+						if(event.detail == Alert.YES)
+						{
+							if(originalNav != "")
+							{
+								file = new File(originalNav);
+								writer = new FileStream();
+								writer.open(file,FileMode.WRITE);
+								writer.writeBytes(current);
+								writer.close();
+								resetEditor();
+							}
+							else
+							{
+								var Browser:File = new File();
+								Browser.addEventListener(Event.SELECT,function(event:Event):void{
+									
+									var modFile:File = new File(Browser.nativePath + ".mod");
+									writer = new FileStream();
+									writer.open(modFile,FileMode.WRITE);
+									writer.writeBytes(current);
+									writer.close();
+									
+									resetEditor();
+									
+								});
+								Browser.browseForSave("保存");
+							}
+						}
+						else
+						{
 							resetEditor();
-							
-						});
-						Browser.browseForSave("保存");
+						}
+					});
+				}
+				else
+				{
+					if(original)
+					{
+						//数据一致，不做任何提示
+						resetEditor();
 					}
 					else
 					{
-						resetEditor();
+						Alert.show("关闭前是否先保存当前数据？","关闭提醒",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
+							if(event.detail == Alert.YES)
+							{
+								var Browser:File = new File();
+								Browser.addEventListener(Event.SELECT,function(event:Event):void{
+									var Data:ByteArray = EditWorkspace.GenerateControlModel();
+									var ModelFile:File = new File(Browser.nativePath + ".mod");
+									var Writer:FileStream = new FileStream();
+									Writer.open(ModelFile,FileMode.WRITE);
+									Writer.writeBytes(current);
+									Writer.close();
+								});
+								
+								Browser.browseForSave("请选择保存控件模型路径");
+							}
+							else
+							{
+								resetEditor();
+							}
+						});
 					}
-				});
-				
-				
+				}
 			}
-			
+
 			private function resetEditor():void
 			{
 				if(WorkspaceContainer.containsElement(EditWorkspace))

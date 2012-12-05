@@ -273,8 +273,11 @@
 				mod.id = StyleId.text;
 				mod.desc = StyleDesc.text;
 				mod.style = style;
-				StyleGlobals.addStyle(mod);
-				
+				var notify:NotifyEvent = new NotifyEvent(NotifyEvent.STYLE_SAVED);
+				notify.Params.push(mod);
+				//StyleGlobals.addStyle(mod);
+				dispatchEvent(notify);
+				CloseWindow();
 			}
 		]]>
 	</fx:Script>

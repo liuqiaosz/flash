@@ -29,13 +29,7 @@
 			private var dataProvider:ArrayCollection = new ArrayCollection();
 			protected function initializer(event:FlexEvent):void
 			{
-				var styles:Vector.<UIStyleMod> = StyleGlobals.styles;
-				
-				for each(var style:UIStyleMod in styles)
-				{
-					dataProvider.addItem(style);
-				}
-				var a:Utils
+				refresh();
 			}
 			
 			private var focusItem:UIStyleMod = null;
@@ -48,7 +42,35 @@
 			
 			protected function createStyle(event:MouseEvent):void
 			{
-				PopUpWindowManager.PopUp(NewStyleCategoryChoiceWindow);
+				var window:NewStyleCategoryChoiceWindow = PopUpWindowManager.PopUp(NewStyleCategoryChoiceWindow) as NewStyleCategoryChoiceWindow;
+				window.addEventListener(NotifyEvent.STYLE_SELECTED,styleCategorySelected);
+			}
+			
+			protected function styleCategorySelected(event:NotifyEvent):void
+			{
+				NewStyleCategoryChoiceWindow(event.target).removeEventListener(NotifyEvent.STYLE_SELECTED,styleCategorySelected);
+				
+				var window:NewStyleWindow = PopUpWindowManager.PopUp(NewStyleWindow) as NewStyleWindow;
+				window.control = event.Params.pop();
+				window.addEventListener(NotifyEvent.STYLE_SAVED,styleSaved);
+			}
+			
+			protected function styleSaved(event:NotifyEvent):void
+			{
+				var style:UIStyleMod = event.Params.pop();
+				StyleGlobals.addStyle(style);
+				refresh();
+			}
+			
+			protected function refresh():void
+			{
+				dataProvider.removeAll();
+				var styles:Vector.<UIStyleMod> = StyleGlobals.styles;
+				
+				for each(var style:UIStyleMod in styles)
+				{
+					dataProvider.addItem(style);
+				}
 			}
 			
 		]]>

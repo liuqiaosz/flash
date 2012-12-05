@@ -392,10 +392,22 @@ package editor.ui
 //			//return ModelFactory.Instance.Encode(_Container ?_Container:_Children[0],_Children,Componenet);
 //			return Data;
 		}
+		private var _originalData:ByteArray = null;
+		private var _originalNav:String = "";
+		public function get originalModel():ByteArray
+		{
+			return _originalData;
+		}
+		public function get originalNav():String
+		{
+			return _originalNav;
+		}
 		
-		public function DecodeWorkspaceByModel(Model:ByteArray):void
+		public function DecodeWorkspaceByModel(Model:ByteArray,fileNav:String = ""):void
 		{
 			Dispose();
+			_originalData = Tools.byteArrayClone(Model);
+			_originalNav = fileNav;
 			Model.position = 0;
 			
 			var mod:UIMod = UIControlFactory.Instance.Decode(Model);

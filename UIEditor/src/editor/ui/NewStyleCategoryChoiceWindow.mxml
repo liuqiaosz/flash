@@ -11,6 +11,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import editor.event.NotifyEvent;
 			import editor.uitility.ui.PopUpWindowManager;
 			
 			import mx.collections.ArrayCollection;
@@ -122,8 +123,9 @@
 						break;
 				}
 				
-				var window:NewStyleWindow = PopUpWindowManager.PopUp(NewStyleWindow) as NewStyleWindow;
-				window.control = control;
+				var notify:NotifyEvent = new NotifyEvent(NotifyEvent.STYLE_SELECTED);
+				notify.Params.push(control);
+				dispatchEvent(notify);
 				CloseWindow();
 			}
 			

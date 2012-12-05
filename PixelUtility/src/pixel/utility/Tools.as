@@ -70,6 +70,37 @@ package pixel.utility
 			return Value;
 		}
 		
+		/**
+		 * 
+		 * ByteArray对比
+		 * 
+		 **/
+		public static function compareByteArray(data1:ByteArray,data2:ByteArray):Boolean
+		{
+			if(data1.length != data2.length)
+			{
+				return false;
+			}
+			
+			var pos1:int = data1.position;
+			var pos2:int = data2.position;
+			
+			data1.position = data2.position = 0;
+			
+			while(data1.bytesAvailable > 0)
+			{
+				if(data1.readByte() != data2.readByte())
+				{
+					data1.position = pos1;
+					data2.position = pos2;
+					return false;
+				}
+			}
+			data1.position = pos1;
+			data2.position = pos2;
+			return true;
+		}
+		
 		public static function BitmapScale(Source:BitmapData,Size:int):BitmapData
 		{
 			var Scale:Number = Source.width > Source.height ? 
@@ -94,6 +125,14 @@ package pixel.utility
 			NewData.copyPixels(Source,Source.rect,new Point());
 			
 			return NewData;
+		}
+		
+		public static function byteArrayClone(source:ByteArray):ByteArray
+		{
+			var copy:ByteArray = new ByteArray();
+			
+			copy.writeBytes(source,0,source.length);
+			return copy;
 		}
 		
 		public static function ByteUncompress(Source:ByteArray):void
