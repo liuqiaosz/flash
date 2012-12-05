@@ -1,6 +1,6 @@
 package pixel.ui.control.style
 {
-	public class SimpleTabPanelStyle extends ContainerStyle
+	public class SimpleTabPanelStyle extends UIContainerStyle
 	{
 		public function SimpleTabPanelStyle()
 		{

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*"  width="650" height="500"
+					   creationComplete="initializer(event)" xmlns:utility="editor.uitility.ui.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.uitility.ui.AdvanceHSlider;
+			import editor.uitility.ui.PopUpWindowManager;
+			import editor.utils.StyleGlobals;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.ColorPickerEvent;
+			import mx.events.DataGridEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			
+			import pixel.ui.control.ComboboxItem;
+			import pixel.ui.control.UICombobox;
+			import pixel.ui.control.utility.Utils;
+			import pixel.ui.control.vo.UIStyleMod;
+			
+			[Bindable]
+			private var dataProvider:ArrayCollection = new ArrayCollection();
+			protected function initializer(event:FlexEvent):void
+			{
+				var styles:Vector.<UIStyleMod> = StyleGlobals.styles;
+				
+				for each(var style:UIStyleMod in styles)
+				{
+					dataProvider.addItem(style);
+				}
+				var a:Utils
+			}
+			
+			private var focusItem:UIStyleMod = null;
+			private var focusIndex:int = 0;
+			protected function itemFocus(event:ListEvent):void
+			{
+				focusIndex = event.rowIndex;
+				focusItem = dataProvider[focusIndex];
+			}
+			
+			protected function createStyle(event:MouseEvent):void
+			{
+				PopUpWindowManager.PopUp(NewStyleCategoryChoiceWindow);
+			}
+			
+		]]>
+	</fx:Script>
+	<ui:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
+	</ui:layout>
+	
+	<mx:DataGrid width="630" height="410" id="grid" borderVisible="true" itemRollOver="itemFocus(event)" dataProvider="{dataProvider}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="类型" dataField="styleName" width="50">
+			</mx:DataGridColumn>
+			
+			<mx:DataGridColumn headerText="Id" dataField="id" width="200">
+			</mx:DataGridColumn>
+			
+			<mx:DataGridColumn headerText="描述" dataField="desc" width="150">
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<s:HGroup width="100%" height="30" horizontalAlign="center" gap="30">
+		<s:Image width="24" height="24" source="@Embed('../assets/Add.png')" smooth="true" toolTip="新增皮肤" click="createStyle(event)" buttonMode="true"/>
+	</s:HGroup>
+</ui:AdvanceTitleWindow>

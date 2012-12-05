@@ -349,9 +349,11 @@ package pixel.ui.control.style
 				//有图形数据
 				Data.writeByte(1);
 				//Data.writeUTFBytes(Tools.FillChar(this.BackgroundImageId," ",50));
-				Data.writeByte(BackgroundImageId.length);
-				Data.writeUTFBytes(BackgroundImageId);
-				
+				var len:int = Tools.StringActualLength(BackgroundImageId);
+				//Data.writeByte(BackgroundImageId.length);
+				//Data.writeUTFBytes(BackgroundImageId);
+				Data.writeByte(len);
+				Data.writeMultiByte(BackgroundImageId,"cn-gb");
 				//是否九宫格
 				if(this.Scale9Grid)
 				{
@@ -430,7 +432,11 @@ package pixel.ui.control.style
 				{
 					_HaveImage = true;
 					var Len:int = Data.readByte();
-					_BackgroundImageId = Data.readUTFBytes(Len);
+					if(Len > 0)
+					{
+					//_BackgroundImageId = Data.readUTFBytes(Len);
+						_BackgroundImageId = Data.readMultiByte(Len,"cn-gb");
+					}
 					
 					var Scale9GridFlag:int = Data.readByte();
 					if(Scale9GridFlag)
@@ -446,7 +452,6 @@ package pixel.ui.control.style
 					
 					if(_ImagePack)
 					{
-						//_BackgroundImageId = Tools.ReplaceAll(Data.readUTFBytes(50)," ","");
 						//获取图片长度
 						var ImgWidth:int = Data.readShort();
 						var ImgHeight:int = Data.readShort();
@@ -471,30 +476,6 @@ package pixel.ui.control.style
 			{
 				trace(Err.message);
 			}
-		}
-		
-//		public function Clone(Prototype:Class = null):Object
-//		{
-//			if(Prototype == null)
-//			{
-//				Prototype = UIStyle;
-//			}
-//			flash.net.registerClassAlias(Tools.GetPackage(Prototype),Prototype);
-//			return Cloneable.Instance.Clone(this);
-//		}
-		
-		public function get ToString():String
-		{
-			trace("BorderThinkness[" + _BorderThinkness + "]");
-			trace("BorderColor[" + _BorderColor + "]");
-			//trace("BorderCorner[" + _BorderCorner + "]");
-			trace("BackgroundColor[" + _BackgroundColor + "]");
-			trace("BackgroundAlpha[" + _BackgroundAlpha + "]");
-//			trace("Height[" + _Height + "]");
-//			trace("Width[" + _Width + "]");
-			trace("Shape[" + _Shape + "]");
-			trace("Radius[" + _Radius + "]");
-			return "";
 		}
 	}
 }

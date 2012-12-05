@@ -14,16 +14,11 @@ package pixel.ui.control
 			super(Skin?Skin:UITextInputStyle,Text);
 			//允许文本输入
 			this.Input = true;
-		}
-		
-		override protected function RegisterEvent():void
-		{
-			super.RegisterEvent();
 			addEventListener(FocusEvent.FOCUS_IN,Focus);
 			addEventListener(FocusEvent.FOCUS_OUT,FocusLeave);
 		}
 		
-		override protected function RemoveEvent():void
+		override public function Dispose():void
 		{
 			removeEventListener(FocusEvent.FOCUS_IN,Focus);
 			removeEventListener(FocusEvent.FOCUS_OUT,FocusLeave);

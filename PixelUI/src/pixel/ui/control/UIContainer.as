@@ -5,7 +5,7 @@ package pixel.ui.control
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
 	
-	import pixel.ui.control.style.ContainerStyle;
+	import pixel.ui.control.style.UIContainerStyle;
 	import pixel.ui.control.utility.Utils;
 	import pixel.ui.core.NSPixelUI;
 	
@@ -22,7 +22,7 @@ package pixel.ui.control
 	 **/
 	public class UIContainer extends UIControl implements IContainer
 	{
-		protected var _Padding:int = 0
+		//protected var _Padding:int = 0
 		
 		//布局样式,默认为绝对布局
 		//private var _Layout:uint = LayoutConstant.ABSOLUTE;
@@ -30,7 +30,7 @@ package pixel.ui.control
 		private var _Children:Array = [];
 		public function UIContainer(Skin:Class = null)
 		{
-			var SkinStyle:Class = Skin ? Skin: ContainerStyle;
+			var SkinStyle:Class = Skin ? Skin: UIContainerStyle;
 			super(SkinStyle);
 			_Content = new Sprite();
 			
@@ -51,32 +51,33 @@ package pixel.ui.control
 		
 		public function get Gap():int
 		{
-			return ContainerStyle(Style).Gap;
+			return UIContainerStyle(Style).Gap;
 		}
 		public function set Gap(Value:int):void
 		{
-			ContainerStyle(Style).Gap = Value;
+			UIContainerStyle(Style).Gap = Value;
 			UpdateLayout();
 		}
 		
-		public function set Padding(Value:int):void
+		public function set padding(value:int):void
 		{
-			_Padding = Value;
-			_Content.x = _Content.y = _Padding + _Style.BorderThinkness;
+			UIContainerStyle(_Style).padding = value;
+			//_Padding = Value;
+			_Content.x = _Content.y = value + _Style.BorderThinkness;
 			this.UpdateLayout();
 		}
 		public function get padding():int
 		{
-			return _Padding;
+			return UIContainerStyle(_Style).padding;
 		}
 		
 		public function get contentWidth():int
 		{
-			return width - (_Padding * 2);
+			return width - (UIContainerStyle(_Style).padding * 2);
 		}
 		public function get contentHeight():int
 		{
-			return height - (_Padding * 2);
+			return height - (UIContainerStyle(_Style).padding * 2);
 		}
 		
 		/**
@@ -85,15 +86,15 @@ package pixel.ui.control
 		public function set Layout(Value:uint):void
 		{
 			//判断是否与当前布局不一致
-			if(ContainerStyle(Style).Layout != Value)
+			if(UIContainerStyle(Style).Layout != Value)
 			{
-				ContainerStyle(Style).Layout = Value;
+				UIContainerStyle(Style).Layout = Value;
 				UpdateLayout();
 			}
 		}
 		public function get Layout():uint
 		{
-			return ContainerStyle(Style).Layout;
+			return UIContainerStyle(Style).Layout;
 		}
 		
 		public function IsChildren(Obj:Object):Boolean
@@ -245,13 +246,14 @@ package pixel.ui.control
 			{
 				_Children = [];
 			}
+			var pad:int = padding;
 			var Last:DisplayObject = _Children.length > 0 ? _Children[_Children.length - 1]:null;
-			switch(ContainerStyle(Style).Layout)
+			switch(UIContainerStyle(Style).Layout)
 			{
 				case LayoutConstant.HORIZONTAL:
 					if(Last)
 					{
-						Child.x = Last.x + Last.width + Gap + _Padding;
+						Child.x = Last.x + Last.width + Gap + pad;
 						Child.y = Last.y;
 					}
 					else
@@ -434,6 +436,9 @@ package pixel.ui.control
 				Child.Decode(Data);
 				addChild(Child);
 			}
+			
+			padding = padding;
+			this.UpdateLayout();
 		}
 		
 		override public function set ImagePack(Value:Boolean):void

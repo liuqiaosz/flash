@@ -1,11 +1,11 @@
 package pixel.ui.control
 {
-	import pixel.ui.control.style.LabelStyle;
+	import pixel.ui.control.style.UILabelStyle;
 	public class UILabel extends UITextBase //extends UIControl
 	{
 		public function UILabel(TextValue:String = "",Skin:Class = null)
 		{
-			var SkinClass:Class = Skin ? Skin:LabelStyle;
+			var SkinClass:Class = Skin ? Skin:UILabelStyle;
 			super(SkinClass,TextValue);
 			this.mouseChildren = false;
 		}

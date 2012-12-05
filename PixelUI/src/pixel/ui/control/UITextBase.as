@@ -169,8 +169,12 @@ package pixel.ui.control
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			var Len:int = Data.readShort();
+			var text:String = "";
+			if(Len > 0)
+			{
 			//Text = Data.readUTFBytes(Len);
-			var text:String = Data.readMultiByte(Len,"cn-gb");
+				text = Data.readMultiByte(Len,"cn-gb");
+			}
 			//Text = Data.readMultiByte(Len,"cn-gb");
 //			FontSize = Data.readByte();
 //			FontColor = Data.readUnsignedInt();

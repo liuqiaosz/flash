@@ -1,6 +1,6 @@
 package pixel.ui.control
 {
-	import pixel.ui.control.style.ContainerStyle;
+	import pixel.ui.control.style.UIContainerStyle;
 	import pixel.ui.control.event.ScrollerEvent;
 	
 	import flash.events.MouseEvent;
@@ -25,7 +25,7 @@ package pixel.ui.control
 		
 		public function HorizontalScroller(Skin:Class = null)
 		{
-			var StyleSkin:Class = Skin ? Skin:ContainerStyle;
+			var StyleSkin:Class = Skin ? Skin:UIContainerStyle;
 			super(StyleSkin);
 			
 			

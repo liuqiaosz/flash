@@ -2,7 +2,7 @@ package pixel.ui.control
 {
 	import pixel.ui.control.event.SliderEvent;
 	import pixel.ui.control.event.UIControlEvent;
-	import pixel.ui.control.style.SliderStyle;
+	import pixel.ui.control.style.UISliderStyle;
 	import pixel.ui.control.utility.Utils;
 	
 	import flash.display.Bitmap;
@@ -117,14 +117,17 @@ package pixel.ui.control
 		
 		public function UISlider(Skin:Class = null)
 		{
-			super((Skin?Skin:SliderStyle));
+			super((Skin?Skin:UISliderStyle));
 			Style.BorderThinkness = 0;
 			//创建滑动杆按钮
 			SliderButton = new SimpleSliderButton();
 			SliderButton.width = 10;
 			SliderButton.height = 20;
 			addChild(SliderButton);
-			this.Padding = 0;
+			this.padding = 0;
+			
+			addEventListener(MouseEvent.MOUSE_DOWN,OnMouseDown);
+			addEventListener(UIControlEvent.RENDER_UPDATE,OnUpdate);
 		}
 		
 		override public function set height(value:Number):void
@@ -139,22 +142,11 @@ package pixel.ui.control
 		override public function Render():void
 		{
 			super.Render();
-			graphics.beginFill(SliderStyle(Style).SliderLineColor);
-			graphics.drawRect(0,((height - SliderStyle(Style).SliderLineHeight) >> 1),width,SliderStyle(Style).SliderLineHeight);
+			graphics.beginFill(UISliderStyle(Style).SliderLineColor);
+			graphics.drawRect(0,((height - UISliderStyle(Style).SliderLineHeight) >> 1),width,UISliderStyle(Style).SliderLineHeight);
 			graphics.endFill();
 		}
 		
-		override protected function RegisterEvent():void
-		{
-			super.RegisterEvent();
-			//注册按下事件
-			addEventListener(MouseEvent.MOUSE_DOWN,OnMouseDown);
-			addEventListener(UIControlEvent.RENDER_UPDATE,OnUpdate);
-		}
-		override protected function RemoveEvent():void
-		{
-			removeEventListener(MouseEvent.MOUSE_DOWN,OnMouseDown);
-		}
 		
 		private function OnUpdate(event:UIControlEvent):void
 		{
@@ -205,7 +197,9 @@ package pixel.ui.control
 		
 		override public function Dispose():void
 		{
-			RemoveEvent();
+			super.Dispose();
+			removeEventListener(MouseEvent.MOUSE_DOWN,OnMouseDown);
+			removeEventListener(UIControlEvent.RENDER_UPDATE,OnUpdate);
 		}
 		
 		override public function get Children():Array
@@ -218,11 +212,11 @@ package pixel.ui.control
 		 **/
 		public function get SliderLineColor():uint
 		{
-			return SliderStyle(Style).SliderLineColor;
+			return UISliderStyle(Style).SliderLineColor;
 		}
 		public function set SliderLineColor(Value:uint):void
 		{
-			SliderStyle(Style).SliderLineColor = Value;
+			UISliderStyle(Style).SliderLineColor = Value;
 			StyleUpdate();
 		}
 		
@@ -241,12 +235,12 @@ package pixel.ui.control
 		
 		public function set SliderLineHeight(Value:int):void
 		{
-			SliderStyle(Style).SliderLineHeight = Value;
+			UISliderStyle(Style).SliderLineHeight = Value;
 			StyleUpdate();
 		}
 		public function get SliderLineHeight():int
 		{
-			return SliderStyle(Style).SliderLineHeight; 
+			return UISliderStyle(Style).SliderLineHeight; 
 		}
 	}
 }

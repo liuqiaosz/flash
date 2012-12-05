@@ -90,9 +90,9 @@ package pixel.ui.control
 			return _WindowContent.Layout;
 		}
 		
-		override public function set Padding(Value:int):void
+		override public function set padding(Value:int):void
 		{
-			_WindowContent.Padding = Value;
+			_WindowContent.padding = Value;
 		}
 		override public function set Gap(Value:int):void
 		{
@@ -197,9 +197,9 @@ class TitleBar extends UIPanel
 
 
 import pixel.ui.control.LayoutConstant;
-import pixel.ui.control.style.ContainerStyle;
+import pixel.ui.control.style.UIContainerStyle;
 
-class TitleBarStyle extends ContainerStyle
+class TitleBarStyle extends UIContainerStyle
 {
 	public function TitleBarStyle()
 	{
@@ -210,7 +210,7 @@ class TitleBarStyle extends ContainerStyle
 	}
 }
 
-class WindowContentStyle extends ContainerStyle
+class WindowContentStyle extends UIContainerStyle
 {
 	public function WindowContentStyle()
 	{

@@ -1,8 +1,8 @@
 package pixel.ui.control.style
 {
-	public class CombStyle extends ContainerStyle
+	public class UICombStyle extends UIContainerStyle
 	{
-		public function CombStyle()
+		public function UICombStyle()
 		{
 			super();
 			this.BorderThinkness = 1;

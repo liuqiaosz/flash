@@ -1,8 +1,8 @@
 package pixel.ui.control.style
 {
-	public class LabelStyle extends UIStyle
+	public class UILabelStyle extends UIStyle
 	{
-		public function LabelStyle()
+		public function UILabelStyle()
 		{
 			super();
 //			this.Width = 80;

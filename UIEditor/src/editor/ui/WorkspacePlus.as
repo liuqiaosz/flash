@@ -1,5 +1,15 @@
 package editor.ui
 {
+	import editor.code.ClassFactory;
+	import editor.code.ComponentClass;
+	import editor.event.NotifyEvent;
+	import editor.model.ComponentModel;
+	import editor.model.ModelFactory;
+	import editor.model.ModelFactoryBAJK;
+	import editor.uitility.ui.event.UIEvent;
+	import editor.utils.Globals;
+	import editor.utils.StyleGlobals;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.EventPhase;
@@ -17,35 +27,29 @@ package editor.ui
 	import mx.events.DragEvent;
 	import mx.utils.StringUtil;
 	
-	import spark.components.Group;
-	
-	import editor.code.ClassFactory;
-	import editor.code.ComponentClass;
-	import editor.event.NotifyEvent;
-	import editor.model.ComponentModel;
-	import editor.model.ModelFactory;
-	import editor.model.ModelFactoryBAJK;
-
-	import editor.uitility.ui.event.UIEvent;
-	import editor.utils.Globals;
-	
-	import pixel.ui.control.UIContainer;
+	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.SimpleTabPanel;
 	import pixel.ui.control.Tab;
 	import pixel.ui.control.TabBar;
 	import pixel.ui.control.TabContent;
 	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControl;
+	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.asset.AssetImage;
 	import pixel.ui.control.asset.IAsset;
 	import pixel.ui.control.event.ControlEditModeEvent;
 	import pixel.ui.control.event.EditModeEvent;
 	import pixel.ui.control.event.UIControlEvent;
+	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.utility.Utils;
-	
+	import pixel.ui.control.vo.UIMod;
+	import pixel.ui.control.vo.UIStyleMod;
 	import pixel.utility.IDispose;
 	import pixel.utility.Tools;
+	
+	import spark.components.Group;
 	
 	/**
 	 * 
@@ -56,7 +60,7 @@ package editor.ui
 	public class WorkspacePlus extends UIComponent implements IDispose
 	{
 		//private var CurrentActived:Sprite = null;
-		private var _Children:Array = [];
+		private var _Children:Vector.<IUIControl> = new Vector.<IUIControl>();
 		//新创建组件的基本信息
 		private var _ComponentProfile:ComponentProfile = null;
 		//private var _Container:Container = null;
@@ -106,7 +110,7 @@ package editor.ui
 		//			
 		//		}
 		
-		public function get Children():Array
+		public function get Children():Vector.<IUIControl>
 		{
 			return _Children;
 		}
@@ -366,61 +370,81 @@ package editor.ui
 		 **/
 		public function GenerateControlModel():ByteArray
 		{
-			var Data:ByteArray = new ByteArray();
+			var mod:UIMod = new UIMod();
+			mod.controls = _Children;
+			mod.styles = StyleGlobals.styles;
+			var data:ByteArray = UIControlFactory.Instance.encode(mod);
+			StyleGlobals.clear();
+			return data;
 			
-			//Control count
-			var Count:int = _Children.length;
-			Data.writeShort(Count);
-			
-			for each(var Child:UIControl in _Children)
-			{
-				var ChildModel:ByteArray = Child.Encode();
-				Data.writeInt(ChildModel.length);
-				Data.writeBytes(ChildModel,0,ChildModel.length);
-			}
-			//return ModelFactory.Instance.Encode(_Container ?_Container:_Children[0],_Children,Componenet);
-			return Data;
+//			var Data:ByteArray = new ByteArray();
+//			
+//			//Control count
+//			var Count:int = _Children.length;
+//			Data.writeShort(Count);
+//			
+//			for each(var Child:UIControl in _Children)
+//			{
+//				var ChildModel:ByteArray = Child.Encode();
+//				Data.writeInt(ChildModel.length);
+//				Data.writeBytes(ChildModel,0,ChildModel.length);
+//			}
+//			//return ModelFactory.Instance.Encode(_Container ?_Container:_Children[0],_Children,Componenet);
+//			return Data;
 		}
 		
 		public function DecodeWorkspaceByModel(Model:ByteArray):void
 		{
 			Dispose();
 			Model.position = 0;
-			var Count:int = Model.readShort();
-			var Len:int = 0;
-			var Child:ByteArray = new ByteArray();
-			var Type:int = 0;
-			var Cls:Object = null;
-			var Control:UIControl = null;
-			for(var Idx:int = 0; Idx<Count; Idx++)
+			
+			var mod:UIMod = UIControlFactory.Instance.Decode(Model);
+			
+			var controls:Vector.<IUIControl> = mod.controls;
+			var styles:Vector.<UIStyleMod> = mod.styles;
+			
+			for each(var child:UIControl in controls)
 			{
-				Len = Model.readInt();
-				Model.readBytes(Child,0,Len);
-				
-				Type = Child.readByte();
-
-				Cls = Utils.GetPrototypeByType(Type);
-				
-				if(Cls)
-				{
-					Control = new Cls() as UIControl;
-					if(Control)
-					{
-						Control.addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
-							var AssetItem:IAsset = Globals.FindAssetByAssetId(event.Message) as IAsset;
-							if(null != AssetItem && AssetItem is AssetImage)
-							{
-								UIControl(event.target).BackgroundImage = AssetImage(AssetItem).image;
-							}
-							
-						},false,0);
-						Control.Decode(Child);
-						Control.EnableEditMode();
-						addChild(Control);
-					}
-				}
-				Child.position = 0;
+				child.EnableEditMode();
+				addChild(child);
 			}
+			
+			StyleGlobals.styles = styles;
+//			var Count:int = Model.readShort();
+//			var Len:int = 0;
+//			var Child:ByteArray = new ByteArray();
+//			var Type:int = 0;
+//			var Cls:Object = null;
+//			var Control:UIControl = null;
+//			for(var Idx:int = 0; Idx<Count; Idx++)
+//			{
+//				Len = Model.readInt();
+//				Model.readBytes(Child,0,Len);
+//				
+//				Type = Child.readByte();
+//
+//				Cls = Utils.GetPrototypeByType(Type);
+//				
+//				if(Cls)
+//				{
+//					Control = new Cls() as UIControl;
+//					if(Control)
+//					{
+//						Control.addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
+//							var AssetItem:IAsset = Globals.FindAssetByAssetId(event.Message) as IAsset;
+//							if(null != AssetItem && AssetItem is AssetImage)
+//							{
+//								UIControl(event.target).BackgroundImage = AssetImage(AssetItem).image;
+//							}
+//							
+//						},false,0);
+//						Control.Decode(Child);
+//						Control.EnableEditMode();
+//						addChild(Control);
+//					}
+//				}
+//				Child.position = 0;
+//			}
 		}
 		
 		public function DecodeModelByByteOld(Model:ByteArray):void

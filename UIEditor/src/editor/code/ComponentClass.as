@@ -7,11 +7,11 @@ package editor.code
 	import pixel.ui.control.Tab;
 	import pixel.ui.control.TabContent;
 	import pixel.ui.control.UIControl;
-	import pixel.ui.control.style.ContainerStyle;
+	import pixel.ui.control.style.UIContainerStyle;
 	import corecom.control.style.IStyle;
 	import corecom.control.style.IVisualStyle;
-	import pixel.ui.control.style.ButtonStyle;
-	import pixel.ui.control.style.SliderStyle;
+	import pixel.ui.control.style.UIButtonStyle;
+	import pixel.ui.control.style.UISliderStyle;
 	import pixel.ui.control.style.UIStyle;
 	import pixel.ui.control.utility.ButtonState;
 	
@@ -271,8 +271,8 @@ package editor.code
 			if(Control is UIButton)
 			{
 				InsName = Instance == "" || Instance == null ? "" : Instance + ".";
-				GenerateStyle(ButtonStyle(Control.Style).OverStyle,InsName + "MouseOverStyle",1);
-				GenerateStyle(ButtonStyle(Control.Style).PressStyle,InsName + "MouseDownStyle",1);
+				GenerateStyle(UIButtonStyle(Control.Style).OverStyle,InsName + "MouseOverStyle",1);
+				GenerateStyle(UIButtonStyle(Control.Style).PressStyle,InsName + "MouseDownStyle",1);
 			}
 			else if(Control is SimpleTabPanel)
 			{
@@ -362,15 +362,15 @@ package editor.code
 				StyleCode += InstanceName + "." + "Shape=" + CurrentStyle.Shape + ";\n";
 			}
 			
-			if(CurrentStyle is SliderStyle)
+			if(CurrentStyle is UISliderStyle)
 			{
-				if(SliderStyle(OrignalStyle).SliderLineColor != SliderStyle(CurrentStyle).SliderLineColor)
+				if(UISliderStyle(OrignalStyle).SliderLineColor != UISliderStyle(CurrentStyle).SliderLineColor)
 				{
-					StyleCode += InstanceName + "." + "SliderLineColor=" + SliderStyle(CurrentStyle).SliderLineColor + ";\n";
+					StyleCode += InstanceName + "." + "SliderLineColor=" + UISliderStyle(CurrentStyle).SliderLineColor + ";\n";
 				}
-				if(SliderStyle(OrignalStyle).SliderLineHeight != SliderStyle(CurrentStyle).SliderLineHeight)
+				if(UISliderStyle(OrignalStyle).SliderLineHeight != UISliderStyle(CurrentStyle).SliderLineHeight)
 				{
-					StyleCode += InstanceName + "." + "SliderLineHeight=" + SliderStyle(CurrentStyle).SliderLineHeight + ";\n";
+					StyleCode += InstanceName + "." + "SliderLineHeight=" + UISliderStyle(CurrentStyle).SliderLineHeight + ";\n";
 				}
 			}
 		}
@@ -378,7 +378,7 @@ package editor.code
 		//private function GenerateStyle(Style:IStyle,Instance:String = null,InstanceType:uint = 0):void
 		private function GenerateStyle(Style:IVisualStyle,Instance:String = null,InstanceType:uint = 0):void
 		{
-			var Default:UIStyle = new ContainerStyle();
+			var Default:UIStyle = new UIContainerStyle();
 			var InstanceName:String = (Instance != null&& Instance != "") ? Instance + "":"";
 			if(InstanceType == 0)
 			{
@@ -441,16 +441,16 @@ package editor.code
 				StyleCode += InstanceName + "." + "BackgroundImage = new Bitmap(ControlAssetManager.Instance.FindAssetById(\"" + Style.BackgroundImageId + "\") as BitmapData);\n";
 			}
 			
-			if(Style is SliderStyle)
+			if(Style is UISliderStyle)
 			{
-				var SlideStyle:SliderStyle = new SliderStyle();
-				if(SliderStyle(SlideStyle).SliderLineHeight != SliderStyle(Style).SliderLineHeight)
+				var SlideStyle:UISliderStyle = new UISliderStyle();
+				if(UISliderStyle(SlideStyle).SliderLineHeight != UISliderStyle(Style).SliderLineHeight)
 				{
-					StyleCode += "SimpleSliderStyle(" + InstanceName + ")." + "SliderLineHeight = " + SliderStyle(Style).SliderLineHeight + ";\n";
+					StyleCode += "SimpleSliderStyle(" + InstanceName + ")." + "SliderLineHeight = " + UISliderStyle(Style).SliderLineHeight + ";\n";
 				}
-				if(SliderStyle(SlideStyle).SliderLineColor != SliderStyle(Style).SliderLineColor)
+				if(UISliderStyle(SlideStyle).SliderLineColor != UISliderStyle(Style).SliderLineColor)
 				{
-					StyleCode += "SimpleSliderStyle(" + InstanceName + ")." + "SliderLineColor = " + SliderStyle(Style).SliderLineColor + ";\n";
+					StyleCode += "SimpleSliderStyle(" + InstanceName + ")." + "SliderLineColor = " + UISliderStyle(Style).SliderLineColor + ";\n";
 				}
 			}
 			
@@ -463,15 +463,15 @@ package editor.code
 				StyleCode += InstanceName + "." + "Scale9GridBottom=" + Style.Scale9GridBottom + ";\n";
 			}
 			
-			if(Style is ContainerStyle)
+			if(Style is UIContainerStyle)
 			{
-				if(ContainerStyle(Default).Gap != ContainerStyle(Style).Gap)
+				if(UIContainerStyle(Default).Gap != UIContainerStyle(Style).Gap)
 				{
-					StyleCode += "ContainerStyle(" + InstanceName + ")." + "Gap = " + ContainerStyle(Style).Gap + ";\n";
+					StyleCode += "ContainerStyle(" + InstanceName + ")." + "Gap = " + UIContainerStyle(Style).Gap + ";\n";
 				}
-				if(ContainerStyle(Default).Layout != ContainerStyle(Style).Layout)
+				if(UIContainerStyle(Default).Layout != UIContainerStyle(Style).Layout)
 				{
-					StyleCode += "ContainerStyle(" + InstanceName + ")." + "Layout = " + ContainerStyle(Style).Layout + ";\n";
+					StyleCode += "ContainerStyle(" + InstanceName + ")." + "Layout = " + UIContainerStyle(Style).Layout + ";\n";
 				}
 				
 			}

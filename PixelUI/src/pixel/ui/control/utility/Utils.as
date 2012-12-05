@@ -1,20 +1,7 @@
 package pixel.ui.control.utility
 {
-	import pixel.ui.control.SimpleTabPanel;
-	import pixel.ui.control.Tab;
-	import pixel.ui.control.TabBar;
-	import pixel.ui.control.TabContent;
-	import pixel.ui.control.UIButton;
-	import pixel.ui.control.UICombobox;
-	import pixel.ui.control.UIComboboxPop;
-	import pixel.ui.control.UIControl;
-	import pixel.ui.control.UIImage;
-	import pixel.ui.control.UILabel;
-	import pixel.ui.control.UIPanel;
-	import pixel.ui.control.UIProgress;
-	import pixel.ui.control.UISlider;
-	import pixel.ui.control.UITextInput;
-	import pixel.ui.control.UIVerticalPanel;
+	import pixel.ui.control.*;
+	import pixel.ui.control.style.*;
 	import pixel.utility.Tools;
 
 	public class Utils
@@ -212,6 +199,152 @@ package pixel.ui.control.utility
 					break;
 				case PROGRESS:
 					return UIProgress;
+					break;
+			}
+			return null;
+		}
+		
+		public static function getStylePrototypeByType(type:int):Class
+		{
+			switch(type)
+			{
+				case SIMPLEBUTTON:
+					return UIButtonStyle;
+					break;
+				case TABPANEL:
+					return UIPanelStyle;
+					break;
+				case TAB:
+					return Tab;
+					break;
+				case TABBAR:
+					return TabBar;
+					break;
+				case TABCONTENT:
+					return TabContent;
+					break;
+				case SLIDER:
+					return UISliderStyle;
+					break;
+				case SIMPLEPANEL:
+					return UIPanelStyle;
+					break;
+				case LABEL:
+					return UILabelStyle;
+					break;
+				case IMAGE:
+					return UIImageStyle;
+					break;
+				case TEXTINPUT:
+					return UITextInputStyle;
+					break;
+				case COMBOBOX:
+					return UICombStyle;
+					break;
+				case COMBOBOXPOP:
+					return UIComboboxPop;
+					break;
+				case VPANEL:
+					return UIVerticalPanelStyle;
+					break;
+				case PROGRESS:
+					return UIProgressStyle;
+					break;
+			}
+			return null;
+		}
+		
+		public static function getStyleTypeByPrototype(Control:IVisualStyle):int
+		{
+			
+			if(Control is UISliderStyle)
+			{
+				return SLIDER;
+			}
+			else if(Control is UIButtonStyle)
+			{
+				return SIMPLEBUTTON;
+			}
+			else if(Control is UIPanelStyle)
+			{
+				return SIMPLEPANEL;
+			}
+			else if(Control is UILabelStyle)
+			{
+				return LABEL;
+			}
+			else if(Control is UIImageStyle)
+			{
+				return IMAGE;
+			}
+			else if(Control is UITextInputStyle)
+			{
+				return TEXTINPUT;
+			}
+			else if(Control is UICombStyle)
+			{
+				return COMBOBOX;
+			}
+			else if(Control is UIComboboxPop)
+			{
+				return COMBOBOXPOP;
+			}
+			else if(Control is UIVerticalPanelStyle)
+			{
+				return VPANEL;
+			}
+			else if(Control is UIProgressStyle)
+			{
+				return PROGRESS;
+			}
+			return 99;
+		}
+		
+		public static function getStyleNameByType(type:int):String
+		{
+			switch(type)
+			{
+				case SIMPLEBUTTON:
+					return "Button";
+					break;
+//				case TABPANEL:
+//					return UIPanelStyle;
+//					break;
+//				case TAB:
+//					return Tab;
+//					break;
+//				case TABBAR:
+//					return TabBar;
+//					break;
+//				case TABCONTENT:
+//					return TabContent;
+//					break;
+				case SLIDER:
+					return "Slider";
+					break;
+				case SIMPLEPANEL:
+					return "Panel";
+					break;
+				case LABEL:
+					return "Label";
+					break;
+				case IMAGE:
+					return "Image";
+					break;
+				case TEXTINPUT:
+					return "TextInput";
+					break;
+				case COMBOBOX:
+					return "Combobox";
+					break;
+//				case COMBOBOXPOP:
+//					return UIComboboxPop;
+					break;
+				case VPANEL:
+					return "VScrollPanel";
+					break;
+				case PROGRESS:
+					return "Progress";
 					break;
 			}
 			return null;

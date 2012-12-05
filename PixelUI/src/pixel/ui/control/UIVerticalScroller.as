@@ -66,6 +66,7 @@ package pixel.ui.control
 			_scrollHandlerPanel.y = DEFAULT_WIDTH; 
 			
 			_scrollUp.backgroundImageForAllState = new UP() as Bitmap;
+			_scrollUp.ImagePack = true;
 			//_scrollUp.Scale9Grid = true;
 			//_scrollUp.Scale9GridAll = 4;
 			_scrollUp.borderThinknessForAllState = 0;
@@ -74,6 +75,7 @@ package pixel.ui.control
 			
 			
 			_scrollDown.backgroundImageForAllState = new DOWN() as Bitmap;
+			_scrollDown.ImagePack = true;
 			//_scrollDown.Scale9Grid = true;
 			//_scrollDown.Scale9GridAll = 4;
 			_scrollDown.width = DEFAULT_WIDTH;

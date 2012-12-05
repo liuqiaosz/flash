@@ -50,8 +50,9 @@ package pixel.ui.control
 			{
 				_Style = new Skin() as IVisualStyle;
 			}
-			RegisterEvent();
+			//RegisterEvent();
 			Update();
+			addEventListener(Event.ADDED_TO_STAGE,OnAdded);
 			addEventListener(Event.REMOVED_FROM_STAGE,onRemoveFromStage);
 			//this.mouseEnabled = false;
 		}
@@ -84,14 +85,14 @@ package pixel.ui.control
 		{
 			_Frame = new FocusFrame(this);
 			super.addChildAt(_Frame,this.numChildren);
-			this.RemoveEvent();
+			//this.RemoveEvent();
 			_EditMode = true;
 		}
 		public function DisableEditMode():void
 		{
 			_EditMode = false;
 			removeChild(_Frame);
-			this.RegisterEvent();
+			//this.RegisterEvent();
 		}
 		
 		private var _ToolTip:String = "";
@@ -166,7 +167,9 @@ package pixel.ui.control
 		
 		public function Dispose():void
 		{
-			RemoveEvent();
+			//RemoveEvent();
+			removeEventListener(Event.ADDED_TO_STAGE,OnAdded);
+			removeEventListener(Event.REMOVED_FROM_STAGE,onRemoveFromStage);
 		}
 		
 		protected function StyleUpdate():void
@@ -341,33 +344,33 @@ package pixel.ui.control
 			}
 		}
 		
-		protected function RegisterEvent():void
-		{
-			addEventListener(Event.ADDED_TO_STAGE,OnAdded);
-		}
-		protected function RemoveEvent():void
-		{
-		}
-		
+//		protected function RegisterEvent():void
+//		{
+//			addEventListener(Event.ADDED_TO_STAGE,OnAdded);
+//		}
+//		protected function RemoveEvent():void
+//		{
+//		}
+//		
 		private var _Enable:Boolean = true;
 		
-		public function set Enable(Value:Boolean):void
-		{
-			if(Value)
-			{
-				if(!_Enable)
-				{
-					this.RegisterEvent();
-				}
-			}
-			else
-			{
-				if(_Enable)
-				{
-					this.RemoveEvent();
-				}
-			}
-		}
+//		public function set Enable(Value:Boolean):void
+//		{
+//			if(Value)
+//			{
+//				if(!_Enable)
+//				{
+//					this.RegisterEvent();
+//				}
+//			}
+//			else
+//			{
+//				if(_Enable)
+//				{
+//					this.RemoveEvent();
+//				}
+//			}
+//		}
 		
 		/**
 		 * 控件版本
@@ -452,13 +455,11 @@ package pixel.ui.control
 		{
 			var Len:int = Data.readByte();
 			Id = Data.readUTFBytes(Len);
-			//Id = Tools.ReplaceAll( Data.readUTFBytes(20)," ","");
 			Version = Data.readShort();
 			_ActualWidth = Data.readShort();
 			_ActualHeight = Data.readShort();
 			x = Data.readShort();
 			y = Data.readShort();
-			
 			
 			//2012-11-09ToolTip数据处理
 			if(Data.readByte() == 1)
@@ -469,7 +470,7 @@ package pixel.ui.control
 			
 			_Style.Decode(Data);
 			SpecialDecode(Data);
-			RegisterEvent();
+			//RegisterEvent();
 			
 			if(!Style.ImagePack)
 			{

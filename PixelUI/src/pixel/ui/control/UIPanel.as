@@ -30,17 +30,6 @@ package pixel.ui.control
 			removeEventListener(MouseEvent.MOUSE_DOWN,ChildDrag);
 		}
 		
-//		private var _ContainerEdit:Boolean = false;
-//		public function EnableContainerEdit():void
-//		{
-//			if(!_EditMode)
-//			{
-//				EnableEditMode();
-//			}
-//			
-//			_ContainerEdit = true;
-//		}
-		
 		protected function ChildDrag(event:MouseEvent):void
 		{
 			if(IsChildren(event.target))

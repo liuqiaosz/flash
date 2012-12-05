@@ -17,6 +17,7 @@ package
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.CapsStyle;
+	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.GraphicsTrianglePath;
 	import flash.display.Loader;
@@ -53,6 +54,7 @@ package
 	import pixel.particle.PixelParticleEmitterPropertie;
 	import pixel.ui.control.ComboboxItem;
 	import pixel.ui.control.HorizontalScroller;
+	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UICombobox;
@@ -64,6 +66,7 @@ package
 	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.style.VerticalScrollerStyle;
+	import pixel.ui.control.vo.UIMod;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ColorCode;
 	import pixel.utility.RGBA;
@@ -145,7 +148,7 @@ package
 	//	import utility.Tools;
 	//	import utility.bitmap.png.PNGDecoder;
 	//	import utility.bitmap.tga.TGADecoder;
-	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0x000000")]
+	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="arrow_down.png")]
@@ -173,8 +176,8 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			//rotateTest();
-			
-			gifTest();
+			//pngTo4444();
+			progress();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
 			
@@ -183,71 +186,46 @@ package
 			s.x = stage.stageWidth - s.width;
 		}
 		
-		private function gifTest():void
+		private function progress():void
 		{
-			var file:File = new File("C:\\Users\\OfficeLocal\\Desktop\\11111.mod");
-			var reader:FileStream = new FileStream();
-			reader.open(file,FileMode.READ);
-			var data:ByteArray = new ByteArray();
-			reader.readBytes(data,0,reader.bytesAvailable);
+			var pro:UIProgress = new UIProgress();
+			addChild(pro);
+			pro.x = 10;
+			pro.y = 10;
+			pro.width = 150;
+			pro.height = 20;
+			var i:int = 0;
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void
+			{
+				i += 10;
+				pro.UpdateProgress(i,100);
+			});
 			
-			var vec:Vector.<UIControl> = UIControlFactory.Instance.Decode(data);
-			
-			addChild(vec.pop());
-		}
-		
-		private function progressTest():void
-		{
-			//UIControlFactory
-			var file:File = new File("C:\\Users\\OfficeLocal\\Desktop\\11111.mod");
-			var reader:FileStream = new FileStream();
-			reader.open(file,FileMode.READ);
-			var data:ByteArray = new ByteArray();
-			reader.readBytes(data,0,reader.bytesAvailable);
-			
-			var vec:Vector.<UIControl> = UIControlFactory.Instance.Decode(data);
-			
-			var a:UIProgress = vec.pop() as UIProgress;
-			
-			a.x = 200;
-			a.y = 50;
-			addChild(a);
-			var v:int = 0;
 			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
-				v += 10;
-				a.UpdateProgress(v,100);
+				
+				pro.rotation = 90;
 			});
 		}
 		
-		[Embed(source="scrollup.png")]
-		private var UP:Class;
-		private function scrollTest():void
+		private function test():void
 		{
-			var p:UIVerticalPanel = new UIVerticalPanel();
-
-			p.width = 400;
-			p.height = 200;
-			p.x = 200;
-			p.y = 100;
-			p.Padding = 5;
-			p.Gap = 5;
-			var idx:int = 0;
-			for(idx; idx< 20; idx++)
-			{
-				var btn:UIButton = new UIButton();
-				btn.Text = "[" + idx + "]";
-				btn.width = 50;
-				btn.height = 30;
-				p.addChild(btn);
-				idx++;
-			}
-			addChild(p);
-			//addChild(s);
+			var file:File = new File("C:\\Users\\OfficeLocal\\Desktop\\222.mod");
+			var reader:FileStream = new FileStream();
+			reader.open(file,FileMode.READ);
+			var data:ByteArray = new ByteArray();
+			reader.readBytes(data,0,reader.bytesAvailable);
+			
+			var mod:UIMod = UIControlFactory.Instance.Decode(data);
+			var button:UIButton = new UIButton();
+			button.Style = mod.styles.pop();
+			addChild(button);
 		}
 		
+		[Embed(source="map_terrain.png")]
+		private var MAP:Class;
 		public function pngTo4444():void
 		{
-			var png:Bitmap = new SCROLLERARROW_DOWN() as Bitmap;
+			var png:Bitmap = new MAP() as Bitmap;
 			
 			var bmp:BitmapData = png.bitmapData;
 			
@@ -266,7 +244,7 @@ package
 			var data:ByteArray = BitmapTools.BitmapEncodeToPNG(bmp4);
 			
 			var writer:FileStream = new FileStream();
-			writer.open(new File("D:\\scrolldown.png"),FileMode.WRITE);
+			writer.open(new File("D:\\map_terrain.png"),FileMode.WRITE);
 			writer.writeBytes(data,0,data.length);
 			writer.close();
 		}

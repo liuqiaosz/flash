@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<My:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   xmlns:My="editor.ui.*"
+					   width="100%" height="100%">
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Metadata>
+		[Event(name="OnChangeImage", type="editor.event.NotifyEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.utils.Globals;
+			import editor.utils.StyleGlobals;
+			
+			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			import mx.managers.FocusManager;
+			
+			import pixel.ui.control.*;
+			import pixel.ui.control.asset.AssetImage;
+			import pixel.ui.control.asset.IAsset;
+			import pixel.ui.control.style.IVisualStyle;
+			import pixel.ui.control.vo.UIStyleMod;
+			
+			[Bindable]
+			private var ButtonStyleFlag:Boolean = false;
+			[Bindable]
+			private var TabStyleFlag:Boolean = false;
+			[Bindable]
+			private var SliderStyleFlag:Boolean = false;
+			[Bindable]
+			private var TabPanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var PanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var CategoryFlag:Boolean = false;
+			[Bindable]
+			private var LabelStyleFlag:Boolean = false;
+			[Bindable]
+			private var WindowStyleFlag:Boolean = false;
+			[Bindable]
+			private var ImageStyleFlag:Boolean = false;
+			[Bindable]
+			private var TextInputStyleFlag:Boolean = false;
+			[Bindable]
+			private var ComboboxStyleFlag:Boolean = false;
+			[Bindable]
+			private var VerticalPanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var ProgressStyleFlag:Boolean = false;
+			
+			private var _control:UIControl = null;
+			
+			public function set control(value:UIControl):void
+			{
+				_control = value;
+				var styleCom:GenericProperty = null;
+				Reset();
+				
+//				if(_control is UISlider)
+//				{
+//					//Category.text = "滑动条";
+//					SliderStyleFlag = true;
+//					CategoryFlag = true;
+//					SliderStyle.Control = _control;
+//				}
+//				else if(_control is SimpleTabPanel)
+//				{
+//					//Category.text = "标签面板";
+//					//TabPanelStyle.visible = true;
+//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
+//					//TabPanelStyle.visible = true;
+//					TabPanelStyleFlag = true;
+//					CategoryFlag = true;
+//					//BasicStyleFlag = false;
+//					TabPanelStyle.Control = _control;
+//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
+//				}
+//				else if(_control is TabBar)
+//				{
+//					//Category.text = "标签面板";
+//					//TabPanelStyle.visible = true;
+//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
+//					//TabPanelStyle.visible = true;
+//					TabPanelStyleFlag = true;
+//					CategoryFlag = true;
+//					//BasicStyleFlag = false;
+//					//TabPanelStyle.DisplayControl(TabBar(_control).Owner);
+//					
+//					TabPanelStyle.Control = TabBar(_control).Owner;
+//					_control = TabBar(_control).Owner;
+//				}
+//				else if(_control is Tab)
+//				{
+//					//Category.text = "标签";
+//					TabStyleFlag = true;
+//					CategoryFlag = true;
+//					TabStyle.Control = _control;
+//				}
+//				else if(_control is TabContent)
+//				{
+//					//Category.text = "标签面板";
+//					//TabPanelStyle.visible = true;
+//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
+//					//TabPanelStyle.visible = true;
+//					TabPanelStyleFlag = true;
+//					CategoryFlag = true;
+//					//BasicStyleFlag = false;
+//					_control = TabContent(_control).Owner.parent.parent as SimpleTabPanel;
+//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
+//					TabPanelStyle.Control = _control;
+//				}
+					//				else if(_control is HorizontalPanel)
+					//				{
+					//					Category.text = "横向面板";
+					//				}
+					//				else if(_control is VerticalPanel)
+					//				{
+					//					Category.text = "横向面板";
+					//				}
+				if(_control is pixel.ui.control.UIButton)
+				{
+					//Category.text = "简单按钮";
+					//					ButtonOverStyle.visible = true;
+					//					ButtonPressStyle.visible = true;
+					//					ButtonStateSwitch.visible = true;
+					ButtonStyleFlag = true;
+					//ButtonStyle.Control = _control;
+					styleCom = new ButtonProperty();
+					
+					//ButtonOverStyle.DisplayControl(_control as corecom.control.SimpleButton);
+					//ButtonPressStyle.DisplayControl(_control as corecom.control.SimpleButton);
+					
+					//Scroll.verticalScrollBar.visible = true;
+				}
+//				else if(_control is UIVerticalPanel)
+//				{
+//					//Category.text = "垂直滚动面板";
+//					VerticalPanelStyleFlag = true;
+//					VPanelStyle.Control = _control;
+//				}
+				else if(_control is UIPanel)
+				{
+					//Category.text = "简单面板";
+					PanelStyleFlag = true;
+					//PanelStyle.Control = _control;
+					styleCom = new PanelProperty();
+				}
+				else if(_control is UILabel)
+				{
+					//Category.text = "文本";
+					LabelStyleFlag = true;
+					//LabelStyle.Control = _control;
+					styleCom = new LabelPropery();
+				}
+//				else if(_control is UIWindow)
+//				{
+//					//Category.text = "视窗";
+//					WindowStyleFlag = true;
+//					WindowStyle.Control = _control;
+//				}
+				else if(_control is UIImage)
+				{
+					//Category.text = "图形";
+					ImageStyleFlag = true;
+					//ImageStyle.Control = _control;
+					styleCom = new UIImageProperty();
+				}
+				else if(_control is UITextInput)
+				{
+					//Category.text = "文本输入框";
+					TextInputStyleFlag = true;
+					//TextInputStyle.Control = _control;
+					styleCom = new TextInputProperty();
+				}
+//				else if(_control is UICombobox)
+//				{
+//					//Category.text = "下拉框";
+//					ComboboxStyleFlag = true;
+//					ComboboxStyle.Control = _control;
+//				}
+//				else if(_control is UIProgress)
+//				{
+//					//Category.text = "加载条";
+//					ProgressStyleFlag = true;
+//					ProgressStyle.Control = _control;
+//				}
+				CategoryFlag = true;
+				var container:UIComponent = new UIComponent();
+				_control.EnableEditMode();
+				container.addChild(_control);
+				container.x = 10;
+				container.y = 10;
+				WorkspaceContainer.addElement(container);
+				propertie.addElement(styleCom);
+				styleCom.Control = _control;
+			}
+			
+			/**
+			 * 变更背景图片回调通知函数
+			 **/
+			private function OnChangeImageResultNotify(LibraryId:String,AssetId:String):void
+			{
+				var AssetItem:IAsset = Globals.FindAssetById(LibraryId,AssetId);
+				if(null != AssetItem && AssetItem is AssetImage)
+				{
+					_control.Style.BackgroundImage = AssetImage(AssetItem).image;
+					_control.Style.BackgroundImageId = AssetId;
+					_control.Update();
+					//BackgroundImg.text = AssetItem.Id;
+					
+				}
+			}
+			private var Callback:Function = null;
+			private function OnSubStyleChangeImage(event:NotifyEvent):void
+			{
+				Callback = event.Params.pop();
+			}
+			
+			/**
+			 * 变更图形资源回馈
+			 **/
+			public function ChangeImageResult(LibraryId:String,AssetId:String):void
+			{
+				if(Callback != null)
+				{
+					Callback(LibraryId,AssetId);
+					Callback = null;
+				}
+			}
+			
+			private function Reset():void
+			{
+				ButtonStyleFlag = false;
+				TabStyleFlag = false;
+				SliderStyleFlag = false;
+				TabPanelStyleFlag = false;
+				PanelStyleFlag = false;
+				CategoryFlag = false;
+				WindowStyleFlag = false;
+				LabelStyleFlag = false;
+				ImageStyleFlag = false;
+				TextInputStyleFlag = false;
+				ComboboxStyleFlag = false;
+				VerticalPanelStyleFlag = false;
+				ProgressStyleFlag = false;
+			}
+			
+			protected function saveStyle(event:MouseEvent):void
+			{
+				if(StyleId.text == "")
+				{
+					Alert.show("皮肤ID不能为空");
+					
+					return;
+				}
+				var mod:UIStyleMod = new UIStyleMod();
+				var style:IVisualStyle = null;
+				if(_control is UIButton)
+				{
+					style = UIButton(_control).NormalStyle;
+				}
+				else
+				{
+					style = _control.Style;
+				}
+				
+				mod.id = StyleId.text;
+				mod.desc = StyleDesc.text;
+				mod.style = style;
+				StyleGlobals.addStyle(mod);
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<My:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
+	</My:layout>
+	
+	<s:HGroup gap="5" width="95%" height="95%" >
+		<s:BorderContainer width="345" height="315">
+			<s:Scroller width="345" height="315" id="workspace">
+				<s:Group width="100%" height="100%" id="WorkspaceContainer"/>
+			</s:Scroller>
+		</s:BorderContainer>
+		
+		<s:BorderContainer width="210" height="315">
+			<s:Scroller width="210" height="310" id="Scroll">
+				<s:VGroup gap="10" paddingTop="5" paddingLeft="5" width="210" height="100%">
+					<s:HGroup verticalAlign="middle">
+						<s:Label width="40" text="皮肤ID" />
+						
+						<s:TextInput restrict="a-z A-Z 0-9" id="StyleId"/>
+					</s:HGroup>
+					
+					<s:HGroup verticalAlign="middle">
+						<s:Label width="40" text="简述" />
+						
+						<s:TextArea id="StyleDesc" width="130"/>
+					</s:HGroup>
+					
+					<s:Group id="propertie">
+						
+					</s:Group>
+					<!--
+					<My:PanelProperty id="PanelStyle" visible="{PanelStyleFlag}" includeInLayout="{PanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+					<My:ButtonProperty id="ButtonStyle" visible="{ButtonStyleFlag}" includeInLayout="{ButtonStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+					
+					
+					<My:LabelPropery id="LabelStyle" visible="{LabelStyleFlag}" includeInLayout="{LabelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+					<My:UIImageProperty id="ImageStyle" visible="{ImageStyleFlag}" includeInLayout="{ImageStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+					<My:TextInputProperty id="TextInputStyle" visible="{TextInputStyleFlag}" includeInLayout="{TextInputStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+					
+					<My:WindowProperty id="WindowStyle" visible="{WindowStyleFlag}" includeInLayout="{WindowStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+					<My:TabProperty id="TabStyle" visible="{TabStyleFlag}" includeInLayout="{TabStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+					<My:SliderProperty id="SliderStyle" visible="{SliderStyleFlag}" includeInLayout="{SliderStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+					<My:TabPanelProperty id="TabPanelStyle" visible="{TabPanelStyleFlag}" includeInLayout="{TabPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+					<My:ComboboxPropertie id="ComboboxStyle" visible="{ComboboxStyleFlag}" includeInLayout="{ComboboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+					<My:UIVerticalScrollPropertie id="VPanelStyle" visible="{VerticalPanelStyleFlag}" includeInLayout="{VerticalPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
+					<My:UIProgressPropertie id="ProgressStyle" visible="{ProgressStyleFlag}" includeInLayout="{ProgressStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+					-->
+				</s:VGroup>
+			</s:Scroller>
+		</s:BorderContainer>
+		
+	</s:HGroup>
+	
+	
+	<s:HGroup>
+		<s:Image source="@Embed('../assets/Save.png')" width="24" height="24" smooth="true" click="saveStyle(event)" />
+	</s:HGroup>
+</My:AdvanceTitleWindow>

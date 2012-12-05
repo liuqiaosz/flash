@@ -50,7 +50,7 @@
 			
 			protected function paddingEnter(event:FlexEvent):void
 			{
-				UIContainer(CurrentControl).Padding = int(paddingPropertie.text);
+				UIContainer(CurrentControl).padding = int(paddingPropertie.text);
 			}
 			
 			/**

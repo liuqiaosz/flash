@@ -6,7 +6,7 @@ package pixel.ui.control
 	import flash.utils.ByteArray;
 	
 	import pixel.ui.control.event.ComboboxEvent;
-	import pixel.ui.control.style.CombStyle;
+	import pixel.ui.control.style.UICombStyle;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.core.NSPixelUI;
 	
@@ -35,13 +35,10 @@ package pixel.ui.control
 		
 		public function UICombobox(Skin:Class = null)
 		{
-			var StyleSkin:Class = Skin ? Skin:CombStyle;
+			var StyleSkin:Class = Skin ? Skin:UICombStyle;
 			super(StyleSkin);
-			addEventListener(MouseEvent.MOUSE_DOWN,popup);
-		}
-		
-		override public function initializer():void
-		{
+			
+			
 			_LabelField = new UITextInput("Combobox");
 			_LabelField.Input = false;
 			_LabelField.width = 100;
@@ -73,6 +70,48 @@ package pixel.ui.control
 			
 			width = 120;
 			height = 16;
+			
+			addEventListener(MouseEvent.MOUSE_DOWN,popup);
+		}
+		
+		override public function Dispose():void
+		{
+			removeEventListener(MouseEvent.MOUSE_DOWN,popup);
+		}
+		
+		override public function initializer():void
+		{
+//			_LabelField = new UITextInput("Combobox");
+//			_LabelField.Input = false;
+//			_LabelField.width = 100;
+//			_LabelField.BorderThinkness = 0;
+//			_LabelField.BackgroundAlpha = 0;
+//			
+//			buttonMode = true;
+//			//_LabelField.
+//			
+//			_openButton = new UIButton();
+//			
+//			popDirection = POP_DOWN;
+//			_openButton.NormalStyle.BackgroundImage = 
+//				_openButton.MouseOverStyle.BackgroundImage = 
+//				_openButton.MouseDownStyle.BackgroundImage = new Arrow_down() as Bitmap;
+//			_openButton.width = _openButton.height = 16;
+//			
+//			
+//			_openButton.NormalStyle.BorderThinkness = 
+//				_openButton.MouseOverStyle.BorderThinkness = 
+//				_openButton.MouseDownStyle.BorderThinkness = 0;
+//			addChild(_LabelField);
+//			addChild(_openButton);
+//			
+//			_List = new UIComboboxPop();
+//			_List.height = 30;
+//			addChild(_List);
+//			_List.visible = false;
+//			
+//			width = 120;
+//			height = 16;
 		}
 		
 		public function get popButton():UIButton
@@ -129,7 +168,7 @@ package pixel.ui.control
 			_openButton.width = height;
 			_openButton.height = height;
 			//按钮右边空出2个padding的像素
-			_LabelField.width = width - _openButton.width - this._Padding * 2;
+			_LabelField.width = width - _openButton.width - this.padding * 2;
 			_LabelField.height = height;
 			
 			_LabelField.x = _LabelField.y = 0;
@@ -214,33 +253,27 @@ package pixel.ui.control
 			_List.ItemFocusColor = Value;
 		}
 		
-		
-		override public function Dispose():void
-		{
-			this.removeEventListener(MouseEvent.MOUSE_DOWN,popup);
-		}
-		
 		override protected function SpecialDecode(data:ByteArray):void
 		{
 			data.readByte();
 			_popDirection = data.readByte();
-			_LabelField = new UITextInput();
+			//_LabelField = new UITextInput();
 			_LabelField.Decode(data);
-			_LabelField.Input = false;
-			_LabelField.width = 100;
-			_LabelField.BorderThinkness = 0;
+			//_LabelField.Input = false;
+			//_LabelField.width = 100;
+			//_LabelField.BorderThinkness = 0;
 			data.readByte();
 			
-			_List = new UIComboboxPop();
+			//_List = new UIComboboxPop();
 			_List.Decode(data);
-			_List.visible = false;
+			//_List.visible = false;
 			data.readByte();
-			_openButton = new UIButton();
+			//_openButton = new UIButton();
 			_openButton.Decode(data);
 			
-			addChild(_LabelField);
-			addChild(_List);
-			addChild(_openButton);
+			//addChild(_LabelField);
+			//addChild(_List);
+			//addChild(_openButton);
 		}
 		override protected function SpecialEncode(data:ByteArray):void
 		{

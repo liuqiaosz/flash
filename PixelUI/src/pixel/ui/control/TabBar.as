@@ -4,7 +4,7 @@ package pixel.ui.control
 	import pixel.ui.control.Tab;
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.event.UIControlEvent;
-	import pixel.ui.control.style.ContainerStyle;
+	import pixel.ui.control.style.UIContainerStyle;
 	import pixel.ui.control.style.UIStyle;
 	
 	import flash.display.DisplayObject;
@@ -95,12 +95,12 @@ package pixel.ui.control
 		}
 	}
 }
-import pixel.ui.control.style.ContainerStyle;
+import pixel.ui.control.style.UIContainerStyle;
 
 /**
  * 标签栏样式
  **/
-class TabBarSkin extends ContainerStyle
+class TabBarSkin extends UIContainerStyle
 {
 	public function TabBarSkin()
 	{

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" 
+					   width="300" height="150" 
+					   creationComplete="initializer(event)" 
+					   title="请选择皮肤类型">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.PopUpWindowManager;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			import pixel.ui.control.*;
+			import pixel.ui.control.utility.Utils;
+			
+			import spark.events.IndexChangeEvent;
+			
+			[Bindable]
+			private var dataProvider:ArrayCollection = null;
+			
+			private static var categorys:Array = [
+//				{
+//					type: Utils.COMBOBOX,
+//					label: "下拉框"
+//				},
+				
+				{
+					type: Utils.LABEL,
+					label: "文本"
+				},
+				
+//				{
+//					type: Utils.PROGRESS,
+//					label: "加载条"
+//				},
+				
+				{
+					type: Utils.SIMPLEBUTTON,
+					label: "按钮"
+				},
+				
+				{
+					type: Utils.SIMPLEPANEL,
+					label: "面板"
+				},
+				
+//				{
+//					type: Utils.SLIDER,
+//					label: "滑动条"
+//				},
+				
+				{
+					type: Utils.TEXTINPUT,
+					label: "文本输入框"
+				},
+				
+//				{
+//					type: Utils.VPANEL,
+//					label: "垂直滚动面板"
+//				}
+			];
+			
+			protected function initializer(event:FlexEvent):void
+			{
+				dataProvider = new ArrayCollection(categorys);
+			}
+			
+			protected function create(event:MouseEvent):void
+			{
+				var type:int = dataProvider.getItemAt(category.selectedIndex).type;
+				var control:UIControl = null;
+				switch(type)
+				{
+					case Utils.COMBOBOX:
+						control = new UICombobox();
+						break;
+					case Utils.LABEL:
+						control = new pixel.ui.control.UILabel("Label",null);
+						control.width = 100;
+						control.height = 40;
+						break;
+					
+					case Utils.PROGRESS:
+						control = new UIProgress();
+						control.width = 150;
+						control.height = 30;
+						break;
+					
+					case Utils.SIMPLEBUTTON:
+						control = new pixel.ui.control.UIButton();
+						control.width = 100;
+						control.height = 40;
+						break;
+					
+					case Utils.SIMPLEPANEL:
+						control = new UIPanel();
+						control.width = 200;
+						control.height = 100;
+						break;
+					
+					case Utils.SLIDER:
+						control = new UISlider();
+						control.width = 150;
+						control.height = 40;
+						break;
+					
+					case Utils.TEXTINPUT:
+						control = new UITextInput();
+						control.width = 100;
+						control.height = 20;
+						break;
+					case Utils.VPANEL:
+						control = new UIVerticalPanel();
+						control.width = 150;
+						control.height = 100;
+						break;
+				}
+				
+				var window:NewStyleWindow = PopUpWindowManager.PopUp(NewStyleWindow) as NewStyleWindow;
+				window.control = control;
+				CloseWindow();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout gap="30" verticalAlign="middle" horizontalAlign="center" />
+	</ui:layout>
+	
+	<s:HGroup verticalAlign="middle">
+		<s:Label width="100" text="皮肤类型"/>
+		<s:ComboBox dataProvider="{dataProvider}" labelField="label" id="category"/>
+	</s:HGroup>
+	
+	<s:HGroup width="100%" verticalAlign="middle" horizontalAlign="center">
+		<s:Image source="@Embed('../assets/Right.png')" width="24" height="24" smooth="true" click="create(event)" />
+	</s:HGroup>
+</ui:AdvanceTitleWindow>

@@ -6,10 +6,10 @@ package pixel.ui.control
 	
 	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.event.UIControlEvent;
-	import pixel.ui.control.style.ButtonStyle;
 	import pixel.ui.control.style.IStyle;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.StyleShape;
+	import pixel.ui.control.style.UIButtonStyle;
 	import pixel.ui.control.utility.ButtonState;
 	import pixel.utility.Tools;
 
@@ -39,10 +39,10 @@ package pixel.ui.control
 		protected var _Text:UILabel = null;
 		public function UIButton(Skin:Class = null)
 		{
-			var StyleSkin:Class = Skin ? Skin:ButtonStyle;
+			var StyleSkin:Class = Skin ? Skin:UIButtonStyle;
 			super(StyleSkin);
-			_MouseOverStyle = ButtonStyle(Style).OverStyle;
-			_MouseDownStyle = ButtonStyle(Style).PressStyle;
+			_MouseOverStyle = UIButtonStyle(Style).OverStyle;
+			_MouseDownStyle = UIButtonStyle(Style).PressStyle;
 			_NormalStyle = Style;
 			
 			width = 50;
@@ -57,21 +57,11 @@ package pixel.ui.control
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 			this.mouseChildren =false;
 		}
-
-		override protected function RemoveEvent():void
-		{
-			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
-			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
-			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut); 
-			removeEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
-		}
 		
 		override public function EnableEditMode():void
 		{
 			this.buttonMode = false;
-			
 			super.EnableEditMode();
-			RemoveEvent();
 		}
 		
 		override public function set width(value:Number):void
@@ -229,7 +219,8 @@ package pixel.ui.control
 			super.Dispose();
 			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
 			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
-			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
+			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut); 
+			removeEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 		}
 		
 		/**
@@ -252,6 +243,18 @@ package pixel.ui.control
 		{
 			_Style = _NormalStyle;
 			return super.Encode();
+		}
+		
+		override public function set Style(value:IVisualStyle):void
+		{
+			if(value is UIButtonStyle)
+			{
+				_Style = value;
+				_NormalStyle = value;
+				_MouseOverStyle = UIButtonStyle(value).OverStyle;
+				_MouseDownStyle = UIButtonStyle(value).PressStyle;
+				this.StyleUpdate();
+			}
 		}
 		
 		/**
@@ -336,16 +339,16 @@ package pixel.ui.control
 		 **/
 		public function set backgroundImageForAllState(value:Bitmap):void
 		{
-			ButtonStyle(_NormalStyle).BackgroundImage = value;
-			ButtonStyle(_NormalStyle).OverStyle.BackgroundImage = value;
-			ButtonStyle(_NormalStyle).PressStyle.BackgroundImage = value;
+			UIButtonStyle(_NormalStyle).BackgroundImage = value;
+			UIButtonStyle(_NormalStyle).OverStyle.BackgroundImage = value;
+			UIButtonStyle(_NormalStyle).PressStyle.BackgroundImage = value;
 		}
 		
 		public function set borderThinknessForAllState(value:int):void
 		{
-			ButtonStyle(_NormalStyle).BorderThinkness = value;
-			ButtonStyle(_NormalStyle).OverStyle.BorderThinkness = value;
-			ButtonStyle(_NormalStyle).PressStyle.BorderThinkness = value;
+			UIButtonStyle(_NormalStyle).BorderThinkness = value;
+			UIButtonStyle(_NormalStyle).OverStyle.BorderThinkness = value;
+			UIButtonStyle(_NormalStyle).PressStyle.BorderThinkness = value;
 		}
 	}
 }

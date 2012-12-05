@@ -9,7 +9,5 @@ package pixel.ui.control.style
 //			Width = 100;
 //			Height = 20;
 		}
-		
-		
 	}
 }

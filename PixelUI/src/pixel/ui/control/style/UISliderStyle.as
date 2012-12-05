@@ -7,7 +7,7 @@ package pixel.ui.control.style
 	 * 滑动组件样式
 	 * 
 	 **/
-	public class SliderStyle extends ContainerStyle
+	public class UISliderStyle extends UIContainerStyle
 	{
 		/**
 		 * 滑动线的宽度
@@ -34,7 +34,7 @@ package pixel.ui.control.style
 			return _SliderLineColor;
 		}
 		
-		public function SliderStyle()
+		public function UISliderStyle()
 		{
 			super();
 			this.BackgroundAlpha = 0;

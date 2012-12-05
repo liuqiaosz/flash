@@ -20,6 +20,15 @@ package pixel.ui.control
 		}
 	}
 }
+import flash.display.DisplayObject;
+import flash.events.MouseEvent;
+import flash.events.TimerEvent;
+import flash.geom.Point;
+import flash.utils.Timer;
+import flash.utils.getTimer;
+
+import pixel.ui.control.DefaultTip;
+import pixel.ui.control.IPixelTip;
 import pixel.ui.control.IToolTip;
 import pixel.ui.control.TextAlign;
 import pixel.ui.control.UIControl;
@@ -29,17 +38,12 @@ import pixel.ui.control.asset.IPixelAssetManager;
 import pixel.ui.control.style.IVisualStyle;
 import pixel.ui.core.NSPixelUI;
 
-import flash.events.MouseEvent;
-import flash.events.TimerEvent;
-import flash.geom.Point;
-import flash.utils.Timer;
-import flash.utils.getTimer;
-
 class ToolTipImpl implements IToolTip
 {
 	use namespace NSPixelUI;
 	
-	private var _Tip:TipPanel = new TipPanel();
+	//private var _Tip:TipPanel = new TipPanel();
+	private var _tip:IPixelTip = null;
 	private var _LazyTime:int = 0;
 	private var _LazyTimer:Timer = new Timer(30);
 	private var _Queue:Vector.<UIControl> = null;
@@ -47,6 +51,7 @@ class ToolTipImpl implements IToolTip
 	{
 		_Queue = new Vector.<UIControl>();
 		_LazyTimer.addEventListener(TimerEvent.TIMER,TimerProcess);
+		_tip = new DefaultTip();
 	}
 	
 	//给控件绑定ToolTip
@@ -81,23 +86,27 @@ class ToolTipImpl implements IToolTip
 	
 	private function ShowTip():void
 	{
-		
 		if(_CurrentControl && _CurrentControl.stage)
 		{
-			
-			//获取控件所处坐标然后转换成全局坐标
-//			var Pos:Point = new Point(_CurrentControl.x,_CurrentControl.y);
-//			Pos = _CurrentControl.stage.localToGlobal(Pos);
 			if(!_Show)
 			{
-				_CurrentControl.stage.addChild(_Tip);
-				_Tip.TipText = _CurrentControl.ToolTip;
+				_CurrentControl.stage.addChild(_tip as DisplayObject);
+				_tip.tipText = _CurrentControl.ToolTip;
 				
 				_Show = true;
 			}
-			_Tip.x = _CurrentControl.stage.mouseX + 10;
-			_Tip.y = _CurrentControl.stage.mouseY + 30;
+			_tip.x = _CurrentControl.stage.mouseX + 10;
+			_tip.y = _CurrentControl.stage.mouseY + 30;
 		}
+	}
+	
+	/**
+	 * 变更Tip面板
+	 * 
+	 **/
+	public function changeTip(tip:IPixelTip):void
+	{
+		_tip = tip;
 	}
 	
 	private function HideTip():void
@@ -105,9 +114,9 @@ class ToolTipImpl implements IToolTip
 		_Show = false;
 		if(_CurrentControl && _CurrentControl.stage)
 		{
-			if(_CurrentControl.stage.contains(_Tip))
+			if(_CurrentControl.stage.contains(_tip as DisplayObject))
 			{
-				_CurrentControl.stage.removeChild(_Tip);
+				_CurrentControl.stage.removeChild(_tip as DisplayObject);
 			}
 		}
 	}
@@ -170,28 +179,29 @@ class ToolTipImpl implements IToolTip
 	}
 	
 	//变更皮肤
-	public function ChangeSkin(Skin:IVisualStyle):void
+	public function ChangeSkin(style:IVisualStyle):void
 	{
+		UIControl(_tip).Style = style;
 	}
 }
 
-class TipPanel extends UIPanel
-{
-	private var _Label:UILabel = null;
-	public function TipPanel()
-	{
-		super();
-		_Label = new UILabel();
-		_Label.Align = TextAlign.LEFT;
-		_Label.Mutiline = true;
-		addChild(_Label);
-		this.Style.BackgroundColor = 0xFFCC33;
-	}
-	
-	public function set TipText(Value:String):void
-	{
-		_Label.Text = Value;
-		width = _Label.TextWidth + 5;
-		height = _Label.TextHeight + 5;
-	}
-}
+//class TipPanel extends UIPanel
+//{
+//	private var _Label:UILabel = null;
+//	public function TipPanel()
+//	{
+//		super();
+//		_Label = new UILabel();
+//		_Label.Align = TextAlign.LEFT;
+//		_Label.Mutiline = true;
+//		addChild(_Label);
+//		this.Style.BackgroundColor = 0xFFCC33;
+//	}
+//	
+//	public function set TipText(Value:String):void
+//	{
+//		_Label.Text = Value;
+//		width = _Label.TextWidth + 5;
+//		height = _Label.TextHeight + 5;
+//	}
+//}

@@ -4,7 +4,7 @@ package pixel.ui.control.style
 	 * 滚动条样式
 	 * 
 	 */
-	public class UIScrollerStyle extends ContainerStyle
+	public class UIScrollerStyle extends UIContainerStyle
 	{
 		private var _handlerStyle:IVisualStyle = null;
 		public function UIScrollerStyle()

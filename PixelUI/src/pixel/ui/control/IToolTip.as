@@ -11,6 +11,8 @@ package pixel.ui.control
 		//变更皮肤
 		function ChangeSkin(Skin:IVisualStyle):void;
 		
+		function changeTip(tip:IPixelTip):void;
+		
 		function set LazyTime(Value:int):void;
 	}
 }

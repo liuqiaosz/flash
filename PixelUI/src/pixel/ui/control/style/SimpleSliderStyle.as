@@ -7,7 +7,7 @@ package pixel.ui.control.style
 	 * 滑动组件样式
 	 * 
 	 **/
-	public class SimpleSliderStyle extends ContainerStyle
+	public class SimpleSliderStyle extends UIContainerStyle
 	{
 		/**
 		 * 滑动线的宽度

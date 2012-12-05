@@ -233,17 +233,17 @@
 			/**
 			 * 选择背景图片按钮点击
 			 **/
-			private function OnBrowserImage(event:MouseEvent):void
-			{
-//				ImgFile = new File();
-//				ImgFile.addEventListener(Event.SELECT,OnBackgrundImageSelected);
-//				ImgFile.browse([new FileFilter("Images","*.jpg;*.jpeg;*.png")]);
-				//_Trigger = _CurrentControl.Style;
-				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.CHANGEIMAGE);
-				dispatchEvent(Notify);
-				
-				Callback = OnChangeImageResultNotify;
-			}
+//			private function OnBrowserImage(event:MouseEvent):void
+//			{
+////				ImgFile = new File();
+////				ImgFile.addEventListener(Event.SELECT,OnBackgrundImageSelected);
+////				ImgFile.browse([new FileFilter("Images","*.jpg;*.jpeg;*.png")]);
+//				//_Trigger = _CurrentControl.Style;
+//				var Notify:NotifyEvent = new NotifyEvent(NotifyEvent.CHANGEIMAGE);
+//				dispatchEvent(Notify);
+//				
+//				Callback = OnChangeImageResultNotify;
+//			}
 			
 			/**
 			 * 变更背景图片回调通知函数

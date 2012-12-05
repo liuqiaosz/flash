@@ -1,6 +1,6 @@
 package pixel.ui.control.style
 {
-	public class UIProgressStyle extends ContainerStyle
+	public class UIProgressStyle extends UIContainerStyle
 	{
 		public function UIProgressStyle()
 		{

@@ -1,7 +1,6 @@
 package pixel.ui.control.style
 {
 	//import corecom.control.FontTextFactory;
-	
 	import flash.utils.ByteArray;
 
 	/**
@@ -9,12 +8,12 @@ package pixel.ui.control.style
 	 **/
 	public class UIButtonStyle extends UIStyle
 	{
-		private var _OverStyle:IVisualStyle = null;
+		protected var _OverStyle:IVisualStyle = null;
 		public function get OverStyle():IVisualStyle
 		{
 			return _OverStyle;
 		}
-		private var _PressStyle:IVisualStyle = null;
+		protected var _PressStyle:IVisualStyle = null;
 		public function get PressStyle():IVisualStyle
 		{
 			return _PressStyle;
@@ -24,17 +23,21 @@ package pixel.ui.control.style
 			super();
 			_OverStyle = new UIStyle();
 			_PressStyle = new UIStyle();
+			
+//			_OverStyle.LeftBottomCorner = _OverStyle.LeftTopCorner = _OverStyle.RightBottomCorner = _OverStyle.RightTopCorner = 4;
+//			_PressStyle.LeftBottomCorner = _PressStyle.LeftTopCorner = _PressStyle.RightBottomCorner = _PressStyle.RightTopCorner = 4;
+//			this.LeftBottomCorner = this.LeftTopCorner = this.RightBottomCorner = this.RightTopCorner = 4;
 		}
 		
-		private var _Text:String = "";
-		public function set Text(Value:String):void
-		{
-			_Text = Value;
-		}
-		public function get Text():String
-		{
-			return _Text;
-		}
+//		private var _Text:String = "";
+//		public function set Text(Value:String):void
+//		{
+//			_Text = Value;
+//		}
+//		public function get Text():String
+//		{
+//			return _Text;
+//		}
 		/**
 		 * 样式编码
 		 **/
@@ -60,6 +63,11 @@ package pixel.ui.control.style
 			super.Decode(Data);
 			_OverStyle.Decode(Data);
 			_PressStyle.Decode(Data);
+		}
+		
+		override public function set ImagePack(Value:Boolean):void
+		{
+			_OverStyle.ImagePack = _PressStyle.ImagePack = Value;
 		}
 	}
 }

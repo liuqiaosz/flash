@@ -1,6 +1,6 @@
 package pixel.ui.control.style
 {
-	public class SimpleCombStyle extends ContainerStyle
+	public class SimpleCombStyle extends UIContainerStyle
 	{
 		public function SimpleCombStyle()
 		{

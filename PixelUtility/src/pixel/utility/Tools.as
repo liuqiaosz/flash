@@ -139,10 +139,10 @@ package pixel.utility
 			return Source.replace(Reg,Value);
 		}
 		
-		public static function StringActualLength(Value:String):int
+		public static function StringActualLength(Value:String,encode:String = "cn-gb"):int
 		{
 			var Byte:ByteArray = new ByteArray();
-			Byte.writeMultiByte(Value,"");
+			Byte.writeMultiByte(Value,encode);
 			var Len:int = Byte.length;
 			Byte.clear();
 			return Len;

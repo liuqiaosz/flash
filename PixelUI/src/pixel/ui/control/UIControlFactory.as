@@ -18,17 +18,21 @@ package pixel.ui.control
 	}
 }
 
+import flash.events.EventDispatcher;
+import flash.utils.ByteArray;
+
+import flashx.textLayout.events.ModelChange;
+
 import pixel.ui.control.IUIControl;
 import pixel.ui.control.IUIControlFactory;
 import pixel.ui.control.UIButton;
-import pixel.ui.control.UIControl;
 import pixel.ui.control.UIPanel;
 import pixel.ui.control.UISlider;
 import pixel.ui.control.asset.IPixelAssetManager;
+import pixel.ui.control.style.IVisualStyle;
 import pixel.ui.control.utility.Utils;
-
-import flash.events.EventDispatcher;
-import flash.utils.ByteArray;
+import pixel.ui.control.vo.UIMod;
+import pixel.ui.control.vo.UIStyleMod;
 
 class UIControlFactoryImpl extends EventDispatcher implements IUIControlFactory
 {
@@ -36,15 +40,46 @@ class UIControlFactoryImpl extends EventDispatcher implements IUIControlFactory
 	{
 		return null;
 	}
-	public function Decode(Data:ByteArray):Vector.<UIControl>
+	
+	public function encode(mod:UIMod):ByteArray
 	{
-		var Vec:Vector.<UIControl> = new Vector.<UIControl>();
+		var controls:Vector.<IUIControl> = mod.controls;
+		var styles:Vector.<UIStyleMod> = mod.styles;
+		
+		var data:ByteArray = new ByteArray();
+		data.writeShort(controls.length);
+		
+		var idx:int = 0;
+		var child:ByteArray = null;
+		for(idx = 0; idx<controls.length; idx++)
+		{
+			child = controls[idx].Encode();
+			data.writeInt(child.length);
+			data.writeBytes(child);
+		}
+		
+		data.writeShort(styles.length);
+		for(idx=0; idx<styles.length; idx++)
+		{
+			
+			child = styles[idx].encode();
+			//child.writeByte(Utils.getStyleTypeByPrototype(styles[idx]));
+			//child.writeBytes(styles[idx].Encode());
+			data.writeInt(child.length);
+			data.writeBytes(child);
+		}
+		return data;
+	}
+	public function Decode(Data:ByteArray):UIMod
+	{
+		var mod:UIMod = new UIMod();
+		var Vec:Vector.<IUIControl> = new Vector.<IUIControl>();
 		var Count:int = Data.readShort();
 		var Len:int = 0;
 		var Child:ByteArray = new ByteArray();
 		var Type:int = 0;
 		var Cls:Object = null;
-		var Control:UIControl = null;
+		var Control:IUIControl = null;
 		for(var Idx:int = 0; Idx<Count; Idx++)
 		{
 			
@@ -57,7 +92,7 @@ class UIControlFactoryImpl extends EventDispatcher implements IUIControlFactory
 			
 			if(Cls)
 			{
-				Control = new Cls() as UIControl;
+				Control = new Cls() as IUIControl;
 				if(Control)
 				{
 //					Control.addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
@@ -73,7 +108,29 @@ class UIControlFactoryImpl extends EventDispatcher implements IUIControlFactory
 				}
 			}
 			Child.position = 0;
+			
 		}
-		return Vec;
+		
+		var styles:Vector.<UIStyleMod> = new Vector.<UIStyleMod>();
+		if(Data.bytesAvailable > 0)
+		{
+			//独立样式定义
+			Count = Data.readShort();
+			var prototype:Class = null;
+			var child:ByteArray = null;
+			for(var index:int = 0; index<Count; index++)
+			{
+				Len = Data.readInt();
+				child = new ByteArray();
+				Data.readBytes(child,0,Len);
+				var styleMod:UIStyleMod = new UIStyleMod();
+				styleMod.decode(child);
+				styles.push(styleMod);
+			}
+		}
+		
+		mod.controls = Vec;
+		mod.styles = styles;
+		return mod;
 	}
 }
