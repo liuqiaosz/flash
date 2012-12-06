@@ -40,7 +40,7 @@
 			import editor.ui.NewStyleCategoryChoiceWindow;
 			import editor.ui.NotificationManager;
 			import editor.ui.PreferenceWindow;
-			import editor.ui.StyleManagerWindow;
+			import editor.ui.InlineStyleManagerWindow;
 			import editor.ui.SwfImportWindow;
 			import editor.ui.WorkspacePlus;
 			import editor.uitility.ui.PopUpWindowManager;
@@ -50,8 +50,6 @@
 			import editor.utils.FileLoadQueue;
 			import editor.utils.Globals;
 			import editor.utils.StyleGlobals;
-			
-			import flash.utils.getQualifiedClassName;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -160,7 +158,8 @@
 			public static const MENU_OPEN:String = "Open";
 			public static const MENU_CLOSE:String = "Close";
 			
-			public static const MENU_STYLE:String = "Style";
+			public static const MENU_INLINESTYLE:String = "InlineStyle";
+			public static const MENU_GLOBALSTYLE:String = "GlobalStyle";
 			public static const MENU_VERSION:String = "Version";
 			
 			[Bindable]
@@ -253,9 +252,14 @@
 					children: [
 						{
 							enabled: false,
-							id: MENU_STYLE,
-							label: "样式"
-						}						
+							id: MENU_INLINESTYLE,
+							label: "内联样式"
+						},
+						{
+							enabled: true,
+							id: MENU_GLOBALSTYLE,
+							label: "全局样式"
+						}
 					]
 				},
 				{
@@ -606,7 +610,7 @@
 					mainMenu.enableItemById(MENU_SAVE);
 					mainMenu.enableItemById(MENU_SAVEAS);
 					mainMenu.enableItemById(MENU_CLOSE);
-					mainMenu.enableItemById(MENU_STYLE);
+					mainMenu.enableItemById(MENU_INLINESTYLE);
 					resetEditor();
 					WorkspaceInitializer();
 				}
@@ -662,7 +666,7 @@
 				mainMenu.enableItemById(MENU_SAVE);
 				mainMenu.enableItemById(MENU_SAVEAS);
 				mainMenu.enableItemById(MENU_CLOSE);
-				mainMenu.enableItemById(MENU_STYLE);
+				mainMenu.enableItemById(MENU_INLINESTYLE);
 			}
 			
 			private function fileClose():void
@@ -747,7 +751,7 @@
 				mainMenu.disabledItemById(MENU_SAVE);
 				mainMenu.disabledItemById(MENU_SAVEAS);
 				mainMenu.disabledItemById(MENU_CLOSE);
-				mainMenu.disabledItemById(MENU_STYLE);
+				mainMenu.disabledItemById(MENU_INLINESTYLE);
 			}
 			/**
 			 * 
@@ -1000,8 +1004,10 @@
 					case MENU_SAVEAS:
 						fileSaveas();
 						break;
-					case MENU_STYLE:
-						PopUpWindowManager.PopUp(StyleManagerWindow);
+					case MENU_GLOBALSTYLE:
+						break;
+					case MENU_INLINESTYLE:
+						PopUpWindowManager.PopUp(InlineStyleManagerWindow);
 						break;
 					case MENU_VERSION:
 						PopUpWindowManager.PopUp(AboutWindow);

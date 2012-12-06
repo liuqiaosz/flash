@@ -370,9 +370,7 @@ package editor.ui
 		 **/
 		public function GenerateControlModel():ByteArray
 		{
-			var mod:UIMod = new UIMod();
-			mod.controls = _Children;
-			mod.styles = StyleGlobals.styles;
+			var mod:UIMod = new UIMod(_Children,StyleGlobals.styles);
 			var data:ByteArray = UIControlFactory.Instance.encode(mod);
 			StyleGlobals.clear();
 			return data;
@@ -420,8 +418,6 @@ package editor.ui
 				child.EnableEditMode();
 				addChild(child);
 			}
-			
-			StyleGlobals.styles = styles;
 //			var Count:int = Model.readShort();
 //			var Len:int = 0;
 //			var Child:ByteArray = new ByteArray();

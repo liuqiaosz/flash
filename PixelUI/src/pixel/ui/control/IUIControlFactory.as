@@ -1,7 +1,9 @@
 package pixel.ui.control
 {
 	import flash.utils.ByteArray;
+	
 	import pixel.ui.control.vo.UIMod;
+	import pixel.ui.control.vo.UIStyleMod;
 
 	public interface IUIControlFactory
 	{

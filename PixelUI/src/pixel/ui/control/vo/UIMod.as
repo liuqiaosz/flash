@@ -7,7 +7,6 @@ package pixel.ui.control.vo
 	{
 		private var _controls:Vector.<IUIControl> = null;
 		private var _styles:Vector.<UIStyleMod> = null;
-		
 		public function UIMod(controls:Vector.<IUIControl> = null,styles:Vector.<UIStyleMod> = null)
 		{
 			_controls = controls;
@@ -22,18 +21,12 @@ package pixel.ui.control.vo
 				_styles = new Vector.<UIStyleMod>();
 			}
 		}
-		public function set controls(value:Vector.<IUIControl>):void
-		{
-			_controls = value;
-		}
-		public function set styles(value:Vector.<UIStyleMod>):void
-		{
-			_styles = value;
-		}
+		
 		public function get controls():Vector.<IUIControl>
 		{
 			return _controls;
 		}
+		
 		public function get styles():Vector.<UIStyleMod>
 		{
 			return _styles;

@@ -21,6 +21,7 @@ package pixel.ui.control
 	import pixel.ui.control.utility.FocusFrame;
 	import pixel.ui.control.utility.ScaleRect;
 	import pixel.ui.control.utility.Utils;
+	import pixel.ui.control.vo.UIStyleMod;
 	import pixel.ui.core.NSPixelUI;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ISerializable;
@@ -37,7 +38,11 @@ package pixel.ui.control
 		private var _StyleClass:Class = null;
 		private var _Scale9Grid:Scale9GridBitmap = null;
 		protected var _EditMode:Boolean = false;	//编辑模式.编辑模式开启的情况下可以对控件进行样式的更改.如果控件处于容器内部可以进行拖拽操作
-		//public function UIControl(Skin:IStyle = null)
+		//是否样式链接
+		private var _styleLinked:Boolean = false;
+		//链接样式
+		private var _styleLinkId:String = "";
+		
 		public function UIControl(Skin:Class = null)
 		{
 			_StyleClass = Skin;
@@ -401,7 +406,6 @@ package pixel.ui.control
 		
 		public function Encode():ByteArray
 		{
-			
 			var Data:ByteArray = new ByteArray();
 			var Prototype:uint = Utils.GetControlPrototype(this);
 			//1	Short	控件类型
@@ -445,8 +449,18 @@ package pixel.ui.control
 				Data.writeByte(0);
 			}
 			
-			var StyleData:ByteArray = Style.Encode();
-			Data.writeBytes(StyleData,0,StyleData.length);
+			Data.writeByte(int(_styleLinked));
+			if(_styleLinked)
+			{
+				//链接外部样式
+				Data.writeByte(_styleLinkId.length);
+				Data.writeUTFBytes(_styleLinkId);
+			}
+			else
+			{
+				var StyleData:ByteArray = Style.Encode();
+				Data.writeBytes(StyleData,0,StyleData.length);
+			}
 			
 			SpecialEncode(Data);
 			return Data;
@@ -468,7 +482,15 @@ package pixel.ui.control
 				ToolTip = Data.readUTFBytes(Len);
 			}
 			
-			_Style.Decode(Data);
+			_styleLinked = Boolean(Data.readByte());
+			if(_styleLinked)
+			{
+				
+			}
+			else
+			{
+				_Style.Decode(Data);
+			}
 			SpecialDecode(Data);
 			//RegisterEvent();
 			
@@ -562,6 +584,39 @@ package pixel.ui.control
 		{
 			//return _Style.Height;
 			return _ActualHeight;
+		}
+		
+		/**
+		 * 链接外部样式
+		 * 
+		 **/
+		public function set linkStyle(value:UIStyleMod):void
+		{
+			if(value)
+			{
+				_styleLinked = true;
+				_styleLinkId = value.id;
+				_Style = value.style;
+				StyleUpdate();
+			}
+		}
+		
+		/**
+		 * 局部权限函数，检查是否样式链接
+		 * 
+		 **/
+		NSPixelUI function get styleLinked():Boolean
+		{
+			return _styleLinked;
+		}
+		
+		/**
+		 * 链接样式ID
+		 * 
+		 **/
+		NSPixelUI function get styleLinkId():String
+		{
+			return _styleLinkId;
 		}
 		
 		/************************样式变更函数定义区************************/

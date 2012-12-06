@@ -12,6 +12,8 @@
     <classEntry path="pixel.ui.control.IPixelTip"/>
     <classEntry path="pixel.ui.control.vo.UIMod"/>
     <classEntry path="pixel.ui.control.vo.UIStyleMod"/>
+    <classEntry path="pixel.ui.control.style.UIStyleFactory"/>
+    <classEntry path="pixel.ui.control.style.IUIStyleFactory"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
