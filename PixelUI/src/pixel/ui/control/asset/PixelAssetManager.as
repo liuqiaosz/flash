@@ -11,7 +11,7 @@ package pixel.ui.control.asset
 		{
 		}
 		
-		public static function get Instance():IPixelAssetManager
+		public static function get instance():IPixelAssetManager
 		{
 			if(null == _Instance)
 			{

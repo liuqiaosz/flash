@@ -75,53 +75,40 @@
 			protected function create(event:MouseEvent):void
 			{
 				var type:int = dataProvider.getItemAt(category.selectedIndex).type;
-				var control:UIControl = null;
-				switch(type)
-				{
-					case Utils.COMBOBOX:
-						control = new UICombobox();
-						break;
-					case Utils.LABEL:
-						control = new pixel.ui.control.UILabel("Label",null);
-						control.width = 100;
-						control.height = 40;
-						break;
-					
-					case Utils.PROGRESS:
-						control = new UIProgress();
-						control.width = 150;
-						control.height = 30;
-						break;
-					
-					case Utils.SIMPLEBUTTON:
-						control = new pixel.ui.control.UIButton();
-						control.width = 100;
-						control.height = 40;
-						break;
-					
-					case Utils.SIMPLEPANEL:
-						control = new UIPanel();
-						control.width = 200;
-						control.height = 100;
-						break;
-					
-					case Utils.SLIDER:
-						control = new UISlider();
-						control.width = 150;
-						control.height = 40;
-						break;
-					
-					case Utils.TEXTINPUT:
-						control = new UITextInput();
-						control.width = 100;
-						control.height = 20;
-						break;
-					case Utils.VPANEL:
-						control = new UIVerticalPanel();
-						control.width = 150;
-						control.height = 100;
-						break;
-				}
+				var prototype:Class = Utils.GetPrototypeByType(type);
+				var control:UIControl = new prototype() as UIControl;
+//				switch(type)
+//				{
+//					case Utils.COMBOBOX:
+//						control = new UICombobox();
+//						break;
+//					case Utils.LABEL:
+//						control = new pixel.ui.control.UILabel("Label",null);
+//						break;
+//					
+//					case Utils.PROGRESS:
+//						control = new UIProgress();
+//						break;
+//					
+//					case Utils.SIMPLEBUTTON:
+//						control = new pixel.ui.control.UIButton();
+//						break;
+//					
+//					case Utils.SIMPLEPANEL:
+//						control = new UIPanel();
+//						break;
+//					
+//					case Utils.SLIDER:
+//						control = new UISlider();
+//						break;
+//					
+//					case Utils.TEXTINPUT:
+//						control = new UITextInput();
+//						break;
+//					case Utils.VPANEL:
+//						control = new UIVerticalPanel();
+//						break;
+//				}
 				
 				var notify:NotifyEvent = new NotifyEvent(NotifyEvent.STYLE_SELECTED);
 				notify.Params.push(control);

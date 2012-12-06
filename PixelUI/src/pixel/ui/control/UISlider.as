@@ -128,6 +128,8 @@ package pixel.ui.control
 			
 			addEventListener(MouseEvent.MOUSE_DOWN,OnMouseDown);
 			addEventListener(UIControlEvent.RENDER_UPDATE,OnUpdate);
+			width = 150;
+			height = 40;
 		}
 		
 		override public function set height(value:Number):void

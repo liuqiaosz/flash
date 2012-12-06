@@ -25,8 +25,10 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="D:/Developer/Code/flash/Project/Death/AIR证书.p12" airTimestamp="true" anePathSet="true" version="1">
-        <airExcludes/>
+      <airSettings airCertificatePath="D:/Developer/flash/Project/Death/AIR证书.p12" airTimestamp="true" anePathSet="true" version="1">
+        <airExcludes>
+          <pathEntry path="editor"/>
+        </airExcludes>
         <anePaths/>
       </airSettings>
       <actionScriptSettings version="1"/>

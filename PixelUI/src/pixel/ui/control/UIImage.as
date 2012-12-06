@@ -20,6 +20,8 @@ package pixel.ui.control
 		public function UIImage(Skin:Class = null)
 		{
 			super(Skin?Skin:UIImageStyle);
+			width = 48;
+			height = 48;
 		}
 		
 		/**

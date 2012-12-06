@@ -98,6 +98,10 @@ package pixel.ui.control.utility
 			{
 				return PROGRESS;
 			}
+			else if(Control is UIWindow)
+			{
+				return WINDOW;
+			}
 			return 99;
 		}
 		
@@ -151,6 +155,10 @@ package pixel.ui.control.utility
 			{
 				return UIProgress;
 			}
+			else if(Control is UIWindow)
+			{
+				return UIWindow;
+			}
 			return null;
 		}
 		
@@ -199,6 +207,9 @@ package pixel.ui.control.utility
 					break;
 				case PROGRESS:
 					return UIProgress;
+					break;
+				case WINDOW:
+					return UIWindow;
 					break;
 			}
 			return null;
@@ -250,6 +261,9 @@ package pixel.ui.control.utility
 				case PROGRESS:
 					return UIProgressStyle;
 					break;
+				case WINDOW:
+					return UIWindow;
+					break;
 			}
 			return null;
 		}
@@ -296,6 +310,10 @@ package pixel.ui.control.utility
 			else if(Control is UIProgressStyle)
 			{
 				return PROGRESS;
+			}
+			else if(Control is UIWindow)
+			{
+				return WINDOW;
 			}
 			return 99;
 		}
@@ -346,6 +364,8 @@ package pixel.ui.control.utility
 				case PROGRESS:
 					return "Progress";
 					break;
+				case WINDOW:
+					return "Window";
 			}
 			return null;
 		}

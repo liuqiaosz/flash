@@ -45,8 +45,7 @@ package pixel.ui.control
 			_MouseDownStyle = UIButtonStyle(Style).PressStyle;
 			_NormalStyle = Style;
 			
-			width = 50;
-			height = 30;
+			
 			this.buttonMode = true;
 			_Text = new UILabel(_TextValue);
 			_Text.mouseEnabled = false;
@@ -56,6 +55,8 @@ package pixel.ui.control
 			addEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
 			addEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 			this.mouseChildren =false;
+			width = 100;
+			height = 40;
 		}
 		
 		override public function EnableEditMode():void
@@ -329,7 +330,7 @@ package pixel.ui.control
 				_MouseDownStyle.BackgroundImage = Asset as Bitmap;
 			}
 			
-			PixelAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
+			PixelAssetManager.instance.AssetHookRemove(BackgroundImageId,this);
 		}
 		
 		/**

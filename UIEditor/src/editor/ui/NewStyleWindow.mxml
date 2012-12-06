@@ -25,6 +25,7 @@
 			import pixel.ui.control.asset.AssetImage;
 			import pixel.ui.control.asset.IAsset;
 			import pixel.ui.control.style.IVisualStyle;
+			import pixel.ui.control.utility.Utils;
 			import pixel.ui.control.vo.UIStyleMod;
 			
 			[Bindable]
@@ -62,81 +63,11 @@
 				var styleCom:GenericProperty = null;
 				Reset();
 				
-//				if(_control is UISlider)
-//				{
-//					//Category.text = "滑动条";
-//					SliderStyleFlag = true;
-//					CategoryFlag = true;
-//					SliderStyle.Control = _control;
-//				}
-//				else if(_control is SimpleTabPanel)
-//				{
-//					//Category.text = "标签面板";
-//					//TabPanelStyle.visible = true;
-//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
-//					//TabPanelStyle.visible = true;
-//					TabPanelStyleFlag = true;
-//					CategoryFlag = true;
-//					//BasicStyleFlag = false;
-//					TabPanelStyle.Control = _control;
-//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
-//				}
-//				else if(_control is TabBar)
-//				{
-//					//Category.text = "标签面板";
-//					//TabPanelStyle.visible = true;
-//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
-//					//TabPanelStyle.visible = true;
-//					TabPanelStyleFlag = true;
-//					CategoryFlag = true;
-//					//BasicStyleFlag = false;
-//					//TabPanelStyle.DisplayControl(TabBar(_control).Owner);
-//					
-//					TabPanelStyle.Control = TabBar(_control).Owner;
-//					_control = TabBar(_control).Owner;
-//				}
-//				else if(_control is Tab)
-//				{
-//					//Category.text = "标签";
-//					TabStyleFlag = true;
-//					CategoryFlag = true;
-//					TabStyle.Control = _control;
-//				}
-//				else if(_control is TabContent)
-//				{
-//					//Category.text = "标签面板";
-//					//TabPanelStyle.visible = true;
-//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
-//					//TabPanelStyle.visible = true;
-//					TabPanelStyleFlag = true;
-//					CategoryFlag = true;
-//					//BasicStyleFlag = false;
-//					_control = TabContent(_control).Owner.parent.parent as SimpleTabPanel;
-//					//TabPanelStyle.DisplayControl(_control as SimpleTabPanel);
-//					TabPanelStyle.Control = _control;
-//				}
-					//				else if(_control is HorizontalPanel)
-					//				{
-					//					Category.text = "横向面板";
-					//				}
-					//				else if(_control is VerticalPanel)
-					//				{
-					//					Category.text = "横向面板";
-					//				}
 				if(_control is pixel.ui.control.UIButton)
 				{
-					//Category.text = "简单按钮";
-					//					ButtonOverStyle.visible = true;
-					//					ButtonPressStyle.visible = true;
-					//					ButtonStateSwitch.visible = true;
 					ButtonStyleFlag = true;
 					//ButtonStyle.Control = _control;
 					styleCom = new ButtonProperty();
-					
-					//ButtonOverStyle.DisplayControl(_control as corecom.control.SimpleButton);
-					//ButtonPressStyle.DisplayControl(_control as corecom.control.SimpleButton);
-					
-					//Scroll.verticalScrollBar.visible = true;
 				}
 //				else if(_control is UIVerticalPanel)
 //				{
@@ -199,6 +130,22 @@
 				WorkspaceContainer.addElement(container);
 				propertie.addElement(styleCom);
 				styleCom.Control = _control;
+			}
+			
+			/**
+			 * 更新
+			 * 
+			 * 
+			 **/
+			public function set update(styleMod:UIStyleMod):void
+			{
+				var type:int = Utils.getStyleTypeByPrototype(styleMod.style);
+				var prototype:Class = Utils.GetPrototypeByType(type);
+				var ui:UIControl = new prototype() as UIControl;
+				ui.Style = styleMod.style;
+				control = ui;
+				StyleId.text = styleMod.id;
+				StyleDesc.text = styleMod.desc;
 			}
 			
 			/**

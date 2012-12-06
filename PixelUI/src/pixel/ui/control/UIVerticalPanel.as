@@ -23,6 +23,9 @@ package pixel.ui.control
 			_scroller = new UIVerticalScroller();
 			_scroller.initializer();
 			OrignalAddChild(_scroller);
+			
+			width = 200;
+			height = 100;
 		}
 		
 		override public function initializer():void

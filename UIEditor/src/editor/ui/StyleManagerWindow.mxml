@@ -22,6 +22,7 @@
 			
 			import pixel.ui.control.ComboboxItem;
 			import pixel.ui.control.UICombobox;
+			import pixel.ui.control.UIControl;
 			import pixel.ui.control.utility.Utils;
 			import pixel.ui.control.vo.UIStyleMod;
 			
@@ -73,13 +74,30 @@
 				}
 			}
 			
+			protected function styleUpdate(event:NotifyEvent):void
+			{
+				var update:UIStyleMod = event.Params.pop();
+				
+				focusItem.id = update.id;
+				focusItem.desc = update.desc;
+				focusItem.style = update.style;
+				refresh();
+			}
+			
+			protected function itemView(event:ListEvent):void
+			{
+				var window:NewStyleWindow = PopUpWindowManager.PopUp(NewStyleWindow) as NewStyleWindow;
+				window.addEventListener(NotifyEvent.STYLE_SAVED,styleUpdate);
+				window.update = focusItem;
+			}
+			
 		]]>
 	</fx:Script>
 	<ui:layout>
 		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
 	</ui:layout>
 	
-	<mx:DataGrid width="630" height="410" id="grid" borderVisible="true" itemRollOver="itemFocus(event)" dataProvider="{dataProvider}">
+	<mx:DataGrid width="630" height="410" id="grid" borderVisible="true" itemRollOver="itemFocus(event)" dataProvider="{dataProvider}" itemClick="itemView(event)">
 		<mx:columns>
 			<mx:DataGridColumn headerText="类型" dataField="styleName" width="50">
 			</mx:DataGridColumn>

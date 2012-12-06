@@ -240,7 +240,7 @@ package pixel.ui.control
 					{
 						if(!Style.ImagePack)
 						{
-							var Img:Bitmap = PixelAssetManager.Instance.FindAssetById(Style.BackgroundImageId) as Bitmap;
+							var Img:Bitmap = PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId) as Bitmap;
 							if(Img)
 							{
 								//资源已经欲载
@@ -250,7 +250,7 @@ package pixel.ui.control
 							else
 							{
 								//注册资源加载通知
-								PixelAssetManager.Instance.AssetHookRegister(Style.BackgroundImageId,this);
+								PixelAssetManager.instance.AssetHookRegister(Style.BackgroundImageId,this);
 							}
 						}
 					}
@@ -474,7 +474,7 @@ package pixel.ui.control
 			
 			if(!Style.ImagePack)
 			{
-				var Img:Bitmap = AssetImage(PixelAssetManager.Instance.FindAssetById(Style.BackgroundImageId)).image;
+				var Img:Bitmap = AssetImage(PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId)).image;
 				if(Img)
 				{
 					this.BackgroundImage = Img;
@@ -498,7 +498,7 @@ package pixel.ui.control
 		public function AssetComleteNotify(Id:String,Asset:Object):void
 		{
 			this.BackgroundImage = Asset as Bitmap;
-			PixelAssetManager.Instance.AssetHookRemove(BackgroundImageId,this);
+			PixelAssetManager.instance.AssetHookRemove(BackgroundImageId,this);
 		}
 		
 		private var _Id:String = "";

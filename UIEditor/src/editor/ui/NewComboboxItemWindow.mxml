@@ -30,7 +30,7 @@
 			private function browserAssetLibrary(event:MouseEvent):void
 			{
 				//从UI资源库获取资源库
-				var Vec:Vector.<IAssetLibrary> = PixelAssetManager.Instance.Librarys;
+				var Vec:Vector.<IAssetLibrary> = PixelAssetManager.instance.Librarys;
 				var libs:ArrayCollection = new ArrayCollection();
 				for each(var Lib:IAssetLibrary in Vec)
 				{

@@ -32,8 +32,8 @@
 				if(Copy)
 				{
 					var Local:FileReference = new FileReference();
-					SwfFile.copyTo(new File(Common.ASSETLIB + SwfFile.name));
-					Path = Common.ASSETLIB + SwfFile.name;
+					SwfFile.copyTo(new File(Common.DEFAULT_DIR_RES));
+					Path = Common.DEFAULT_DIR_RES + SwfFile.name;
 				}
 				else
 				{

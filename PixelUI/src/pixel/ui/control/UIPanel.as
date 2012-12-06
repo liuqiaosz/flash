@@ -15,6 +15,8 @@ package pixel.ui.control
 			//默认大小
 //			width = 300;
 //			height = 300;
+			width = 200;
+			height = 100;
 		}
 
 		override public function EnableEditMode():void

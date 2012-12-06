@@ -216,6 +216,12 @@ package
 			reader.readBytes(data,0,reader.bytesAvailable);
 			
 			var mod:UIMod = UIControlFactory.Instance.Decode(data);
+			var vec:Vector.<IUIControl> = mod.controls;
+			
+			for each(var ddd:IUIControl in vec)
+			{
+				trace(ddd.Id);
+			}
 			var button:UIButton = new UIButton();
 			button.Style = mod.styles.pop();
 			addChild(button);

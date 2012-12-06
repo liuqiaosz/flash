@@ -16,6 +16,8 @@ package pixel.ui.control
 			this.Input = true;
 			addEventListener(FocusEvent.FOCUS_IN,Focus);
 			addEventListener(FocusEvent.FOCUS_OUT,FocusLeave);
+			width = 100;
+			height = 20;
 		}
 		
 		override public function Dispose():void

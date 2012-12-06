@@ -16,6 +16,8 @@ package pixel.ui.control
 			_ProgressBar =  new UIProgressBar();
 			
 			addChild(_ProgressBar);
+			width = 150;
+			height = 30;
 		}
 		
 		private var _TweenEnable:Boolean = true;

@@ -9,8 +9,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/core.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="2" path="/PixelUtility/bin/PixelUtility.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="1" linkType="2" path="D:/Developer/flash/libs"/>
+      <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin/PixelUtility.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="1" linkType="1" path="D:/Developer/flash/libs"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
