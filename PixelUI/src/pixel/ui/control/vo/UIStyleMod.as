@@ -25,6 +25,16 @@ package pixel.ui.control.vo
 		}
 		public function get style():IVisualStyle
 		{
+			if(_style)
+			{
+				return _style;
+			}
+			if(_source)
+			{
+				decode(_source);
+				_source.clear();
+				_source = null;
+			}
 			return _style;
 		}
 		
@@ -43,8 +53,10 @@ package pixel.ui.control.vo
 			return Utils.getStyleNameByType(Utils.getStyleTypeByPrototype(_style));
 		}
 		
-		public function UIStyleMod()
+		private var _source:ByteArray = null;
+		public function UIStyleMod(source:ByteArray = null)
 		{
+			_source = source;
 		}
 		
 		public function encode():ByteArray
@@ -52,9 +64,6 @@ package pixel.ui.control.vo
 			var data:ByteArray = new ByteArray();
 			
 			data.writeByte(Utils.getStyleTypeByPrototype(_style));
-			data.writeByte(_id.length);
-			data.writeUTFBytes(_id);
-			
 			var len:int = Tools.StringActualLength(_desc);
 			data.writeByte(len);
 			if(len > 0)
@@ -65,7 +74,7 @@ package pixel.ui.control.vo
 			return data;
 		}
 		
-		public function decode(data:ByteArray):void
+		private function decode(data:ByteArray):void
 		{
 			var prototype:Class = Utils.getStylePrototypeByType(data.readByte());
 			if(!prototype)
@@ -74,8 +83,6 @@ package pixel.ui.control.vo
 			}
 			_style = new prototype() as IVisualStyle;
 			var len:int = data.readByte();
-			_id = data.readUTFBytes(len);
-			len = data.readByte();
 			if(len > 0)
 			{
 				_desc = data.readMultiByte(len,"cn-gb");

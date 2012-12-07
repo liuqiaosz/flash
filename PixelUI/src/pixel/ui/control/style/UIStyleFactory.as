@@ -18,11 +18,6 @@ import pixel.ui.control.vo.UIStyleMod;
 
 class UIStyleFactoryImpl extends EventDispatcher implements IUIStyleFactory
 {
-	public function findStyleById(id:String):UIStyleMod
-	{
-		return null;
-	}
-	
 	public function encode(styles:Vector.<UIStyleMod>):ByteArray
 	{
 		return null;	

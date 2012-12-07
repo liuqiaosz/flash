@@ -586,6 +586,7 @@ package pixel.ui.control
 			return _ActualHeight;
 		}
 		
+		private var _linkStyle:UIStyleMod = null;
 		/**
 		 * 链接外部样式
 		 * 
@@ -594,11 +595,17 @@ package pixel.ui.control
 		{
 			if(value)
 			{
+				_linkStyle = value;
 				_styleLinked = true;
 				_styleLinkId = value.id;
 				_Style = value.style;
 				StyleUpdate();
 			}
+		}
+		
+		public function get linkStyle():UIStyleMod
+		{
+			return _linkStyle;
 		}
 		
 		/**
