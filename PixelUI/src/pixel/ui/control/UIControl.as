@@ -18,6 +18,8 @@ package pixel.ui.control
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.StyleShape;
 	import pixel.ui.control.style.UIStyle;
+	import pixel.ui.control.style.UIStyleLinkEmu;
+	import pixel.ui.control.style.UIStyleManager;
 	import pixel.ui.control.utility.FocusFrame;
 	import pixel.ui.control.utility.ScaleRect;
 	import pixel.ui.control.utility.Utils;
@@ -452,6 +454,8 @@ package pixel.ui.control
 			Data.writeByte(int(_styleLinked));
 			if(_styleLinked)
 			{
+				//链接作用域
+				Data.writeByte(_linkStyleScope);
 				//链接外部样式
 				Data.writeByte(_styleLinkId.length);
 				Data.writeUTFBytes(_styleLinkId);
@@ -485,7 +489,9 @@ package pixel.ui.control
 			_styleLinked = Boolean(Data.readByte());
 			if(_styleLinked)
 			{
-				
+				_linkStyleScope = Data.readByte();
+				Len = Data.readByte();
+				_styleLinkId = Data.readUTFBytes(Len);
 			}
 			else
 			{
@@ -493,6 +499,18 @@ package pixel.ui.control
 			}
 			SpecialDecode(Data);
 			//RegisterEvent();
+			
+			if(_styleLinked && _linkStyleScope == UIStyleLinkEmu.SCOPE_GLOBAL)
+			{
+				//全局样式链接
+				var style:UIStyleMod = UIStyleManager.instance.findStyleById(_styleLinkId);
+				if(style)
+				{
+					_linkStyle = style;
+					Style = style.style;
+					
+				}
+			}
 			
 			if(!Style.ImagePack)
 			{
@@ -587,18 +605,21 @@ package pixel.ui.control
 		}
 		
 		private var _linkStyle:UIStyleMod = null;
+		private var _linkStyleScope:int = UIStyleLinkEmu.SCOPE_INLINE;
+		
 		/**
 		 * 链接外部样式
 		 * 
 		 **/
-		public function set linkStyle(value:UIStyleMod):void
+		public function setLinkStyle(value:UIStyleMod,scope:int):void
 		{
 			if(value)
 			{
 				_linkStyle = value;
 				_styleLinked = true;
 				_styleLinkId = value.id;
-				_Style = value.style;
+				Style = value.style;
+				_linkStyleScope = scope;
 				StyleUpdate();
 			}
 		}
@@ -612,7 +633,7 @@ package pixel.ui.control
 		 * 局部权限函数，检查是否样式链接
 		 * 
 		 **/
-		NSPixelUI function get styleLinked():Boolean
+		public function get styleLinked():Boolean
 		{
 			return _styleLinked;
 		}
@@ -621,9 +642,18 @@ package pixel.ui.control
 		 * 链接样式ID
 		 * 
 		 **/
-		NSPixelUI function get styleLinkId():String
+		public function get styleLinkId():String
 		{
 			return _styleLinkId;
+		}
+		
+		/**
+		 * 
+		 * 链接样式作用域
+		 **/
+		public function get styleLinkScope():int
+		{
+			return _linkStyleScope;
 		}
 		
 		/************************样式变更函数定义区************************/
@@ -634,6 +664,14 @@ package pixel.ui.control
 		public function set Style(value:IVisualStyle):void
 		{
 			_Style = value;
+			if(!_Style.ImagePack)
+			{
+				var Img:Bitmap = AssetImage(PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId)).image;
+				if(Img)
+				{
+					this.BackgroundImage = Img;
+				}
+			}
 			StyleUpdate();
 		}
 		

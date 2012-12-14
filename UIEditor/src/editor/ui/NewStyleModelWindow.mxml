@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*"  width="650" height="500"
-					   creationComplete="initializer(event)" xmlns:utility="editor.uitility.ui.*" title="局部样式管理">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="700" height="500" title="新增样式组">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -24,12 +23,26 @@
 			import pixel.ui.control.UICombobox;
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.utility.Utils;
+			import pixel.ui.control.vo.UIStyleGroup;
 			import pixel.ui.control.vo.UIStyleMod;
 			
 			[Bindable]
 			private var dataProvider:ArrayCollection = new ArrayCollection();
+			
+			private var styles:Vector.<UIStyleMod> = new Vector.<UIStyleMod>();
+			
+			private var _group:UIStyleGroup = null;
 			protected function initializer(event:FlexEvent):void
 			{
+				refresh();
+			}
+			
+			public function set group(value:UIStyleGroup):void
+			{
+				_group = value;
+				groupId.text = value.id;
+				groupDesc.text = value.desc;
+				styles = value.styles;
 				refresh();
 			}
 			
@@ -59,14 +72,16 @@
 			protected function styleSaved(event:NotifyEvent):void
 			{
 				var style:UIStyleMod = event.Params.pop();
-				InlineStyle.addStyle(style);
-				refresh();
+				dataProvider.addItem(style);
+				styles.push(style);
+				//InlineStyle.addStyle(style);
+				//refresh();
 			}
 			
 			protected function refresh():void
 			{
 				dataProvider.removeAll();
-				var styles:Vector.<UIStyleMod> = InlineStyle.styles;
+				//var styles:Vector.<UIStyleMod> = InlineStyle.styles;
 				
 				for each(var style:UIStyleMod in styles)
 				{
@@ -91,26 +106,57 @@
 				window.update = focusItem;
 			}
 			
+			/**
+			 * 
+			 * 保存当前样式组
+			 * 
+			 **/
+			protected function saveStyleModel(event:MouseEvent):void
+			{
+				if(!_group)
+				{
+					_group = new UIStyleGroup();
+				}
+				_group.id = groupId.text;
+				_group.desc = groupDesc.text;
+				_group.styles = styles;
+				var notify:NotifyEvent = new NotifyEvent(NotifyEvent.STYLE_GROUP_SAVE);
+				notify.Params.push(_group);
+				dispatchEvent(notify);
+			}
 		]]>
 	</fx:Script>
+	
 	<ui:layout>
-		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
+		<s:VerticalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
 	</ui:layout>
 	
-	<mx:DataGrid width="630" height="410" id="grid" borderVisible="true" itemRollOver="itemFocus(event)" dataProvider="{dataProvider}" itemClick="itemView(event)">
-		<mx:columns>
-			<mx:DataGridColumn headerText="类型" dataField="styleName" width="50">
-			</mx:DataGridColumn>
+	<s:HGroup>
+		<mx:DataGrid width="530" height="410" id="grid" borderVisible="true" itemRollOver="itemFocus(event)" dataProvider="{dataProvider}" itemClick="itemView(event)">
+			<mx:columns>
+				<mx:DataGridColumn headerText="类型" dataField="styleName" width="50">
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn headerText="Id" dataField="id" width="100">
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn headerText="描述" dataField="desc" width="350">
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<s:VGroup width="150">
+			<s:Label text="样式组ID" />
+			<s:TextInput width="130" restrict="0-9 a-z A-Z" id="groupId" />
 			
-			<mx:DataGridColumn headerText="Id" dataField="id" width="200">
-			</mx:DataGridColumn>
-			
-			<mx:DataGridColumn headerText="描述" dataField="desc" width="150">
-			</mx:DataGridColumn>
-		</mx:columns>
-	</mx:DataGrid>
+			<s:Label text="样式组描述" />
+			<s:TextArea width="100%" height="70" id="groupDesc" />
+		</s:VGroup>
+	</s:HGroup>
+	
 	
 	<s:HGroup width="100%" height="30" horizontalAlign="center" gap="30">
 		<s:Image width="24" height="24" source="@Embed('../assets/Add.png')" smooth="true" toolTip="新增皮肤" click="createStyle(event)" buttonMode="true"/>
+		<s:Image width="24" height="24" source="@Embed('../assets/Save.png')" smooth="true" toolTip="保存样式组" click="saveStyleModel(event)" buttonMode="true"/>
 	</s:HGroup>
 </ui:AdvanceTitleWindow>

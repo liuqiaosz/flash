@@ -3,10 +3,10 @@ package editor.utils
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.vo.UIStyleMod;
 
-	public class StyleGlobals
+	public class InlineStyle
 	{
 		private static var _cache:Vector.<UIStyleMod> = new Vector.<UIStyleMod>();
-		public function StyleGlobals()
+		public function InlineStyle()
 		{
 			
 		}

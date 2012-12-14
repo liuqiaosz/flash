@@ -16,6 +16,7 @@
 		<![CDATA[
 			import editor.event.NotifyEvent;
 			import editor.utils.Globals;
+			
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.asset.AssetImage;
 			import pixel.ui.control.asset.IAsset;
@@ -82,6 +83,20 @@
 			protected function ImageSelected(Image:Bitmap,ImageId:String):void
 			{
 				
+			}
+			
+			[Bindable]
+			protected var _styleEnabled:Boolean = true;
+			public function set styleEnabled(value:Boolean):void
+			{
+				_styleEnabled = value;
+			}
+			
+			[Bindable]
+			protected var _propertieEnabled:Boolean = true;
+			public function set propertieEnabled(value:Boolean):void
+			{
+				_propertieEnabled = value;
 			}
 		]]>
 	</fx:Script>

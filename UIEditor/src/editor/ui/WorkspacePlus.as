@@ -8,7 +8,7 @@ package editor.ui
 	import editor.model.ModelFactoryBAJK;
 	import editor.uitility.ui.event.UIEvent;
 	import editor.utils.Globals;
-	import editor.utils.StyleGlobals;
+	import editor.utils.InlineStyle;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -44,6 +44,7 @@ package editor.ui
 	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.utility.Utils;
+	import pixel.ui.control.vo.UIControlMod;
 	import pixel.ui.control.vo.UIMod;
 	import pixel.ui.control.vo.UIStyleMod;
 	import pixel.utility.IDispose;
@@ -98,8 +99,6 @@ package editor.ui
 			//this.addEventListener(ControlEditModeEvent.CHILDSELECTED,OnControlChildSelect);
 			addEventListener(MouseEvent.MOUSE_DOWN,DragStart);
 			addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
-				
-				trace("!!!");
 				
 			});
 		}
@@ -370,9 +369,14 @@ package editor.ui
 		 **/
 		public function GenerateControlModel():ByteArray
 		{
-			var mod:UIMod = new UIMod(_Children,StyleGlobals.styles);
-			var data:ByteArray = UIControlFactory.Instance.encode(mod);
-			StyleGlobals.clear();
+			var controls:Vector.<UIControlMod> = new Vector.<UIControlMod>();
+			for each(var control:IUIControl in _Children)
+			{
+				controls.push(new UIControlMod(control));
+			}
+			var mod:UIMod = new UIMod(controls,InlineStyle.styles);
+			var data:ByteArray = UIControlFactory.instance.encode(mod);
+			InlineStyle.clear();
 			return data;
 			
 //			var Data:ByteArray = new ByteArray();
@@ -407,10 +411,15 @@ package editor.ui
 			_originalData = Tools.byteArrayClone(Model);
 			_originalNav = fileNav;
 			Model.position = 0;
+
+			var mod:UIMod = UIControlFactory.instance.decode(Model,false);
 			
-			var mod:UIMod = UIControlFactory.Instance.Decode(Model);
-			
-			var controls:Vector.<IUIControl> = mod.controls;
+			var controls:Vector.<IUIControl> = new Vector.<IUIControl>();
+			for each(var controlMod:UIControlMod in mod.controls)
+			{
+				controls.push(controlMod.control);
+			}
+			//var controls:Vector.<IUIControl> = mod.controls;
 			var styles:Vector.<UIStyleMod> = mod.styles;
 			
 			for each(var child:UIControl in controls)

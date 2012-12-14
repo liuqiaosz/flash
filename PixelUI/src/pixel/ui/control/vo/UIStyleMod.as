@@ -74,7 +74,7 @@ package pixel.ui.control.vo
 			return data;
 		}
 		
-		private function decode(data:ByteArray):void
+		public function decode(data:ByteArray):void
 		{
 			var prototype:Class = Utils.getStylePrototypeByType(data.readByte());
 			if(!prototype)

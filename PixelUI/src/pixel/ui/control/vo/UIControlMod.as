@@ -27,6 +27,7 @@ package pixel.ui.control.vo
 			}
 			if(_source)
 			{
+				trace("解析组件数据");
 				decode(_source);
 				_source.clear();
 				_source = null;
@@ -63,6 +64,8 @@ package pixel.ui.control.vo
 			var type:int = data.readByte();
 			var prototype:Class = Utils.GetPrototypeByType(type);
 			_control = new prototype() as IUIControl;
+			
+			_control.Decode(data);
 			if(_control && _linkStyle)
 			{
 				_control.Style = _linkStyle.style;

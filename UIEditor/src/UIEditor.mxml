@@ -36,11 +36,12 @@
 			import editor.ui.ComboboxDataGridWindow;
 			import editor.ui.ComponentProfile;
 			import editor.ui.ControlLibraryItem;
+			import editor.ui.GlobalStyleManager;
+			import editor.ui.InlineStyleManagerWindow;
 			import editor.ui.NewAssetLibrary;
 			import editor.ui.NewStyleCategoryChoiceWindow;
 			import editor.ui.NotificationManager;
 			import editor.ui.PreferenceWindow;
-			import editor.ui.InlineStyleManagerWindow;
 			import editor.ui.SwfImportWindow;
 			import editor.ui.WorkspacePlus;
 			import editor.uitility.ui.PopUpWindowManager;
@@ -48,8 +49,9 @@
 			import editor.uitility.ui.event.UIEvent;
 			import editor.utils.Common;
 			import editor.utils.FileLoadQueue;
+			import editor.utils.GlobalStyle;
 			import editor.utils.Globals;
-			import editor.utils.StyleGlobals;
+			import editor.utils.InlineStyle;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -78,7 +80,11 @@
 			import pixel.ui.control.event.DownloadEvent;
 			import pixel.ui.control.event.EditModeEvent;
 			import pixel.ui.control.style.UISliderStyle;
+			import pixel.ui.control.style.UIStyleFactory;
+			import pixel.ui.control.style.UIStyleManager;
 			import pixel.ui.control.utility.Utils;
+			import pixel.ui.control.vo.UIStyleGroup;
+			import pixel.ui.control.vo.UIStyleMod;
 			import pixel.utility.MouseManager;
 			import pixel.utility.System;
 			import pixel.utility.Tools;
@@ -248,12 +254,12 @@
 					]
 				},
 				{
-					label : "扩展",
+					label : "样式管理",
 					children: [
 						{
 							enabled: false,
 							id: MENU_INLINESTYLE,
-							label: "内联样式"
+							label: "局部样式"
 						},
 						{
 							enabled: true,
@@ -293,8 +299,9 @@
 					}
 				});
 				initializerRes();
+				GlobalStyle.refresh();
+				
 			}
-			
 			
 			
 			/**
@@ -813,6 +820,17 @@
 			}
 			
 			/**
+			 * 全局样式组管理
+			 * 
+			 * 
+			 **/
+			private function globalStyleManager():void
+			{
+				var window:GlobalStyleManager = PopUpWindowManager.PopUp(GlobalStyleManager) as GlobalStyleManager;
+				
+			}
+			
+			/**
 			 * 工作区初始化
 			 * 
 			 * 
@@ -854,7 +872,7 @@
 				ComponentTree = new ArrayCollection();
 				
 				Enabled = false;
-				StyleGlobals.clear();
+				InlineStyle.clear();
 				
 			}
 			
@@ -891,7 +909,6 @@
 					{
 						_DragControl.initializer();
 					}
-					//_DragControl.initializer();
 					MouseManager.Instance.Register("Drag",[ImageSkin(event.target).imageDisplay.bitmapData],true);
 					_DragControl.EnableEditMode();
 					this.stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
@@ -1005,6 +1022,8 @@
 						fileSaveas();
 						break;
 					case MENU_GLOBALSTYLE:
+						globalStyleManager();
+						
 						break;
 					case MENU_INLINESTYLE:
 						PopUpWindowManager.PopUp(InlineStyleManagerWindow);
@@ -1014,9 +1033,6 @@
 						break;
 				}
 			}
-			
-			
-			
 		]]>
 	</fx:Script>
 	<s:layout>
@@ -1052,7 +1068,6 @@
 				</mx:Accordion>
 			</s:Panel>
 		</s:VGroup>
-		
 		
 		<s:TitleWindow width="100%" height="100%" dropShadowVisible="false"  title="组件编辑区" id="EditorWindow">
 			<s:layout>

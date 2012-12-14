@@ -41,10 +41,10 @@
 //					label: "加载条"
 //				},
 				
-				{
-					type: Utils.SIMPLEBUTTON,
-					label: "按钮"
-				},
+//				{
+//					type: Utils.SIMPLEBUTTON,
+//					label: "按钮"
+//				},
 				
 				{
 					type: Utils.SIMPLEPANEL,

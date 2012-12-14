@@ -96,7 +96,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:Label text="控件样式"  styleName="LabelTitle"/>
+	<s:Label text="控件基本属性"  styleName="LabelTitle"/>
 	<mx:HRule width="100%" />
 	
 	<s:HGroup verticalAlign="middle">

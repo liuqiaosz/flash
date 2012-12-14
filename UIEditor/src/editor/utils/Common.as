@@ -16,6 +16,8 @@ package editor.utils
 		public static const INSTALL_DIR:String = File.applicationDirectory.nativePath + System.SystemSplitSymbol;
 		public static const PREFERENCE:String = "Preference.cfg";
 		public static const ASSL:String = ".assl";
+		public static const STYLEGROUP_SUFFIX:String = ".sg";
+		
 		
 		public static const DEFAULT_DIR_RES:String = File.applicationDirectory.nativePath + System.SystemSplitSymbol + "res" + System.SystemSplitSymbol;
 		public static const DEFAULT_DIR_STYLES:String = File.applicationDirectory.nativePath + System.SystemSplitSymbol + "styles" + System.SystemSplitSymbol;

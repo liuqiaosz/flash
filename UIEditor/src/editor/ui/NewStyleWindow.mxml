@@ -15,7 +15,7 @@
 		<![CDATA[
 			import editor.event.NotifyEvent;
 			import editor.utils.Globals;
-			import editor.utils.StyleGlobals;
+			import editor.utils.InlineStyle;
 			
 			import mx.controls.Alert;
 			import mx.core.UIComponent;
@@ -130,6 +130,8 @@
 				WorkspaceContainer.addElement(container);
 				propertie.addElement(styleCom);
 				styleCom.Control = _control;
+				styleCom.styleEnabled = true;
+				styleCom.propertieEnabled = false;
 			}
 			
 			/**

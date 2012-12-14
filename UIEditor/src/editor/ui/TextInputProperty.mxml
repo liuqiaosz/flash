@@ -6,6 +6,6 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
-	<ui:SimpleProperty id="Simple" Control="{CurrentControl}" />
-	<ui:BordeStyleProperty id="Border" Control="{CurrentControl}" />
+	<ui:SimpleProperty id="Simple" Control="{CurrentControl}" enabled="{_propertieEnabled}" />
+	<ui:BordeStyleProperty id="Border" Control="{CurrentControl}" enabled="{_styleEnabled}"/>
 </ui:GenericProperty>

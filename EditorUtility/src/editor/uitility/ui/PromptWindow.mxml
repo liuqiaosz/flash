@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="400" height="300" title="{_title}">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.event.PixelEditorEvent;
+			[Bindable]
+			private var _title:String = "";
+			public function set titleText(value:String):void
+			{
+				_title = value;
+			}
+			
+			[Bindable]
+			private var _label:String = "";
+			public function set labelText(value:String):void
+			{
+				_label = value;
+			}
+			
+			private function enter(event:MouseEvent):void
+			{
+				var notify:PixelEditorEvent = new PixelEditorEvent(PixelEditorEvent.PROMPT_ENTER);
+				notify.value = input.text;
+				dispatchEvent(notify);
+				CloseWindow();
+			}
+			
+			private function cancel(event:MouseEvent):void
+			{
+				CloseWindow();
+			}
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout verticalAlign="middle" horizontalAlign="center" />
+	</ui:layout>
+	
+	<s:HGroup width="80%">
+		<s:Label text="{_label}" />
+	</s:HGroup>
+	
+	<s:TextInput width="80%" id="input" />
+	
+	<s:HGroup gap="30" paddingTop="40">
+		<s:Image width="24" height="24" source="@Embed('Right.png')" smooth="true" toolTip="确定"  buttonMode="true" click="enter(event)"/>
+		<s:Image width="24" height="24" source="@Embed('Cancel.png')" smooth="true" toolTip="取消"  buttonMode="true" click="cancel(event)"/>
+	</s:HGroup>
+</ui:AdvanceWindow>

@@ -5,6 +5,7 @@ package editor.uitility.ui.event
 	public class PixelEditorEvent extends Event
 	{
 		public static const MENU_SELECTED:String = "MenuSelected";
+		public static const PROMPT_ENTER:String = "PromptEnter";
 		
 		private var _value:Object = null;
 		public function set value(data:Object):void

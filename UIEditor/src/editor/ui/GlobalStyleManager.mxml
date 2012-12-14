@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="550" height="500" title="全局样式组管理" creationComplete="initializer(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.event.NotifyEvent;
+			import editor.uitility.ui.AdvanceHSlider;
+			import editor.uitility.ui.PopUpWindowManager;
+			import editor.uitility.ui.PromptWindow;
+			import editor.uitility.ui.event.PixelEditorEvent;
+			import editor.utils.Common;
+			import editor.utils.GlobalStyle;
+			import editor.utils.InlineStyle;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.ColorPickerEvent;
+			import mx.events.DataGridEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			
+			import pixel.ui.control.ComboboxItem;
+			import pixel.ui.control.UICombobox;
+			import pixel.ui.control.UIControl;
+			import pixel.ui.control.style.UIStyleFactory;
+			import pixel.ui.control.utility.Utils;
+			import pixel.ui.control.vo.UIStyleGroup;
+			import pixel.ui.control.vo.UIStyleMod;
+			
+			[Bindable]
+			private var dataProvider:ArrayCollection = new ArrayCollection();
+			
+			protected function createStyleMod(event:MouseEvent):void
+			{
+				var window:NewStyleModelWindow = PopUpWindowManager.PopUp(NewStyleModelWindow) as NewStyleModelWindow;
+				//window.addEventListener(NotifyEvent.STYLE_SELECTED,styleCategorySelected);
+				window.addEventListener(NotifyEvent.STYLE_GROUP_SAVE,function(event:NotifyEvent):void{
+					//var styles:Vector.<UIStyleMod> = event.Params.pop() as Vector.<UIStyleMod>;
+					var group:UIStyleGroup = event.Params.pop() as UIStyleGroup;
+					var data:ByteArray = UIStyleFactory.instance.groupEncode(group);
+					
+					var browser:File = new File();
+					
+					var prompt:PromptWindow = PopUpWindowManager.PopUp(PromptWindow) as PromptWindow;
+					prompt.titleText = "保存样式组";
+					prompt.labelText = "保存文件名";
+					prompt.addEventListener(PixelEditorEvent.PROMPT_ENTER,function(event:PixelEditorEvent):void{
+						var writer:FileStream = new FileStream();
+						var nav:String = Common.DEFAULT_DIR_STYLES + event.value + Common.STYLEGROUP_SUFFIX;
+						writer.open(new File(nav),FileMode.WRITE);
+						writer.writeBytes(data);
+						writer.close();
+						refresh();
+						window.CloseWindow();
+					});
+				});
+			}
+			
+			private var focusItem:StyleGroupFile = null;
+			private var focusIndex:int = 0;
+			protected function itemFocus(event:ListEvent):void
+			{
+				focusIndex = event.rowIndex;
+				focusItem = dataProvider[focusIndex];
+			}
+			
+			protected function itemView(event:ListEvent):void
+			{
+				var window:NewStyleModelWindow = PopUpWindowManager.PopUp(NewStyleModelWindow) as NewStyleModelWindow;
+				window.group = focusItem.styleGroup;
+				window.addEventListener(NotifyEvent.STYLE_GROUP_SAVE,function(event:NotifyEvent):void{
+					var group:UIStyleGroup = event.Params.pop() as UIStyleGroup;
+					focusItem.styleGroup.id = group.id;
+					focusItem.styleGroup.desc = group.desc;
+					focusItem.styleGroup.styles = group.styles;
+					
+					var writer:FileStream = new FileStream();
+					writer.open(focusItem.file,FileMode.WRITE);
+					writer.writeBytes(UIStyleFactory.instance.groupEncode(focusItem.styleGroup));
+					writer.close();
+					refresh();
+					window.CloseWindow();
+				});
+			}
+			
+			protected function initializer(event:FlexEvent):void
+			{
+				refresh();	
+			}
+			
+			private function refresh():void
+			{
+				GlobalStyle.refresh();
+				dataProvider.removeAll();
+				//var group:UIStyleGroup = null;
+				var group:StyleGroupFile = null;
+				for each(group in GlobalStyle.styles)
+				{
+					dataProvider.addItem(group);
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<ui:layout>
+		<s:VerticalLayout horizontalAlign="center" gap="5" verticalAlign="middle" />
+	</ui:layout>
+	
+	<mx:DataGrid width="500" height="410" id="grid" borderVisible="true" itemRollOver="itemFocus(event)" dataProvider="{dataProvider}" itemClick="itemView(event)">
+		<mx:columns>
+			<mx:DataGridColumn headerText="样式组ID" dataField="id" width="50">
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="样式组描述" dataField="desc" width="300">
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="样式数量" dataField="styleCount" width="50">
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<s:HGroup width="100%" height="30" horizontalAlign="center" gap="30">
+		<s:Image width="24" height="24" source="@Embed('../assets/Add.png')" smooth="true" toolTip="新增样式组" click="createStyleMod(event)" buttonMode="true"/>
+	</s:HGroup>
+</ui:AdvanceTitleWindow>

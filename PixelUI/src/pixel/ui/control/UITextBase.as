@@ -9,6 +9,7 @@ package pixel.ui.control
 	import flash.utils.ByteArray;
 	
 	import pixel.ui.control.style.FontStyle;
+	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.core.NSPixelUI;
 	import pixel.utility.Tools;
 	
@@ -166,6 +167,12 @@ package pixel.ui.control
 			addEventListener(MouseEvent.MOUSE_DOWN,DownProxy,true);
 		}
 		
+		override public function set Style(value:IVisualStyle):void
+		{
+			super.Style = value;
+			this.applyFontStyle(value.FontTextStyle);
+		}
+		
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			var Len:int = Data.readShort();
@@ -193,7 +200,6 @@ package pixel.ui.control
 			
 			Text = text;
 			this.updateFormat();
-//			
 //			Text = text;
 		}
 		

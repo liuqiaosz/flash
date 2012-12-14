@@ -17,7 +17,11 @@
 	<fx:Script>
 		<![CDATA[
 			import editor.event.NotifyEvent;
+			import editor.utils.GlobalStyle;
 			import editor.utils.Globals;
+			import editor.utils.InlineStyle;
+			
+			import mx.collections.ArrayCollection;
 			
 			import pixel.ui.control.LayoutConstant;
 			import pixel.ui.control.SimpleTabPanel;
@@ -37,8 +41,14 @@
 			import pixel.ui.control.UIWindow;
 			import pixel.ui.control.asset.AssetImage;
 			import pixel.ui.control.asset.IAsset;
+			import pixel.ui.control.style.UIStyleLinkEmu;
+			import pixel.ui.control.style.UIStyleManager;
+			import pixel.ui.control.utility.Utils;
+			import pixel.ui.control.vo.UIStyleGroup;
+			import pixel.ui.control.vo.UIStyleMod;
 			import pixel.utility.Tools;
 			
+			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			private var _CurrentControl:UIControl = null;
 			
@@ -69,10 +79,95 @@
 			[Bindable]
 			private var ProgressStyleFlag:Boolean = false;
 			
+			[Bindable]
+			private var StyleLinkEnabled:Boolean = false;
+			
+			[Bindable]
+			private var styleEnabledBind:Boolean = true;
+			[Bindable]
+			private var propertieEnabledBind:Boolean = true;
+			
+			
 			override protected function Initialized():void
 			{
 				Reset();
 				_CurrentControl = Control;
+				
+				if(_CurrentControl)
+				{
+					styles = new ArrayCollection();
+					StyleLinkEnabled = _CurrentControl.styleLinked;
+					var style:UIStyleMod = null;
+					var queue:Vector.<UIStyleMod> = null;
+					//局部样式
+					queue = InlineStyle.styles;
+					
+					var currentStyleName:String = Utils.getStyleNameByType(Utils.getStyleTypeByPrototype(_CurrentControl.Style));
+					var linkIdx:int = -1;
+					
+					if(_CurrentControl.styleLinked)
+					{
+						styleEnabledBind = false;
+						StyleLink.selected = true;
+					}
+					for each(style in queue)
+					{
+						
+						if(style.styleName == currentStyleName)
+						{
+							styles.addItem({
+								
+								label : style.id,
+								style : style,
+								scope : UIStyleLinkEmu.SCOPE_INLINE,
+								scopeLabel : "局部"
+								
+							});
+						}
+						if(_CurrentControl.styleLinked && _CurrentControl.styleLinkScope == UIStyleLinkEmu.SCOPE_INLINE)
+						{
+							if(style.id == _CurrentControl.styleLinkId)
+							{
+								linkIdx = styles.length - 1;
+							}
+						}
+					}
+
+					//全局样式
+					var globalQueue:Vector.<StyleGroupFile> = GlobalStyle.styles;
+					var group:StyleGroupFile = null;
+					for each(group in globalQueue)
+					{
+						queue = group.styleGroup.styles;
+						for each(style in queue)
+						{
+							if(style.styleName == currentStyleName)
+							{
+								styles.addItem({
+									
+									label : style.id,
+									style : style,
+									scope : UIStyleLinkEmu.SCOPE_GLOBAL,
+									scopeLabel : "全局"
+								});
+							}
+							
+							if(_CurrentControl.styleLinked && _CurrentControl.styleLinkScope == UIStyleLinkEmu.SCOPE_GLOBAL)
+							{
+								if(style.id == _CurrentControl.styleLinkId)
+								{
+									linkIdx = styles.length - 1;
+								}
+							}
+						}
+					}
+					
+					if(linkIdx >= 0)
+					{
+						styleCombo.selectedIndex = linkIdx;
+					}
+				}
+				
 				Name.text = _CurrentControl.Id;
 				//类型
 				
@@ -217,8 +312,15 @@
 				VerticalPanelStyleFlag = false;
 				ProgressStyleFlag = false;
 				Name.text = "";
+				styleCombo.textInput.editable = false;
+				styleCombo.textInput.text = "";
+				styleEnabledBind = true;
+				StyleLink.selected = false;
 			}
-
+			
+			[Bindable]
+			private static var styles:ArrayCollection = null;
+			
 			/**
 			 * 控件实例名称变更
 			 **/
@@ -277,6 +379,27 @@
 				}
 			}
 
+			protected function styleLinkChanged(event:IndexChangeEvent):void
+			{
+				var idx:int = event.newIndex;
+				if(idx >= 0)
+				{
+					var value:Object = styles.getItemAt(idx);
+					_CurrentControl.setLinkStyle(value.style,value.scope);
+					styleEnabledBind = false;
+				}
+				else
+				{
+					styleEnabledBind = true;
+				}
+			}
+			
+			protected function StyleLinkChanged(event:Event):void
+			{
+				StyleLinkEnabled = StyleLink.selected;
+				styleEnabledBind = !StyleLinkEnabled;
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -292,19 +415,44 @@
 					<s:Label text="控件ID" height="100%" verticalAlign="middle" width="60" />
 					<s:TextInput id="Name" change="ControlNameChangeEnter(event)" width="100" restrict="a-z A-Z 0-9"/>
 				</s:HGroup>
+				
+				<s:HGroup>
+					<s:Label text="样式外链" height="100%" verticalAlign="middle" width="60" />
+					<s:CheckBox id="StyleLink" change="StyleLinkChanged(event)" />
+				</s:HGroup>
+				
+				<s:HGroup visible="{StyleLinkEnabled}" includeInLayout="{StyleLinkEnabled}">
+					<s:Label text="样式" height="100%" verticalAlign="middle" width="60" />
+					
+					<s:ComboBox dataProvider="{styles}" width="120" id="styleCombo" change="styleLinkChanged(event)">
+						<s:itemRenderer>
+							<fx:Component>
+								<mx:HBox>
+									<mx:Label color="0x0000FF" text="{data.scopeLabel}" width="30" />
+									<mx:VRule width="1" />
+									<mx:Label text="{data.label}" />	
+								</mx:HBox>
+								
+							</fx:Component>
+						</s:itemRenderer>
+					</s:ComboBox>
+				</s:HGroup>
 			</s:VGroup>
-			<My:WindowProperty id="WindowStyle" visible="{WindowStyleFlag}" includeInLayout="{WindowStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-			<My:PanelProperty id="PanelStyle" visible="{PanelStyleFlag}" includeInLayout="{PanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-			<My:ButtonProperty id="ButtonStyle" visible="{ButtonStyleFlag}" includeInLayout="{ButtonStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-			<My:TabProperty id="TabStyle" visible="{TabStyleFlag}" includeInLayout="{TabStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-			<My:SliderProperty id="SliderStyle" visible="{SliderStyleFlag}" includeInLayout="{SliderStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-			<My:TabPanelProperty id="TabPanelStyle" visible="{TabPanelStyleFlag}" includeInLayout="{TabPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-			<My:LabelPropery id="LabelStyle" visible="{LabelStyleFlag}" includeInLayout="{LabelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-			<My:UIImageProperty id="ImageStyle" visible="{ImageStyleFlag}" includeInLayout="{ImageStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-			<My:TextInputProperty id="TextInputStyle" visible="{TextInputStyleFlag}" includeInLayout="{TextInputStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-			<My:ComboboxPropertie id="ComboboxStyle" visible="{ComboboxStyleFlag}" includeInLayout="{ComboboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-			<My:UIVerticalScrollPropertie id="VPanelStyle" visible="{VerticalPanelStyleFlag}" includeInLayout="{VerticalPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-			<My:UIProgressPropertie id="ProgressStyle" visible="{ProgressStyleFlag}" includeInLayout="{ProgressStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
+			<s:Group>
+				<My:WindowProperty id="WindowStyle" visible="{WindowStyleFlag}" includeInLayout="{WindowStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}" />
+				<My:PanelProperty id="PanelStyle" visible="{PanelStyleFlag}" includeInLayout="{PanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:ButtonProperty id="ButtonStyle" visible="{ButtonStyleFlag}" includeInLayout="{ButtonStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:TabProperty id="TabStyle" visible="{TabStyleFlag}" includeInLayout="{TabStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:SliderProperty id="SliderStyle" visible="{SliderStyleFlag}" includeInLayout="{SliderStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:TabPanelProperty id="TabPanelStyle" visible="{TabPanelStyleFlag}" includeInLayout="{TabPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:LabelPropery id="LabelStyle" visible="{LabelStyleFlag}" includeInLayout="{LabelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:UIImageProperty id="ImageStyle" visible="{ImageStyleFlag}" includeInLayout="{ImageStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:TextInputProperty id="TextInputStyle" visible="{TextInputStyleFlag}" includeInLayout="{TextInputStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:ComboboxPropertie id="ComboboxStyle" visible="{ComboboxStyleFlag}" includeInLayout="{ComboboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:UIVerticalScrollPropertie id="VPanelStyle" visible="{VerticalPanelStyleFlag}" includeInLayout="{VerticalPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:UIProgressPropertie id="ProgressStyle" visible="{ProgressStyleFlag}" includeInLayout="{ProgressStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+			</s:Group>
+			
 		</s:VGroup>
 	</s:Scroller>
 </ui:GenericProperty>

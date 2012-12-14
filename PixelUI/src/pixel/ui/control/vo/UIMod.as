@@ -6,7 +6,7 @@ package pixel.ui.control.vo
 	public class UIMod
 	{
 		//private var _controls:Vector.<IUIControl> = null;
-		private var _controlIds:Vector.<String> = null;
+		//private var _controlIds:Vector.<String> = null;
 		private var _styles:Vector.<UIStyleMod> = null;
 		private var _controls:Vector.<UIControlMod> = null;
 		public function UIMod(controls:Vector.<UIControlMod> = null,styles:Vector.<UIStyleMod> = null)
@@ -32,30 +32,5 @@ package pixel.ui.control.vo
 		{
 			return _styles;
 		}
-		
-		public function get controlIds():Vector.<String>
-		{
-			if(!_controlIds)
-			{
-				_controlIds = new Vector.<String>();
-				var mod:UIControlMod = null;
-				for each(mod in _controls)
-				{
-					//_controlsIds.push(mod.
-				}
-			}
-			return null;
-		}
-		
-//		
-//		public function get controls():Vector.<UIControlMod>
-//		{
-//			return _controls;
-//		}
-//		
-//		public function get styles():Vector.<UIStyleMod>
-//		{
-//			return _styles;
-//		}
 	}
 }

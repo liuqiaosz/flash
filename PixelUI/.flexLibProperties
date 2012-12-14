@@ -17,6 +17,10 @@
     <classEntry path="pixel.ui.control.style.UIGlobalStyleManager"/>
     <classEntry path="pixel.ui.control.event.PixelUIEvent"/>
     <classEntry path="pixel.ui.control.vo.UIControlMod"/>
+    <classEntry path="pixel.ui.control.vo.UIStyleGroup"/>
+    <classEntry path="pixel.ui.control.style.UIStyleManager"/>
+    <classEntry path="pixel.ui.control.style.IUIStyleManager"/>
+    <classEntry path="pixel.ui.control.style.UIStyleLinkEmu"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

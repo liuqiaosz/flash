@@ -5,6 +5,7 @@
     <classEntry path="editor.uitility.ui.AdvanceColorPicker"/>
     <classEntry path="editor.uitility.ui.AdvanceMenuBar"/>
     <classEntry path="editor.uitility.ui.event.PixelEditorEvent"/>
+    <classEntry path="editor.uitility.ui.PromptWindow"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

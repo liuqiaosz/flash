@@ -27,6 +27,7 @@ package editor.event
 		
 		public static const STYLE_SELECTED:String = "StyleSelected";
 		public static const STYLE_SAVED:String = "StyleSaved";
+		public static const STYLE_GROUP_SAVE:String = "StyleGroupSave";
 		private var _Message:String = "";
 		public function set Message(Value:String):void
 		{
