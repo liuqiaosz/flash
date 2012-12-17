@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AdvanceWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark" 
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.uitility.ui.*" width="800" height="600" dragEnter="dragImageOver(event)" dragDrop="dragImageDrop(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.event.PixelEditorEvent;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.IUIComponent;
+			import mx.events.CloseEvent;
+			import mx.events.DragEvent;
+			import mx.events.ListEvent;
+			import mx.managers.DragManager;
+			
+			import pixel.texture.PixelCompressOption;
+			import pixel.texture.PixelTexture;
+			import pixel.utility.BitmapTools;
+			import pixel.utility.ColorCode;
+			
+			import spark.events.IndexChangeEvent;
+			
+			[Bindable]
+			private static var PIXEL_COMPRESS_OPTION:ArrayCollection = new ArrayCollection([
+				
+				{
+					label : "ARGB4444",
+					value : PixelCompressOption.COMPRESS_ARGB4444
+				},
+//				{
+//					label : "RGB555",
+//					value : PixelCompressOption.COMPRESS_RGB555
+//				},
+//				{
+//					label : "RGB565",
+//					value : PixelCompressOption.COMPRESS_RGB565
+//				},
+//				{
+//					label : "ARGB1555",
+//					value : PixelCompressOption.COMPRESS_ARGB1555
+//				}
+			]);
+			[Bindable]
+			private var image:BitmapData = null;
+			[Bindable]
+			private var imageWidth:int = 0;
+			[Bindable]
+			private var imageHeight:int = 0;
+			[Bindable]
+			private var textureId:String = "";
+			[Bindable]
+			private var editEnabled:Boolean = false;
+			[Bindable]
+			private var alphaCut:Boolean = false;
+			[Bindable]
+			private var compress:Boolean = true;
+			[Bindable]
+			private var pixelCompress:Boolean = false;
+			[Bindable]
+			private var customAnchor:Boolean = false;
+			[Bindable]
+			private var _texture:PixelTexture = null;
+			[Bindable]
+			private var list:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			private var changeApply:Boolean = false;
+			
+			public function set texture(value:PixelTexture):void
+			{
+				if(value)
+				{
+					editEnabled = true;
+					_texture = value;
+					alphaCut = _texture.alphaCut;
+					compress = _texture.compress;
+					pixelCompress = _texture.pixelCompress;
+					pixelOption.selectedIndex = -1;
+					if(pixelCompress)
+					{
+						for(var idx:int = 0; idx<PIXEL_COMPRESS_OPTION.length; idx++)
+						{
+							var item:Object = PIXEL_COMPRESS_OPTION.getItemAt(idx);
+							if(item.value == _texture.pixelCompressOp)
+							{
+								pixelOption.selectedItem = item;
+							}
+						}
+					}
+					image = _texture.bitmap;
+					customAnchor = _texture.customAnchor;
+					imageWidth = image.width;
+					imageHeight = image.height;
+					textureId = _texture.id;
+					changeApply = false;
+				}
+			}
+			
+			protected function dragImageOver(event:DragEvent):void
+			{
+				DragManager.acceptDragDrop(event.currentTarget as IUIComponent);
+			}
+			
+			private var _queue:Vector.<String> = new Vector.<String>();
+			protected function dragImageDrop(event:DragEvent):void
+			{
+				_queue.length = 0;
+				var files:Array = event.dragSource.dataForFormat(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+				var file:File = null;
+				for each(file in files)
+				{
+					if(file.extension == "png" || file.extension == "jpeg" || file.extension == "jpg")
+					{
+						_queue.push(file.nativePath);
+					}
+				}
+				if(_queue.length > 0)
+				{
+					_loader = new Loader();
+					_loader.contentLoaderInfo.addEventListener(Event.COMPLETE,loadComplete);
+					loadImage();
+				}
+			}
+			
+			private function loadComplete(event:Event):void
+			{
+				var img:Bitmap = _loader.content as Bitmap;
+				var pixels:ByteArray = img.bitmapData.getPixels(img.bitmapData.rect);
+				var texture:PixelTexture = new PixelTexture(pixels);
+				texture.imageWidth = img.width;
+				texture.imageHeight = img.height;
+				texture.id = "" + list.length;
+				list.addItem(texture);
+				loadImage();
+			}
+			
+			private var _loader:Loader = null;
+			protected function loadImage():void
+			{
+				if(_queue.length > 0)
+				{
+					_loader.load(new URLRequest(_queue.shift()));
+				}
+				else
+				{
+					if(_loader)
+					{
+						_loader.removeEventListener(Event.COMPLETE,loadComplete);
+						_loader.unload();
+						_loader = null;
+					}
+				}
+			}
+			
+			private var selectItem:PixelTexture = null;
+			protected function textureSelected(event:ListEvent):void
+			{
+				selectItem = list.getItemAt(event.rowIndex) as PixelTexture;
+				if(selectItem == _texture)
+				{
+					return;
+				}
+				if(changeApply)
+				{
+					Alert.show("未保存的修改","",Alert.YES | Alert.CANCEL,null,function(close:CloseEvent):void{
+						
+						if(close.detail == Alert.YES)
+						{
+							saveCurrentChanged();
+							texture = selectItem;
+						}
+					});
+				}
+				else
+				{
+					texture = selectItem;
+				}
+			}
+			
+			private function saveCurrentChanged():void
+			{
+				_texture.alphaCut = alphaCut;
+				_texture.bitmap = image;
+				_texture.compress = compress;
+				var pixels:ByteArray = image.getPixels(image.rect);
+				if(compress)
+				{
+					pixels.compress();
+				}
+				_texture.source = pixels;
+				_texture.id = pixelTextureId.text;
+				_texture.pixelCompress = pixelCompress;
+				if(pixelCompress)
+				{
+					var op:Object = PIXEL_COMPRESS_OPTION.getItemAt(pixelOption.selectedIndex);
+					_texture.pixelCompressOp = op.value as int;
+				}
+				changeApply = false;
+			}
+			
+			private function updatePreview():void
+			{
+				changeApply = true;
+				var source:BitmapData = BitmapTools.BitmapClone(_texture.bitmap);
+				if(alphaCut)
+				{
+					source = BitmapTools.CutAlpha(source);
+				}
+				
+				var pixels:ByteArray = source.getPixels(source.rect);
+				var compressPixels:ByteArray = null;
+				if(pixelCompress)
+				{
+					var op:Object = PIXEL_COMPRESS_OPTION.getItemAt(pixelOption.selectedIndex);
+					switch(op.value)
+					{
+						case PixelCompressOption.COMPRESS_ARGB4444:
+							compressPixels = BitmapTools.pixelsCompressToARGB4444(pixels);
+							pixels = BitmapTools.pixelsUncompressARGB4444ToARGB8888(compressPixels);
+							compressPixels.compress();
+							break;
+						case PixelCompressOption.COMPRESS_ARGB1555:
+							break;
+						case PixelCompressOption.COMPRESS_RGB555:
+							break;
+						case PixelCompressOption.COMPRESS_RGB565:
+							break;
+					}
+					pixels.position = 0;
+					source.setPixels(source.rect,pixels);
+				}
+				image = source;
+			}
+			
+//			protected function pixelCompressChanged(event:Event):void
+//			{
+//				pixelCompress = pixelCompressCheck.selected;
+//				if(pixelCompressCheck.selected)
+//				{
+//					updatePreview();
+//				}
+//			}
+			
+			protected function pixelCompressChanged(event:IndexChangeEvent):void
+			{
+				updatePreview();
+			}
+			
+			protected function pixelCompressChecked(event:Event):void
+			{
+				pixelCompress = pixelCompressCheck.selected;
+			}
+			
+			protected function save(event:MouseEvent):void
+			{
+				saveCurrentChanged();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<mx:HDividedBox width="780" height="550" x="10" y="10">
+		<s:VGroup height="100%" minWidth="150">
+			<mx:Tree height="100%" minWidth="150" labelField="id" dataProvider="{list}" itemClick="textureSelected(event)" />
+		</s:VGroup>
+		
+		<s:HGroup minWidth="600" height="100%" gap="5" enabled="{editEnabled}">
+			<s:BorderContainer width="300" height="300">
+				<s:Scroller id="scroller" width="300" height="300">
+					<s:Group>
+						<s:Rect id="editBackground" width="100%" height="100%">
+							<s:fill>
+								<s:BitmapFill source="@Embed('Grid.png')" fillMode="repeat"  />
+							</s:fill>
+						</s:Rect>
+						<s:Image source="{image}" smooth="true" smoothingQuality="high" />
+					</s:Group>
+				</s:Scroller>
+			</s:BorderContainer>
+			
+			<s:VGroup width="100%" height="100%" gap="10">
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="100" text="宽度" />
+					<s:Label text="{imageWidth}" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="100" text="高度" />
+					<s:Label text="{imageHeight}" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="100" text="ID" />
+					<s:TextInput width="150" restrict="0-9 a-z A-Z" text="{textureId}" id="pixelTextureId" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="100" text="透明剪裁" />
+					<s:CheckBox selected="{alphaCut}" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="100" text="数据压缩" />
+					<s:CheckBox selected="{compress}" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="100" text="像素有损压缩" />
+					<s:CheckBox selected="{pixelCompress}" id="pixelCompressCheck" change="pixelCompressChecked(event)"/>
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle" visible="{pixelCompress}" includeInLayout="{pixelCompress}">
+					<s:Label width="100" text="压缩选项" />
+					<s:ComboBox dataProvider="{PIXEL_COMPRESS_OPTION}" width="150" id="pixelOption" change="pixelCompressChanged(event)" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="100" text="定义注册点" />
+					<s:CheckBox selected="{customAnchor}"/>
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="middle">
+					<s:Button label="保存" enabled="{changeApply}" click="save(event)" />
+				</s:HGroup>
+			</s:VGroup>
+		</s:HGroup>
+	</mx:HDividedBox>
+	
+</ui:AdvanceWindow>

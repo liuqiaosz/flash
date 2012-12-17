@@ -63,6 +63,11 @@ package pixel.ui.control
 		{
 			this.buttonMode = false;
 			super.EnableEditMode();
+			
+			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
+			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
+			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
+			removeEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
 		}
 		
 		override public function set width(value:Number):void

@@ -184,6 +184,16 @@ package
 			var s:Stat = new Stat();
 			addChild(s);
 			s.x = stage.stageWidth - s.width;
+			
+			pixelTest();
+		}
+		
+		private function pixelTest():void
+		{
+			var p:uint = 0xFFFE34D9;
+			trace(p.toString(2));
+			p = ColorCode.ARGB8888ToARGB4444(p);
+			trace(p.toString(2));
 		}
 		
 		private function progress():void
@@ -207,25 +217,7 @@ package
 			});
 		}
 		
-		private function test():void
-		{
-			var file:File = new File("C:\\Users\\OfficeLocal\\Desktop\\222.mod");
-			var reader:FileStream = new FileStream();
-			reader.open(file,FileMode.READ);
-			var data:ByteArray = new ByteArray();
-			reader.readBytes(data,0,reader.bytesAvailable);
-			
-			var mod:UIMod = UIControlFactory.Instance.Decode(data);
-			var vec:Vector.<IUIControl> = mod.controls;
-			
-			for each(var ddd:IUIControl in vec)
-			{
-				trace(ddd.Id);
-			}
-			var button:UIButton = new UIButton();
-			button.Style = mod.styles.pop();
-			addChild(button);
-		}
+		
 		
 		[Embed(source="map_terrain.png")]
 		private var MAP:Class;
@@ -287,24 +279,7 @@ package
 			addChild(comb);
 		}
 		
-		private function circlett():void
-		{
-			var bit:BitmapData = new BitmapData(8,30);
-			var s:Sprite = new Sprite();
-			s.graphics.beginFill(ColorCode.ORANGE,0.4);
-			s.graphics.drawEllipse(0,0,8,30);
-			s.graphics.endFill();
-			var glow:GlowFilter = new GlowFilter(ColorCode.ORANGE,1,10,10);
-			var blur:BlurFilter = new BlurFilter(6,6,2);
-			s.filters = [blur,glow];
-			
-			bit.draw(s);
-			
-			var img:Bitmap = new Bitmap(bit);
-			img.x = center.x;
-			img.y = center.y;
-			addChild(img);
-		}
+		
 		
 		private function angleGetTest():void
 		{

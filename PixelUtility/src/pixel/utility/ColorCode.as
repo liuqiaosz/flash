@@ -185,6 +185,14 @@ package pixel.utility
 					(Pixel >> 28 & RGB4444_MASK) << 4);
 			}
 			
+			public static function ARGB8888ToARGB4444(pixel:uint):uint
+			{
+				return ((pixel >> 28 & RGB4444_MASK) << 12) |
+					((pixel >> 20 & RGB4444_MASK) << 8) |
+					((pixel >> 12 & RGB4444_MASK) << 4) |
+					(pixel >> 4 & RGB4444_MASK)
+			}
+			
 			/**
 			 * 
 			 * RGB4444格式数据转换RGB8888
@@ -193,12 +201,12 @@ package pixel.utility
 			 * @param	BitFix	是否进行像素补偿
 			 * 
 			 **/
-			public static function RGB4444ToRGB8888(Pixel:uint,BitFix:Boolean = false):RGBA
+			public static function ARGB4444ToARGB8888(Pixel:uint,BitFix:Boolean = false):RGBA
 			{
-				var Alpha:uint = Pixel >> 12 & RGB4444_MASK;
-				var Red:uint = Pixel >> 8 & RGB4444_MASK;
-				var Green:uint = Pixel >> 4 & RGB4444_MASK;
-				var Blue:uint = Pixel & RGB4444_MASK;
+				var Alpha:uint = (Pixel >> 12 & RGB4444_MASK) << 4;
+				var Red:uint = (Pixel >> 8 & RGB4444_MASK) << 4;
+				var Green:uint = (Pixel >> 4 & RGB4444_MASK) << 4;
+				var Blue:uint = (Pixel & RGB4444_MASK) << 4;
 				
 				if(BitFix)
 				{
@@ -251,7 +259,7 @@ package pixel.utility
 					Blue = Blue | (Blue >> 5);
 				}
 				
-				return new RGBA(Red,Green,Blue);
+				return new RGBA(Red,Green,Blue,255);
 			}
 			
 			/**

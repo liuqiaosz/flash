@@ -258,32 +258,11 @@
 					</s:HGroup>
 					
 					<s:Group id="propertie">
-						
 					</s:Group>
-					<!--
-					<My:PanelProperty id="PanelStyle" visible="{PanelStyleFlag}" includeInLayout="{PanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-					<My:ButtonProperty id="ButtonStyle" visible="{ButtonStyleFlag}" includeInLayout="{ButtonStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-					
-					
-					<My:LabelPropery id="LabelStyle" visible="{LabelStyleFlag}" includeInLayout="{LabelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-					<My:UIImageProperty id="ImageStyle" visible="{ImageStyleFlag}" includeInLayout="{ImageStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-					<My:TextInputProperty id="TextInputStyle" visible="{TextInputStyleFlag}" includeInLayout="{TextInputStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-					
-					<My:WindowProperty id="WindowStyle" visible="{WindowStyleFlag}" includeInLayout="{WindowStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-					<My:TabProperty id="TabStyle" visible="{TabStyleFlag}" includeInLayout="{TabStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-					<My:SliderProperty id="SliderStyle" visible="{SliderStyleFlag}" includeInLayout="{SliderStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-					<My:TabPanelProperty id="TabPanelStyle" visible="{TabPanelStyleFlag}" includeInLayout="{TabPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-					<My:ComboboxPropertie id="ComboboxStyle" visible="{ComboboxStyleFlag}" includeInLayout="{ComboboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-					<My:UIVerticalScrollPropertie id="VPanelStyle" visible="{VerticalPanelStyleFlag}" includeInLayout="{VerticalPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"/>
-					<My:UIProgressPropertie id="ProgressStyle" visible="{ProgressStyleFlag}" includeInLayout="{ProgressStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" />
-					-->
 				</s:VGroup>
 			</s:Scroller>
 		</s:BorderContainer>
-		
 	</s:HGroup>
-	
-	
 	<s:HGroup>
 		<s:Image source="@Embed('../assets/Save.png')" width="24" height="24" smooth="true" click="saveStyle(event)" />
 	</s:HGroup>

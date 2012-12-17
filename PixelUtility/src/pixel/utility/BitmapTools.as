@@ -87,6 +87,83 @@ package pixel.utility
 			Source.transform.matrix = Mtx;
 		}
 		
+		public static function pixelsCompressToARGB4444(source:ByteArray):ByteArray
+		{
+			source.position = 0;
+			var pixels:ByteArray = new ByteArray();
+			//var source:ByteArray = bitmap.getPixels(bitmap.rect);
+			var pixel:uint = 0;
+			while(source.bytesAvailable > 0)
+			{
+				pixel = source.readUnsignedInt();
+				pixel = ColorCode.ARGB8888ToARGB4444(pixel);
+				pixels.writeShort(pixel);
+			}
+			return pixels;
+		}
+		
+		public static function pixelsUncompressARGB4444ToARGB8888(source:ByteArray):ByteArray
+		{
+			source.position = 0;
+			var pixels:ByteArray = new ByteArray();
+			//var source:ByteArray = bitmap.getPixels(bitmap.rect);
+			var pixel:uint = 0;
+			
+			while(source.bytesAvailable > 0)
+			{
+				pixel = source.readShort();
+				pixel = ColorCode.ARGB4444ToARGB8888(pixel,true).Pixel;
+				pixels.writeUnsignedInt(pixel);
+			}
+			return pixels;
+		}
+		
+		public static function pixelsCompressToRGB565(source:ByteArray):ByteArray
+		{
+			source.position = 0;
+			var pixels:ByteArray = new ByteArray();
+			//var source:ByteArray = bitmap.getPixels(bitmap.rect);
+			var pixel:uint = 0;
+			while(source.bytesAvailable > 0)
+			{
+				pixel = source.readUnsignedInt();
+				pixel = ColorCode.RGB888ToRGB565(pixel);
+				pixels.writeShort(pixel);
+			}
+			return pixels;
+		}
+		
+		public static function pixelsUncompressRGB565ToRGB888(source:ByteArray):ByteArray
+		{
+			source.position = 0;
+			var pixels:ByteArray = new ByteArray();
+			//var source:ByteArray = bitmap.getPixels(bitmap.rect);
+			var pixel:uint = 0;
+			while(source.bytesAvailable > 0)
+			{
+				pixel = source.readShort();
+				pixel = ColorCode.RGB565ToRGB888(pixel,true).Pixel;
+				pixels.writeUnsignedInt(pixel);
+			}
+			return pixels;
+		}
+		
+		public static function pixelsCompressToRGB555(source:ByteArray):ByteArray
+		{
+			source.position = 0;
+			var pixels:ByteArray = new ByteArray();
+			//var source:ByteArray = bitmap.getPixels(bitmap.rect);
+			var pixel:uint = 0;
+			while(source.bytesAvailable > 0)
+			{
+				pixel = source.readUnsignedInt();
+				pixel = ColorCode.RGB888ToRGB555(pixel);
+				pixels.writeShort(pixel);
+			}
+			return pixels;
+		}
+		
+		
 		public static function BitmapEncodeToPNG(source:BitmapData):ByteArray
 		{
 			return source.encode(source.rect,new PNGEncoderOptions());
