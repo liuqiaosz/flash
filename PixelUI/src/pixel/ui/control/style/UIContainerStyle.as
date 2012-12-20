@@ -46,17 +46,17 @@ package pixel.ui.control.style
 			return _Layout;
 		}
 		
-		override public function Encode():ByteArray
+		override public function encode():ByteArray
 		{
-			var Data:ByteArray = super.Encode();
+			var Data:ByteArray = super.encode();
 			Data.writeByte(_Gap);
 			Data.writeByte(_Layout);
 			Data.writeByte(_padding);
 			return Data;
 		}
-		override public function Decode(Data:ByteArray):void
+		override public function decode(Data:ByteArray):void
 		{
-			super.Decode(Data);
+			super.decode(Data);
 			_Gap = Data.readByte();
 			_Layout = Data.readByte();
 			_padding = Data.readByte();

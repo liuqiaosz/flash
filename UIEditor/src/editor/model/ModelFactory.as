@@ -107,7 +107,7 @@ class ModelParser implements IModel
 			Data.writeUTFBytes(Component.ClassName);
 			
 			
-			ControlModel = ControlShell.Encode();
+			ControlModel = ControlShell.encode();
 			
 			Data.writeBytes(ControlModel,0,ControlModel.length);
 		}
@@ -207,7 +207,7 @@ class ModelParser implements IModel
 		}
 		if(Control)
 		{
-			Control.Decode(Model);
+			Control.decode(Model);
 		}
 		return Control;
 	}

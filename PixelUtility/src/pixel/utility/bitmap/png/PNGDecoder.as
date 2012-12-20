@@ -25,13 +25,13 @@ package pixel.utility.bitmap.png
 			
 		}
 		
-		public function Encode():ByteArray
+		public function encode():ByteArray
 		{
 			return null;
 		}
 		
 		private var header:ByteArray = new ByteArray();
-		public function Decode(Data:ByteArray):void
+		public function decode(Data:ByteArray):void
 		{
 			//读取PNG头
 			Data.readBytes(header,0,8);

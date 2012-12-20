@@ -81,7 +81,7 @@ package pixel.ui.control
 			}
 		}
 		
-		override public function Dispose():void
+		override public function dispose():void
 		{
 			if(_timer)
 			{

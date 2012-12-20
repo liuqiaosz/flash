@@ -309,7 +309,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		_Busy = false;
 	}
 	
-	public function Dispose():void
+	public function dispose():void
 	{
 //		if(_AssetLibArray && _AssetLibArray.length > 0)
 //		{

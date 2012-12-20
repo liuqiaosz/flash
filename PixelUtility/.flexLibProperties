@@ -3,6 +3,7 @@
   <includeClasses>
     <classEntry path="pixel.utility.bitmap.gif.GIFDecoder"/>
     <classEntry path="pixel.utility.bitmap.gif.GIFFrame"/>
+    <classEntry path="pixel.utility.GraphicsTools"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

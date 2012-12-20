@@ -97,7 +97,7 @@ class UIControlFactoryImpl extends EventDispatcher implements IUIControlFactory
 				mapData.writeByte(linkIdx);
 			}
 			
-			child = controls[idx].control.Encode();
+			child = controls[idx].control.encode();
 			controlData.writeInt(child.length);
 			controlData.writeBytes(child);
 		}

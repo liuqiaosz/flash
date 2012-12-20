@@ -65,7 +65,7 @@ package pixel.ui.control.vo
 			var prototype:Class = Utils.GetPrototypeByType(type);
 			_control = new prototype() as IUIControl;
 			
-			_control.Decode(data);
+			_control.decode(data);
 			if(_control && _linkStyle)
 			{
 				_control.Style = _linkStyle.style;

@@ -82,22 +82,22 @@ package pixel.ui.control
 			
 		}
 		
-		override public function Encode():ByteArray
+		override public function encode():ByteArray
 		{
-			return super.Encode();
+			return super.encode();
 		}
 		
 		override protected function SpecialEncode(Data:ByteArray):void
 		{
 			super.SpecialEncode(Data);
-			var data:ByteArray = _scroller.Encode();
+			var data:ByteArray = _scroller.encode();
 			Data.writeBytes(data);
 		}
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			super.SpecialDecode(Data);
 			Data.readByte();
-			_scroller.Decode(Data);
+			_scroller.decode(Data);
 			_scroller.refresh();
 		}
 	}

@@ -416,7 +416,7 @@ package pixel.ui.control
 			{
 				Child = Children[Idx];
 				//Data.writeByte(Utils.GetControlPrototype(Child));
-				ChildData = Child.Encode();
+				ChildData = Child.encode();
 				Data.writeBytes(ChildData,0,ChildData.length);
 			}
 		}
@@ -433,7 +433,7 @@ package pixel.ui.control
 				Type = Data.readByte();
 				Prototype = Utils.GetPrototypeByType(Type);
 				Child = new Prototype() as UIControl;
-				Child.Decode(Data);
+				Child.decode(Data);
 				addChild(Child);
 			}
 			

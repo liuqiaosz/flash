@@ -40,17 +40,17 @@ package pixel.ui.control.style
 			this.BackgroundAlpha = 0;
 		}
 		
-		override public function Encode():ByteArray
+		override public function encode():ByteArray
 		{
-			var Data:ByteArray = super.Encode();
+			var Data:ByteArray = super.encode();
 			Data.writeShort(_SliderLineHeight);
 			Data.writeFloat(_SliderLineColor);
 			return Data;
 		}
 		
-		override public function Decode(Data:ByteArray):void
+		override public function decode(Data:ByteArray):void
 		{
-			super.Decode(Data);
+			super.decode(Data);
 			_SliderLineHeight = Data.readShort();
 			_SliderLineColor = Data.readFloat();
 		}

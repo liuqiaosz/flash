@@ -10,7 +10,7 @@ package pixel.ui.control.style
 		{
 		}
 		
-		public function Decode(Data:ByteArray):void
+		public function decode(Data:ByteArray):void
 		{
 			_FontSize = Data.readByte();
 			_FontColor = Data.readUnsignedInt();
@@ -21,7 +21,7 @@ package pixel.ui.control.style
 			_FontFamily = Data.readMultiByte(Len,"cn-gb");
 		}
 		
-		public function Encode():ByteArray
+		public function encode():ByteArray
 		{
 			var Data:ByteArray = new ByteArray();
 			Data.writeByte(_FontSize);

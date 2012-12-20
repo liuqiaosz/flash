@@ -62,7 +62,7 @@ package pixel.ui.control
 		}
 		
 		
-		override public function Dispose():void
+		override public function dispose():void
 		{
 			this.removeEventListener(MouseEvent.MOUSE_OVER,FocusMove);
 			_Items = null;
@@ -138,7 +138,7 @@ package pixel.ui.control
 			var itemData:ByteArray = null;
 			for each(var item:ComboboxItem in _Items)
 			{
-				itemData = item.Encode();
+				itemData = item.encode();
 				data.writeBytes(itemData,0,itemData.length);
 			}
 //			var itemData:ByteArray = _Item.Encode();
@@ -152,7 +152,7 @@ package pixel.ui.control
 			for(var idx:int = 0; idx<len; idx++)
 			{
 				item = new ComboboxItem();
-				item.Decode(data);
+				item.decode(data);
 				this.AddItem(item);
 			}
 //			_Item = new ComboboxItem();

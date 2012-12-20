@@ -20,7 +20,7 @@ package pixel.ui.control
 			height = 20;
 		}
 		
-		override public function Dispose():void
+		override public function dispose():void
 		{
 			removeEventListener(FocusEvent.FOCUS_IN,Focus);
 			removeEventListener(FocusEvent.FOCUS_OUT,FocusLeave);

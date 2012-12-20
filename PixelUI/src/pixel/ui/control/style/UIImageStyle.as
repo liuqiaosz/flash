@@ -36,9 +36,9 @@ package pixel.ui.control.style
 			super();
 		}
 		
-		override public function Encode():ByteArray
+		override public function encode():ByteArray
 		{
-			var data:ByteArray = super.Encode();
+			var data:ByteArray = super.encode();
 			data.writeByte(int(_isGif));
 			if(_isGif)
 			{
@@ -47,9 +47,9 @@ package pixel.ui.control.style
 			return data;
 		}
 		
-		override public function Decode(Data:ByteArray):void
+		override public function decode(Data:ByteArray):void
 		{
-			super.Decode(Data);
+			super.decode(Data);
 			_isGif = Boolean(Data.readByte());
 			if(_isGif)
 			{

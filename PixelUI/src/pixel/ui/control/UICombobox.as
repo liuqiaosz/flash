@@ -74,7 +74,7 @@ package pixel.ui.control
 			addEventListener(MouseEvent.MOUSE_DOWN,popup);
 		}
 		
-		override public function Dispose():void
+		override public function dispose():void
 		{
 			removeEventListener(MouseEvent.MOUSE_DOWN,popup);
 		}
@@ -258,18 +258,18 @@ package pixel.ui.control
 			data.readByte();
 			_popDirection = data.readByte();
 			//_LabelField = new UITextInput();
-			_LabelField.Decode(data);
+			_LabelField.decode(data);
 			//_LabelField.Input = false;
 			//_LabelField.width = 100;
 			//_LabelField.BorderThinkness = 0;
 			data.readByte();
 			
 			//_List = new UIComboboxPop();
-			_List.Decode(data);
+			_List.decode(data);
 			//_List.visible = false;
 			data.readByte();
 			//_openButton = new UIButton();
-			_openButton.Decode(data);
+			_openButton.decode(data);
 			
 			//addChild(_LabelField);
 			//addChild(_List);
@@ -278,11 +278,11 @@ package pixel.ui.control
 		override protected function SpecialEncode(data:ByteArray):void
 		{
 			data.writeByte(_popDirection);
-			var childData:ByteArray = _LabelField.Encode();
+			var childData:ByteArray = _LabelField.encode();
 			data.writeBytes(childData,0,childData.length);
-			childData = _List.Encode();
+			childData = _List.encode();
 			data.writeBytes(childData,0,childData.length);
-			childData = _openButton.Encode();
+			childData = _openButton.encode();
 			data.writeBytes(childData,0,childData.length);
 		}
 	}

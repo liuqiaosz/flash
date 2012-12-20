@@ -236,7 +236,7 @@ package pixel.utility
 					Green = Green | (Green >> 6);
 					Blue = Blue | (Blue >> 5);
 				}
-				return new RGBA(Red,Green,Blue);
+				return new RGBA(Red,Green,Blue,255);
 			}
 			
 			/**

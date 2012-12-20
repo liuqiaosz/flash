@@ -122,7 +122,7 @@ package pixel.ui.control
 			_fontBold = fontBold;
 		}
 		
-		public function Encode():ByteArray
+		public function encode():ByteArray
 		{
 			var data:ByteArray = new ByteArray();
 			
@@ -161,7 +161,7 @@ package pixel.ui.control
 			}
 			return data;
 		}
-		public function Decode(data:ByteArray):void
+		public function decode(data:ByteArray):void
 		{
 			var len:int = data.readShort();
 			_Label = data.readMultiByte(len,"cn-gb");

@@ -20,6 +20,7 @@ package
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.GraphicsTrianglePath;
+	import flash.display.JPEGXREncoderOptions;
 	import flash.display.Loader;
 	import flash.display.PNGEncoderOptions;
 	import flash.display.Sprite;
@@ -27,6 +28,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -38,6 +40,7 @@ package
 	import flash.net.URLRequest;
 	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
+	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
 	import flash.system.Worker;
 	import flash.text.TextField;
@@ -52,6 +55,9 @@ package
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
 	import pixel.particle.PixelParticleEmitterPropertie;
+	import pixel.texture.PixelTextureFactory;
+	import pixel.texture.vo.PixelTexture;
+	import pixel.texture.vo.PixelTexturePackage;
 	import pixel.ui.control.ComboboxItem;
 	import pixel.ui.control.HorizontalScroller;
 	import pixel.ui.control.IUIControl;
@@ -78,14 +84,6 @@ package
 	import pixel.utility.loader.Loader;
 	import pixel.utility.swf.Swf;
 	import pixel.utility.swf.SwfFactory;
-	import pixel.worker.core.PixelWorker;
-	import pixel.worker.core.PixelWorkerHelper;
-	import pixel.worker.core.ShareMemory;
-	import pixel.worker.event.PixelWorkerEvent;
-	import pixel.worker.message.PixelWorkerLoaderMessageResponse;
-	import pixel.worker.message.PixelWorkerMessage;
-	import pixel.worker.message.PixelWorkerMessageRequest;
-	import pixel.worker.message.PixelWorkerMessageResponse;
 	
 	import ui.aa;
 	
@@ -164,13 +162,19 @@ package
 		[Embed(source="map2.jpg")]
 		private var IMG:Class;
 		
-		[Embed(source="../bin-debug/TestWorker.swf",mimeType="application/octet-stream")]
-		private var workerClass:Class;
-		
+	
 		[Embed(source="monkey.gif",mimeType="application/octet-stream")]
 		private var GIF:Class;
+		
+		[Embed(source="xr",mimeType="application/octet-stream")]
+		private var XR:Class;
+		
+		[Embed(source="11111.tpk",mimeType="application/octet-stream")]
+		private var TPK:Class;
 		private var sid:String = "";
 		private var center:Point = new Point();
+		private var angle:int
+		private var startAngle:int
 		public function Sample()
 		{
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -185,7 +189,134 @@ package
 			addChild(s);
 			s.x = stage.stageWidth - s.width;
 			
-			pixelTest();
+			this.addEventListener(Event.ENTER_FRAME,enterFramefunc);
+		}
+		
+		private function enterFramefunc(e:Event):void
+		{
+			angle>360?angle=0:''
+			graphics.clear();
+			graphics.beginFill(0xff0000,.6);
+			drawSector(this.graphics,150,150,50,angle,270);
+			drawSector(this.graphics,150,150,100,angle,270);
+			
+			
+			graphics.beginFill(0x0000ff,.6);
+			//drawSector(this.graphics,450,150,50,angle,startAngle)
+			startAngle++;
+			angle++;
+		}
+		
+		/**
+		 * 绘制扇形 
+		 * @param graphics 绘图对象
+		 * @param x 圆心x轴
+		 * @param y 圆心vy轴
+		 * @param radius 半径
+		 * @param size 绘制的扇形大小（角度制，0<=size<=360)
+		 * @param startRotation 开始的角度(角度制，默认为270度即12点方向)
+		 * 
+		 */                
+		private static function drawSector(graphics:Graphics,x:int,y:int,radius:int,size:Number,startRotation:Number=270):void
+		{
+			
+			
+			if(size<=0) return;
+			if(size > 360) size = 360;
+			
+			var n:int=8;
+			size = Math.PI/180 * size;
+			var angleN:Number = size/n;
+			//绘制二次贝塞尔曲线的外切半径
+			var tangentRadius:Number = radius/Math.cos(angleN/2);
+			//转换为弧度
+			var angle:Number=startRotation* Math.PI / 180;
+			
+			var cx:Number;
+			var cy:Number;
+			var ax:Number;
+			var ay:Number;
+			
+			//开始角度再圆上的位置
+			var startX:Number = x + Math.cos(angle) * radius;
+			var startY:Number = y + Math.sin(angle) * radius;
+
+			graphics.moveTo(startX, startY);
+			//graphics.lineTo(startX, startY);
+			for (var i:Number = 0; i < n; i++) {
+				
+				//绘制2次贝塞尔曲线，
+				angle += angleN;
+				//求出开始点与将要绘制点的角平分线与将要绘制点的交点
+				cx = x + Math.cos(angle-(angleN/2))*(tangentRadius);
+				cy = y + Math.sin(angle-(angleN/2))*(tangentRadius);
+				//僬侥绘制点在圆上的位置
+				ax = x + Math.cos(angle) * radius;
+				ay = y + Math.sin(angle) * radius;
+				
+				graphics.curveTo(cx, cy, ax, ay);
+			}
+			graphics.lineTo(x, y);
+			
+		}
+		
+		
+		private function performTest():void
+		{
+			
+			var load:flash.display.Loader = new flash.display.Loader();
+			load.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+				var cu:int = flash.utils.getTimer();
+				trace("complete[" + (cu - time + "] Time[" + cu + "]"));
+				time = flash.utils.getTimer();
+				var ad:ApplicationDomain = load.contentLoaderInfo.applicationDomain;
+				trace((flash.utils.getTimer() - time));
+				time = flash.utils.getTimer();
+				var v:Vector.<String> =  ad.getQualifiedDefinitionNames();
+				
+				var id:String = v.pop();
+				time = flash.utils.getTimer();
+				trace("get[" + time + "]");
+				var bitmap:Object = ad.getDefinition(id);
+				
+				cu = flash.utils.getTimer();
+				trace(cu - time + "");
+				trace((flash.utils.getTimer() - time));
+			});
+			
+			load.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,function(event:ProgressEvent):void{
+				var cu:int = flash.utils.getTimer();
+				time = cu - time;
+				trace("progress use[" + time + "] Time[" + cu + "]");
+				time = cu;
+				if(event.bytesLoaded == event.bytesTotal)
+				{
+					
+					trace("progress end Time[" + time + "]");
+				}
+			});
+			var ctx:LoaderContext = new LoaderContext();
+			ctx.imageDecodingPolicy = ImageDecodingPolicy.ON_DEMAND;
+
+			load.load(new URLRequest("D:\\image.swf"),ctx);
+			trace("start");
+			var time:int = flash.utils.getTimer();
+		}
+		
+		
+		private function textureTest():void
+		{
+			var data:ByteArray = new TPK() as ByteArray;
+			
+			var pack:PixelTexturePackage = PixelTextureFactory.instance.decode(data);
+			
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				var textures:Vector.<PixelTexture> = pack.textures;
+				
+				var img:Bitmap = new Bitmap(textures[0].bitmap);
+				stage.addChild(img);
+				
+			});
 		}
 		
 		private function pixelTest():void
@@ -316,7 +447,6 @@ package
 		
 		private var queue:Vector.<Particle> = new Vector.<Particle>();
 		private var ball:Particle; 
-		private var angle:Number = 0; 
 		private var radiusX:Number = 150; 
 		private var radiusY:Number = 100;
 		private var vr:Number = .1;
@@ -622,38 +752,38 @@ package
 			
 		}
 		
-		private function workerTest():void
-		{
-			
-			PixelWorkerHelper.instance.createWorkerByURL("TestWorker.swf");
-			PixelWorkerHelper.instance.addEventListener(PixelWorkerEvent.WORKER_COMPLETE,function(event:PixelWorkerEvent):void{
-				var work:PixelWorker = event.message as PixelWorker;
-				work.addEventListener(PixelWorkerEvent.MESSAGE_AVAILABLE,function(event:PixelWorkerEvent):void{
-					var msg:PixelWorkerLoaderMessageResponse = event.message as PixelWorkerLoaderMessageResponse;
-					
-					if(msg.shareMemory)
-					{
-						var memory:ByteArray = work.getShareProperty(ShareMemory.SHARE_BYTEARRAY) as ByteArray;
-						var a:flash.display.Loader = new flash.display.Loader();
-						var ctx:LoaderContext = new LoaderContext();
-						ctx.applicationDomain = ApplicationDomain.currentDomain;
-						ctx.allowCodeImport = true;
-						a.loadBytes(memory,ctx);
-						a.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-							var vec:Vector.<String> = a.contentLoaderInfo.applicationDomain.getQualifiedDefinitionNames();
-							trace(vec.length + "");
-						});
-					}
-				});
-				work.start();
-				
-				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-					var req:PixelWorkerMessageRequest = new PixelWorkerMessageRequest(PixelWorkerMessage.LOAD_SWF);
-					req.message = "http://175.10.1.144:9200/payplateform/UI.swf";
-					work.sendMessage(req);
-				});
-			});
-		}
+//		private function workerTest():void
+//		{
+//			
+//			PixelWorkerHelper.instance.createWorkerByURL("TestWorker.swf");
+//			PixelWorkerHelper.instance.addEventListener(PixelWorkerEvent.WORKER_COMPLETE,function(event:PixelWorkerEvent):void{
+//				var work:PixelWorker = event.message as PixelWorker;
+//				work.addEventListener(PixelWorkerEvent.MESSAGE_AVAILABLE,function(event:PixelWorkerEvent):void{
+//					var msg:PixelWorkerLoaderMessageResponse = event.message as PixelWorkerLoaderMessageResponse;
+//					
+//					if(msg.shareMemory)
+//					{
+//						var memory:ByteArray = work.getShareProperty(ShareMemory.SHARE_BYTEARRAY) as ByteArray;
+//						var a:flash.display.Loader = new flash.display.Loader();
+//						var ctx:LoaderContext = new LoaderContext();
+//						ctx.applicationDomain = ApplicationDomain.currentDomain;
+//						ctx.allowCodeImport = true;
+//						a.loadBytes(memory,ctx);
+//						a.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+//							var vec:Vector.<String> = a.contentLoaderInfo.applicationDomain.getQualifiedDefinitionNames();
+//							trace(vec.length + "");
+//						});
+//					}
+//				});
+//				work.start();
+//				
+//				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+//					var req:PixelWorkerMessageRequest = new PixelWorkerMessageRequest(PixelWorkerMessage.LOAD_SWF);
+//					req.message = "http://175.10.1.144:9200/payplateform/UI.swf";
+//					work.sendMessage(req);
+//				});
+//			});
+//		}
 	}
 }
 

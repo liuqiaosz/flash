@@ -53,18 +53,18 @@ package pixel.ui.control
 			Update();
 		}
 		
-		override public function Encode():ByteArray
+		override public function encode():ByteArray
 		{
 			State = ButtonState.NORMAL;
-			return super.Encode();
+			return super.encode();
 		}
 		
-		override public function Decode(Data:ByteArray):void
+		override public function decode(Data:ByteArray):void
 		{
 			//先对当前状态进行重置后再进行解码
 			State = ButtonState.NORMAL;
 			
-			super.Decode(Data);
+			super.decode(Data);
 		}
 	}
 }

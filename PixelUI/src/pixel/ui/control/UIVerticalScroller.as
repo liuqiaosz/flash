@@ -312,22 +312,22 @@ package pixel.ui.control
 		
 		override protected function SpecialEncode(Data:ByteArray):void
 		{
-			var data:ByteArray = _scrollHandler.Encode();
+			var data:ByteArray = _scrollHandler.encode();
 			Data.writeBytes(data);
-			data = _scrollUp.Encode();
+			data = _scrollUp.encode();
 			Data.writeBytes(data);
-			data = _scrollDown.Encode();
+			data = _scrollDown.encode();
 			Data.writeBytes(data);
 		}
 		
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			Data.readByte();
-			_scrollHandler.Decode(Data);
+			_scrollHandler.decode(Data);
 			Data.readByte();
-			_scrollUp.Decode(Data);
+			_scrollUp.decode(Data);
 			Data.readByte();
-			_scrollDown.Decode(Data);
+			_scrollDown.decode(Data);
 		}
 	}
 }

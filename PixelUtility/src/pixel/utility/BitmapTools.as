@@ -66,7 +66,7 @@ package pixel.utility
 		
 		public static function BitmapClone(Source:BitmapData):BitmapData
 		{
-			var Data:BitmapData = new BitmapData(Source.width,Source.height);
+			var Data:BitmapData = new BitmapData(Source.width,Source.height,true,0);
 			Data.copyPixels(Source,Source.rect,new Point());
 			return Data;
 		}
@@ -102,7 +102,7 @@ package pixel.utility
 			return pixels;
 		}
 		
-		public static function pixelsUncompressARGB4444ToARGB8888(source:ByteArray):ByteArray
+		public static function pixelsUncompressARGB4444ToARGB8888(source:ByteArray,fix:Boolean = true):ByteArray
 		{
 			source.position = 0;
 			var pixels:ByteArray = new ByteArray();
@@ -112,7 +112,7 @@ package pixel.utility
 			while(source.bytesAvailable > 0)
 			{
 				pixel = source.readShort();
-				pixel = ColorCode.ARGB4444ToARGB8888(pixel,true).Pixel;
+				pixel = ColorCode.ARGB4444ToARGB8888(pixel,fix).Pixel;
 				pixels.writeUnsignedInt(pixel);
 			}
 			return pixels;
@@ -133,7 +133,7 @@ package pixel.utility
 			return pixels;
 		}
 		
-		public static function pixelsUncompressRGB565ToRGB888(source:ByteArray):ByteArray
+		public static function pixelsUncompressRGB565ToRGB888(source:ByteArray,fix:Boolean = true):ByteArray
 		{
 			source.position = 0;
 			var pixels:ByteArray = new ByteArray();
@@ -142,7 +142,7 @@ package pixel.utility
 			while(source.bytesAvailable > 0)
 			{
 				pixel = source.readShort();
-				pixel = ColorCode.RGB565ToRGB888(pixel,true).Pixel;
+				pixel = ColorCode.RGB565ToRGB888(pixel,fix).Pixel;
 				pixels.writeUnsignedInt(pixel);
 			}
 			return pixels;

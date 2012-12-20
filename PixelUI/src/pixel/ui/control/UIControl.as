@@ -71,7 +71,7 @@ package pixel.ui.control
 		
 		protected function onRemoveFromStage(event:Event):void
 		{
-			this.Dispose();
+			this.dispose();
 		}
 		
 		protected var _Owner:UIControl = null;
@@ -172,7 +172,7 @@ package pixel.ui.control
 			}
 		}
 		
-		public function Dispose():void
+		public function dispose():void
 		{
 			//RemoveEvent();
 			removeEventListener(Event.ADDED_TO_STAGE,OnAdded);
@@ -406,7 +406,7 @@ package pixel.ui.control
 //			return Cloneable.Instance.Clone(this);
 //		}
 		
-		public function Encode():ByteArray
+		public function encode():ByteArray
 		{
 			var Data:ByteArray = new ByteArray();
 			var Prototype:uint = Utils.GetControlPrototype(this);
@@ -462,14 +462,14 @@ package pixel.ui.control
 			}
 			else
 			{
-				var StyleData:ByteArray = Style.Encode();
+				var StyleData:ByteArray = Style.encode();
 				Data.writeBytes(StyleData,0,StyleData.length);
 			}
 			
 			SpecialEncode(Data);
 			return Data;
 		}
-		public function Decode(Data:ByteArray):void
+		public function decode(Data:ByteArray):void
 		{
 			var Len:int = Data.readByte();
 			Id = Data.readUTFBytes(Len);
@@ -495,7 +495,7 @@ package pixel.ui.control
 			}
 			else
 			{
-				_Style.Decode(Data);
+				_Style.decode(Data);
 			}
 			SpecialDecode(Data);
 			//RegisterEvent();

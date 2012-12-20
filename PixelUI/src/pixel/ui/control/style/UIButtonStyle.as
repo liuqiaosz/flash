@@ -41,15 +41,15 @@ package pixel.ui.control.style
 		/**
 		 * 样式编码
 		 **/
-		override public function Encode():ByteArray
+		override public function encode():ByteArray
 		{
-			var Data:ByteArray = super.Encode();
+			var Data:ByteArray = super.encode();
 			
-			var OverStyleData:ByteArray = _OverStyle.Encode();
+			var OverStyleData:ByteArray = _OverStyle.encode();
 			OverStyleData.position = 0;
 			Data.writeBytes(OverStyleData,0,OverStyleData.length);
 			
-			var PressStyleData:ByteArray = _PressStyle.Encode();
+			var PressStyleData:ByteArray = _PressStyle.encode();
 			PressStyleData.position = 0;
 			Data.writeBytes(PressStyleData,0,PressStyleData.length);
 			return Data;
@@ -58,11 +58,11 @@ package pixel.ui.control.style
 		/**
 		 * 样式解码
 		 **/
-		override public function Decode(Data:ByteArray):void
+		override public function decode(Data:ByteArray):void
 		{
-			super.Decode(Data);
-			_OverStyle.Decode(Data);
-			_PressStyle.Decode(Data);
+			super.decode(Data);
+			_OverStyle.decode(Data);
+			_PressStyle.decode(Data);
 		}
 		
 		override public function set ImagePack(Value:Boolean):void

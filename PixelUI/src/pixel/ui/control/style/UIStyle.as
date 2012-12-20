@@ -287,7 +287,7 @@ package pixel.ui.control.style
 		/**
 		 * 序列化接口
 		 **/
-		public function Encode():ByteArray
+		public function encode():ByteArray
 		{
 			var Data:ByteArray = new ByteArray();
 			//1	Short	控件宽度
@@ -394,12 +394,12 @@ package pixel.ui.control.style
 				Data.writeByte(0);
 			}
 			
-			var FontData:ByteArray = _Font.Encode();
+			var FontData:ByteArray = _Font.encode();
 			Data.writeBytes(FontData,0,FontData.length);
 			return Data;
 		}
 		
-		public function Decode(Data:ByteArray):void
+		public function decode(Data:ByteArray):void
 		{
 			try
 			{
@@ -470,7 +470,7 @@ package pixel.ui.control.style
 					}
 					
 				}
-				_Font.Decode(Data);
+				_Font.decode(Data);
 			}
 			catch(Err:Error)
 			{

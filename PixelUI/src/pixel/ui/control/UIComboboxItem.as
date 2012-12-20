@@ -46,14 +46,14 @@ package pixel.ui.control
 		
 		override protected function SpecialEncode(data:ByteArray):void
 		{
-			var itemData:ByteArray = _Item.Encode();
+			var itemData:ByteArray = _Item.encode();
 			data.writeBytes(itemData,0,itemData.length);
 		}
 		
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			_Item = new ComboboxItem();
-			_Item.Decode(Data);
+			_Item.decode(Data);
 			_text.Text = _Item.Label;
 			_text.FontColor = _Item.fontColor;
 			_text.FontBold = _Item.fontBold;

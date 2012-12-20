@@ -70,7 +70,7 @@ package pixel.ui.control.vo
 			{
 				data.writeMultiByte(_desc,"cn-gb");
 			}
-			data.writeBytes(_style.Encode());
+			data.writeBytes(_style.encode());
 			return data;
 		}
 		
@@ -87,7 +87,7 @@ package pixel.ui.control.vo
 			{
 				_desc = data.readMultiByte(len,"cn-gb");
 			}
-			_style.Decode(data);
+			_style.decode(data);
 		}
 	}
 }

@@ -32,7 +32,7 @@ package pixel.ui.control
 			this.addEventListener(MouseEvent.MOUSE_DOWN,MouseDrag);
 		}
 		
-		override public function Dispose():void
+		override public function dispose():void
 		{
 			this.removeEventListener(MouseEvent.MOUSE_DOWN,MouseDrag);
 		}

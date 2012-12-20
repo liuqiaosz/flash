@@ -296,11 +296,11 @@ package pixel.ui.control
 			{
 				ChildTab = CreateTab();
 				Data.readByte()
-				ChildTab.Decode(Data);
+				ChildTab.decode(Data);
 				
 				ChildTabContent = _ContentDictionary[ChildTab];
 				Data.readByte()
-				ChildTabContent.Decode(Data);
+				ChildTabContent.decode(Data);
 			}
 		}
 	}

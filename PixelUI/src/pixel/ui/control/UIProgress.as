@@ -61,13 +61,13 @@ package pixel.ui.control
 		
 		override protected function SpecialEncode(Data:ByteArray):void
 		{
-			var data:ByteArray = _ProgressBar.Encode();
+			var data:ByteArray = _ProgressBar.encode();
 			Data.writeBytes(data);
 		}
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			Data.readByte();
-			_ProgressBar.Decode(Data);
+			_ProgressBar.decode(Data);
 		}
 	}
 }

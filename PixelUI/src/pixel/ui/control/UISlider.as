@@ -197,9 +197,9 @@ package pixel.ui.control
 			stage.removeEventListener(MouseEvent.MOUSE_UP,SliderScrollStop);
 		}
 		
-		override public function Dispose():void
+		override public function dispose():void
 		{
-			super.Dispose();
+			super.dispose();
 			removeEventListener(MouseEvent.MOUSE_DOWN,OnMouseDown);
 			removeEventListener(UIControlEvent.RENDER_UPDATE,OnUpdate);
 		}

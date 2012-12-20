@@ -223,7 +223,7 @@ package editor.ui
 		//			}
 		//		}
 		//		
-				public function Dispose():void
+				public function dispose():void
 				{
 					
 					if(_Children && _Children.length > 0)
@@ -407,7 +407,7 @@ package editor.ui
 		
 		public function DecodeWorkspaceByModel(Model:ByteArray,fileNav:String = ""):void
 		{
-			Dispose();
+			dispose();
 			_originalData = Tools.byteArrayClone(Model);
 			_originalNav = fileNav;
 			Model.position = 0;
@@ -467,7 +467,7 @@ package editor.ui
 		public function DecodeModelByByteOld(Model:ByteArray):void
 		{
 			Model.position = 0;
-			Dispose();
+			dispose();
 			var Component:ComponentModel = ModelFactory.Instance.Decode(Model);
 			Component.Control.EnableEditMode();
 			addChild(Component.Control);
@@ -536,7 +536,7 @@ package editor.ui
 //				
 //				var Component:ComponentModel = ModelFactory.Instance.Decode(ModelData);
 //				_ComponentProfile = Component;
-//				Dispose();
+//				dispose();
 //				if(_ComponentProfile.Category == 1)
 //				{
 //					IsComplex = true;

@@ -220,9 +220,9 @@ package pixel.ui.control
 			}
 		}
 		
-		override public function Dispose():void
+		override public function dispose():void
 		{
-			super.Dispose();
+			super.dispose();
 			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
 			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut); 
@@ -245,10 +245,10 @@ package pixel.ui.control
 			return _MouseOverStyle;
 		}
 		
-		override public function Encode():ByteArray
+		override public function encode():ByteArray
 		{
 			_Style = _NormalStyle;
-			return super.Encode();
+			return super.encode();
 		}
 		
 		override public function set Style(value:IVisualStyle):void
@@ -277,7 +277,7 @@ package pixel.ui.control
 			var labelData:ByteArray = new ByteArray();
 			Data.readBytes(labelData,0,Len);
 			labelData.position = 1;//跳过UILabel类型数据域
-			_Text.Decode(labelData);
+			_Text.decode(labelData);
 //			if(Len > 0)
 //			{
 //				
@@ -288,7 +288,7 @@ package pixel.ui.control
 		}
 		override protected function SpecialEncode(Data:ByteArray):void
 		{
-			var labelData:ByteArray = _Text.Encode();
+			var labelData:ByteArray = _Text.encode();
 			Data.writeShort(labelData.length);
 			Data.writeBytes(labelData,0,labelData.length);
 //			var Len:int = Tools.StringActualLength(_TextValue);

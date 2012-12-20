@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
-    <classEntry path="pixel.texture.PixelTexture"/>
-    <classEntry path="pixel.texture.PixelCompressOption"/>
+    <classEntry path="pixel.texture.vo.PixelTexture"/>
+    <classEntry path="pixel.texture.PixelTextureFactory"/>
+    <classEntry path="pixel.texture.IPixelTextureFactory"/>
+    <classEntry path="pixel.texture.vo.PixelTexturePackage"/>
+    <classEntry path="pixel.texture.PixelTextureEncodeEmu"/>
+    <classEntry path="pixel.texture.PixelTextureNS"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
