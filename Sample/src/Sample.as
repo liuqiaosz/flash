@@ -37,6 +37,7 @@ package
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
@@ -47,6 +48,7 @@ package
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	import flash.utils.Proxy;
+	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 	
 	import pixel.assets.PixelAssetTask;
@@ -81,6 +83,8 @@ package
 	import pixel.utility.Tools;
 	import pixel.utility.bitmap.gif.GIFDecoder;
 	import pixel.utility.bitmap.gif.GIFFrame;
+	import pixel.utility.data.QuadNode;
+	import pixel.utility.data.QuadTree;
 	import pixel.utility.loader.Loader;
 	import pixel.utility.swf.Swf;
 	import pixel.utility.swf.SwfFactory;
@@ -184,12 +188,24 @@ package
 			progress();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
-			
 			var s:Stat = new Stat();
 			addChild(s);
 			s.x = stage.stageWidth - s.width;
+			//this.addEventListener(Event.ENTER_FRAME,enterFramefunc);
+			trace((4%2));
 			
-			this.addEventListener(Event.ENTER_FRAME,enterFramefunc);
+			var tree:QuadTree = new QuadTree(new Rectangle(0,0,stage.stageWidth,stage.stageHeight),5);
+			
+			var sp:Sprite = new Sprite();
+			
+			sp.x = 1280 * Math.random();
+			sp.y = 600 * Math.random();
+			trace(sp.x + "_" + sp.y);
+			var node:QuadNode = tree.addChild(sp);
+			trace(node.area);
+			addChild(sp);
+			
+			
 		}
 		
 		private function enterFramefunc(e:Event):void
@@ -258,49 +274,6 @@ package
 			}
 			graphics.lineTo(x, y);
 			
-		}
-		
-		
-		private function performTest():void
-		{
-			
-			var load:flash.display.Loader = new flash.display.Loader();
-			load.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				var cu:int = flash.utils.getTimer();
-				trace("complete[" + (cu - time + "] Time[" + cu + "]"));
-				time = flash.utils.getTimer();
-				var ad:ApplicationDomain = load.contentLoaderInfo.applicationDomain;
-				trace((flash.utils.getTimer() - time));
-				time = flash.utils.getTimer();
-				var v:Vector.<String> =  ad.getQualifiedDefinitionNames();
-				
-				var id:String = v.pop();
-				time = flash.utils.getTimer();
-				trace("get[" + time + "]");
-				var bitmap:Object = ad.getDefinition(id);
-				
-				cu = flash.utils.getTimer();
-				trace(cu - time + "");
-				trace((flash.utils.getTimer() - time));
-			});
-			
-			load.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,function(event:ProgressEvent):void{
-				var cu:int = flash.utils.getTimer();
-				time = cu - time;
-				trace("progress use[" + time + "] Time[" + cu + "]");
-				time = cu;
-				if(event.bytesLoaded == event.bytesTotal)
-				{
-					
-					trace("progress end Time[" + time + "]");
-				}
-			});
-			var ctx:LoaderContext = new LoaderContext();
-			ctx.imageDecodingPolicy = ImageDecodingPolicy.ON_DEMAND;
-
-			load.load(new URLRequest("D:\\image.swf"),ctx);
-			trace("start");
-			var time:int = flash.utils.getTimer();
 		}
 		
 		

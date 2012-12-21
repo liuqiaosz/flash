@@ -39,25 +39,6 @@ package pixel.texture.vo
 		{
 			return _alphaCut;
 		}
-//		private var _compress:Boolean = false;
-//		public function set compress(value:Boolean):void
-//		{
-//			_compress = value;
-//		}
-//		public function get compress():Boolean
-//		{
-//			return _compress;
-//		}
-//		private var _pixelCompress:Boolean = false;
-//		public function set pixelCompress(value:Boolean):void
-//		{
-//			_pixelCompress = value;
-//		}
-//		public function get pixelCompress():Boolean
-//		{
-//			return _pixelCompress;
-//		}
-		
 		//图形size
 		private var _imageWidth:int = 0;
 		public function set imageWidth(value:int):void
@@ -198,7 +179,6 @@ package pixel.texture.vo
 			return _bitmap;
 		}
 		
-		
 		private var _customAnchor:Boolean = false;
 		public function set customAnchor(value:Boolean):void
 		{
@@ -227,10 +207,10 @@ package pixel.texture.vo
 		
 		public function dispose():void
 		{
-			if(_bitmap && _source)
+			if(_bitmap)
 			{
-				_source.clear();
-				_source = null;
+				_bitmap.dispose();
+				_bitmap = null;
 			}
 		}
 		

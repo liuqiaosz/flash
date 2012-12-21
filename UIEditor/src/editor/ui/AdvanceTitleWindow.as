@@ -1,12 +1,12 @@
 package editor.ui
 {
+	import editor.uitility.ui.event.UIEvent;
+	
 	import flash.events.MouseEvent;
 	
 	import mx.events.CloseEvent;
 	
 	import spark.components.TitleWindow;
-	
-	import editor.uitility.ui.event.UIEvent;
 
 	public class AdvanceTitleWindow extends TitleWindow
 	{
@@ -30,6 +30,11 @@ package editor.ui
 		protected function Close(event:MouseEvent):void
 		{
 			CloseWindow();
+		}
+		
+		public function set closeButtonEnabled(value:Boolean):void
+		{
+			super.closeButton.visible = value;
 		}
 	}
 }

@@ -158,11 +158,14 @@
 			[Bindable]
 			private var vv:Boolean = false;
 			
+			[Bindable]
+			private var closeEnabled:Boolean = false;
 			public static const MENU_NEW:String = "New";
 			public static const MENU_SAVE:String = "Save";
 			public static const MENU_SAVEAS:String = "SaveAs";
 			public static const MENU_OPEN:String = "Open";
 			public static const MENU_CLOSE:String = "Close";
+			public static const MENU_EXPORTLIST:String = "ExportList";
 			
 			public static const MENU_INLINESTYLE:String = "InlineStyle";
 			public static const MENU_GLOBALSTYLE:String = "GlobalStyle";
@@ -226,7 +229,7 @@
 			[Bindable]
 			private var menuData:Array = [
 				{
-					label: "文件",
+					label: "组件",
 					children: [
 						{
 							id: MENU_NEW,
@@ -237,10 +240,15 @@
 							label: "打开"
 						},
 						{
-							id: MENU_CLOSE,
-							label: "关闭文件",
-							enabled: false
+							id: MENU_EXPORTLIST,
+							label : "导出描述文件",
+							enabled : false
 						},
+//						{
+//							id: MENU_CLOSE,
+//							label: "关闭文件",
+//							enabled: false
+//						},
 						{
 							id: MENU_SAVE,
 							label: "保存",
@@ -288,7 +296,7 @@
 				nativeWindow.x = Screen.mainScreen.visibleBounds.width/2 - this.width/2;
 				nativeWindow.y = Screen.mainScreen.visibleBounds.height/2 - this.height/2;
 				WorkspaceContainer.enabled = true;
-				EditorWindow.closeButton.visible = false;
+
 				stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
 					if(event.keyCode == Keyboard.DELETE)
 					{
@@ -618,6 +626,7 @@
 					mainMenu.enableItemById(MENU_SAVEAS);
 					mainMenu.enableItemById(MENU_CLOSE);
 					mainMenu.enableItemById(MENU_INLINESTYLE);
+					mainMenu.enableItemById(MENU_EXPORTLIST);
 					resetEditor();
 					WorkspaceInitializer();
 				}
@@ -666,6 +675,7 @@
 				WorkspaceContainer.visible = true;
 				WorkspaceContainer.addElement(EditWorkspace);
 				ComponentBar.enabled = true;
+				closeEnabled = true;
 				Enabled = true;
 				EditWorkspace.DecodeWorkspaceByModel(model,File(event.target).nativePath);
 				
@@ -674,6 +684,7 @@
 				mainMenu.enableItemById(MENU_SAVEAS);
 				mainMenu.enableItemById(MENU_CLOSE);
 				mainMenu.enableItemById(MENU_INLINESTYLE);
+				mainMenu.enableItemById(MENU_EXPORTLIST);
 			}
 			
 			private function fileClose():void
@@ -759,6 +770,7 @@
 				mainMenu.disabledItemById(MENU_SAVEAS);
 				mainMenu.disabledItemById(MENU_CLOSE);
 				mainMenu.disabledItemById(MENU_INLINESTYLE);
+				mainMenu.disabledItemById(MENU_EXPORTLIST);
 			}
 			/**
 			 * 
@@ -839,6 +851,7 @@
 			{
 				Enabled = true;
 				ComponentBar.enabled = true;
+				closeEnabled = true;
 				EditWorkspace = new WorkspacePlus();
 				EditWorkspace.width = 5000;
 				EditWorkspace.height = 5000;
@@ -855,10 +868,12 @@
 				WorkspaceContainer.addElement(EditWorkspace);
 				WorkspaceContainer.visible = true;
 				EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
+				closeEnabled = true;
 			}
 
 			private function resetEditor():void
 			{
+				
 				if(WorkspaceContainer.containsElement(EditWorkspace))
 				{
 					WorkspaceContainer.removeElement(EditWorkspace);
@@ -870,7 +885,7 @@
 				ControlProperty.enabled = false;
 				
 				ComponentTree = new ArrayCollection();
-				
+				closeEnabled = false;
 				Enabled = false;
 				InlineStyle.clear();
 				
@@ -972,7 +987,6 @@
 							EditWorkspace.addChild(_DragControl as DisplayObject);
 						}
 					}
-					
 					else if(_DragControl is ComponentModel)
 					{
 						var Data:ByteArray = new ByteArray();
@@ -1023,7 +1037,6 @@
 						break;
 					case MENU_GLOBALSTYLE:
 						globalStyleManager();
-						
 						break;
 					case MENU_INLINESTYLE:
 						PopUpWindowManager.PopUp(InlineStyleManagerWindow);
@@ -1031,8 +1044,54 @@
 					case MENU_VERSION:
 						PopUpWindowManager.PopUp(AboutWindow);
 						break;
+					case MENU_EXPORTLIST:
+						exportList();
+						break;
 				}
 			}
+			
+			/**
+			 * 导出组件集的描述文件
+			 * 
+			 **/
+			protected function exportList():void
+			{
+				var nextLine:String = "";
+				var itemTemplate:String = "<control id=\"{id}\" type=\"{type}\">"  + nextLine;
+				var doc:String = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + nextLine + "<controls>" + nextLine;
+				
+				var controls:Vector.<IUIControl> = this.EditWorkspace.Children;
+				var id:String = "";
+				var type:String = "";
+				var item:String = "";
+				for each(var control:IUIControl in controls)
+				{
+					id = control.Id;
+					type = flash.utils.getQualifiedClassName(control);
+					type = type.replace("::",".");
+					item = itemTemplate.replace("{id}",id);
+					item = item.replace("{type}",type);
+					doc += item;
+				}
+				
+				doc += "</controls>";
+				
+				var browser:File = new File();
+				browser.addEventListener(Event.SELECT,function(event:Event):void{
+					var file:File = new File(browser.nativePath + ".xml");
+					var writer:FileStream = new FileStream();
+					writer.open(file,FileMode.WRITE);
+					writer.writeUTFBytes(doc);
+					writer.close();
+				});
+				browser.browseForSave("保存路径");
+			}
+			
+			protected function closeWorkeidt(event:CloseEvent):void
+			{
+				fileClose();
+			}
+			
 		]]>
 	</fx:Script>
 	<s:layout>
@@ -1069,10 +1128,11 @@
 			</s:Panel>
 		</s:VGroup>
 		
-		<s:TitleWindow width="100%" height="100%" dropShadowVisible="false"  title="组件编辑区" id="EditorWindow">
-			<s:layout>
+		<ui:AdvanceTitleWindow width="100%" height="100%" dropShadowVisible="false" 
+							   title="组件编辑区" id="EditorWindow" closeButtonEnabled="{closeEnabled}" close="closeWorkeidt(event)">
+			<ui:layout>
 				<s:VerticalLayout paddingLeft="10" paddingTop="10" />
-			</s:layout>
+			</ui:layout>
 			<s:Scroller width="100%" height="100%">
 				<s:Group id="WorkspaceContainer"  visible="false">
 					<s:Rect id="BackFill" >
@@ -1082,8 +1142,8 @@
 					</s:Rect>
 				</s:Group>
 			</s:Scroller>
-		</s:TitleWindow>
-		
+		</ui:AdvanceTitleWindow>
+
 		<mx:Accordion width="220" height="100%" creationPolicy="all" minWidth="220">
 			<mx:VBox label="属性" horizontalAlign="center" width="100%" height="100%">
 				<ui:PropertyPanel id="ControlProperty" width="100%" height="100%"  OnChangeImage="OnChangeControlImage(event)"/>	
@@ -1100,14 +1160,6 @@
 						 dataProvider="{AssetLibraryTree}" iconFunction="TreeIconFactory"
 						 itemClick="TreeItemClick(event)" labelField="id"/>
 			</mx:VBox>
-			<!--
-			<mx:VBox label="结构视图" horizontalAlign="center" width="100%" height="100%">
-				<mx:Tree width="200" height="100%" borderVisible="false" contentBackgroundColor="#FFFFFF"
-						 dataProvider="{ComponentTree}" iconFunction="TreeIconFactory"
-						 itemClick="ComponentChildSelect(event)" labelField="Id" paddingTop="10">
-				</mx:Tree>
-			</mx:VBox>
-			-->
 		</mx:Accordion>
 	</mx:HDividedBox>
 </s:WindowedApplication>
