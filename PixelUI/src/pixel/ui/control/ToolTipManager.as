@@ -1,8 +1,8 @@
 package pixel.ui.control
 {
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 
-	use namespace NSPixelUI
+	use namespace PixelUINS
 	public class ToolTipManager
 	{
 		private static var _Instance:IToolTip;
@@ -36,11 +36,11 @@ import pixel.ui.control.UILabel;
 import pixel.ui.control.UIPanel;
 import pixel.ui.control.asset.IPixelAssetManager;
 import pixel.ui.control.style.IVisualStyle;
-import pixel.ui.core.NSPixelUI;
+import pixel.ui.core.PixelUINS;
 
 class ToolTipImpl implements IToolTip
 {
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	
 	//private var _Tip:TipPanel = new TipPanel();
 	private var _tip:IPixelTip = null;

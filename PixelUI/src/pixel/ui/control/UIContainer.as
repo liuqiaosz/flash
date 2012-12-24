@@ -7,11 +7,11 @@ package pixel.ui.control
 	
 	import pixel.ui.control.style.UIContainerStyle;
 	import pixel.ui.control.utility.Utils;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	
 //	import pixel.utility.Tools;
 	
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	/**
 	 * 基础容器类,不提供视觉渲染
 	 * 
@@ -136,7 +136,7 @@ package pixel.ui.control
 			return child;
 		}
 		
-		NSPixelUI function OrignalAddChild(Child:DisplayObject):DisplayObject
+		PixelUINS function OrignalAddChild(Child:DisplayObject):DisplayObject
 		{
 			//_Children.push(Child);
 			

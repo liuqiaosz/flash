@@ -3,11 +3,11 @@ package pixel.ui.control
 	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 	
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	import pixel.utility.ISerializable;
 	import pixel.utility.Tools;
 
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	
 	public class ComboboxItem implements ISerializable
 	{

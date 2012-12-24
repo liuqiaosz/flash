@@ -7,9 +7,9 @@ package pixel.ui.control
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.ScrollerStyle;
 	import pixel.ui.control.style.UIScrollerStyle;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	
 	/**
 	 * 滑动条
@@ -74,7 +74,7 @@ package pixel.ui.control
 			
 		}
 		
-		NSPixelUI function refresh():void
+		PixelUINS function refresh():void
 		{
 		}
 	}

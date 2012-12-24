@@ -5,9 +5,9 @@ package pixel.ui.control
 	
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UIVerticalPanelStyle;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	
 	public class UIVerticalPanel extends UIContainer
 	{

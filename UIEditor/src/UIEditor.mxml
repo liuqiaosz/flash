@@ -76,6 +76,7 @@
 			import pixel.ui.control.UIVerticalPanel;
 			import pixel.ui.control.UIWindow;
 			import pixel.ui.control.asset.IAssetLibrary;
+			import pixel.ui.control.asset.PixelAssetEmu;
 			import pixel.ui.control.asset.PixelAssetManager;
 			import pixel.ui.control.event.DownloadEvent;
 			import pixel.ui.control.event.EditModeEvent;
@@ -332,15 +333,22 @@
 					for(var idx:int = 0; idx<files.length; idx++)
 					{
 						var file:File = files[idx];
-						if(!file.isDirectory && file.extension == "swf")
+						if(!file.isDirectory)
 						{
-							Url.push(file.nativePath);
+							if(file.extension == "swf")
+							{
+								PixelAssetManager.instance.download(file.nativePath);
+							}
+							else if(file.extension == "tpk")
+							{
+								PixelAssetManager.instance.download(file.nativePath,PixelAssetEmu.ASSET_TPK);
+							}
 						}
 						
 					}
 				}
 				PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
-				PixelAssetManager.instance.Download(Url);
+				//PixelAssetManager.instance.download(Url);
 			}
 			
 			private function initializerStyle():void
@@ -552,7 +560,8 @@
 					//清除该事件引用,因为响应事件的同时窗口已经关闭
 					PopupWindow.removeEventListener(NotifyEvent.IMPORTSWF,AssetLibraryCreated);
 					PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS,OnImportSwfSuccess);
-					PixelAssetManager.instance.PushQueue(event.Message);
+					PixelAssetManager.instance.download(event.Message);
+					this.initializerRes();
 				}
 				catch(Err:Error)
 				{
@@ -1057,7 +1066,7 @@
 			protected function exportList():void
 			{
 				var nextLine:String = "";
-				var itemTemplate:String = "<control id=\"{id}\" type=\"{type}\">"  + nextLine;
+				var itemTemplate:String = "<control id=\"{id}\" type=\"{type}\" />"  + nextLine;
 				var doc:String = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + nextLine + "<controls>" + nextLine;
 				
 				var controls:Vector.<IUIControl> = this.EditWorkspace.Children;

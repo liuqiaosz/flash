@@ -21,6 +21,8 @@
     <classEntry path="pixel.ui.control.style.UIStyleManager"/>
     <classEntry path="pixel.ui.control.style.IUIStyleManager"/>
     <classEntry path="pixel.ui.control.style.UIStyleLinkEmu"/>
+    <classEntry path="pixel.ui.control.asset.PixelAssetEmu"/>
+    <classEntry path="pixel.ui.control.asset.PixelTextureAssetLibrary"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

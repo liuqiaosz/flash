@@ -1,5 +1,8 @@
 package pixel.ui.control.asset
 {
+	import pixel.ui.core.PixelUINS;
+
+	use namespace PixelUINS;
 	/**
 	 * 组件资源加载管理
 	 **/
@@ -41,7 +44,9 @@ import pixel.ui.control.UIControl;
 import pixel.ui.control.asset.IAsset;
 import pixel.ui.control.asset.IAssetLibrary;
 import pixel.ui.control.asset.IPixelAssetManager;
+import pixel.ui.control.asset.PixelAssetEmu;
 import pixel.ui.control.asset.PixelLoaderAssetLibrary;
+import pixel.ui.control.asset.PixelTextureAssetLibrary;
 import pixel.ui.control.event.DownloadEvent;
 import pixel.utility.IDispose;
 import pixel.utility.Tools;
@@ -49,13 +54,13 @@ import pixel.utility.swf.Swf;
 
 class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetManager,IDispose
 {
-		
 	private var AssetDictionary:Dictionary = new Dictionary();
 	//加载器
 	//private var AssetLoader:Loader = null;
-	private var _Loader:Loader = null;
+	//private var _Loader:Loader = null;
+	private var _loader:URLLoader = null;
 	//加载队列
-	private var DownloadQueue:Array = [];
+	private var DownloadQueue:Vector.<TaskNode> = new Vector.<TaskNode>();
 	//锁定标识
 	private var _Busy:Boolean = false;
 	
@@ -63,23 +68,47 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	//正在加载的资源
 	private var _LibraryLoading:int = 1;
 	//正在加载的资源URL
-	private var _LibraryLoadingUrl:String = "";
+	//private var _LibraryLoadingUrl:String = "";
+	private var loadingTask:TaskNode = null;
 	//本次加载队列的文件总数
 	private var _Total:int = 0;
+	
+	private var _self:ControlAssetManagerImpl = null;
 	public function ControlAssetManagerImpl()
 	{
-		
+		_loader = new URLLoader();
+		//_Loader = new Loader();
+		_loader.dataFormat = URLLoaderDataFormat.BINARY;
+		//			_Loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,OnProgress);
+		//			_Loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,OnError);
+		//			_Loader.contentLoaderInfo.addEventListener(Event.COMPLETE,OnComplete);
+		//			_Loader.contentLoaderInfo.addEventListener(Event.OPEN,OnStart);
+		_loader.addEventListener(ProgressEvent.PROGRESS,OnProgress);
+		_loader.addEventListener(IOErrorEvent.IO_ERROR,OnError);
+		_loader.addEventListener(Event.COMPLETE,OnComplete);
+		_loader.addEventListener(Event.OPEN,OnStart);
+		_self = this;
 	}
 	
-	public function Download(Uri:Array):void
+	public function download(url:String,type:int = PixelAssetEmu.ASSET_SWF):void
 	{
-		if(Uri && Uri.length > 0)
-		{
-			_Total = Uri.length;
-			DownloadQueue = DownloadQueue.concat(Uri);
-			StartDownloadQueue();
-		}
+		var task:TaskNode = new TaskNode();
+		task.url = url;
+		task.type = type;
+		DownloadQueue.push(task);
+		
+		StartDownloadQueue();
 	}
+	
+//	public function Download(Uri:Array):void
+//	{
+//		if(Uri && Uri.length > 0)
+//		{
+//			_Total = Uri.length;
+//			DownloadQueue = DownloadQueue.concat(Uri);
+//			StartDownloadQueue();
+//		}
+//	}
 	
 	public function get Librarys():Vector.<IAssetLibrary>
 	{
@@ -165,18 +194,15 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	 **/
 	protected function StartDownloadQueue():void
 	{
-		_Busy = true;
-		_LibraryLoadingUrl = DownloadQueue.pop();
-		
-		_Loader = new Loader();
-		//_Loader.dataFormat = URLLoaderDataFormat.BINARY;
-		_Loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,OnProgress);
-		_Loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,OnError);
-		_Loader.contentLoaderInfo.addEventListener(Event.COMPLETE,OnComplete);
-		_Loader.contentLoaderInfo.addEventListener(Event.OPEN,OnStart);
-		var ctx:LoaderContext = new LoaderContext();
-		ctx.allowCodeImport = true;
-		_Loader.load(new URLRequest(_LibraryLoadingUrl),ctx);
+		if(!_Busy)
+		{
+			_Busy = true;
+			loadingTask = DownloadQueue.pop();
+			
+			var ctx:LoaderContext = new LoaderContext();
+			ctx.allowCodeImport = true;
+			_loader.load(new URLRequest(loadingTask.url));
+		}
 	}
 	
 	/**
@@ -185,7 +211,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	{
 		var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_START);
 		Notify.CurrentIndex = _LibraryLoading;
-		Notify.CurrentUri = _LibraryLoadingUrl;
+		Notify.CurrentUri = loadingTask.url;
 		Notify.LoadedBytes = event.bytesLoaded;
 		Notify.TotalBytes = event.bytesTotal;
 		Notify.Total = _Total;
@@ -194,7 +220,6 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	
 	private function OnError(event:IOErrorEvent):void
 	{
-		clearLoader();
 		var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_ERROR);
 		Notify.Message = event.text;
 		dispatchEvent(Notify);
@@ -207,11 +232,32 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	
 	private function OnComplete(event:Event):void
 	{
-		var id:String = Tools.getFileName(this._LibraryLoadingUrl);
-		var lib:PixelLoaderAssetLibrary = new PixelLoaderAssetLibrary(_Loader,id);
-		_AssetLibArray.push(lib);
-		CheckHook(lib);
-		clearLoader();
+		var lib:IAssetLibrary = null;
+		var id:String = Tools.getFileName(loadingTask.url);
+		var Notify:DownloadEvent = null;
+		switch(loadingTask.type)
+		{
+			case PixelAssetEmu.ASSET_SWF:
+				
+				var reader:Loader = new Loader();
+				reader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(readEvent:Event):void{
+					lib = new PixelLoaderAssetLibrary(reader,id);
+					_AssetLibArray.push(lib);
+					CheckHook(lib);
+					Notify = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
+					_self.dispatchEvent(Notify);
+				});
+				reader.loadBytes(_loader.data as ByteArray);
+				break;
+			case PixelAssetEmu.ASSET_TPK:
+				lib = new PixelTextureAssetLibrary(id,_loader.data as ByteArray);
+				_AssetLibArray.push(lib);
+				CheckHook(lib);
+				Notify = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
+				_self.dispatchEvent(Notify);
+				break;
+		}
+		
 		if(DownloadQueue.length > 0)
 		{
 			//继续加载下一个资源
@@ -219,8 +265,6 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		}
 		else
 		{
-			var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
-			dispatchEvent(Notify);
 			_Busy = false;
 		}
 		/**
@@ -271,15 +315,15 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 //		}
 //	}
 	
-	private function clearLoader():void
-	{
-		_Loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
-		_Loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
-		_Loader.contentLoaderInfo.removeEventListener(Event.COMPLETE,OnComplete);
-		_Loader.contentLoaderInfo.removeEventListener(Event.OPEN,OnStart);
-		_Loader.unload();
-		_Loader = null;
-	}
+//	private function clearLoader():void
+//	{
+//		_Loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,OnProgress);
+//		_Loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,OnError);
+//		_Loader.contentLoaderInfo.removeEventListener(Event.COMPLETE,OnComplete);
+//		_Loader.contentLoaderInfo.removeEventListener(Event.OPEN,OnStart);
+//		_Loader.unload();
+//		_Loader = null;
+//	}
 	
 	private function definitionParse():Vector.<Object>
 	{
@@ -297,7 +341,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	{
 		var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_START);
 		Notify.CurrentIndex = _LibraryLoading;
-		Notify.CurrentUri = _LibraryLoadingUrl;
+		Notify.CurrentUri = loadingTask.url;
 		dispatchEvent(Notify);
 	}
 	
@@ -305,7 +349,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	{
 		_LibraryLoading = 1;
 		_Total = 0;
-		_LibraryLoadingUrl = "";
+		loadingTask = null;
 		_Busy = false;
 	}
 	
@@ -367,4 +411,10 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		}
 		return Result as Bitmap;
 	}
+}
+
+class TaskNode
+{
+	public var url:String = "";
+	public var type:int = PixelAssetEmu.ASSET_SWF;
 }

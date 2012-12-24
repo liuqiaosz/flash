@@ -3,9 +3,9 @@ package pixel.ui.control
 	import flash.display.Bitmap;
 	import flash.utils.ByteArray;
 	
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	
 	public class UIComboboxItem  extends UIContainer
 	{

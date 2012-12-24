@@ -420,8 +420,8 @@ package editor.ui
 				controls.push(controlMod.control);
 			}
 			//var controls:Vector.<IUIControl> = mod.controls;
-			var styles:Vector.<UIStyleMod> = mod.styles;
-			
+			//var styles:Vector.<UIStyleMod> = mod.styles;
+			InlineStyle.styles = mod.styles;
 			for each(var child:UIControl in controls)
 			{
 				child.EnableEditMode();

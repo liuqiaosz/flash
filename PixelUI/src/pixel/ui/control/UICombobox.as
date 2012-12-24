@@ -8,9 +8,9 @@ package pixel.ui.control
 	import pixel.ui.control.event.ComboboxEvent;
 	import pixel.ui.control.style.UICombStyle;
 	import pixel.ui.control.style.IVisualStyle;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	/**
 	 * 下拉框
 	 * 上拉框

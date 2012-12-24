@@ -38,6 +38,7 @@ package
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
@@ -73,6 +74,7 @@ package
 	import pixel.ui.control.UIProgress;
 	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.UIVerticalScroller;
+	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.style.VerticalScrollerStyle;
 	import pixel.ui.control.vo.UIMod;
 	import pixel.utility.BitmapTools;
@@ -193,11 +195,8 @@ package
 			s.x = stage.stageWidth - s.width;
 			//this.addEventListener(Event.ENTER_FRAME,enterFramefunc);
 			trace((4%2));
-			
-			var tree:QuadTree = new QuadTree(new Rectangle(0,0,stage.stageWidth,stage.stageHeight),5);
-			
+			var tree:QuadTree = new QuadTree(new Rectangle(0,0,stage.stageWidth,stage.stageHeight),2);
 			var sp:Sprite = new Sprite();
-			
 			sp.x = 1280 * Math.random();
 			sp.y = 600 * Math.random();
 			trace(sp.x + "_" + sp.y);
@@ -205,7 +204,21 @@ package
 			trace(node.area);
 			addChild(sp);
 			
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				sp.x = event.stageX;
+				sp.y = event.stageY;
+				tree.updateChild(sp);
+			});
 			
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE,function(event:Event):void{
+				
+				trace("!");
+			
+			});
+			
+			//loader.load(new URLRequest("D:\\11111.tpk"));
+			PixelAssetManager.instance.download("D:\\11111.tpk",2);
 		}
 		
 		private function enterFramefunc(e:Event):void
@@ -235,8 +248,6 @@ package
 		 */                
 		private static function drawSector(graphics:Graphics,x:int,y:int,radius:int,size:Number,startRotation:Number=270):void
 		{
-			
-			
 			if(size<=0) return;
 			if(size > 360) size = 360;
 			

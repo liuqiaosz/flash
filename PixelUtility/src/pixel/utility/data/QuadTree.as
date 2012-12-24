@@ -4,9 +4,7 @@ package pixel.utility.data
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
 	import mx.controls.Tree;
-	
 	import pixel.utility.PixelUtilityNS;
 	
 	use namespace PixelUtilityNS;
@@ -73,8 +71,8 @@ package pixel.utility.data
 			for(idx; idx<4; idx++)
 			{
 				var area:Rectangle = new Rectangle(
-					node.area.x + (idx % 2) + node.area.width * .5,
-					node.area.y + int(idx > 1) + node.area.height * .5,
+					node.area.x + (idx % 2) * node.area.width * .5,
+					node.area.y + int(idx > 1) * node.area.height * .5,
 					node.area.width * .5,node.area.height * .5
 				);
 				var child:QuadNode = node.createChildNode(area);
@@ -169,12 +167,12 @@ package pixel.utility.data
 					{
 						if(!parent.checkPointInArea(pos))
 						{
-						
 							addChild(child);
 						}
 						else
 						{
 							node = searchNodeByPoint(pos,parent);
+							trace(node.area);
 							node.addChild(child);
 						}
 					}
@@ -216,6 +214,11 @@ package pixel.utility.data
 				_childDictCache[child] = node;
 			}
 			return node;
+		}
+		
+		protected function buildChildArea(child:DisplayObject):Rectangle
+		{
+			return new Rectangle(child.x,child.y,child.width,child.height);
 		}
 	}
 }

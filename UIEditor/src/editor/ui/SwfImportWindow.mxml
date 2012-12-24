@@ -32,7 +32,12 @@
 				if(Copy)
 				{
 					var Local:FileReference = new FileReference();
-					SwfFile.copyTo(new File(Common.DEFAULT_DIR_RES));
+					var dest:File = new File(Common.DEFAULT_DIR_RES);
+					if(!dest.exists)
+					{
+						dest.createDirectory();
+					}
+					SwfFile.copyTo(new File(Common.DEFAULT_DIR_RES + SwfFile.name),true);
 					Path = Common.DEFAULT_DIR_RES + SwfFile.name;
 				}
 				else

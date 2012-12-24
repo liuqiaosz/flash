@@ -8,10 +8,10 @@ package pixel.ui.control
 	import pixel.ui.control.event.ScrollerEvent;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UIVerticalScrollerStyle;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	import pixel.utility.BitmapTools;
 
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	
 	/**
 	 * 纵向滚动条
@@ -242,7 +242,7 @@ package pixel.ui.control
 		 * 
 		 * 
 		 **/
-		NSPixelUI function refresh():void
+		PixelUINS function refresh():void
 		{
 			_container = parent as UIContainer;
 			if(_container)

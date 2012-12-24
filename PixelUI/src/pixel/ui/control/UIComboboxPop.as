@@ -16,10 +16,10 @@ package pixel.ui.control
 	import pixel.ui.control.UILabel;
 	import pixel.ui.control.UITextBase;
 	import pixel.ui.control.style.FontStyle;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	import pixel.utility.Tools;
 
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	public class UIComboboxPop extends UIContainer
 	{
 		private var _Items:Vector.<ComboboxItem> = new Vector.<ComboboxItem>();

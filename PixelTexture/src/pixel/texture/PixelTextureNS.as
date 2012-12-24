@@ -1,4 +1,4 @@
 package pixel.texture
 {
-	public namespace PixelTextureNS = "NS:PixelTexture/2012";
+	public namespace PixelTextureNS = "NS:Pixel/Texture/2012";
 }

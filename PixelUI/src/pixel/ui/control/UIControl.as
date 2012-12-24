@@ -24,12 +24,12 @@ package pixel.ui.control
 	import pixel.ui.control.utility.ScaleRect;
 	import pixel.ui.control.utility.Utils;
 	import pixel.ui.control.vo.UIStyleMod;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ISerializable;
 	import pixel.utility.Tools;
 	
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	/**
 	 * UI顶层类
 	 **/

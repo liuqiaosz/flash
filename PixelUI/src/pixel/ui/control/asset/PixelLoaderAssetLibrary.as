@@ -3,6 +3,7 @@ package pixel.ui.control.asset
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.utils.ByteArray;
 	
 	import pixel.utility.System;
 
@@ -15,9 +16,6 @@ package pixel.ui.control.asset
 		{
 			super(id);
 			_loader = loader;
-			trace(System.playerVersion.major + "_" + System.playerVersion.minor);
-				
-				
 			var array:Vector.<String> = _loader.contentLoaderInfo.applicationDomain.getQualifiedDefinitionNames();
 			for each(var name:String in array)
 			{

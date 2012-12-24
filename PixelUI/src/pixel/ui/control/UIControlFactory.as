@@ -48,9 +48,9 @@ import pixel.ui.control.utility.Utils;
 import pixel.ui.control.vo.UIControlMod;
 import pixel.ui.control.vo.UIMod;
 import pixel.ui.control.vo.UIStyleMod;
-import pixel.ui.core.NSPixelUI;
+import pixel.ui.core.PixelUINS;
 
-use namespace NSPixelUI;
+use namespace PixelUINS;
 class UIControlFactoryImpl extends EventDispatcher implements IUIControlFactory
 {
 //	public function Encode(Control:IUIControl):ByteArray

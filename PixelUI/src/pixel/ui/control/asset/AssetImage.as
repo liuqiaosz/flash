@@ -4,13 +4,13 @@ package pixel.ui.control.asset
 
 	public class AssetImage extends Asset implements IAsset
 	{
-		private var _image:Bitmap = null;
+		protected var _image:Bitmap = null;
 		public function get image():Bitmap
 		{
 			return _image;
 		}
 		
-		public function AssetImage(name:String,image:Bitmap)
+		public function AssetImage(name:String,image:Bitmap = null)
 		{
 			super(name);
 			_image = image;

@@ -10,10 +10,10 @@ package pixel.ui.control
 	
 	import pixel.ui.control.style.FontStyle;
 	import pixel.ui.control.style.IVisualStyle;
-	import pixel.ui.core.NSPixelUI;
+	import pixel.ui.core.PixelUINS;
 	import pixel.utility.Tools;
 	
-	use namespace NSPixelUI;
+	use namespace PixelUINS;
 	public class UITextBase extends UIControl
 	{
 		private var _TextValue:String = "";
