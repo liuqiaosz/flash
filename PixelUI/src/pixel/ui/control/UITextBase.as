@@ -16,9 +16,9 @@ package pixel.ui.control
 	use namespace PixelUINS;
 	public class UITextBase extends UIControl
 	{
-		private var _TextValue:String = "";
-		private var _TextField:TextField = null;
-		private var _Format:TextFormat = null;
+		protected var _TextValue:String = "";
+		protected var _TextField:TextField = null;
+		protected var _Format:TextFormat = null;
 		public function UITextBase(Skin:Class,Text:String = "")
 		{
 			super(Skin);
@@ -39,14 +39,34 @@ package pixel.ui.control
 			//_TextField.height = height - _Style.BorderThinkness * 2;
 		}
 		
-		public function set Text(Value:String):void
+//		override public function set width(value:Number):void
+//		{
+//			super.width = value;
+//			_TextField.width = value;
+//		}
+//		override public function set height(value:Number):void
+//		{
+//			super.height = value;
+//			_TextField.height = value;
+//		}
+//		
+		public function set text(value:String):void
 		{
-			_TextField.text = _TextValue = Value;
+			_TextField.text = _TextValue = value;	
 		}
-		public function get Text():String
+		public function get text():String
 		{
-			return _TextField.text;
+			return _TextValue;
 		}
+//		public function set Text(Value:String):void
+//		{
+//			_TextField.text = _TextValue = Value;
+//		}
+//		public function get Text():String
+//		{
+//			return _TextField.text;
+//		}
+		
 		private var _AlignValue:int = TextAlign.LEFT;
 		public function set Align(Value:int):void
 		{
@@ -128,6 +148,14 @@ package pixel.ui.control
 		public function set Input(Value:Boolean):void
 		{
 			_TextField.type = Value ? TextFieldType.INPUT:TextFieldType.DYNAMIC;
+			
+			if(Value)
+			{
+				_TextField.autoSize = TextFieldAutoSize.NONE;
+				_TextField.selectable = Value;
+				_TextField.width = width;
+				_TextField.height = height;
+			}
 		}
 		
 		public function set Mutiline(Value:Boolean):void
@@ -176,11 +204,11 @@ package pixel.ui.control
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
 			var Len:int = Data.readShort();
-			var text:String = "";
+			var txt:String = "";
 			if(Len > 0)
 			{
 			//Text = Data.readUTFBytes(Len);
-				text = Data.readMultiByte(Len,"cn-gb");
+				txt = Data.readMultiByte(Len,"cn-gb");
 			}
 			//Text = Data.readMultiByte(Len,"cn-gb");
 //			FontSize = Data.readByte();
@@ -198,7 +226,7 @@ package pixel.ui.control
 			_TextField.width = width;
 			_TextField.height = height;
 			
-			Text = text;
+			text = txt;
 			this.updateFormat();
 //			Text = text;
 		}

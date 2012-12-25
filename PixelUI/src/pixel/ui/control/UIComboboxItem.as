@@ -24,7 +24,7 @@ package pixel.ui.control
 			addChild(_text);
 			if(_Item)
 			{
-				_text.Text = _Item.Label;
+				_text.text = _Item.Label;
 				_text.FontColor = _Item.fontColor;
 				_text.FontBold = _Item.fontBold;
 				_text.FontSize = _Item.fontSize;
@@ -54,7 +54,7 @@ package pixel.ui.control
 		{
 			_Item = new ComboboxItem();
 			_Item.decode(Data);
-			_text.Text = _Item.Label;
+			_text.text = _Item.Label;
 			_text.FontColor = _Item.fontColor;
 			_text.FontBold = _Item.fontBold;
 			_text.FontSize = _Item.fontSize;

@@ -189,7 +189,7 @@ package pixel.ui.control
 					var Notify:ComboboxEvent = new ComboboxEvent(ComboboxEvent.SELECT);
 					Notify.Item = Item.Item;
 					dispatchEvent(Notify);
-					_LabelField.Text = Item.Item.Label;
+					_LabelField.text = Item.Item.Label;
 				}
 			}
 			

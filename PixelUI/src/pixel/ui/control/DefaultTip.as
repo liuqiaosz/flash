@@ -15,7 +15,7 @@ package pixel.ui.control
 		
 		public function set tipText(value:String):void
 		{
-			_Label.Text = value;
+			_Label.text = value;
 			width = _Label.TextWidth + 5;
 			height = _Label.TextHeight + 5;
 		}

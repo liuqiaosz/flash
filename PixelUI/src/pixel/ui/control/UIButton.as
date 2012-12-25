@@ -152,7 +152,7 @@ package pixel.ui.control
 //					//_Text.height = height;
 //					addChild(_Text);
 //				}
-				_Text.Text = Value;
+				_Text.text = Value;
 				//addChild(_Text);
 				Update();
 			}
@@ -160,7 +160,7 @@ package pixel.ui.control
 			{
 				if(null != _Text && this.contains(_Text))
 				{
-					_Text.Text = "";
+					_Text.text = "";
 					//this.removeChild(_Text);
 				}
 			}

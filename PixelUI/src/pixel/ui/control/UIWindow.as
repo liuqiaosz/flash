@@ -187,11 +187,11 @@ class TitleBar extends UIPanel
 	
 	public function set Title(Value:String):void
 	{
-		_Title.Text = Value;
+		_Title.text = Value;
 	}
 	public function get Title():String
 	{
-		return _Title.Text;
+		return _Title.text;
 	}
 }
 

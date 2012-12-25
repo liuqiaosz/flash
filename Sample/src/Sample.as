@@ -38,7 +38,9 @@ package
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.net.SharedObject;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.net.registerClassAlias;
 	import flash.system.ApplicationDomain;
@@ -46,6 +48,7 @@ package
 	import flash.system.LoaderContext;
 	import flash.system.Worker;
 	import flash.text.TextField;
+	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	import flash.utils.Proxy;
@@ -72,10 +75,12 @@ package
 	import pixel.ui.control.UIImage;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
+	import pixel.ui.control.UITextInput;
 	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.style.VerticalScrollerStyle;
+	import pixel.ui.control.vo.UIControlMod;
 	import pixel.ui.control.vo.UIMod;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ColorCode;
@@ -152,7 +157,7 @@ package
 	//	import utility.Tools;
 	//	import utility.bitmap.png.PNGDecoder;
 	//	import utility.bitmap.tga.TGADecoder;
-	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
+	[SWF(width="1000",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="arrow_down.png")]
@@ -187,7 +192,7 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			//rotateTest();
 			//pngTo4444();
-			progress();
+			//progress();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
 			var s:Stat = new Stat();
@@ -211,14 +216,31 @@ package
 			});
 			
 			var loader:URLLoader = new URLLoader();
+			
+			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.addEventListener(Event.COMPLETE,function(event:Event):void{
 				
-				trace("!");
-			
+				var mod:UIMod = UIControlFactory.instance.decode(loader.data as ByteArray);
+				var control:UIControlMod = mod.controls.pop();
+				var ctl:UIPanel = control.control as UIPanel;
+				ctl.x = ctl.y = 0;
+				var txt:UITextInput = ctl.GetChildById("LoginPwd",true) as UITextInput;
+				txt.isPassword = true;
+				addChild(ctl);
 			});
 			
-			//loader.load(new URLRequest("D:\\11111.tpk"));
-			PixelAssetManager.instance.download("D:\\11111.tpk",2);
+			loader.load(new URLRequest("D:\\Developer\\flash\\Project\\Death\\UI Model\\登陆界面\\denglu.mod"));
+			var iput:UITextInput = new UITextInput();
+			//iput.type = TextFieldType.INPUT;
+			iput.width = 100;
+			iput.height = 30;
+			iput.Input = true;
+			
+			var obj:SharedObject = SharedObject.getLocal("account");
+			trace(obj.data.acc);
+			//obj.setProperty("account","test");
+			//obj.flush();
+			//addChild(iput);
 		}
 		
 		private function enterFramefunc(e:Event):void
