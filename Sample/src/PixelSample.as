@@ -4,9 +4,9 @@ package
 	
 	import pixel.core.PixelLauncher;
 	import pixel.core.PixelScreen;
-	import pixel.scene.IPixelScene;
-	import pixel.transition.PixelTransitionContants;
-	import pixel.transition.PixelTransitionFlipX;
+	import pixel.core.IPixelLayer;
+	import pixel.animation.PixelTransitionContants;
+	import pixel.animation.PixelTransitionFlipX;
 	
 	public class PixelSample extends PixelLauncher
 	{
@@ -20,7 +20,7 @@ package
 			});
 			
 			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
-				var scene:IPixelScene = PixelLauncher.director.switchScene(SwitchScene,PixelTransitionContants.FLIPX_LEFT,3);
+				var scene:IPixelLayer = PixelLauncher.director.switchScene(SwitchScene,PixelTransitionContants.FLIPX_LEFT,3);
 				//scene.x = 100;
 				//scene.y = 100;
 				//PixelLauncher.director.switchScene(SwitchScene);

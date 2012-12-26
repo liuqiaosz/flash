@@ -129,7 +129,7 @@ package pixel.core
 		 **/
 		protected function onFrameUpdate(event:TimerEvent):void
 		{
-			PixelMessageBus.Instance.dispatchMessage(message);
+			PixelMessageBus.instance.dispatchMessage(message);
 			startSeek = flash.utils.getTimer();
 			//_director.update();	
 			

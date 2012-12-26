@@ -4,9 +4,9 @@ package
 	
 	import pixel.core.IPixelSprite;
 	import pixel.core.PixelSprite;
-	import pixel.scene.PixelScene;
+	import pixel.core.PixelLayer;
 
-	public class DefaultScene extends PixelScene
+	public class DefaultScene extends PixelLayer
 	{
 		[Embed(source="assets/map2.jpg")]
 		private var Img:Class;

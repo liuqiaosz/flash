@@ -6,5 +6,7 @@ package pixel.core
 		function get y():Number;
 		function set x(value:Number):void;
 		function set y(value:Number):void;
+		function set alpha(value:Number):void;
+		function set visible(value:Boolean):void;
 	}
 }

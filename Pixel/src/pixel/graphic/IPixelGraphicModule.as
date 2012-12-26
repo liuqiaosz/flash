@@ -1,6 +1,6 @@
 package pixel.graphic
 {
-	import pixel.scene.IPixelScene;
+	import pixel.core.IPixelLayer;
 
 	public interface IPixelGraphicModule
 	{
@@ -9,6 +9,6 @@ package pixel.graphic
 		 * 
 		 * 
 		 **/
-		function render(scenes:Vector.<IPixelScene>):void;
+		function render(scenes:Vector.<IPixelLayer>):void;
 	}
 }

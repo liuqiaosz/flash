@@ -14,7 +14,7 @@ package pixel.io
 	import pixel.graphic.PixelRenderMode;
 	import pixel.message.IOMessage;
 	import pixel.message.PixelMessage;
-	import pixel.scene.IPixelScene;
+	import pixel.core.IPixelLayer;
 
 	use namespace PixelNs;
 	
@@ -76,7 +76,7 @@ package pixel.io
 //			}
 //		}
 		
-		public function screenRefresh(scenes:Vector.<IPixelScene>):void
+		public function screenRefresh(scenes:Vector.<IPixelLayer>):void
 		{
 			if(PixelConfig.renderMode == PixelRenderMode.RENDER_BITMAP)
 			{
@@ -96,7 +96,7 @@ package pixel.io
 		 * 
 		 * 
 		 **/
-		public function addSceneToScreen(scene:IPixelScene):void
+		public function addSceneToScreen(scene:IPixelLayer):void
 		{
 //			if(_sceneQueue.indexOf(scene) < 0)
 //			{
@@ -115,7 +115,7 @@ package pixel.io
 		 * 
 		 * 
 		 **/
-		public function removeSceneFromScreen(scene:IPixelScene):void
+		public function removeSceneFromScreen(scene:IPixelLayer):void
 		{
 			if(PixelConfig.renderMode == PixelRenderMode.RENDER_NORMAL)
 			{

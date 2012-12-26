@@ -48,7 +48,7 @@ package pixel.core
 		 **/
 		protected function register(message:String,callback:Function):void
 		{
-			PixelMessageBus.Instance.register(message,callback);
+			PixelMessageBus.instance.register(message,callback);
 		}
 		
 		/**
@@ -58,12 +58,12 @@ package pixel.core
 		 **/
 		protected function unRegister(message:String,callback:Function):void
 		{
-			PixelMessageBus.Instance.unRegister(message,callback);
+			PixelMessageBus.instance.unRegister(message,callback);
 		}
 		
 		protected function dispatchMessage(message:PixelMessage):void
 		{
-			PixelMessageBus.Instance.dispatchMessage(message);
+			PixelMessageBus.instance.dispatchMessage(message);
 		}
 	}
 }

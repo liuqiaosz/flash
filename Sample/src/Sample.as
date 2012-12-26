@@ -14,6 +14,8 @@ package
 	//	import flash.display.Loader;
 	//	import flash.display.Shape;
 	//	import flash.display.SpreadMethod;
+	import com.greensock.TweenLite;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.CapsStyle;
@@ -198,23 +200,29 @@ package
 			var s:Stat = new Stat();
 			addChild(s);
 			s.x = stage.stageWidth - s.width;
-			//this.addEventListener(Event.ENTER_FRAME,enterFramefunc);
-			trace((4%2));
-			var tree:QuadTree = new QuadTree(new Rectangle(0,0,stage.stageWidth,stage.stageHeight),2);
+			tweenTest();
+		}
+		
+		private function tweenTest():void
+		{
 			var sp:Sprite = new Sprite();
-			sp.x = 1280 * Math.random();
-			sp.y = 600 * Math.random();
-			trace(sp.x + "_" + sp.y);
-			var node:QuadNode = tree.addChild(sp);
-			trace(node.area);
+			sp.graphics.beginFill(0xFF0000);
+			sp.graphics.drawCircle(0,0,20);
+			sp.graphics.endFill();
+			
 			addChild(sp);
 			
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				sp.x = event.stageX;
-				sp.y = event.stageY;
-				tree.updateChild(sp);
+			TweenLite.to(sp,5,{
+				"x" : stage.stageWidth,
+				"y" : stage.stageHeight,
+				onComplete : function():void{
+					trace("success");
+				}
 			});
-			
+		}
+		
+		private function modTest():void
+		{
 			var loader:URLLoader = new URLLoader();
 			
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
@@ -238,9 +246,6 @@ package
 			
 			var obj:SharedObject = SharedObject.getLocal("account");
 			trace(obj.data.acc);
-			//obj.setProperty("account","test");
-			//obj.flush();
-			//addChild(iput);
 		}
 		
 		private function enterFramefunc(e:Event):void

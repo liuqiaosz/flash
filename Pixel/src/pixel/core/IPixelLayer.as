@@ -1,14 +1,15 @@
-package pixel.scene
+package pixel.core
 {
-	import pixel.core.IPixelGeneric;
-	import pixel.core.IPixelNode;
 
-	public interface IPixelScene extends IPixelGeneric
+	public interface IPixelLayer extends IPixelGeneric
 	{
+		function initializer():void;
 		function reset():void;
 		function get nodes():Vector.<IPixelNode>;
 		
 		function addNode(value:IPixelNode):void;
 		function removeNode(value:IPixelNode):void;
+		function get id():String;
+		function set id(value:String):void;
 	}
 }

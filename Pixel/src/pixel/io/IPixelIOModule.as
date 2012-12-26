@@ -1,12 +1,12 @@
 package pixel.io
 {
-	import pixel.scene.IPixelScene;
+	import pixel.core.IPixelLayer;
 
 	public interface IPixelIOModule
 	{
-		function addSceneToScreen(scene:IPixelScene):void;
-		function removeSceneFromScreen(scene:IPixelScene):void;
+		function addSceneToScreen(scene:IPixelLayer):void;
+		function removeSceneFromScreen(scene:IPixelLayer):void;
 		//function get screenScenes():Vector.<IPixelScene>;
-		function screenRefresh(scenes:Vector.<IPixelScene>):void;
+		function screenRefresh(scenes:Vector.<IPixelLayer>):void;
 	}
 }

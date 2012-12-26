@@ -12,7 +12,7 @@ package pixel.graphic
 	import pixel.core.PixelLauncher;
 	import pixel.core.PixelModule;
 	import pixel.core.PixelNs;
-	import pixel.scene.IPixelScene;
+	import pixel.core.IPixelLayer;
 	
 	use namespace PixelNs;
 
@@ -48,7 +48,7 @@ package pixel.graphic
 		protected var _gameCanvas:Bitmap = null;
 		protected var _gameClip:BitmapData = null;
 		protected var _renderNodes:Vector.<IPixelNode> = null;
-		protected var _scene:IPixelScene = null;
+		protected var _scene:IPixelLayer = null;
 		protected var _node:IPixelSprite = null;
 		protected var _nodeClip:BitmapData = null;
 		protected var _drawDest:Point = new Point();
@@ -59,7 +59,7 @@ package pixel.graphic
 		 * @param	scenes		当前要进行渲染的场景（允许多个场景同时渲染，多个场景同时渲染出现在场景切换过程中）
 		 * 
 		 **/
-		public function render(scenes:Vector.<IPixelScene>):void
+		public function render(scenes:Vector.<IPixelLayer>):void
 		{
 			for each(_scene in scenes)
 			{

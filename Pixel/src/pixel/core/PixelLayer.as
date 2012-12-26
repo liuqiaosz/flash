@@ -1,23 +1,35 @@
-package pixel.scene
+package pixel.core
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	
-	import pixel.core.IPixelNode;
-	import pixel.core.PixelNode;
 
 	/**
 	 * 场景基类
 	 * 
 	 * 
 	 **/
-	public class PixelScene extends Sprite implements IPixelScene
+	public class PixelLayer extends Sprite implements IPixelLayer
 	{
 		private var childNodes:Vector.<IPixelNode> = null;
-		
-		public function PixelScene()
+		private var _id:String = "";
+		public function PixelLayer(id:String = "")
 		{
 			super();
+		}
+		
+		public function get id():String
+		{
+			return _id;
+		}
+		public function set id(value:String):void
+		{
+			_id = value;
+		}
+		
+		public function initializer():void
+		{
+			
 		}
 		
 		[Deprecated(message="该方法无效,请使用addNode")]
