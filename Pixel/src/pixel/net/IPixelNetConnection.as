@@ -9,5 +9,6 @@ package pixel.net
 		function connect():void;
 		function close():void;
 		function sendMessage(msg:IPixelNetMessage):void;
+		function sendString(value:String):void;
 	}
 }

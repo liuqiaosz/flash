@@ -62,6 +62,10 @@ package
 	import pixel.assets.event.PixelAssetEvent;
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
+	import pixel.error.PixelNetError;
+	import pixel.net.PixelNetSocket;
+	import pixel.net.event.PixelNetEvent;
+	import pixel.net.msg.IPixelNetMessage;
 	import pixel.particle.PixelParticleEmitterPropertie;
 	import pixel.texture.PixelTextureFactory;
 	import pixel.texture.vo.PixelTexture;
@@ -159,6 +163,7 @@ package
 	//	import utility.Tools;
 	//	import utility.bitmap.png.PNGDecoder;
 	//	import utility.bitmap.tga.TGADecoder;
+	
 	[SWF(width="1000",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
 	public class Sample extends Sprite
 	{
@@ -200,7 +205,34 @@ package
 			var s:Stat = new Stat();
 			addChild(s);
 			s.x = stage.stageWidth - s.width;
-			tweenTest();
+			netTest();
+		}
+		
+		private function netTest():void
+		{
+			var conn:PixelNetSocket = new PixelNetSocket("168.33.211.244",8091);
+			conn.connect();
+
+			conn.addEventListener(PixelNetEvent.NET_EVENT_CONNECTFAILURE,function(event:PixelNetEvent):void{
+			
+				trace("error");
+			});
+			
+			conn.addEventListener(PixelNetEvent.NET_EVENT_CONNECTED,function(event:PixelNetEvent):void{
+				var m:Message = new Message();
+				
+				conn.sendMessage(m);
+			});
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				
+				var m:Message = new Message();
+				
+				conn.sendMessage(m);
+			
+			});
+			
+			//conn.close();
+			
 		}
 		
 		private function tweenTest():void
@@ -808,6 +840,8 @@ import flash.filters.BlurFilter;
 import flash.filters.GlowFilter;
 import flash.geom.Point;
 
+import pixel.net.msg.IPixelNetMessage;
+
 class Particle extends Sprite
 {
 	public var angle:Number = 0;
@@ -823,5 +857,13 @@ class Particle extends Sprite
 		var glow:GlowFilter = new GlowFilter(0x00FF00,0.5);
 		var blur:BlurFilter = new BlurFilter(5,5,1);
 		this.filters = [blur];
+	}
+}
+
+class Message implements IPixelNetMessage
+{
+	public function getMessage():String
+	{
+		return "测试";
 	}
 }

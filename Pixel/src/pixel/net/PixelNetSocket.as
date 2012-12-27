@@ -13,14 +13,19 @@ package pixel.net
 
 	public class PixelNetSocket extends EventDispatcher implements IPixelNetConnection
 	{
+		public static const CHARSET_GBK:String = "GBK";
+		public static const CHARSET_UTF8:String = "utf-8";
 		private var _client:Socket = null;
 		private var _ip:String = "";
 		private var _port:int = 0;
-		public function PixelNetSocket(ip:String,port:int)
+		private var _charset:String = null;
+		private var _isConnected:Boolean = false;
+		public function PixelNetSocket(ip:String,port:int,encode:String = CHARSET_UTF8)
 		{
 			super();
 			_ip = ip;
 			_port = port;
+			_charset = encode;
 		}
 		
 		public function connect():void
@@ -37,11 +42,12 @@ package pixel.net
 			
 			try
 			{
-				_client = new Socket(_ip,_port);
+				_client = new Socket();
 				_client.addEventListener(Event.CONNECT,onConnect);
 				_client.addEventListener(IOErrorEvent.IO_ERROR,onIOError);
 				_client.addEventListener(ProgressEvent.SOCKET_DATA,onRecive);
 				_client.addEventListener(SecurityErrorEvent.SECURITY_ERROR,onSecurityError);
+				_client.connect(_ip,_port);
 				//_client.addEventListener(
 			}
 			catch(err:Error)
@@ -54,6 +60,7 @@ package pixel.net
 		protected function onConnect(event:Event):void
 		{
 			dispatchEvent(new PixelNetEvent(PixelNetEvent.NET_EVENT_CONNECTED));
+			_isConnected = true;
 		}
 		protected function onIOError(event:IOErrorEvent):void
 		{
@@ -64,8 +71,9 @@ package pixel.net
 		
 		protected function onRecive(event:ProgressEvent):void
 		{
+			
 		}
-		
+
 		protected function onSecurityError(event:SecurityErrorEvent):void
 		{
 			var notify:PixelNetEvent = new PixelNetEvent(PixelNetEvent.NET_EVENT_CONNECTFAILURE);
@@ -88,8 +96,19 @@ package pixel.net
 		
 		public function sendMessage(msg:IPixelNetMessage):void
 		{
-			if(_client && _client.connected)
+			if(_client && _isConnected)
 			{
+				_client.writeMultiByte(msg.getMessage(),_charset)
+				_client.flush();
+			}
+		}
+		
+		public function sendString(value:String):void
+		{
+			if(_client && _isConnected)
+			{
+				_client.writeMultiByte(value,_charset)
+				_client.flush();
 			}
 		}
 	}
