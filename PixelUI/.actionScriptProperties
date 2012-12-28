@@ -10,8 +10,8 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin/PixelUtility.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="1" linkType="1" path="D:/Developer/flash/libs"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelTexture/bin/PixelTexture.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="1" linkType="1" path="/Users/LiuQiao/Documents/Developer/flash/libs"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

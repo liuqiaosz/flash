@@ -56,7 +56,7 @@ package
 	import flash.utils.Proxy;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
-	
+
 	import pixel.assets.PixelAssetTask;
 	import pixel.assets.PixelAssetsManager;
 	import pixel.assets.event.PixelAssetEvent;
