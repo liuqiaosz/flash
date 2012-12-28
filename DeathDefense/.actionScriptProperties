@@ -43,7 +43,7 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="/Pixel/bin/Pixel.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="1" linkType="1" path="/Users/LiuQiao/Documents/Developer/flash/libs"/>
+      <libraryPathEntry kind="1" linkType="1" path="/Users/LiuQiao/Documents/Developer/Code/flash/libs"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
