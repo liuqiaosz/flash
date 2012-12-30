@@ -6,6 +6,11 @@
     <classEntry path="pixel.net.msg.IPixelNetMessage"/>
     <classEntry path="pixel.error.PixelNetError"/>
     <classEntry path="pixel.net.event.PixelNetEvent"/>
+    <classEntry path="pixel.net.msg.tcp.IPixelTCPMessageParser"/>
+    <classEntry path="pixel.net.msg.tcp.IpixelTCPMessageHeader"/>
+    <classEntry path="pixel.net.msg.tcp.IPixelTCPMessageBody"/>
+    <classEntry path="pixel.net.msg.tcp.IPixelTCPMessage"/>
+    <classEntry path="pixel.net.msg.tcp.PixelTCPMessageGenericParser"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

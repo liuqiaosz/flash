@@ -205,13 +205,15 @@ package
 			var s:Stat = new Stat();
 			addChild(s);
 			s.x = stage.stageWidth - s.width;
+			
+			var i:int = int("AA");
 			netTest();
 		}
 		
 		private function netTest():void
 		{
-			var conn:PixelNetSocket = new PixelNetSocket("168.33.211.244",8091);
-			conn.connect();
+			var conn:PixelNetSocket = new PixelNetSocket();
+			conn.connect("168.33.211.244",8091);
 
 			conn.addEventListener(PixelNetEvent.NET_EVENT_CONNECTFAILURE,function(event:PixelNetEvent):void{
 			

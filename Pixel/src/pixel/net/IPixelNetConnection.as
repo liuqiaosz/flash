@@ -6,7 +6,7 @@ package pixel.net
 
 	public interface IPixelNetConnection extends IEventDispatcher
 	{
-		function connect():void;
+		function connect(ip:String,port:int,encode:String = ""):void;
 		function close():void;
 		function sendMessage(msg:IPixelNetMessage):void;
 		function sendString(value:String):void;
