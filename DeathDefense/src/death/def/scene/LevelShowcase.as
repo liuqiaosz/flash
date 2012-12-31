@@ -71,6 +71,8 @@ package death.def.scene
 				case MessageConstants.MSG_GETLEVELTOTAL:
 					//更新关卡视图
 					break;
+				case MessageConstants.MSG_GETLEVELINFO:
+					break;
 			}
 		}
 		
