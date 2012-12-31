@@ -1,7 +1,8 @@
 package pixel.core
 {
+	import pixel.utility.IDispose;
 
-	public interface IPixelLayer extends IPixelGeneric
+	public interface IPixelLayer extends IPixelGeneric,IDispose
 	{
 		function initializer():void;
 		function reset():void;

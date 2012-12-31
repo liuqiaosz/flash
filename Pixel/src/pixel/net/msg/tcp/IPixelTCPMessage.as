@@ -1,5 +1,7 @@
 package pixel.net.msg.tcp
 {
+	import flash.utils.ByteArray;
+
 	public interface IPixelTCPMessage
 	{
 		//消息ID
@@ -9,5 +11,8 @@ package pixel.net.msg.tcp
 		//消息头和消息体
 		function get head():IpixelTCPMessageHeader;
 		function get body():IPixelTCPMessageBody;
+		
+		function decode(data:ByteArray):void;
+		function encode():ByteArray;
 	}
 }

@@ -83,6 +83,9 @@ package pixel.core
 			
 		}
 		
+		public function dispose():void
+		{}
+		
 		public function get nodes():Vector.<IPixelNode>
 		{
 			return childNodes;
