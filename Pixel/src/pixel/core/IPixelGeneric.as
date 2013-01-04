@@ -1,6 +1,8 @@
 package pixel.core
 {
-	public interface IPixelGeneric extends IPixel
+	import pixel.utility.IDispose;
+
+	public interface IPixelGeneric extends IPixel,IDispose
 	{
 		function get x():Number;
 		function get y():Number;

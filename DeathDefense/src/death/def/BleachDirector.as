@@ -11,9 +11,9 @@ package death.def
 	 * 
 	 * 
 	 **/
-	public class DeathDirector extends PixelDirector
+	public class BleachDirector extends PixelDirector
 	{
-		public function DeathDirector()
+		public function BleachDirector()
 		{
 			super();
 		}

@@ -4,7 +4,7 @@ package pixel.net.msg.tcp
 
 	public class PixelTCPMessage implements IPixelTCPMessage
 	{
-		public function PixelTCPMessage(id:int)
+		public function PixelTCPMessage(id:int = 0)
 		{
 			_id = id;
 		}

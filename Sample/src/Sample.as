@@ -205,9 +205,6 @@ package
 			var s:Stat = new Stat();
 			addChild(s);
 			s.x = stage.stageWidth - s.width;
-			
-			var i:int = int("AA");
-			netTest();
 		}
 		
 		private function netTest():void

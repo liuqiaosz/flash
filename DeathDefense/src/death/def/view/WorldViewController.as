@@ -1,0 +1,112 @@
+package death.def.view
+{
+	import death.def.communication.CommMarshal;
+	import death.def.event.BleachDefenseEvent;
+	import death.def.scene.vo.WorldNodeVO;
+	import death.def.scene.vo.WorldVO;
+	
+	import flash.utils.Dictionary;
+
+	public class WorldViewController extends ViewController implements IWorldViewController
+	{
+		private var _currentWorld:WorldVO = null;
+		public function WorldViewController()
+		{
+			super();
+		}
+		
+		public function changeWorld(world:WorldVO):void
+		{
+			if(world)
+			{
+				_currentWorld = world;
+				initWorld(_currentWorld);
+			}
+		}
+		
+		protected function initWorld(value:WorldVO):void
+		{
+			clearViews();
+			
+			var nodes:Vector.<WorldNodeVO> = value.nodes;
+			var node:WorldNodeVO = null;
+			for each(node in nodes)
+			{
+				var worldNode:WorldNode = new WorldNode(node);
+				addView(worldNode);
+			}
+		}
+	}
+}
+import death.def.event.BleachDefenseEvent;
+import death.def.scene.IWorldNode;
+import death.def.scene.vo.WorldNodeVO;
+import death.def.texture.TextureManager;
+
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.MouseEvent;
+
+import pixel.core.PixelSprite;
+import pixel.texture.PixelTextureFactory;
+import pixel.texture.vo.PixelTexture;
+
+class WorldNode extends PixelSprite implements IWorldNode
+{
+	private var _node:WorldNodeVO = null;
+	private var _image:PixelTexture = null;
+	public function WorldNode(node:WorldNodeVO)
+	{
+		_node = node;
+		x = node.position.x;
+		y = node.position.y;
+		_image = TextureManager.instance.findTextureById(node.portraitImageId);
+		if(_image)
+		{
+			super(_image.bitmap);
+		}
+		this.addEventListener(MouseEvent.MOUSE_DOWN,eventMousePressed);
+		this.addEventListener(MouseEvent.MOUSE_OVER,eventMouseOver);
+		this.addEventListener(MouseEvent.MOUSE_UP,eventMouseRelease);
+	}
+	
+	override public function dispose():void
+	{
+		this.removeEventListener(MouseEvent.MOUSE_DOWN,eventMousePressed);
+		this.removeEventListener(MouseEvent.MOUSE_OVER,eventMouseOver);
+		this.removeEventListener(MouseEvent.MOUSE_UP,eventMouseRelease);
+	}
+	
+	public function get id():int
+	{
+		return _node.id;
+	}
+	public function get desc():String
+	{
+		return _node.desc;
+	}
+	
+	private function eventMousePressed(event:MouseEvent):void
+	{
+		var notify:BleachDefenseEvent = null;
+		switch(_node.type)
+		{
+			case WorldNodeVO.NODE_GATE:
+				notify = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_WORLD_REDIRECT);
+				break;
+			default:
+				notify = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_WORLD_OPENSCENE);
+				break;
+		}
+		if(notify)
+		{
+			notify.value = _node.redirectId;
+			dispatchEvent(notify);
+		}
+	}
+	
+	private function eventMouseRelease(event:MouseEvent):void
+	{}
+	private function eventMouseOver(event:MouseEvent):void
+	{}
+}

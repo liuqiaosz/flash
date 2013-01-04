@@ -52,8 +52,6 @@ package death.def.scene
 			//添加数据通讯监听
 			CommMarshal.instance.addMessageListener(MessageConstants.MSG_GETLEVELTOTAL,reciveMessage);
 			CommMarshal.instance.addEventListener(MessageConstants.MSG_GETLEVELINFO,reciveMessage);
-			
-			
 		}
 		
 		/**

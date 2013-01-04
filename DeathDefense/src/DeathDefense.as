@@ -1,5 +1,7 @@
 package
 {
+	import death.def.scene.Battle;
+	
 	import flash.display.Sprite;
 	
 	import pixel.core.PixelLauncher;
@@ -9,7 +11,8 @@ package
 	{
 		public function DeathDefense()
 		{
-			super();		
+			super();
+			var a:Battle = new Battle();
 		}
 	}
 }

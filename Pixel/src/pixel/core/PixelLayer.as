@@ -16,6 +16,7 @@ package pixel.core
 		public function PixelLayer(id:String = "")
 		{
 			super();
+			this.initializer();
 		}
 		
 		public function get id():String
@@ -62,7 +63,6 @@ package pixel.core
 		/**
 		 * 删除节点
 		 * 
-		 * 
 		 **/
 		public function removeNode(value:IPixelNode):void
 		{
@@ -70,6 +70,15 @@ package pixel.core
 			{
 				childNodes.splice(childNodes.indexOf(value),1);
 				super.removeChild(value as Sprite);
+			}
+		}
+		
+		public function clearNodes():void
+		{
+			var node:IPixelNode = null;
+			for each(node in childNodes)
+			{
+				removeNode(node);
 			}
 		}
 		

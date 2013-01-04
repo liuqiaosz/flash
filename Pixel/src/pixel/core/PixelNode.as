@@ -18,5 +18,9 @@ package pixel.core
 		public function update():void
 		{
 		}
+		
+		public function dispose():void
+		{
+		}
 	}
 }

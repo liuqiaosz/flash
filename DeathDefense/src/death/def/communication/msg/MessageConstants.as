@@ -8,5 +8,7 @@ package death.def.communication.msg
 		public static const MSG_GETLEVELTOTAL:int = 2;
 		//获取关卡详细数据
 		public static const MSG_GETLEVELINFO:int = 3;
+		//获取当前世界场景数据
+		public static const MSG_GETWORLD:int = 4;
 	}
 }

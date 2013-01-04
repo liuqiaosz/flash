@@ -4,6 +4,7 @@ package death.def.view
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
 	
+	import pixel.core.IPixelSprite;
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.vo.UIMod;
 
@@ -13,6 +14,7 @@ package death.def.view
 		public function ViewController()
 		{
 			_views = new Vector.<Sprite>();
+			this.mouseEnabled = false;
 		}
 		
 		public function addView(view:Sprite):void
@@ -24,7 +26,7 @@ package death.def.view
 			}
 		}
 		
-		public function removeView(view:Sprite):void
+		public function removeView(view:IPixelSprite):void
 		{
 			if(_views.indexOf(view) >= 0)
 			{
@@ -33,6 +35,7 @@ package death.def.view
 				if(this.contains(view))
 				{
 					removeChild(view);
+					view.dispose();
 				}
 			}
 		}
