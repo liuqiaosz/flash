@@ -1,5 +1,7 @@
 package death.def.communication.msg
 {
+	import death.def.communication.msg.vo.MSGLevel;
+	
 	import flash.utils.ByteArray;
 	
 	import pixel.net.msg.tcp.IPixelTCPMessage;
@@ -8,8 +10,11 @@ package death.def.communication.msg
 	public class MSGGetLevelTotal extends PixelTCPMessage implements IPixelTCPMessage
 	{
 		private var _levelCount:int = 0;
-		public function MSGGetLevelTotal(id:int)
+		private var _levels:Vector.<MSGLevel> = null;
+		public function MSGGetLevelTotal()
 		{
+			super(MessageConstants.MSG_GETLEVELTOTAL);
+			_levels = new Vector.<MSGLevel>();
 		}
 		
 		override public function decode(data:ByteArray):void

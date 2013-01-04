@@ -9,6 +9,7 @@ package death.def.communication
 	import pixel.net.msg.tcp.IPixelTCPMessageBody;
 	import pixel.net.msg.tcp.IpixelTCPMessageHeader;
 	import pixel.net.msg.tcp.PixelTCPMessageGenericParser;
+	import death.def.communication.msg.MessageConstants;
 
 	public class MessageParser extends PixelTCPMessageGenericParser
 	{

@@ -842,7 +842,9 @@ import flash.filters.BlurFilter;
 import flash.filters.GlowFilter;
 import flash.geom.Point;
 
+import pixel.net.IPixelNetConnection;
 import pixel.net.msg.IPixelNetMessage;
+import pixel.net.msg.tcp.PixelTCPMessage;
 
 class Particle extends Sprite
 {
@@ -862,7 +864,7 @@ class Particle extends Sprite
 	}
 }
 
-class Message implements IPixelNetMessage
+class Message extends PixelTCPMessage implements IPixelNetMessage
 {
 	public function getMessage():String
 	{

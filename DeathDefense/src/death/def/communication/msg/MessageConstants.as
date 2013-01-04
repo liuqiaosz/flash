@@ -1,4 +1,4 @@
-package death.def.communication
+package death.def.communication.msg
 {
 	public class MessageConstants
 	{

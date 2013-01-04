@@ -1,7 +1,8 @@
 package death.def.scene
 {
 	import death.def.communication.CommMarshal;
-	import death.def.communication.MessageConstants;
+	import death.def.communication.msg.MessageConstants;
+	import death.def.communication.msg.MSGGetLevelTotal;
 	import death.def.event.BleachDefenseEvent;
 	import death.def.view.IViewController;
 	
@@ -52,7 +53,7 @@ package death.def.scene
 			CommMarshal.instance.addMessageListener(MessageConstants.MSG_GETLEVELTOTAL,reciveMessage);
 			CommMarshal.instance.addEventListener(MessageConstants.MSG_GETLEVELINFO,reciveMessage);
 			
-			//场景数据
+			
 		}
 		
 		/**
@@ -69,7 +70,6 @@ package death.def.scene
 			switch(message.id)
 			{
 				case MessageConstants.MSG_GETLEVELTOTAL:
-					//更新关卡视图
 					break;
 				case MessageConstants.MSG_GETLEVELINFO:
 					break;
@@ -81,8 +81,15 @@ package death.def.scene
 		 **/
 		override public function syncSceneData():void
 		{
+			//Loading场景加载
 			var notify:BleachDefenseEvent = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_SYNCSCENEDATA);
 			dispatchEvent(notify);
+			
+			//获取关卡数据
+			var msg:MSGGetLevelTotal = new MSGGetLevelTotal();
+			CommMarshal.instance.sendMessage(msg);
+			
+			//
 		}
 		
 		/**
