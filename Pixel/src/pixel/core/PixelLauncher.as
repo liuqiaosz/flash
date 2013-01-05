@@ -2,6 +2,7 @@ package pixel.core
 {
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
@@ -43,26 +44,38 @@ package pixel.core
 		private var _ioModule:IPixelIOModule = null;
 		public function PixelLauncher(director:Class = null,frameRate:int = 30)
 		{
-			_stage = stage;
+			this.addEventListener(Event.ADDED_TO_STAGE,onAdded);
 			_frameRate = frameRate;
 			_launcher = this;
+			if(!director)
+			{
+				_director = new PixelDirector();
+			}
+			else
+			{
+				//初始化主控
+				_director = new director() as IPixelDirector;
+			}
+			
+			if(!_director)
+			{
+				throw new PixelError(ErrorContants.ERR_DIRECTOR);
+			}
+			
+		}
+		
+		private function onAdded(event:Event):void
+		{
+			this.removeEventListener(Event.ADDED_TO_STAGE,onAdded);
+			onAddInitializer();
+			
+		}
+		
+		protected function onAddInitializer():void
+		{
 			try
 			{
-				if(!director)
-				{
-					_director = new PixelDirector();
-				}
-				else
-				{
-					//初始化主控
-					_director = new director() as IPixelDirector;
-				}
-				
-				if(!_director)
-				{
-					throw new PixelError(ErrorContants.ERR_DIRECTOR);
-				}
-				
+				_stage = stage;
 				trace("初始化消息中心");
 				//初始化消息中心
 				PixelMessageBus.initiazlier();

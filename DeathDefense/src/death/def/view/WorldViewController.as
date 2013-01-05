@@ -26,19 +26,20 @@ package death.def.view
 		
 		protected function initWorld(value:WorldVO):void
 		{
-			clearViews();
+			clearNodes();
 			
 			var nodes:Vector.<WorldNodeVO> = value.nodes;
 			var node:WorldNodeVO = null;
 			for each(node in nodes)
 			{
 				var worldNode:WorldNode = new WorldNode(node);
-				addView(worldNode);
+				addNode(worldNode);
 			}
 		}
 	}
 }
 import death.def.event.BleachDefenseEvent;
+import death.def.event.BleachMessage;
 import death.def.scene.IWorldNode;
 import death.def.scene.vo.WorldNodeVO;
 import death.def.texture.TextureManager;
@@ -48,6 +49,7 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 
 import pixel.core.PixelSprite;
+import pixel.message.IPixelMessage;
 import pixel.texture.PixelTextureFactory;
 import pixel.texture.vo.PixelTexture;
 
@@ -88,21 +90,16 @@ class WorldNode extends PixelSprite implements IWorldNode
 	
 	private function eventMousePressed(event:MouseEvent):void
 	{
-		var notify:BleachDefenseEvent = null;
-		switch(_node.type)
-		{
-			case WorldNodeVO.NODE_GATE:
-				notify = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_WORLD_REDIRECT);
-				break;
-			default:
-				notify = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_WORLD_OPENSCENE);
-				break;
-		}
-		if(notify)
-		{
-			notify.value = _node.redirectId;
-			dispatchEvent(notify);
-		}
+		//var notify:BleachDefenseEvent = null;
+		var msg:IPixelMessage = null;
+		msg = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT,this);
+		msg.value = _node;
+		dispatchMessage(msg);
+//		if(notify)
+//		{
+//			notify.value = _node.redirectId;
+//			dispatchEvent(notify);
+//		}
 	}
 	
 	private function eventMouseRelease(event:MouseEvent):void

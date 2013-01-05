@@ -1,7 +1,11 @@
 package pixel.core
 {
 	import flash.display.Sprite;
-
+	
+	import pixel.message.IPixelMessage;
+	import pixel.message.PixelMessageBus;
+	
+	use namespace PixelNs;
 	/**
 	 * Pixel精灵根节点
 	 * 
@@ -13,6 +17,19 @@ package pixel.core
 	{
 		public function PixelNode()
 		{
+		}
+		
+		public function addMessageListener(type:String,callback:Function):void
+		{
+			PixelMessageBus.instance.register(type,callback);
+		}
+		public function removeMessageListener(type:String,callback:Function):void
+		{
+			PixelMessageBus.instance.unRegister(type,callback);
+		}
+		public function dispatchMessage(msg:IPixelMessage):void
+		{
+			PixelMessageBus.instance.dispatchMessage(msg);
 		}
 		
 		public function update():void

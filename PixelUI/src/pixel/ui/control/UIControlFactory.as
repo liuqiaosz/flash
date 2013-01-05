@@ -31,8 +31,6 @@ import flash.events.EventDispatcher;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
-import flashx.textLayout.events.ModelChange;
-
 import pixel.ui.control.IUIControl;
 import pixel.ui.control.IUIControlFactory;
 import pixel.ui.control.UIButton;

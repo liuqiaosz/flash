@@ -3,19 +3,22 @@ package pixel.core
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	
-
+	import pixel.message.IPixelMessage;
+	import pixel.message.PixelMessageBus;
+	
+	use namespace PixelNs;
 	/**
 	 * 场景基类
 	 * 
 	 * 
 	 **/
-	public class PixelLayer extends Sprite implements IPixelLayer
+	public class PixelLayer extends PixelSprite implements IPixelLayer
 	{
 		private var childNodes:Vector.<IPixelNode> = null;
 		private var _id:String = "";
 		public function PixelLayer(id:String = "")
 		{
-			super();
+			super(null);
 			this.initializer();
 		}
 		
@@ -73,6 +76,9 @@ package pixel.core
 			}
 		}
 		
+		/**
+		 * 清除所有节点
+		 **/
 		public function clearNodes():void
 		{
 			var node:IPixelNode = null;
@@ -92,17 +98,13 @@ package pixel.core
 			
 		}
 		
-		public function dispose():void
-		{}
-		
 		public function get nodes():Vector.<IPixelNode>
 		{
 			return childNodes;
 		}
 		
 		protected var _node:IPixelNode = null;
-		
-		public function update():void
+		override public function update():void
 		{
 			for each(_node in childNodes)
 			{

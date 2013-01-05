@@ -1,6 +1,6 @@
 package pixel.message
 {
-	public class PixelMessage
+	public class PixelMessage implements IPixelMessage
 	{
 		public static const FRAME_UPDATE:String = "FrameUpdate";
 		
@@ -21,6 +21,15 @@ package pixel.message
 		public function set target(value:Object):void
 		{
 			_target = value;
+		}
+		private var _value:Object = null;
+		public function set value(data:Object):void
+		{
+			_value = data;
+		}
+		public function get value():Object
+		{
+			return _value;
 		}
 		public function PixelMessage(msg:String,target:Object)
 		{

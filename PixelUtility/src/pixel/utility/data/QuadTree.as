@@ -4,7 +4,6 @@ package pixel.utility.data
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	import mx.controls.Tree;
 	import pixel.utility.PixelUtilityNS;
 	
 	use namespace PixelUtilityNS;

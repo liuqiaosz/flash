@@ -9,7 +9,7 @@ package pixel.core
 	 * 比如实现该接口来实现自定义逻辑部分，核心模块接受该模块的逻辑调度
 	 * 
 	 **/
-	public interface IPixelDirector extends IEventDispatcher
+	public interface IPixelDirector extends IEventDispatcher,IPixelMessageProxy
 	{
 		//开始
 		function action():void;

@@ -6,7 +6,7 @@ package pixel.core
 	 * 最小动画单位
 	 * 
 	 **/
-	public interface IPixelNode extends IPixelGeneric
+	public interface IPixelNode extends IPixelGeneric,IPixelMessageProxy
 	{
 	}
 }

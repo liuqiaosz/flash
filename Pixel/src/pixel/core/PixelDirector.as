@@ -8,6 +8,7 @@ package pixel.core
 	
 	import pixel.graphic.PixelRenderMode;
 	import pixel.io.IPixelIOModule;
+	import pixel.message.IPixelMessage;
 	import pixel.message.PixelMessage;
 	import pixel.message.PixelMessageBus;
 
@@ -71,7 +72,6 @@ package pixel.core
 		 **/
 		public function switchScene(prototype:Class,transition:int = -1,duration:Number = 1):void
 		{
-			//_switchScene = null;
 			var switchScene:IPixelLayer = null;
 			//查找缓存
 			if(prototype in _cache)
@@ -87,19 +87,7 @@ package pixel.core
 				switchScene = new prototype() as IPixelLayer;
 				_cache[prototype] = switchScene;
 			}
-//			if(transition >= 0)
-//			{
-//				//过渡效果
-//				_square = PixelTransitionHelper.transition(transition,_activedScene,_switchScene,duration);
-//				if(_square)
-//				{
-//					_switching = true;
-//					_square.addEventListener(PixelTransitionEvent.TRANS_SQUARE_COMPLETE,switchTransitionComplete);
-//					_square.begin();
-//				}
-//			}
 			swapScene(switchScene);
-			//return switchScene;
 		}
 		
 		public function switchSceneById(id:String):void
@@ -188,11 +176,21 @@ package pixel.core
 				scene.update();
 			}
 			
-			
 			_io.screenRefresh(_sceneQueue);
-			
 		}
 		
+		public function addMessageListener(type:String,callback:Function):void
+		{
+			PixelMessageBus.instance.register(type,callback);
+		}
+		public function removeMessageListener(type:String,callback:Function):void
+		{
+			PixelMessageBus.instance.unRegister(type,callback);
+		}
+		public function dispatchMessage(msg:IPixelMessage):void
+		{
+			PixelMessageBus.instance.dispatchMessage(msg);
+		}
 		/**
 		 * 暂停当前运行
 		 * 

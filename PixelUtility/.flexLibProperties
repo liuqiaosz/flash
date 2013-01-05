@@ -8,6 +8,7 @@
     <classEntry path="pixel.utility.data.QuadNode"/>
     <classEntry path="pixel.utility.PixelUtilityNS"/>
     <classEntry path="pixel.utility.data.Tree"/>
+    <classEntry path="pixel.utility.ShareObjectHelper"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

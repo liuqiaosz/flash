@@ -2,9 +2,15 @@ package death.def
 {
 	import com.greensock.TweenLite;
 	
+	import death.def.event.BleachDefenseEvent;
+	import death.def.event.BleachMessage;
+	import death.def.scene.IScene;
+	
 	import pixel.core.IPixelLayer;
 	import pixel.core.PixelDirector;
 	import pixel.core.PixelLauncher;
+	import pixel.message.IPixelMessage;
+	import pixel.message.PixelMessageBus;
 
 	/**
 	 * 场景控制枢纽
@@ -16,6 +22,16 @@ package death.def
 		public function BleachDirector()
 		{
 			super();
+			addMessageListener(BleachMessage.BLEACH_SYNCSCENEDATA,showLoading);
+			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directWorld);
+		}
+		
+		private function showLoading(msg:IPixelMessage):void
+		{
+			
+		}
+		private function directWorld(msg:IPixelMessage):void
+		{
 		}
 		
 		private var _newScene:IPixelLayer = null;

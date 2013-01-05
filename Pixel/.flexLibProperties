@@ -13,6 +13,8 @@
     <classEntry path="pixel.net.msg.tcp.PixelTCPMessageGenericParser"/>
     <classEntry path="pixel.net.msg.tcp.PixelTCPMessage"/>
     <classEntry path="pixel.net.msg.PixelMessageField"/>
+    <classEntry path="pixel.message.IPixelMessage"/>
+    <classEntry path="pixel.core.IPixelMessageProxy"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

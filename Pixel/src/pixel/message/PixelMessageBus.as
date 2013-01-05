@@ -28,6 +28,7 @@ package pixel.message
 import flash.utils.Dictionary;
 
 import pixel.core.PixelNs;
+import pixel.message.IPixelMessage;
 import pixel.message.IPixelMessageBus;
 import pixel.message.PixelMessage;
 
@@ -68,7 +69,7 @@ class MessageBusImpl implements IPixelMessageBus
 	}
 	
 	private var _queue:Vector.<Function> = null;
-	public function dispatchMessage(message:PixelMessage):void
+	public function dispatchMessage(message:IPixelMessage):void
 	{
 		if(message.message in _pool)
 		{

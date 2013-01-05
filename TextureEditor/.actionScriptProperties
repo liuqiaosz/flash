@@ -10,8 +10,8 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="/EditorUtility/bin/EditorUtility.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/PixelTexture/bin/PixelTexture.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin/PixelUtility.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin-debug/PixelUtility.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/PixelTexture/bin-debug/PixelTexture.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

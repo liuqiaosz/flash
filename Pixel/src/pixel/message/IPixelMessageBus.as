@@ -11,6 +11,6 @@ package pixel.message
 		//取消注册消息
 		function unRegister(message:String,callback:Function):void;
 		
-		function dispatchMessage(message:PixelMessage):void;
+		function dispatchMessage(message:IPixelMessage):void;
 	}
 }
