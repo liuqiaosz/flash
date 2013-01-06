@@ -1,8 +1,8 @@
 package death.def.scene
 {
-	import death.def.communication.CommMarshal;
-	import death.def.communication.msg.MessageConstants;
-	import death.def.communication.msg.MSGGetLevelTotal;
+	import death.def.communicator.CommMarshal;
+	import death.def.module.message.MsgConstants;
+	import death.def.module.message.MsgGetLevel;
 	import death.def.event.BleachDefenseEvent;
 	import death.def.view.IViewController;
 	
@@ -11,7 +11,8 @@ package death.def.scene
 	import flash.utils.Dictionary;
 	
 	import pixel.core.PixelLayer;
-	import pixel.net.msg.IPixelNetMessage;
+	import death.def.module.message.IMsg;
+	import death.def.module.scene.GenericScene;
 	
 	/**
 	 * 
@@ -50,8 +51,8 @@ package death.def.scene
 			}
 
 			//添加数据通讯监听
-			CommMarshal.instance.addMessageListener(MessageConstants.MSG_GETLEVELTOTAL,reciveMessage);
-			CommMarshal.instance.addEventListener(MessageConstants.MSG_GETLEVELINFO,reciveMessage);
+			CommMarshal.instance.addMessageListener(MsgConstants.MSG_GETLEVELTOTAL,reciveMessage);
+			CommMarshal.instance.addEventListener(MsgConstants.MSG_GETLEVELINFO,reciveMessage);
 		}
 		
 		/**
@@ -59,17 +60,17 @@ package death.def.scene
 		 **/
 		override public function dispose():void
 		{
-			CommMarshal.instance.removeMessageListener(MessageConstants.MSG_GETLEVELTOTAL,reciveMessage);
-			CommMarshal.instance.removeMessageListener(MessageConstants.MSG_GETLEVELINFO,reciveMessage);
+			CommMarshal.instance.removeMessageListener(MsgConstants.MSG_GETLEVELTOTAL,reciveMessage);
+			CommMarshal.instance.removeMessageListener(MsgConstants.MSG_GETLEVELINFO,reciveMessage);
 		}
 		
-		protected function reciveMessage(message:IPixelNetMessage):void
+		protected function reciveMessage(message:IMsg):void
 		{
 			switch(message.id)
 			{
-				case MessageConstants.MSG_GETLEVELTOTAL:
+				case MsgConstants.MSG_GETLEVELTOTAL:
 					break;
-				case MessageConstants.MSG_GETLEVELINFO:
+				case MsgConstants.MSG_GETLEVELINFO:
 					break;
 			}
 		}
@@ -84,7 +85,7 @@ package death.def.scene
 			dispatchEvent(notify);
 			
 			//获取关卡数据
-			var msg:MSGGetLevelTotal = new MSGGetLevelTotal();
+			var msg:MsgGetLevel = new MsgGetLevel();
 			CommMarshal.instance.sendMessage(msg);
 			
 			//

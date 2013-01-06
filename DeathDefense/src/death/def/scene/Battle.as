@@ -4,6 +4,7 @@ package death.def.scene
 	import death.def.view.IViewController;
 	
 	import flash.utils.Dictionary;
+	import death.def.module.scene.GenericScene;
 
 	public class Battle extends GenericScene implements IBattle
 	{

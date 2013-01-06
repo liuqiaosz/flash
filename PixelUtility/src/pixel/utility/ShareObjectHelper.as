@@ -1,26 +1,23 @@
 package pixel.utility
 {
 	import flash.net.SharedObject;
+	import flash.utils.Dictionary;
 
 	public class ShareObjectHelper
 	{
+		private static var _cache:Dictionary = new Dictionary();
 		public function ShareObjectHelper()
 		{
 		}
 		
-		public static function writerString(name:String,key:String,value:String):Boolean
+		public static function findShareDisk(name:String):ShareDisk
 		{
-			try
+			if(!(name in _cache))
 			{
-				var local:SharedObject = SharedObject.getLocal(name);
-				local.data[key] = value;
-				local.flush();
+				var so:SharedObject = SharedObject.getLocal(name);
+				_cache[name] = new ShareDisk(so);
 			}
-			catch(err:Error)
-			{
-				return false;
-			}
-			return false;
+			return _cache[name];
 		}
 	}
 }

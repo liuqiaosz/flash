@@ -1,6 +1,6 @@
 package death.def.view
 {
-	import death.def.communication.CommMarshal;
+	import death.def.communicator.CommMarshal;
 	import death.def.event.BleachDefenseEvent;
 	import death.def.scene.vo.WorldNodeVO;
 	import death.def.scene.vo.WorldVO;

@@ -4,7 +4,7 @@ package death.def
 	
 	import death.def.event.BleachDefenseEvent;
 	import death.def.event.BleachMessage;
-	import death.def.scene.IScene;
+	import death.def.module.scene.IScene;
 	
 	import pixel.core.IPixelLayer;
 	import pixel.core.PixelDirector;

@@ -56,16 +56,13 @@ package
 	import flash.utils.Proxy;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
-
+	
 	import pixel.assets.PixelAssetTask;
 	import pixel.assets.PixelAssetsManager;
 	import pixel.assets.event.PixelAssetEvent;
 	import pixel.core.PixelConfig;
 	import pixel.core.PixelLauncher;
 	import pixel.error.PixelNetError;
-	import pixel.net.PixelNetSocket;
-	import pixel.net.event.PixelNetEvent;
-	import pixel.net.msg.IPixelNetMessage;
 	import pixel.particle.PixelParticleEmitterPropertie;
 	import pixel.texture.PixelTextureFactory;
 	import pixel.texture.vo.PixelTexture;
@@ -91,6 +88,8 @@ package
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ColorCode;
 	import pixel.utility.RGBA;
+	import pixel.utility.ShareDisk;
+	import pixel.utility.ShareObjectHelper;
 	import pixel.utility.Stat;
 	import pixel.utility.System;
 	import pixel.utility.Tools;
@@ -203,32 +202,39 @@ package
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
 			var s:Stat = new Stat();
-			addChild(s);
 			s.x = stage.stageWidth - s.width;
+			addChild(s);
+			
+			var v:String = "aa=111";
+			
+			var idx:int = v.indexOf("=");
+			
+			trace(v.substring(0,idx));
+			trace(v.substr(idx+ 1));
 		}
 		
 		private function netTest():void
 		{
-			var conn:PixelNetSocket = new PixelNetSocket();
-			conn.connect("168.33.211.244",8091);
-
-			conn.addEventListener(PixelNetEvent.NET_EVENT_CONNECTFAILURE,function(event:PixelNetEvent):void{
+//			var conn:PixelNetSocket = new PixelNetSocket();
+//			conn.connect("168.33.211.244",8091);
+//
+//			conn.addEventListener(PixelNetEvent.NET_EVENT_CONNECTFAILURE,function(event:PixelNetEvent):void{
+//			
+//				trace("error");
+//			});
 			
-				trace("error");
-			});
-			
-			conn.addEventListener(PixelNetEvent.NET_EVENT_CONNECTED,function(event:PixelNetEvent):void{
-				var m:Message = new Message();
-				
-				conn.sendMessage(m);
-			});
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				
-				var m:Message = new Message();
-				
-				conn.sendMessage(m);
-			
-			});
+//			conn.addEventListener(PixelNetEvent.NET_EVENT_CONNECTED,function(event:PixelNetEvent):void{
+//				var m:Message = new Message();
+//				
+//				conn.sendMessage(m);
+//			});
+//			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+//				
+//				var m:Message = new Message();
+//				
+//				conn.sendMessage(m);
+//			
+//			});
 			
 			//conn.close();
 			
@@ -839,10 +845,6 @@ import flash.filters.BlurFilter;
 import flash.filters.GlowFilter;
 import flash.geom.Point;
 
-import pixel.net.IPixelNetConnection;
-import pixel.net.msg.IPixelNetMessage;
-import pixel.net.msg.tcp.PixelTCPMessage;
-
 class Particle extends Sprite
 {
 	public var angle:Number = 0;
@@ -858,13 +860,5 @@ class Particle extends Sprite
 		var glow:GlowFilter = new GlowFilter(0x00FF00,0.5);
 		var blur:BlurFilter = new BlurFilter(5,5,1);
 		this.filters = [blur];
-	}
-}
-
-class Message extends PixelTCPMessage implements IPixelNetMessage
-{
-	public function getMessage():String
-	{
-		return "测试";
 	}
 }

@@ -38,10 +38,23 @@ package
 			_loader = new Loader();
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+				var vec:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
+				for each(var v:String in vec)
+				{
+					trace(v);
+				}
+				//var cls:Object = ApplicationDomain.currentDomain.getDefinition("pixel.ui.control.UIButton");
+				//var btn:UIButton = new cls() as UIButton;
 				loader = new Loader();
 				loader.load(new URLRequest("BleachDefense.swf"),new LoaderContext(false,ApplicationDomain.currentDomain));
+				//loader.load(new URLRequest("/Users/LiuQiao/Documents/Developer/Code/flash/DeathDefense/bin-debug/death/def/module/message/MsgLibrary.swf"),new LoaderContext(false,ApplicationDomain.currentDomain));
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event2:Event):void{
-					addChild(loader);
+					//addChild(loader);
+					var vec:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
+					for each(var v:String in vec)
+					{
+						trace(v);
+					}
 				});
 			});
 			var ctx:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);

@@ -23,9 +23,9 @@ package
 		{
 			super();
 		}
+		
 		override protected function onAddInitializer():void
 		{
-			addChild(new UIButton());
 		}
 	}
 }

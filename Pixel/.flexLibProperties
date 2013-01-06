@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
-    <classEntry path="pixel.net.PixelNetSocket"/>
-    <classEntry path="pixel.net.IPixelNetConnection"/>
-    <classEntry path="pixel.net.msg.IPixelNetMessage"/>
     <classEntry path="pixel.error.PixelNetError"/>
-    <classEntry path="pixel.net.event.PixelNetEvent"/>
     <classEntry path="pixel.net.msg.tcp.IPixelTCPMessageParser"/>
-    <classEntry path="pixel.net.msg.tcp.IpixelTCPMessageHeader"/>
+    <classEntry path="pixel.net.msg.tcp.IPixelTCPMessageHeader"/>
     <classEntry path="pixel.net.msg.tcp.IPixelTCPMessageBody"/>
-    <classEntry path="pixel.net.msg.tcp.IPixelTCPMessage"/>
     <classEntry path="pixel.net.msg.tcp.PixelTCPMessageGenericParser"/>
     <classEntry path="pixel.net.msg.tcp.PixelTCPMessage"/>
-    <classEntry path="pixel.net.msg.PixelMessageField"/>
     <classEntry path="pixel.message.IPixelMessage"/>
     <classEntry path="pixel.core.IPixelMessageProxy"/>
   </includeClasses>

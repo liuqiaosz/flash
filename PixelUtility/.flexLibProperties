@@ -9,6 +9,7 @@
     <classEntry path="pixel.utility.PixelUtilityNS"/>
     <classEntry path="pixel.utility.data.Tree"/>
     <classEntry path="pixel.utility.ShareObjectHelper"/>
+    <classEntry path="pixel.utility.ShareDisk"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
