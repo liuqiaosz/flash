@@ -205,12 +205,20 @@ package
 			s.x = stage.stageWidth - s.width;
 			addChild(s);
 			
-			var v:String = "aa=111";
-			
-			var idx:int = v.indexOf("=");
-			
-			trace(v.substring(0,idx));
-			trace(v.substr(idx+ 1));
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				
+				var loader:URLLoader = new URLLoader();
+				loader.dataFormat = URLLoaderDataFormat.BINARY;
+				
+				var url:URLRequest = new URLRequest("http://localhost:8084/bleach/portal/aa");
+				url.method = "POST";
+				
+				var data:ByteArray = new ByteArray();
+				data.writeUTFBytes("0065001liuqiaosz           111111111112jj                            ");
+				url.data = data;
+				
+				loader.load(url);
+			});
 		}
 		
 		private function netTest():void

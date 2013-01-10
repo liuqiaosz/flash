@@ -67,11 +67,11 @@ package pixel.core
 		private function onAdded(event:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE,onAdded);
-			onAddInitializer();
+			initializer();
 			
 		}
 		
-		protected function onAddInitializer():void
+		protected function initializer():void
 		{
 			try
 			{

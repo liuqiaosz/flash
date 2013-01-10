@@ -61,7 +61,6 @@ class CommunicatorImpl extends GenericCommunicator implements IHTTPCommunicator
 		req.data = msg.getMessage();
 		req.method = URLRequestMethod.POST;
 		_loader.load(req);
-		
 	}
 	
 	public function get(url:String,msg:IMsg):void
