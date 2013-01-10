@@ -24,9 +24,9 @@ package
 			super();
 		}
 		
-		override protected function initializer():void
-		{
-			super.initializer();
-		}
+//		override protected function initializer():void
+//		{
+//			super.initializer();
+//		}
 	}
 }
