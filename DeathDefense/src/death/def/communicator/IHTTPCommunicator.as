@@ -6,7 +6,7 @@ package death.def.communicator
 
 	public interface IHTTPCommunicator extends IComm
 	{
-		function post(url:String,msg:IMsg):void;
-		function get(url:String,msg:IMsg):void;
+		function post(msg:IMsg):void;
+		function get(msg:IMsg):void;
 	}
 }

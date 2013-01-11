@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="death/def/module/loader/BleachLoader.as" projectUUID="bf23d252-1d3f-4d30-863e-bc233b9ddc50" version="10">
-  <compiler additionalCompilerArguments="" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="BleachLoader.as" projectUUID="bf23d252-1d3f-4d30-863e-bc233b9ddc50" version="10">
+  <compiler additionalCompilerArguments="-debug=true" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -54,7 +54,7 @@
   </compiler>
   <applications>
     <application path="BleachDefense.as"/>
-    <application path="death/def/module/loader/BleachLoader.as"/>
+    <application path="BleachLoader.as"/>
   </applications>
   <modules>
     <module application="src/BleachLoader.as" destPath="death/def/module/message/MsgLibrary.swf" optimize="false" sourcePath="src/death/def/module/message/MsgLibrary.as"/>

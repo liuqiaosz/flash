@@ -34,6 +34,7 @@
       <libraryPathEntry kind="3" linkType="1" path="/PixelUI/bin-debug/PixelUI.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelTexture/bin-debug/PixelTexture.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin-debug/PixelUtility.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="1" linkType="1" path="/Users/LiuQiao/Documents/Developer/Code/flash/libs"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -47,7 +48,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="" airTimestamp="true" anePathSet="false" version="1">
+      <airSettings airCertificatePath="" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
       </airSettings>

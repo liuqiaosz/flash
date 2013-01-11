@@ -15,6 +15,7 @@ package
 	//	import flash.display.Shape;
 	//	import flash.display.SpreadMethod;
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -205,19 +206,43 @@ package
 			s.x = stage.stageWidth - s.width;
 			addChild(s);
 			
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+			loading();
+		}
+		
+		[Embed(source="LoadingColor.png")]
+		private var Color:Class;
+		
+		[Embed(source="LoadingBlack.png")]
+		private var Black:Class;
+		
+		private function loading():void
+		{
+			var percent:Number = 0;
+			var color:BitmapData = Bitmap(new Color()).bitmapData;
+			var black:BitmapData = Bitmap(new Black()).bitmapData;
+			var img:BitmapData = new BitmapData(color.width,color.height);
+			img.copyPixels(black,black.rect,new Point());
+			var image:Bitmap = new Bitmap(img);
+			addChild(image);
+			var up:Boolean = true;
+			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
 				
-				var loader:URLLoader = new URLLoader();
-				loader.dataFormat = URLLoaderDataFormat.BINARY;
-				
-				var url:URLRequest = new URLRequest("http://localhost:8084/bleach/portal/aa");
-				url.method = "POST";
-				
-				var data:ByteArray = new ByteArray();
-				data.writeUTFBytes("0065001liuqiaosz           111111111112jj                            ");
-				url.data = data;
-				
-				loader.load(url);
+				if(up)
+				{
+					img.copyPixels(black,black.rect,new Point());
+					
+					percent += 0.01;
+					
+					var h:int = color.height * percent;
+					var rect:Rectangle = new Rectangle(0,0,color.width,h);
+					img.copyPixels(color,rect,new Point());
+					
+					if(h >= color.height)
+					{
+						up = false;
+						TweenMax.to(image, 1, {glowFilter:{color:0xFF0000, alpha:1, blurX:30, blurY:30}});
+					}
+				}
 			});
 		}
 		

@@ -10,6 +10,7 @@ package death.def.event
 		public static const BLEACH_TEXTURE_DOWNLOADED:String = "TextureDownloaded";
 		
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
+		public static const BLEACH_INIT_COMPLETE:String = "InitializeComplete";
 		
 		private var _value:Object = null;
 		public function set value(data:Object):void

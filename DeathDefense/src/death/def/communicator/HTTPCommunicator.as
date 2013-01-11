@@ -15,13 +15,13 @@ package death.def.communicator
 			}
 			return _instance;
 		}
-		
 	}
 }
 import death.def.communicator.GenericCommunicator;
 import death.def.communicator.IHTTPCommunicator;
 import death.def.module.message.IMsg;
 import death.def.module.message.MsgHTTP;
+import death.def.utils.Constants;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
@@ -53,16 +53,30 @@ class CommunicatorImpl extends GenericCommunicator implements IHTTPCommunicator
 		reciveNotify(msg);
 	}
 
-	public function post(url:String,msg:IMsg):void
+	public function post(msg:IMsg,url:String = Constants.SERVICE_URL):void
 	{
-		var vars:URLVariables = new URLVariables(msg.getMessage());
-		var req:URLRequest = new URLRequest(url);
-		req.contentType="application/octet-stream";
-		req.data = msg.getMessage();
-		req.method = URLRequestMethod.POST;
-		_loader.load(req);
+		var request:URLRequest = new URLRequest();
+		request.method = "POST";
+		request.data = msg.getMessage();
+		_loader.load(request);
 	}
 	
-	public function get(url:String,msg:IMsg):void
-	{}
+	public function get(msg:IMsg,url:String = Constants.SERVICE_URL):void
+	{
+		var request:URLRequest = new URLRequest(url);
+		request.method = "POST";
+		request.data = msg.getMessage();
+		_loader.load(request);
+	}
+//	public function post(url:String,msg:IMsg):void
+//	{
+//		var vars:URLVariables = new URLVariables(msg.getMessage());
+//		var req:URLRequest = new URLRequest(url);
+//		req.data = msg.getMessage();
+//		req.method = URLRequestMethod.POST;
+//		_loader.load(req);
+//	}
+//	
+//	public function get(url:String,msg:IMsg):void
+//	{}
 }
