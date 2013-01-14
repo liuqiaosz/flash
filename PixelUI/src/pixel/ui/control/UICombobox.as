@@ -21,10 +21,10 @@ package pixel.ui.control
 		public static const POP_UP:int = 0;
 		public static const POP_DOWN:int = 1;
 		
-		[Embed(source="ArrowDown.png")]
-		private var Arrow_down:Class;
-		[Embed(source="ArrowUp.png")]
-		private var Arrow_up:Class;
+//		[Embed(source="ArrowDown.png")]
+//		private var Arrow_down:Class;
+//		[Embed(source="ArrowUp.png")]
+//		private var Arrow_up:Class;
 		
 		private var _LabelField:UITextInput = null;
 		//private var _Items:Vector.<ComboboxItem> = null;
@@ -51,9 +51,9 @@ package pixel.ui.control
 			_openButton = new UIButton();
 			
 			popDirection = POP_DOWN;
-			_openButton.NormalStyle.BackgroundImage = 
-				_openButton.MouseOverStyle.BackgroundImage = 
-				_openButton.MouseDownStyle.BackgroundImage = new Arrow_down() as Bitmap;
+//			_openButton.NormalStyle.BackgroundImage = 
+//				_openButton.MouseOverStyle.BackgroundImage = 
+//				_openButton.MouseDownStyle.BackgroundImage = new Arrow_down() as Bitmap;
 			_openButton.width = _openButton.height = 16;
 			
 			

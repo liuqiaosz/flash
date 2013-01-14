@@ -61,17 +61,17 @@ package pixel.ui.control
 					_timer.start();
 				}
 				img = decoder.getImage().bitmapData;
-				image.bitmapData = img;
-				this.BackgroundImage = image;
+				_image.bitmapData = img;
+				this.BackgroundImage = _image;
 			}
 		}
 		
-		private var image:Bitmap = new Bitmap();
+		private var _image:Bitmap = new Bitmap();
 		private var img:BitmapData = null;
 		protected function playFrame(event:TimerEvent):void
 		{
 			//this.BackgroundImage = new Bitmap(_gifFrames[_currentIndex].bitmapData);
-			image.bitmapData = _gifFrames[_currentIndex].bitmapData;
+			_image.bitmapData = _gifFrames[_currentIndex].bitmapData;
 			//this.BackgroundImage = image;
 			StyleUpdate();
 			_currentIndex++;
@@ -93,6 +93,13 @@ package pixel.ui.control
 				_timer.removeEventListener(TimerEvent.TIMER,playFrame);
 				_timer = null;
 			}
+		}
+		
+		public function set image(value:Bitmap):void
+		{
+			_image = super.BackgroundImage = value;
+			width = value.width;
+			height = value.height;
 		}
 		
 		override protected function SpecialDecode(Data:ByteArray):void

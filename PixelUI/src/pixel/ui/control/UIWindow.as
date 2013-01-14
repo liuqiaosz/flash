@@ -143,8 +143,8 @@ import flash.display.Bitmap;
 
 class TitleBar extends UIPanel
 {
-	[Embed(source="Close.png")]
-	private var CloseBitmap:Class;
+//	[Embed(source="Close.png")]
+//	private var CloseBitmap:Class;
 	private var _Icon:UIImage = null;
 	private var _Title:UILabel = null;
 	protected var _CloseImg:UIImage = null;
@@ -160,10 +160,10 @@ class TitleBar extends UIPanel
 		
 		_CloseImg = new UIImage();
 		
-		var Img:Bitmap = new CloseBitmap() as Bitmap;
-		_CloseImg.BackgroundImage = Img;
-		_CloseImg.width = Img.width;
-		_CloseImg.height = Img.height;
+//		var Img:Bitmap = new CloseBitmap() as Bitmap;
+//		_CloseImg.BackgroundImage = Img;
+//		_CloseImg.width = Img.width;
+//		_CloseImg.height = Img.height;
 		//_CloseImg.buttonMode = true;
 		_CloseImg.x = width - _CloseImg.width;
 		super.addChild(_CloseImg);

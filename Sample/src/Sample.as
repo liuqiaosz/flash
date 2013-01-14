@@ -30,6 +30,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
@@ -164,7 +165,7 @@ package
 	//	import utility.bitmap.png.PNGDecoder;
 	//	import utility.bitmap.tga.TGADecoder;
 	
-	[SWF(width="1000",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
+	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="arrow_down.png")]
@@ -180,6 +181,8 @@ package
 		[Embed(source="map2.jpg")]
 		private var IMG:Class;
 		
+		[Embed(source="map1.jpg")]
+		private var MAP:Class;
 	
 		[Embed(source="monkey.gif",mimeType="application/octet-stream")]
 		private var GIF:Class;
@@ -189,6 +192,8 @@ package
 		
 		[Embed(source="11111.tpk",mimeType="application/octet-stream")]
 		private var TPK:Class;
+		
+		
 		private var sid:String = "";
 		private var center:Point = new Point();
 		private var angle:int
@@ -206,52 +211,16 @@ package
 			s.x = stage.stageWidth - s.width;
 			addChild(s);
 			
-			//loading();
 			showcase();
 		}
 		
 		private function showcase():void
 		{
-			var panel:UIPanel = new UIPanel();
-			
-			panel.width = 400;
-			panel.height = 200;
-			addChild(panel);
-			panel.Layout = LayoutConstant.HORIZONTAL;
-			panel.Gap = 30;
-			panel.padding = 30;
-			
-			var child4:UIPanel = new UIPanel();
-			child4.width 140;
-			child4.height = 140;
-			
-			var child2:UIPanel = new UIPanel();
-			child2.width = 140;
-			child2.height = 140;
-			
-			var child3:UIPanel = new UIPanel();
-			child3.width = 140;
-			child3.height = 140;
-			child3.BackgroundColor = child4.BackgroundColor = child2.BackgroundColor = 0xffffff;
-			
-			panel.addChild(child3);
-			panel.addChild(child2);
-			panel.addChild(child4);
-			panel.BackgroundColor = 0xffffff;
-			panel.BorderThinkness = 0;
-			
-			var shell:Sprite = new Sprite();
-			panel.x = 5;
-			panel.y = 5;
-			shell.addChild(panel);
+			var mp:Bitmap = new MAP() as Bitmap;
+			var flow:ShowcaseFlow = new ShowcaseFlow(1280,400,mp.width,mp.height);
 
-			shell.scrollRect = new Rectangle(0,0,420,220);
-			//shell.graphics.lineStyle(2);
-			//shell.graphics.drawRect(0,0,420,220);
-			addChild(shell);
-			shell.x = 100;
-			shell.y = 100;
-			
+			flow.x = 0;
+			flow.y = 100;
 			
 			var prev:UIButton = new UIButton();
 			prev.Text = "prev";
@@ -264,13 +233,23 @@ package
 			addChild(next);
 			
 			prev.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				TweenMax.to(panel,1,{x:-200});
+				flow.scrollLeft();
 			});
 			
 			next.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				TweenMax.to(panel,1,{x:0});
+				flow.scrollRight();
 			});
 			next.x = 150;
+			
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
+				
+				var item:WorldFlowItem = new WorldFlowItem(mp.width,mp.height);
+				item.image = mp;
+				flow.addChild(item);
+			});
+			
+			addChild(flow);
 		}
 		
 		[Embed(source="LoadingColor.png")]
@@ -289,15 +268,18 @@ package
 			var image:Bitmap = new Bitmap(img);
 			addChild(image);
 			var up:Boolean = true;
+			var targetH:int = 0;
+			var targeP:Number = 0;
 			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
 				
 				if(up)
 				{
-					img.copyPixels(black,black.rect,new Point());
+					if(targeP < percent)
+					{
+						targeP += 0.01;
+					}
 					
-					percent += 0.01;
-					
-					var h:int = color.height * percent;
+					var h:int = color.height * targeP;
 					var rect:Rectangle = new Rectangle(0,0,color.width,h);
 					img.copyPixels(color,rect,new Point());
 					
@@ -307,6 +289,11 @@ package
 						TweenMax.to(image, 1, {glowFilter:{color:0xFF0000, alpha:1, blurX:30, blurY:30}});
 					}
 				}
+			});
+			
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+			
+				percent += 1;
 			});
 		}
 		
@@ -496,10 +483,11 @@ package
 		
 		
 		[Embed(source="map_terrain.png")]
-		private var MAP:Class;
+		private var MAPT:Class;
+		
 		public function pngTo4444():void
 		{
-			var png:Bitmap = new MAP() as Bitmap;
+			var png:Bitmap = new MAPT() as Bitmap;
 			
 			var bmp:BitmapData = png.bitmapData;
 			
@@ -929,6 +917,168 @@ package
 //				});
 //			});
 //		}
+	}
+}
+
+import flash.display.Bitmap;
+
+import pixel.ui.control.LayoutConstant;
+import pixel.ui.control.UIContainer;
+import pixel.ui.control.UIImage;
+import pixel.utility.BitmapTools;
+import pixel.utility.Tools;
+
+/**
+ * Flow 节点UI定义
+ **/
+class WorldFlowItem extends UIContainer
+{
+	public function WorldFlowItem(itemWidth:Number = 0,itemHeight:Number = 0)
+	{
+		super();
+		//this.LeftBottomCorner = this.LeftTopCorner = this.RightBottomCorner = this.RightTopCorner = 5;
+		this.Layout = LayoutConstant.VERTICAL;
+		this.Gap = this.padding = 5;
+		this.BorderThinkness = 0;
+		if(itemWidth > 0)
+		{
+			width = itemWidth;
+		}
+		if(itemHeight > 0)
+		{
+			height = itemHeight;
+		}
+		
+		_image = new UIImage();
+		addChild(_image);
+	}
+	
+	public function set image(value:Bitmap):void
+	{
+		_image.image = value;
+	}
+	
+	private var _image:UIImage = null;
+	//private var _infoBar:InfoBar = null;
+	
+	/**
+	 * 初始化
+	 * 
+	 **/
+	override public function initializer():void
+	{
+		super.initializer();
+		
+		//_infoBar = new InfoBar();
+		//addChild(_infoBar);
+	}
+}
+
+import com.greensock.TweenMax;
+
+import flash.display.DisplayObject;
+import flash.display.Sprite;
+import flash.geom.Rectangle;
+
+import pixel.ui.control.LayoutConstant;
+import pixel.ui.control.UIContainer;
+import pixel.ui.control.UIPanel;
+
+class ShowcaseFlow extends Sprite
+{
+	private var _content:UIContainer = null;
+	
+	public function set padding(value:int):void
+	{
+		_content.x = _content.y = value;
+	}
+	
+	private var _nodeW:int = 0;
+	private var _nodeH:int = 0;
+	private var _nodeGap:int = 0;
+
+	public function ShowcaseFlow(sizeW:int,sizeH:int,nodeW:int,nodeH:int)
+	{
+		super();
+		_content = new UIContainer();
+		_content.Layout = LayoutConstant.HORIZONTAL;
+		super.addChild(_content);
+		_scrollWidth = sizeW;
+		_scrollHeight = sizeH;
+		_nodeW = nodeW;
+		_nodeH = nodeH;
+		_content.Gap = _nodeGap = (sizeW - (nodeW + (nodeW / 3 * 2))) * 0.5;
+		_currentX = _content.x = int(_nodeGap + nodeW / 3);
+		updateScrollRect();
+	}
+	private var _scrollSeek:int = 0;
+	private var _nodeCount:int = 0;
+	override public function addChild(child:DisplayObject):DisplayObject
+	{
+		_content.addChild(child);
+		_nodeCount++;
+		return child;
+	}
+	
+	private var _scrollWidth:Number = 0;
+	private var _scrollHeight:Number = 0;
+	override public function set width(value:Number):void
+	{
+		super.width = value;
+		_scrollWidth = value;
+		updateScrollRect();
+	}
+	
+	override public function set height(value:Number):void
+	{
+		super.height = value;
+		_scrollHeight = value;
+		updateScrollRect();
+	}
+	private var _duration:Number = 1;
+	private function updateScrollRect():void
+	{
+		this.scrollRect = new Rectangle(0,0,_scrollWidth,_scrollHeight);
+	}
+	
+	/**
+	 * 向左滑动
+	 **/
+	public function scrollLeft():void
+	{
+		if(_scrollSeek + 1 < _nodeCount)
+		{
+			_currentX = _currentX - (_nodeW + _nodeGap);
+			TweenMax.to(_content,_duration,{x : _currentX});
+			_scrollSeek++;
+		}
+		
+	}
+	
+	private var _currentX:Number = 0;
+	/**
+	 * 向右滑动
+	 **/
+	public function scrollRight():void
+	{
+		if(_scrollSeek > 0)
+		{
+			_currentX = _currentX + (_nodeW + _nodeGap);
+			TweenMax.to(_content,_duration,{x : _currentX});
+			_scrollSeek--;
+		}
+	}
+	
+	public function scrollTop(offset:Number):void
+	{
+		var target:Number = _content.y - offset;
+		TweenMax.to(_content,_duration,{y : target});
+	}
+	
+	public function scrollBottom(offset:Number):void
+	{
+		var target:Number = _content.y + offset;
+		TweenMax.to(_content,_duration,{y : target});
 	}
 }
 

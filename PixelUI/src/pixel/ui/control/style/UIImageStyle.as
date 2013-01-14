@@ -34,6 +34,7 @@ package pixel.ui.control.style
 		public function UIImageStyle()
 		{
 			super();
+			this.BorderThinkness = 0;
 		}
 		
 		override public function encode():ByteArray

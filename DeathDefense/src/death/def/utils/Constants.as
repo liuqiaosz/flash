@@ -9,6 +9,8 @@ package death.def.utils
 		public static const STR_RSL_VER:String = "rsl_version";
 		public static const STR_MSG_VER:String = "msg_version";
 		
+		public static const RES_WORLD_BG:String = "image.world.background";
+		
 		public function Constants()
 		{
 		}

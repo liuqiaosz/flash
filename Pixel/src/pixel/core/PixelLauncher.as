@@ -47,6 +47,10 @@ package pixel.core
 			this.addEventListener(Event.ADDED_TO_STAGE,onAdded);
 			_frameRate = frameRate;
 			_launcher = this;
+			
+			trace("初始化消息中心");
+			//初始化消息中心
+			PixelMessageBus.initiazlier();
 			if(!director)
 			{
 				_director = new PixelDirector();
@@ -68,7 +72,6 @@ package pixel.core
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE,onAdded);
 			initializer();
-			
 		}
 		
 		protected function initializer():void
@@ -76,9 +79,6 @@ package pixel.core
 			try
 			{
 				_stage = stage;
-				trace("初始化消息中心");
-				//初始化消息中心
-				PixelMessageBus.initiazlier();
 				trace("初始化IO模块");
 				_ioModule = new PixelIOModule();
 				trace("初始化渲染模块");
@@ -147,6 +147,11 @@ package pixel.core
 			//_director.update();	
 			
 			//trace((flash.utils.getTimer() - startSeek) + " ms");
+		}
+		
+		protected function addMesageListener(type:String,callback:Function):void
+		{
+			PixelMessageBus.instance.register(type,callback);
 		}
 		
 		/**

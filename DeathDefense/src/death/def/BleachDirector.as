@@ -6,6 +6,7 @@ package death.def
 	import death.def.event.BleachMessage;
 	import death.def.module.scene.IScene;
 	
+	import pixel.core.IPixelDirector;
 	import pixel.core.IPixelLayer;
 	import pixel.core.PixelDirector;
 	import pixel.core.PixelLauncher;
@@ -17,7 +18,7 @@ package death.def
 	 * 
 	 * 
 	 **/
-	public class BleachDirector extends PixelDirector
+	public class BleachDirector extends PixelDirector implements IPixelDirector
 	{
 		public function BleachDirector()
 		{
@@ -100,7 +101,8 @@ package death.def
 			if(_newScene)
 			{
 				_activedScene =_newScene;
-				moveInComplete(_activedScene);
+				//moveInComplete(_activedScene);
+				moveInComplete();
 			}
 		}
 		

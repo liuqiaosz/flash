@@ -35,7 +35,7 @@ package pixel.core
 			if(!_canvas)
 			{
 				_canvas = new Bitmap();
-				addChild(_canvas);
+				super.addChild(_canvas);
 			}
 			_canvas.bitmapData = _source;
 		}

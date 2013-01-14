@@ -1,5 +1,9 @@
 package 
 {
+	import death.def.BleachDirector;
+	import death.def.event.BleachMessage;
+	import death.def.module.scene.WorldScene;
+	import death.def.module.scene.ui.WorldFlow;
 	import death.def.scene.Battle;
 	
 	import flash.display.Loader;
@@ -10,6 +14,7 @@ package
 	import flash.system.LoaderContext;
 	
 	import pixel.core.PixelLauncher;
+	import pixel.message.PixelMessage;
 	import pixel.texture.PixelTextureFactory;
 	import pixel.ui.control.UIButton;
 	import pixel.utility.ColorCode;
@@ -17,16 +22,22 @@ package
 	import pixel.utility.SystemMode;
 	import pixel.utility.Tools;
 	
+	/**
+	 * 主程序
+	 * 
+	 **/
 	public class BleachDefense extends PixelLauncher
 	{
+		private var _scroller:WorldFlow = null;
 		public function BleachDefense()
 		{
-			super();
+			super(BleachDirector);
 		}
 		
-//		override protected function initializer():void
-//		{
-//			super.initializer();
-//		}
+		override protected function initializer():void
+		{
+			super.initializer();
+			this.director.switchScene(WorldScene);
+		}
 	}
 }

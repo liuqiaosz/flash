@@ -23,11 +23,6 @@ package pixel.ui.control
 		public static const DEFAULT_WIDTH:int = 22;
 		public static const DEFAULT_HANDLER_MIN:int = 44;
 		
-		[Embed(source="Scrolldown.png")]
-		private var DOWN:Class;
-		[Embed(source="Scrollup.png")]
-		private var UP:Class;
-		
 		//protected var _minHeight:int = 0;
 		protected var _scrollUp:UIButton = null;
 		protected var _scrollDown:UIButton = null;
@@ -65,7 +60,7 @@ package pixel.ui.control
 			_scrollDown.y = height - DEFAULT_WIDTH;
 			_scrollHandlerPanel.y = DEFAULT_WIDTH; 
 			
-			_scrollUp.backgroundImageForAllState = new UP() as Bitmap;
+			//_scrollUp.backgroundImageForAllState = new UP() as Bitmap;
 			_scrollUp.ImagePack = true;
 			//_scrollUp.Scale9Grid = true;
 			//_scrollUp.Scale9GridAll = 4;
@@ -74,7 +69,7 @@ package pixel.ui.control
 			_scrollUp.height = DEFAULT_WIDTH;
 			
 			
-			_scrollDown.backgroundImageForAllState = new DOWN() as Bitmap;
+			//_scrollDown.backgroundImageForAllState = new DOWN() as Bitmap;
 			_scrollDown.ImagePack = true;
 			//_scrollDown.Scale9Grid = true;
 			//_scrollDown.Scale9GridAll = 4;

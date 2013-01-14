@@ -34,6 +34,7 @@ package death.def.module.scene
 		{
 			if(!_pause)
 			{
+				super.update();
 				sceneUpdate();
 			}
 		}

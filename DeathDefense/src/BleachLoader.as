@@ -1,5 +1,7 @@
 package 
 {
+	import death.def.event.BleachDefenseEvent;
+	import death.def.module.loader.BaseLoader;
 	import death.def.utils.Constants;
 	import death.def.utils.ShareDisk;
 	import death.def.utils.ShareObjectHelper;
@@ -23,7 +25,6 @@ package
 	import flash.text.TextField;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
-	import death.def.module.loader.BaseLoader;
 	
 	[SWF(width="1280",height="600",backgroundColor="0x000000")]
 	public class BleachLoader extends Sprite
@@ -36,6 +37,10 @@ package
 			
 			_loader = new BaseLoader();
 			addChild(_loader);
+			addEventListener(BleachDefenseEvent.BLEACH_INIT_COMPLETE,function(event:BleachDefenseEvent):void{
+				stage.addChild(_loader.mainApp);
+				//stage.removeChild(_loader);
+			});
 		}
 	}
 }

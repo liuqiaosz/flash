@@ -128,17 +128,20 @@ package death.def.module.loader
 		 **/
 		private function rslLibraryDownload():void
 		{
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				_loaded++;
-				_loading.progressUpdate(_loadTotal,_loaded);
-				msgDownload();
-				
-			});
-			var ctx:LoaderContext = new LoaderContext();
-			ctx.applicationDomain = ApplicationDomain.currentDomain;
-			//loader.load(new URLRequest(Constants.WEB_URL + "library/BleachLibrary.swf"),ctx);
-			loader.load(new URLRequest("BleachLibrary.swf"),ctx);
+//			var loader:Loader = new Loader();
+//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+//				_loaded++;
+//				_loading.progressUpdate(_loadTotal,_loaded);
+//				msgDownload();
+//				
+//			});
+//			var ctx:LoaderContext = new LoaderContext();
+//			ctx.applicationDomain = ApplicationDomain.currentDomain;
+//			//loader.load(new URLRequest(Constants.WEB_URL + "library/BleachLibrary.swf"),ctx);
+//			loader.load(new URLRequest("/Users/LiuQiao/Documents/Developer/Code/flash/BleachLibrary/bin-debug/BleachLibrary.swf"),ctx);
+			_loaded++;
+			_loading.progressUpdate(_loadTotal,_loaded);
+			msgDownload();
 		}
 		
 		/**
