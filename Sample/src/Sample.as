@@ -206,7 +206,71 @@ package
 			s.x = stage.stageWidth - s.width;
 			addChild(s);
 			
-			loading();
+			//loading();
+			showcase();
+		}
+		
+		private function showcase():void
+		{
+			var panel:UIPanel = new UIPanel();
+			
+			panel.width = 400;
+			panel.height = 200;
+			addChild(panel);
+			panel.Layout = LayoutConstant.HORIZONTAL;
+			panel.Gap = 30;
+			panel.padding = 30;
+			
+			var child4:UIPanel = new UIPanel();
+			child4.width 140;
+			child4.height = 140;
+			
+			var child2:UIPanel = new UIPanel();
+			child2.width = 140;
+			child2.height = 140;
+			
+			var child3:UIPanel = new UIPanel();
+			child3.width = 140;
+			child3.height = 140;
+			child3.BackgroundColor = child4.BackgroundColor = child2.BackgroundColor = 0xffffff;
+			
+			panel.addChild(child3);
+			panel.addChild(child2);
+			panel.addChild(child4);
+			panel.BackgroundColor = 0xffffff;
+			panel.BorderThinkness = 0;
+			
+			var shell:Sprite = new Sprite();
+			panel.x = 5;
+			panel.y = 5;
+			shell.addChild(panel);
+
+			shell.scrollRect = new Rectangle(0,0,420,220);
+			//shell.graphics.lineStyle(2);
+			//shell.graphics.drawRect(0,0,420,220);
+			addChild(shell);
+			shell.x = 100;
+			shell.y = 100;
+			
+			
+			var prev:UIButton = new UIButton();
+			prev.Text = "prev";
+			
+			addChild(prev);
+			
+			var next:UIButton = new UIButton();
+			next.Text = "Next";
+			
+			addChild(next);
+			
+			prev.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				TweenMax.to(panel,1,{x:-200});
+			});
+			
+			next.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				TweenMax.to(panel,1,{x:0});
+			});
+			next.x = 150;
 		}
 		
 		[Embed(source="LoadingColor.png")]
