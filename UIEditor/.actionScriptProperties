@@ -26,7 +26,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="D:/Developer/flash/Project/Death/AIR证书.p12" airTimestamp="false" anePathSet="true" version="1">
+      <airSettings airCertificatePath="/Users/LiuQiao/Documents/Developer/Code/flash/Project/Death/AIR证书.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes>
           <pathEntry path="editor"/>
           <pathEntry path="Menu.xml"/>
