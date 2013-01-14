@@ -37,10 +37,17 @@ package
 			
 			_loader = new BaseLoader();
 			addChild(_loader);
-			addEventListener(BleachDefenseEvent.BLEACH_INIT_COMPLETE,function(event:BleachDefenseEvent):void{
-				stage.addChild(_loader.mainApp);
-				//stage.removeChild(_loader);
-			});
+			addEventListener(BleachDefenseEvent.BLEACH_INIT_COMPLETE,initComplete);
+		}
+		
+		private function initComplete(event:BleachDefenseEvent):void
+		{
+			_loader.visible = false;
+			addChild(_loader.mainApp);
+			if(contains(_loader))
+			{
+				removeChild(_loader);
+			}
 		}
 	}
 }

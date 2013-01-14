@@ -2,17 +2,18 @@ package pixel.graphic
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import pixel.core.IPixelLayer;
 	import pixel.core.IPixelNode;
 	import pixel.core.IPixelSprite;
 	import pixel.core.PixelLauncher;
 	import pixel.core.PixelModule;
 	import pixel.core.PixelNs;
-	import pixel.core.IPixelLayer;
 	
 	use namespace PixelNs;
 
@@ -47,7 +48,7 @@ package pixel.graphic
 		//画布
 		protected var _gameCanvas:Bitmap = null;
 		protected var _gameClip:BitmapData = null;
-		protected var _renderNodes:Vector.<IPixelNode> = null;
+		protected var _renderNodes:Vector.<DisplayObject> = null;
 		protected var _scene:IPixelLayer = null;
 		protected var _node:IPixelSprite = null;
 		protected var _nodeClip:BitmapData = null;

@@ -14,7 +14,7 @@ package pixel.core
 	 **/
 	public class PixelLayer extends PixelSprite implements IPixelLayer
 	{
-		private var childNodes:Vector.<IPixelNode> = null;
+		private var childNodes:Vector.<DisplayObject> = null;
 		private var _id:String = "";
 		public function PixelLayer(id:String = "")
 		{
@@ -36,10 +36,14 @@ package pixel.core
 			
 		}
 		
-		[Deprecated(message="该方法无效,请使用addNode")]
-		override public function addChild(child:DisplayObject):DisplayObject
+		override public function addChild(value:DisplayObject):DisplayObject
 		{
-			return null;
+			if(!childNodes)
+			{
+				childNodes = new Vector.<DisplayObject>();
+			}
+			childNodes.push(value);
+			return super.addChild(value as Sprite);
 		}
 		
 		[Deprecated(message="该方法无效,请使用removeNode")]
@@ -48,20 +52,7 @@ package pixel.core
 			return null;
 		}
 		
-		/**
-		 * 添加节点
-		 * 
-		 * 
-		 **/
-		public function addNode(value:IPixelNode):void
-		{
-			if(!childNodes)
-			{
-				childNodes = new Vector.<IPixelNode>();
-			}
-			childNodes.push(value);
-			super.addChild(value as Sprite);
-		}
+		
 		
 		/**
 		 * 删除节点
@@ -98,7 +89,7 @@ package pixel.core
 			
 		}
 		
-		public function get nodes():Vector.<IPixelNode>
+		public function get nodes():Vector.<DisplayObject>
 		{
 			return childNodes;
 		}
@@ -106,10 +97,10 @@ package pixel.core
 		protected var _node:IPixelNode = null;
 		override public function update():void
 		{
-			for each(_node in childNodes)
-			{
-				_node.update();
-			}
+//			for each(_node in childNodes)
+//			{
+//				_node.update();
+//			}
 		}
 	}
 }

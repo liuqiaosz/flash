@@ -113,7 +113,7 @@ package death.def.module.loader
 				_loading = new LoadMask(whiteBitmap,colorBitmap);
 				_loading.x = (stage.stageWidth - whiteBitmap.width) * 0.5;
 				_loading.y = (stage.stageHeight - whiteBitmap.height) * 0.5;
-				stage.addChild(_loading);
+				addChild(_loading);
 				
 				rslLibraryDownload();
 			});
