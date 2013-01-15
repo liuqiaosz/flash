@@ -49,12 +49,12 @@ package death.def
 			if(_activedScene)
 			{
 				_newScene = newScene;
-				sceneMoveOut(_activedScene);
+				sceneFadeOut(_activedScene);
 			}
 			else
 			{
 				_activedScene = newScene;
-				sceneMoveIn(_activedScene);
+				sceneFadeIn(_activedScene);
 			}
 		}
 		
@@ -88,6 +88,22 @@ package death.def
 				"y" : 0,
 				"alpha" : 0,
 				onComplete : moveOutComplete
+			});
+		}
+		
+		protected function sceneFadeIn(scene:IPixelLayer):void
+		{
+			_activedScene.alpha = 0;
+			TweenLite.to(_activedScene,1,{
+				"alpha" : 1
+			});
+		}
+		
+		protected function sceneFadeOut(scene:IPixelLayer):void
+		{
+			_activedScene.alpha = 1;
+			TweenLite.to(_activedScene,1,{
+				"alpha" : 0
 			});
 		}
 		

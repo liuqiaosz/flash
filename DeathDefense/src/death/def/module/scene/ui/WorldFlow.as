@@ -2,6 +2,8 @@ package death.def.module.scene.ui
 {
 	import com.greensock.TweenMax;
 	
+	import death.def.event.BleachDefenseEvent;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -79,6 +81,7 @@ package death.def.module.scene.ui
 				_currentX = _currentX - (_nodeW + _nodeGap);
 				TweenMax.to(_content,_duration,{x : _currentX});
 				_scrollSeek++;
+				selectedNotify();
 			}
 		}
 		
@@ -93,6 +96,7 @@ package death.def.module.scene.ui
 				_currentX = _currentX + (_nodeW + _nodeGap);
 				TweenMax.to(_content,_duration,{x : _currentX});
 				_scrollSeek--;
+				selectedNotify();
 			}
 		}
 		
@@ -106,6 +110,13 @@ package death.def.module.scene.ui
 		{
 			var target:Number = _content.y + offset;
 			TweenMax.to(_content,_duration,{y : target});
+		}
+		
+		private function selectedNotify():void
+		{
+			var notify:BleachDefenseEvent = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_FLOW_SELECTED);
+			notify.value = _content.Children[_scrollSeek];
+			dispatchEvent(notify);
 		}
 		
 		public function get currentItem():WorldFlowItem

@@ -11,6 +11,7 @@ package pixel.ui.control.asset
 		//function Download(Uri:Array):void;
 		function FindAssetById(Id:String):IAsset;
 		function FindBitmapById(Id:String):Bitmap;
+		function addAssetLibrary(lib:IAssetLibrary):void;
 		//function PushQueue(Url:String):void;
 		function AssetHookRegister(Id:String,Target:UIControl):void;
 		function AssetHookRemove(Id:String,Target:UIControl):void;

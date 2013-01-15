@@ -19,7 +19,7 @@ package editor.utils
 		public static const STYLEGROUP_SUFFIX:String = ".sg";
 		
 		
-		public static const DEFAULT_DIR_RES:String = File.applicationDirectory.nativePath + System.SystemSplitSymbol + "res" + System.SystemSplitSymbol;
+		public static const DEFAULT_DIR_RES:String = File.applicationDirectory.nativePath + System.SystemSplitSymbol+ "res" + System.SystemSplitSymbol;
 		public static const DEFAULT_DIR_STYLES:String = File.applicationDirectory.nativePath + System.SystemSplitSymbol + "styles" + System.SystemSplitSymbol;
 		
 		public static const TEXT_ERRORTIP:String = "错误提示";

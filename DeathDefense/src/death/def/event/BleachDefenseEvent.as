@@ -12,6 +12,8 @@ package death.def.event
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
 		public static const BLEACH_INIT_COMPLETE:String = "InitializeComplete";
 		
+		public static const BLEACH_FLOW_SELECTED:String = "FlowItemSelected";
+		
 		private var _value:Object = null;
 		public function set value(data:Object):void
 		{

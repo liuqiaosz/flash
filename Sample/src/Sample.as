@@ -30,9 +30,11 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -43,6 +45,7 @@ package
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.SharedObject;
+	import flash.net.Socket;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
@@ -50,6 +53,8 @@ package
 	import flash.system.ApplicationDomain;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
+	import flash.system.Security;
+	import flash.system.System;
 	import flash.system.Worker;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
@@ -84,6 +89,7 @@ package
 	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.asset.PixelAssetManager;
+	import pixel.ui.control.event.DownloadEvent;
 	import pixel.ui.control.style.VerticalScrollerStyle;
 	import pixel.ui.control.vo.UIControlMod;
 	import pixel.ui.control.vo.UIMod;
@@ -211,7 +217,42 @@ package
 			s.x = stage.stageWidth - s.width;
 			addChild(s);
 			
-			showcase();
+			var chnnel:Socket = new Socket();
+			chnnel.addEventListener(SecurityErrorEvent.SECURITY_ERROR,function(event:SecurityErrorEvent):void{
+				//trace(event.text);
+				trace("!!!");
+			});
+			
+			chnnel.addEventListener(IOErrorEvent.IO_ERROR,function(event:IOErrorEvent):void{
+				trace("~~");
+			});
+			
+			chnnel.addEventListener(ProgressEvent.SOCKET_DATA,function(event:ProgressEvent):void{
+			
+				//var data:ByteArray = new ByteArray();
+				trace(chnnel.readUTFBytes(chnnel.bytesAvailable));
+			});
+			
+			chnnel.addEventListener(Event.CONNECT,function(event:Event):void{
+				trace("connected");
+				chnnel.writeUTFBytes("Test!!!");
+			});
+			
+			
+			chnnel.connect("219.234.0.12",33445);
+			
+//			PixelAssetManager.instance.download("login.swf");
+//			PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
+//				var loader:URLLoader = new URLLoader();
+//				loader.dataFormat = URLLoaderDataFormat.BINARY;
+//				loader.addEventListener(Event.COMPLETE,function(event:Event):void{
+//					var data:ByteArray = loader.data as ByteArray;
+//					var mod:UIMod = UIControlFactory.instance.decode(data);
+//					stage.addChild(mod.controls.pop().control);
+//				});
+//				loader.load(new URLRequest("login01.mod"));
+//			});
+			
 		}
 		
 		private function showcase():void

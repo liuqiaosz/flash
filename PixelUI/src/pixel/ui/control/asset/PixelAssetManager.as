@@ -115,6 +115,11 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		return _AssetLibArray;
 	}
 	
+	public function addAssetLibrary(lib:IAssetLibrary):void
+	{
+		_AssetLibArray.push(lib);
+	}
+	
 	private var HookDict:Dictionary = new Dictionary();
 	public function AssetHookRegister(Id:String,Target:UIControl):void
 	{
@@ -199,8 +204,8 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 			_Busy = true;
 			loadingTask = DownloadQueue.pop();
 			
-			var ctx:LoaderContext = new LoaderContext();
-			ctx.allowCodeImport = true;
+			//var ctx:LoaderContext = new LoaderContext();
+			//ctx.allowCodeImport = true;
 			_loader.load(new URLRequest(loadingTask.url));
 		}
 	}
@@ -247,7 +252,11 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 					Notify = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
 					_self.dispatchEvent(Notify);
 				});
-				reader.loadBytes(_loader.data as ByteArray);
+				var ctx:LoaderContext = new LoaderContext();
+				//ctx.applicationDomain = ApplicationDomain.currentDomain;
+				ctx.allowLoadBytesCodeExecution = true;
+				ctx.allowCodeImport = true;
+				reader.loadBytes(_loader.data as ByteArray,ctx);
 				break;
 			case PixelAssetEmu.ASSET_TPK:
 				lib = new PixelTextureAssetLibrary(id,_loader.data as ByteArray);
@@ -267,28 +276,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		{
 			_Busy = false;
 		}
-		/**
-		var Parse:Swf = new Swf(new ByteStream(Data));
-
-		Parse.FileName = _LibraryLoadingUrl.substring(_LibraryLoadingUrl.lastIndexOf("\\") + 1);
-		_AssetLibArray.push(Parse);
-		CheckHook(Parse);
 		
-		var TaskNotify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SINGLETASK_SUCCESS);
-		TaskNotify.CurrentSwf = Parse;
-		TaskNotify.CurrentUri = _LibraryLoadingUrl;
-		TaskNotify.CurrentIndex = _LibraryLoading;
-		
-		dispatchEvent(TaskNotify);
-		
-		if(DownloadQueue.length == 0)
-		{
-			var Notify:DownloadEvent = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
-			dispatchEvent(Notify);
-			_Busy = false;
-			return;
-		}
-		**/
 		//继续加载下一个资源
 		
 	}

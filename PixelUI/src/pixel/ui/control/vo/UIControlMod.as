@@ -27,7 +27,6 @@ package pixel.ui.control.vo
 			}
 			if(_source)
 			{
-				trace("解析组件数据");
 				decode(_source);
 				_source.clear();
 				_source = null;

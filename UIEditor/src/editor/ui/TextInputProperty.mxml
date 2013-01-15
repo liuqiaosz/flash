@@ -8,4 +8,6 @@
 	
 	<ui:SimpleProperty id="Simple" Control="{CurrentControl}" enabled="{_propertieEnabled}" />
 	<ui:BordeStyleProperty id="Border" Control="{CurrentControl}" enabled="{_styleEnabled}"/>
+	<ui:LabelPropery Control="{CurrentControl}" /> 
+	<ui:Background id="Background" Control="{CurrentControl}" />
 </ui:GenericProperty>

@@ -78,6 +78,7 @@
 			import pixel.ui.control.asset.IAssetLibrary;
 			import pixel.ui.control.asset.PixelAssetEmu;
 			import pixel.ui.control.asset.PixelAssetManager;
+			import pixel.ui.control.asset.PixelLoaderAssetLibrary;
 			import pixel.ui.control.event.DownloadEvent;
 			import pixel.ui.control.event.EditModeEvent;
 			import pixel.ui.control.style.UISliderStyle;
@@ -327,6 +328,8 @@
 					dirRes.createDirectory();
 					return;
 				}
+				var res:Array = [];
+				PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
 				if(dirRes.exists && dirRes.isDirectory)
 				{
 					var files:Array = dirRes.getDirectoryListing();
@@ -337,19 +340,19 @@
 						{
 							if(file.extension == "swf")
 							{
-								PixelAssetManager.instance.download(file.nativePath);
+								PixelAssetManager.instance.download("res/" + file.name);
 							}
 							else if(file.extension == "tpk")
 							{
 								PixelAssetManager.instance.download(file.nativePath,PixelAssetEmu.ASSET_TPK);
 							}
 						}
-						
 					}
 				}
-				PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
+				
 				//PixelAssetManager.instance.download(Url);
 			}
+			
 			
 			private function initializerStyle():void
 			{
