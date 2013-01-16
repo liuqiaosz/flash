@@ -8,6 +8,7 @@ package pixel.ui.control
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.ApplicationDomain;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	

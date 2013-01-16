@@ -395,7 +395,7 @@ package
 				var ctl:UIPanel = control.control as UIPanel;
 				ctl.x = ctl.y = 0;
 				var txt:UITextInput = ctl.GetChildById("LoginPwd",true) as UITextInput;
-				txt.isPassword = true;
+				txt.isPassword(true);
 				addChild(ctl);
 			});
 			

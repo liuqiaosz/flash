@@ -1,10 +1,11 @@
 package 
 {
 	import bleach.BleachDirector;
-	import bleach.event.BleachMessage;
+	import bleach.message.BleachMessage;
+	import bleach.module.LoginModule;
 	import bleach.module.scene.WorldScene;
-	import bleach.scene.ui.WorldFlow;
 	import bleach.scene.Battle;
+	import bleach.scene.ui.WorldFlow;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -26,10 +27,10 @@ package
 	 * 主程序
 	 * 
 	 **/
-	public class BleachDefense extends PixelLauncher
+	public class BleachLauncher extends PixelLauncher
 	{
 		private var _scroller:WorldFlow = null;
-		public function BleachDefense()
+		public function BleachLauncher()
 		{
 			super(BleachDirector);
 		}
@@ -37,7 +38,8 @@ package
 		override protected function initializer():void
 		{
 			super.initializer();
-			this.director.switchScene(WorldScene);
+			
+			this.director.switchScene(LoginModule);
 		}
 	}
 }

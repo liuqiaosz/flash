@@ -47,6 +47,8 @@ package bleach.module.loader
 			this.graphics.drawRect(0,0,1280,600);
 			this.graphics.endFill();
 			commLibraryDownload();
+			
+		
 		}
 		
 		/**
@@ -92,7 +94,7 @@ package bleach.module.loader
 			_rslVer = data.readUTFBytes(3);
 			_msgVer = data.readUTFBytes(3);
 		}
-		private var _loading:LoadMask = null;
+		//private var _loading:LoadMask = null;
 		/**
 		 * 公共素材包下载
 		 * 
@@ -101,27 +103,25 @@ package bleach.module.loader
 		{
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				traceDomain();
-				var colorImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadColor");
-				var whiteImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadWhite");
+				loader.unload();
 				
-				var colorBitmap:BitmapData = new colorImgClass() as BitmapData;
-				var whiteBitmap:BitmapData = new whiteImgClass() as BitmapData;
-				
-				_loading = new LoadMask(whiteBitmap,colorBitmap);
-				_loading.x = (stage.stageWidth - whiteBitmap.width) * 0.5;
-				_loading.y = (stage.stageHeight - whiteBitmap.height) * 0.5;
-				addChild(_loading);
+//				var colorImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadColor");
+//				var whiteImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadWhite");
+//				
+//				var colorBitmap:BitmapData = new colorImgClass() as BitmapData;
+//				var whiteBitmap:BitmapData = new whiteImgClass() as BitmapData;
+//				
+//				_loading = new LoadMask(whiteBitmap,colorBitmap);
+//				_loading.x = (stage.stageWidth - whiteBitmap.width) * 0.5;
+//				_loading.y = (stage.stageHeight - whiteBitmap.height) * 0.5;
+				addChild(MaskLoading.instance);
 				
 				rslLibraryDownload();
-			});
-			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,function(event:IOErrorEvent):void{
-				trace("!");
 			});
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = ApplicationDomain.currentDomain;
 			//loader.load(new URLRequest(Constants.WEB_URL + "library/commlib.swf"),ctx);
-			loader.load(new URLRequest("../../../../../Bleach/资源管理/commlib.swf"),ctx);
+			loader.load(new URLRequest("commlib.swf"),ctx);
 		}
 		
 		/**
@@ -141,7 +141,8 @@ package bleach.module.loader
 //			//loader.load(new URLRequest(Constants.WEB_URL + "library/BleachLibrary.swf"),ctx);
 //			loader.load(new URLRequest("/Users/LiuQiao/Documents/Developer/Code/flash/BleachLibrary/bin-debug/BleachLibrary.swf"),ctx);
 			_loaded++;
-			_loading.progressUpdate(_loadTotal,_loaded);
+			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+			//_loading.progressUpdate(_loadTotal,_loaded);
 			msgDownload();
 		}
 		
@@ -153,13 +154,13 @@ package bleach.module.loader
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
 				_loaded++;
-				_loading.progressUpdate(_loadTotal,_loaded);
+				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
 				coreDownload();
 			});
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = ApplicationDomain.currentDomain;
 			//loader.load(new URLRequest(Constants.WEB_URL + "BleachScene.swf"),ctx);
-			loader.load(new URLRequest("death/def/module/message/MsgLibrary.swf"),ctx);
+			loader.load(new URLRequest("bleach/module/message/MsgLibrary.swf"),ctx);
 		}
 		
 		private var _lazy:Timer = null;
@@ -171,19 +172,15 @@ package bleach.module.loader
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
 				_loaded++;
-				_loading.progressUpdate(_loadTotal,_loaded);
 				_mainApp = loader.content;
-				
-				//设置面具发光
-				_loading.maskGlow();
-				_lazy = new Timer(500,1);
+				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+				_lazy = new Timer(2000,1);
 				_lazy.addEventListener(TimerEvent.TIMER,completeLazy);
 				_lazy.start();
 			});
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = ApplicationDomain.currentDomain;
-			//loader.load(new URLRequest(Constants.WEB_URL + "BleachScene.swf"),ctx);
-			loader.load(new URLRequest("BleachDefense.swf"),ctx);
+			loader.load(new URLRequest("BleachLauncher.swf"),ctx);
 		}
 		
 		/**
@@ -206,78 +203,5 @@ package bleach.module.loader
 				trace(param);
 			}
 		}
-	}
-}
-
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.Sprite;
-import flash.filters.GlowFilter;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-import flash.text.TextField;
-import flash.text.TextFormat;
-import flash.text.TextFormatAlign;
-
-class LoadMask extends Sprite
-{
-	private var _text:TextField = null;
-	private var _image:Bitmap = null;
-	private var _bitmap:BitmapData = null;
-	private var _whiteMask:BitmapData = null;
-	private var _colorMask:BitmapData = null;
-	private var _dest:Point = new Point();
-	private var _rect:Rectangle = new Rectangle(0,0,0,0);
-	private var _format:TextFormat = null;
-	public function LoadMask(whiteMask:BitmapData,colorMask:BitmapData)
-	{
-		_whiteMask = whiteMask;
-		_colorMask = colorMask;
-		
-		if(!_whiteMask || !_colorMask)
-		{
-			throw new Error("Invalid mask");
-		}
-		
-		_bitmap = new BitmapData(_colorMask.width,_colorMask.height);
-		_bitmap.copyPixels(_whiteMask,_whiteMask.rect,_dest);
-		_rect.width = _colorMask.width;
-		_image = new Bitmap(_bitmap);
-		addChild(_image);
-		_text = new TextField();
-		_text.border = true;
-		_text.width = whiteMask.width;
-		_text.y = _colorMask.height + 20;
-		_format = new TextFormat();
-		_format.color = 0xFFFFFF;
-		_format.align = TextFormatAlign.CENTER;
-		_text.setTextFormat(_format);
-		addChild(_text);
-	}
-	
-	public function maskGlow(color:uint = 0xFF0000):void
-	{
-		var filter:GlowFilter = new GlowFilter(0xff0000,1,30,30);
-		_image.filters = [filter];
-	}
-	
-	/**
-	 * 更新
-	 **/
-	public function progressUpdate(total:Number,loaded:Number):void
-	{
-		var percent:Number = loaded / total;
-		_rect.height = _colorMask.height * percent;
-		if(_rect.height > _colorMask.height)
-		{
-			_rect.height = _colorMask.height;
-		}
-		_bitmap.copyPixels(_colorMask,_rect,_dest);
-	}
-	
-	public function textUpdate(value:String):void
-	{
-		_text.text = value;
-		_text.setTextFormat(_format);
 	}
 }

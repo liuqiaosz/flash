@@ -50,13 +50,23 @@ package pixel.ui.control
 //			_TextField.height = value;
 //		}
 //		
+		public function isPassword(value:Boolean):void
+		{
+			_TextField.displayAsPassword = value;
+		}
+		
+		public function get password():Boolean
+		{
+			return _TextField.displayAsPassword;
+		}
+		
 		public function set text(value:String):void
 		{
 			_TextField.text = _TextValue = value;	
 		}
 		public function get text():String
 		{
-			return _TextValue;
+			return _TextField.text;
 		}
 //		public function set Text(Value:String):void
 //		{
@@ -185,6 +195,7 @@ package pixel.ui.control
 				Notify.localX = Pos.x;
 				Notify.localY = Pos.y;
 				dispatchEvent(Notify);
+				
 			}
 		}
 		
@@ -203,6 +214,7 @@ package pixel.ui.control
 		
 		override protected function SpecialDecode(Data:ByteArray):void
 		{
+			_TextField.displayAsPassword = Boolean(Data.readByte());
 			var Len:int = Data.readShort();
 			var txt:String = "";
 			if(Len > 0)
@@ -228,6 +240,8 @@ package pixel.ui.control
 			
 			text = txt;
 			this.updateFormat();
+			
+			
 //			Text = text;
 		}
 		
@@ -243,6 +257,7 @@ package pixel.ui.control
 		
 		override protected function SpecialEncode(Data:ByteArray):void
 		{
+			Data.writeByte(int(_TextField.displayAsPassword));
 			var Len:int = Tools.StringActualLength(_TextValue);
 			Data.writeShort(Len);
 			Data.writeMultiByte(_TextValue,"cn-gb");

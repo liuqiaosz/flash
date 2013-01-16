@@ -1,10 +1,14 @@
 package bleach.module.scene
 {
+	import bleach.message.BleachLoadingMessage;
 	import bleach.module.GenericModule;
 	import bleach.scene.ui.WorldFlow;
 	
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
+	import pixel.core.PixelLauncher;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UIPanel;
 	
@@ -22,6 +26,7 @@ package bleach.module.scene
 		
 		override public function initializer():void
 		{
+			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_END,loadingEnd);
 			//加载世界数据
 			_scroller = new WorldFlow(1280,400,600,300);
 			_scroller.y = 100;
@@ -59,6 +64,25 @@ package bleach.module.scene
 			right.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
 				_scroller.scrollRight();
 			});
+			
+			var max:Number = 0;
+			var a:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_SHOW);
+			
+			var loop:Timer = new Timer(1000,1);
+			loop.addEventListener(TimerEvent.TIMER,function(event:TimerEvent):void{
+				var up:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
+				up.loaded = 100;
+				up.total = 100;
+				
+				dispatchMessage(up);
+			});
+			loop.start();
+			this.dispatchMessage(a);
+		}
+		
+		private function loadingEnd(msg:BleachLoadingMessage):void
+		{
+			dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_HIDE));
 		}
 		
 		override protected function sceneUpdate():void

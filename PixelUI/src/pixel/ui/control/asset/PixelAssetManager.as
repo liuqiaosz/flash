@@ -254,7 +254,6 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 				});
 				var ctx:LoaderContext = new LoaderContext();
 				//ctx.applicationDomain = ApplicationDomain.currentDomain;
-				ctx.allowLoadBytesCodeExecution = true;
 				ctx.allowCodeImport = true;
 				reader.loadBytes(_loader.data as ByteArray,ctx);
 				break;
@@ -276,9 +275,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		{
 			_Busy = false;
 		}
-		
 		//继续加载下一个资源
-		
 	}
 	
 //	private function readToLoader(event:Event):void

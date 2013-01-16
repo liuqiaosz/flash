@@ -42,26 +42,26 @@ package pixel.ui.control
 			_TextField.height = value;
 		}
 		
-		private var _pwd:Boolean = false;
-		public function set isPassword(value:Boolean):void
-		{
-			_TextField.displayAsPassword = _pwd = value;
-		}
-		
-		override public function set text(value:String):void
-		{
-			if(_pwd)
-			{
-				var len:int = value.length;
-				var tmp:String = "";
-				while(len > 0)
-				{
-					tmp += "*";
-				}
-				_TextValue = value;
-				_TextField.text = tmp;
-			}
-		}
+//		private var _pwd:Boolean = false;
+//		public function set isPassword(value:Boolean):void
+//		{
+//			_TextField.displayAsPassword = _pwd = value;
+//		}
+//		
+//		override public function set text(value:String):void
+//		{
+//			if(_pwd)
+//			{
+//				var len:int = value.length;
+//				var tmp:String = "";
+//				while(len > 0)
+//				{
+//					tmp += "*";
+//				}
+//				_TextValue = value;
+//				_TextField.text = tmp;
+//			}
+//		}
 		
 		protected function Focus(event:FocusEvent):void
 		{

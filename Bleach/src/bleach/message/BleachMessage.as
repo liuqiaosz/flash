@@ -1,4 +1,4 @@
-package bleach.event
+package bleach.message
 {
 	import pixel.message.IPixelMessage;
 	import pixel.message.PixelMessage;
@@ -8,6 +8,7 @@ package bleach.event
 		public static const BLEACH_SYNCSCENEDATA:String = "SyncSceneData";
 		public static const BLEACH_TEXTURE_DOWNLOADED:String = "TextureDownloaded";
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
+		
 		
 		public function BleachMessage(msg:String,target:Object)
 		{

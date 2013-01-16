@@ -39,7 +39,7 @@ package bleach.view
 	}
 }
 import bleach.event.BleachDefenseEvent;
-import bleach.event.BleachMessage;
+import bleach.message.BleachMessage;
 import bleach.scene.IWorldNode;
 import bleach.scene.vo.WorldNodeVO;
 import bleach.texture.TextureManager;

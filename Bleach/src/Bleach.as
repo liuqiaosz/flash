@@ -8,7 +8,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.net.Socket;
 	
-	[SWF(width="1280",height="600",backgroundColor="0x000000")]
+	[SWF(width="1000",height="600",backgroundColor="0x000000")]
 	public class Bleach extends Sprite
 	{
 		private var _loader:BaseLoader = null;
@@ -19,8 +19,6 @@ package
 			_loader = new BaseLoader();
 			addChild(_loader);
 			addEventListener(BleachDefenseEvent.BLEACH_INIT_COMPLETE,initComplete);
-			var s:Socket;
-			trace(new Date().time);
 		}
 		
 		private function initComplete(event:BleachDefenseEvent):void

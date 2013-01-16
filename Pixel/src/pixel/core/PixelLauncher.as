@@ -30,6 +30,7 @@ package pixel.core
 		private var _screen:PixelScreen = null;
 		private static var _launcher:PixelLauncher = null;
 		private var _director:IPixelDirector = null;
+		private var _directorClass:Class = null;
 		private var _loop:Timer = null;
 		private var _frameRate:int = 30;
 		private var _initialized:Boolean = false;
@@ -51,21 +52,8 @@ package pixel.core
 			trace("初始化消息中心");
 			//初始化消息中心
 			PixelMessageBus.initiazlier();
-			if(!director)
-			{
-				_director = new PixelDirector();
-			}
-			else
-			{
-				//初始化主控
-				_director = new director() as IPixelDirector;
-			}
 			
-			if(!_director)
-			{
-				throw new PixelError(ErrorContants.ERR_DIRECTOR);
-			}
-			
+			_directorClass = director;
 		}
 		
 		private function onAdded(event:Event):void
@@ -79,8 +67,25 @@ package pixel.core
 			try
 			{
 				_stage = stage;
-				trace("初始化IO模块");
-				_ioModule = new PixelIOModule();
+				//trace("初始化IO模块");
+				//_ioModule = new PixelIOModule();
+				if(!_directorClass)
+				{
+					_director = new PixelDirector();
+				}
+				else
+				{
+					//初始化主控
+					_director = new _directorClass() as IPixelDirector;
+				}
+				
+				if(!_director)
+				{
+					throw new PixelError(ErrorContants.ERR_DIRECTOR);
+				}
+				
+				_director.initializer();
+				
 				trace("初始化渲染模块");
 				_graphicModule = new PixelGraphicModule();
 				

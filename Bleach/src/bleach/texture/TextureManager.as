@@ -37,6 +37,7 @@ class TextureManagerImpl extends EventDispatcher implements ITextureManager
 		_loader.dataFormat = URLLoaderDataFormat.BINARY;
 		_loader.addEventListener(Event.COMPLETE,eventOnComplete);
 	}
+	
 	private function eventOnComplete(event:Event):void
 	{
 		if(_waitQueue.length == 0)

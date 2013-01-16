@@ -21,5 +21,7 @@ package pixel.core
 		function switchScene(prototype:Class,transition:int = -1,duration:Number = 1):void;
 		
 		function switchSceneById(id:String):void;
+		
+		function initializer():void;
 	}
 }

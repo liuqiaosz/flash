@@ -1,10 +1,14 @@
 package bleach
 {
+	import bleach.event.BleachDefenseEvent;
+	import bleach.message.BleachLoadingMessage;
+	import bleach.message.BleachMessage;
+	import bleach.module.loader.MaskLoading;
+	import bleach.module.scene.IScene;
+	
 	import com.greensock.TweenLite;
 	
-	import bleach.event.BleachDefenseEvent;
-	import bleach.event.BleachMessage;
-	import bleach.module.scene.IScene;
+	import flash.display.Sprite;
 	
 	import pixel.core.IPixelDirector;
 	import pixel.core.IPixelLayer;
@@ -20,19 +24,68 @@ package bleach
 	 **/
 	public class BleachDirector extends PixelDirector implements IPixelDirector
 	{
+		private var _loading:Boolean = false;
+		private var _topLayer:Sprite = null;
+		private var _contentLayer:Sprite = null;
 		public function BleachDirector()
 		{
 			super();
-			addMessageListener(BleachMessage.BLEACH_SYNCSCENEDATA,showLoading);
-			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directWorld);
+			
+			
+//			_contentLayer = new Sprite();
+//			_topLayer = new Sprite();
+//			gameStage.addChild(_contentLayer);
+//			gameStage.addChild(_topLayer);
 		}
 		
-		private function showLoading(msg:IPixelMessage):void
+		override public function initializer():void
 		{
+			super.initializer();
+			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directWorld);
 			
+			//Loading消息监听
+			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
+			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
+			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
 		}
+		
+		private function loadingShow(msg:BleachLoadingMessage):void
+		{
+			addSceneTop(MaskLoading.instance);
+			_loading = true;
+		}
+		
+		private function loadingHide(msg:BleachLoadingMessage):void
+		{
+			TweenLite.to(MaskLoading.instance,0.5,{
+				"alpha" : 0,
+				onComplete : hideComplete
+			});
+		}
+		
+		private function hideComplete():void
+		{
+			removeSceneTop(MaskLoading.instance);
+			MaskLoading.instance.alpha = 1;
+			_loading = false;
+		}
+		
+		private function loadingUpdate(msg:BleachLoadingMessage):void
+		{
+			if(_loading)
+			{
+				MaskLoading.instance.progressUpdate(msg.total,msg.loaded);
+			}
+		}
+		
 		private function directWorld(msg:IPixelMessage):void
 		{
+			var scene:Object = msg.value;
+			
+			if(scene)
+			{
+				this.switchScene(scene as Class);
+			}
 		}
 		
 		private var _newScene:IPixelLayer = null;
@@ -50,6 +103,7 @@ package bleach
 			{
 				_newScene = newScene;
 				sceneFadeOut(_activedScene);
+				this.removeScene(_activedScene);
 			}
 			else
 			{
@@ -83,7 +137,7 @@ package bleach
 		 **/
 		protected function sceneMoveOut(scene:IPixelLayer):void
 		{
-			TweenLite.to(_activedScene,2,{
+			TweenLite.to(_activedScene,1,{
 				"x" : -_activedScene.x,
 				"y" : 0,
 				"alpha" : 0,
@@ -102,7 +156,7 @@ package bleach
 		protected function sceneFadeOut(scene:IPixelLayer):void
 		{
 			_activedScene.alpha = 1;
-			TweenLite.to(_activedScene,1,{
+			TweenLite.to(_activedScene,0.5,{
 				"alpha" : 0
 			});
 		}

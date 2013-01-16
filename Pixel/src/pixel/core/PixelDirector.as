@@ -16,10 +16,21 @@ package pixel.core
 	
 	public class PixelDirector extends EventDispatcher implements IPixelDirector
 	{
+		private var _contentLayer:Sprite = null;
+		private var _topLayer:Sprite = null;
 		public function PixelDirector()
+		{
+			
+		}
+		
+		public function initializer():void
 		{
 			_cache = new Dictionary();
 			_sceneQueue = new Vector.<IPixelLayer>();
+			_contentLayer = new Sprite();
+			_topLayer = new Sprite();
+			gameStage.addChild(_contentLayer);
+			gameStage.addChild(_topLayer);
 		}
 		
 		/**
@@ -30,7 +41,7 @@ package pixel.core
 		 **/
 		public function action():void
 		{
-			_io = PixelLauncher.launcher.ioModule;
+			//_io = PixelLauncher.launcher.ioModule;
 		
 			PixelMessageBus.instance.register(PixelMessage.FRAME_UPDATE,frameUpdate);
 		}
@@ -135,7 +146,9 @@ package pixel.core
 			{
 				_sceneQueue.push(scene);
 			}
-			_io.addSceneToScreen(scene);
+			//this.gameStage.addChild(scene as DisplayObject);
+			_contentLayer.addChild(scene as DisplayObject);
+			//_io.addSceneToScreen(scene);
 		}
 		protected function removeScene(scene:IPixelLayer):void
 		{
@@ -143,7 +156,24 @@ package pixel.core
 			{
 				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
 			}
-			_io.removeSceneFromScreen(scene);
+			if(this.gameStage.contains(scene as DisplayObject))
+			{
+				//this.gameStage.removeChild(scene as DisplayObject);
+				_contentLayer.removeChild(scene as DisplayObject);
+			}
+			//_io.removeSceneFromScreen(scene);
+		}
+		
+		protected function addSceneTop(scene:IPixelLayer):void
+		{
+			_topLayer.addChild(scene as DisplayObject);
+		}
+		protected function removeSceneTop(scene:IPixelLayer):void
+		{
+			if(_topLayer.contains(scene as DisplayObject))
+			{
+				_topLayer.removeChild(scene as DisplayObject);
+			}
 		}
 		
 		protected function get gameStage():Stage
@@ -176,7 +206,7 @@ package pixel.core
 				scene.update();
 			}
 			
-			_io.screenRefresh(_sceneQueue);
+			//_io.screenRefresh(_sceneQueue);
 		}
 		
 		public function addMessageListener(type:String,callback:Function):void
