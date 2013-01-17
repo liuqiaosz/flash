@@ -1,10 +1,11 @@
 package 
 {
 	import bleach.BleachDirector;
+	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
-	import bleach.module.LoginModule;
-	import bleach.module.scene.WorldScene;
+	import bleach.scene.WorldScene;
 	import bleach.scene.Battle;
+	import bleach.scene.LoginScene;
 	import bleach.scene.ui.WorldFlow;
 	
 	import flash.display.Loader;
@@ -16,6 +17,7 @@ package
 	
 	import pixel.core.PixelLauncher;
 	import pixel.message.PixelMessage;
+	import pixel.message.PixelMessageBus;
 	import pixel.texture.PixelTextureFactory;
 	import pixel.ui.control.UIButton;
 	import pixel.utility.ColorCode;
@@ -38,8 +40,10 @@ package
 		override protected function initializer():void
 		{
 			super.initializer();
-			
-			this.director.switchScene(LoginModule);
+			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+			msg.value = "loginScene";
+			this.dispatchMessage(msg);
+			//this.director.switchScene(LoginScene);
 		}
 	}
 }

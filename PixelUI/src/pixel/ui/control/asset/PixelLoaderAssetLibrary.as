@@ -30,5 +30,11 @@ package pixel.ui.control.asset
 				}
 			}
 		}
+		
+		override public function unload():void
+		{
+			_loader.unloadAndStop(true);
+			_loader = null;
+		}
 	}
 }

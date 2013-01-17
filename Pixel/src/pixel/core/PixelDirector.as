@@ -25,8 +25,8 @@ package pixel.core
 		
 		public function initializer():void
 		{
-			_cache = new Dictionary();
-			_sceneQueue = new Vector.<IPixelLayer>();
+			//_cache = new Dictionary();
+			//_sceneQueue = new Vector.<DisplayObject>();
 			_contentLayer = new Sprite();
 			_topLayer = new Sprite();
 			gameStage.addChild(_contentLayer);
@@ -56,7 +56,7 @@ package pixel.core
 		 * 
 		 * 当前激活场景
 		 **/
-		protected var _activedScene:IPixelLayer = null;
+		protected var _activedScene:DisplayObject = null;
 		
 		/**
 		 * 当前切换的场景
@@ -65,7 +65,7 @@ package pixel.core
 		 **/
 		//protected var _switchScene:IPixelLayer = null;
 		
-		protected var _sceneQueue:Vector.<IPixelLayer> = null;
+		//protected var _sceneQueue:Vector.<DisplayObject> = null;
 		/**
 		 * 
 		 * 是否切换状态
@@ -98,20 +98,20 @@ package pixel.core
 				switchScene = new prototype() as IPixelLayer;
 				_cache[prototype] = switchScene;
 			}
-			swapScene(switchScene);
+			swapScene(switchScene as DisplayObject);
 		}
 		
 		public function switchSceneById(id:String):void
 		{
-			var scene:IPixelLayer = null;
-			for each(scene in _sceneQueue)
-			{
-				if(scene.id == id)
-				{
-					swapScene(scene);
-					break;
-				}
-			}
+//			var scene:IPixelLayer = null;
+//			for each(scene in _sceneQueue)
+//			{
+//				if(scene.id == id)
+//				{
+//					swapScene(scene as DisplayObject);
+//					break;
+//				}
+//			}
 		}
 		
 		/**
@@ -130,7 +130,7 @@ package pixel.core
 //			_switchScene = null;
 //		}
 		
-		protected function swapScene(newScene:IPixelLayer):void
+		protected function swapScene(newScene:DisplayObject):void
 		{
 			if(_activedScene)
 			{
@@ -140,39 +140,40 @@ package pixel.core
 			addScene(newScene);
 		}
 		
-		protected function addScene(scene:IPixelLayer):void
+		protected function addScene(scene:DisplayObject):void
 		{
-			if(_sceneQueue.indexOf(scene) < 0)
-			{
-				_sceneQueue.push(scene);
-			}
+//			if(_sceneQueue.indexOf(scene) < 0)
+//			{
+//				_sceneQueue.push(scene);
+//			}
 			//this.gameStage.addChild(scene as DisplayObject);
 			_contentLayer.addChild(scene as DisplayObject);
 			//_io.addSceneToScreen(scene);
 		}
-		protected function removeScene(scene:IPixelLayer):void
+		protected function removeScene(scene:DisplayObject):void
 		{
-			if(_sceneQueue.indexOf(scene) >= 0)
-			{
-				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
-			}
-			if(this.gameStage.contains(scene as DisplayObject))
-			{
-				//this.gameStage.removeChild(scene as DisplayObject);
-				_contentLayer.removeChild(scene as DisplayObject);
-			}
+//			if(_sceneQueue.indexOf(scene) >= 0)
+//			{
+//				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
+//			}
+//			if(this.gameStage.contains(scene as DisplayObject))
+//			{
+//				//this.gameStage.removeChild(scene as DisplayObject);
+//				_contentLayer.removeChild(scene as DisplayObject);
+//			}
+			_contentLayer.removeChild(scene as DisplayObject);
 			//_io.removeSceneFromScreen(scene);
 		}
 		
-		protected function addSceneTop(scene:IPixelLayer):void
+		protected function addSceneTop(scene:DisplayObject):void
 		{
-			_topLayer.addChild(scene as DisplayObject);
+			_topLayer.addChild(scene);
 		}
-		protected function removeSceneTop(scene:IPixelLayer):void
+		protected function removeSceneTop(scene:DisplayObject):void
 		{
-			if(_topLayer.contains(scene as DisplayObject))
+			if(_topLayer.contains(scene))
 			{
-				_topLayer.removeChild(scene as DisplayObject);
+				_topLayer.removeChild(scene);
 			}
 		}
 		
@@ -201,10 +202,10 @@ package pixel.core
 //				//更新状态
 //				_activedScene.update();
 //			}
-			for each(var scene:IPixelLayer in _sceneQueue)
-			{
-				scene.update();
-			}
+//			for each(var scene:IPixelLayer in _sceneQueue)
+//			{
+//				scene.update();
+//			}
 			
 			//_io.screenRefresh(_sceneQueue);
 		}

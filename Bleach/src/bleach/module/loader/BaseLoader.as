@@ -47,8 +47,6 @@ package bleach.module.loader
 			this.graphics.drawRect(0,0,1280,600);
 			this.graphics.endFill();
 			commLibraryDownload();
-			
-		
 		}
 		
 		/**
@@ -132,17 +130,16 @@ package bleach.module.loader
 //			var loader:Loader = new Loader();
 //			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
 //				_loaded++;
-//				_loading.progressUpdate(_loadTotal,_loaded);
+//				//_loading.progressUpdate(_loadTotal,_loaded);
+//				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
 //				msgDownload();
 //				
 //			});
 //			var ctx:LoaderContext = new LoaderContext();
 //			ctx.applicationDomain = ApplicationDomain.currentDomain;
-//			//loader.load(new URLRequest(Constants.WEB_URL + "library/BleachLibrary.swf"),ctx);
-//			loader.load(new URLRequest("/Users/LiuQiao/Documents/Developer/Code/flash/BleachLibrary/bin-debug/BleachLibrary.swf"),ctx);
+//			loader.load(new URLRequest("BleachLibrary.swf"),ctx);
 			_loaded++;
 			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-			//_loading.progressUpdate(_loadTotal,_loaded);
 			msgDownload();
 		}
 		
@@ -174,7 +171,7 @@ package bleach.module.loader
 				_loaded++;
 				_mainApp = loader.content;
 				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-				_lazy = new Timer(2000,1);
+				_lazy = new Timer(100,1);
 				_lazy.addEventListener(TimerEvent.TIMER,completeLazy);
 				_lazy.start();
 			});

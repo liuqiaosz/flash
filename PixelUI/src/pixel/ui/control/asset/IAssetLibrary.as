@@ -11,5 +11,7 @@ package pixel.ui.control.asset
 		function hasDefinition(name:String):Boolean;
 		
 		function findAssetByName(name:String):IAsset;
+		
+		function unload():void;
 	}
 }

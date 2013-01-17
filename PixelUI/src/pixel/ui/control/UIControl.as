@@ -10,6 +10,7 @@ package pixel.ui.control
 	import flash.geom.Rectangle;
 	import flash.system.ApplicationDomain;
 	import flash.utils.ByteArray;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getTimer;
 	
 	import pixel.ui.control.asset.AssetImage;
@@ -517,6 +518,20 @@ package pixel.ui.control
 			
 			if(!Style.ImagePack)
 			{
+//				var vec:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
+//				for each(var c:String in vec)
+//				{
+//					trace(c);
+//				}
+//				var source:Object = flash.utils.getDefinitionByName(Style.BackgroundImageId);
+//				if(source)
+//				{
+//					var Img:Bitmap = new Bitmap(new source() as BitmapData);
+//					if(Img)
+//					{
+//						this.BackgroundImage = Img;
+//					}
+//				}
 				var Img:Bitmap = AssetImage(PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId)).image;
 				if(Img)
 				{

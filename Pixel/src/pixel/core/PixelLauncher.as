@@ -13,6 +13,7 @@ package pixel.core
 	import pixel.graphic.PixelGraphicModule;
 	import pixel.io.IPixelIOModule;
 	import pixel.io.PixelIOModule;
+	import pixel.message.IPixelMessage;
 	import pixel.message.PixelMessage;
 	import pixel.message.PixelMessageBus;
 	
@@ -157,6 +158,11 @@ package pixel.core
 		protected function addMesageListener(type:String,callback:Function):void
 		{
 			PixelMessageBus.instance.register(type,callback);
+		}
+		
+		protected function dispatchMessage(msg:IPixelMessage):void
+		{
+			PixelMessageBus.instance.dispatchMessage(msg);
 		}
 		
 		/**

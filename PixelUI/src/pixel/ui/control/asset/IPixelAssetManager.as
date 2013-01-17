@@ -16,5 +16,6 @@ package pixel.ui.control.asset
 		function AssetHookRegister(Id:String,Target:UIControl):void;
 		function AssetHookRemove(Id:String,Target:UIControl):void;
 		function get Librarys():Vector.<IAssetLibrary>;
+		function removeAssetLibrary(id:String):void;
 	}
 }

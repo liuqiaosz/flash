@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bleach>
+	<scenes>
+		<scene id="loginScene" version="1.0" url="bleach/scene/LoginScene.swf">
+			<!-- 链接库 --> 
+			<library id="LoginRes" version="1.0" url="login.swf" desc="UI资源" uilib="true" />
+			<library id="LoginUI" version="1.0" url="UI.swf" desc="UI定义" />
+		</scene>
+		
+		<scene id="WorldScene" version="1.0" url="bleach/scene/WorldScene.swf">
+			<library id="battle(new).swf" version="1.0" url="battle(new).swf" desc="资源" />
+		</scene>
+	</scenes>
+</bleach>

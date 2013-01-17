@@ -1,6 +1,6 @@
 package bleach.module.loader
 {
-	import bleach.module.scene.GenericScene;
+//	import bleach.module.scene.GenericScene;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -9,9 +9,9 @@ package bleach.module.loader
 	import flash.events.Event;
 	import flash.system.ApplicationDomain;
 	
-	import pixel.utility.IDispose;
+//	import pixel.utility.IDispose;
 
-	public class MaskLoading extends GenericScene implements IDispose
+	public class MaskLoading extends Sprite
 	{
 		private static var _instance:MaskLoading = null;
 		private var _mask:Mask = null;
@@ -56,12 +56,12 @@ package bleach.module.loader
 			_mask.y = (stage.stageHeight - _mask.height) * 0.5;
 		}
 		
-		override public function dispose():void
-		{
-			super.dispose();
-			this.removeEventListener(Event.ADDED_TO_STAGE,onAdded);
-			this.removeEventListener(Event.REMOVED_FROM_STAGE,onRemoved);
-		}
+//		override public function dispose():void
+//		{
+//			super.dispose();
+//			this.removeEventListener(Event.ADDED_TO_STAGE,onAdded);
+//			this.removeEventListener(Event.REMOVED_FROM_STAGE,onRemoved);
+//		}
 		
 		public static function get instance():MaskLoading
 		{
@@ -83,7 +83,7 @@ package bleach.module.loader
 	}
 }
 
-import bleach.message.BleachLoadingMessage;
+//import bleach.message.BleachLoadingMessage;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
@@ -96,12 +96,12 @@ import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
 import flash.utils.Timer;
+//
+//import pixel.core.PixelNode;
+//import pixel.message.IPixelMessage;
+//import pixel.message.PixelMessage;
 
-import pixel.core.PixelNode;
-import pixel.message.IPixelMessage;
-import pixel.message.PixelMessage;
-
-class Mask extends PixelNode
+class Mask extends Sprite
 {
 	private var _text:TextField = null;
 	private var _image:Bitmap = null;
@@ -111,7 +111,7 @@ class Mask extends PixelNode
 	private var _dest:Point = new Point();
 	private var _rect:Rectangle = new Rectangle(0,0,0,0);
 	private var _format:TextFormat = null;
-	private var _loop:Timer = null;
+	//private var _loop:Timer = null;
 	private var _running:Boolean = false;
 	public function get running():Boolean
 	{
@@ -141,8 +141,8 @@ class Mask extends PixelNode
 		_format.align = TextFormatAlign.CENTER;
 		_text.setTextFormat(_format);
 		addChild(_text);
-		_loop = new Timer(33);
-		_loop.addEventListener(TimerEvent.TIMER,maskFrameUpdate);
+//		_loop = new Timer(33);
+//		_loop.addEventListener(TimerEvent.TIMER,maskFrameUpdate);
 	}
 	
 	public function maskGlow(color:uint = 0xFF0000):void
@@ -153,46 +153,46 @@ class Mask extends PixelNode
 	
 	public function start():void
 	{
-		_loop.start();
+		//_loop.start();
 	}
 	
 	public function pause():void
 	{
-		_loop.stop();
+		//_loop.stop();
 		reset();
 	}
 	
-	private var _total:Number = 0;
-	private var _loaded:Number = 0;
-	private var _percent:Number = 0;
-	private var _target:Number = 0;
-	private function maskFrameUpdate(event:TimerEvent):void
-	{
-		
-		if(_percent < _target)
-		{
-			_percent += 0.02;
-			_rect.height = _colorMask.height * _percent;
-			if(_rect.height > _colorMask.height)
-			{
-				_rect.height = _colorMask.height;
-			}
-			_bitmap.copyPixels(_colorMask,_rect,_dest);
-			if(_rect.height >=_colorMask.height)
-			{
-				maskGlow();
-				dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_END));
-			}
-		}
-	}
+//	private var _total:Number = 0;
+//	private var _loaded:Number = 0;
+//	private var _percent:Number = 0;
+//	private var _target:Number = 0;
+//	private function maskFrameUpdate(event:TimerEvent):void
+//	{
+//		
+//		if(_percent < _target)
+//		{
+//			_percent += 0.02;
+//			_rect.height = _colorMask.height * _percent;
+//			if(_rect.height > _colorMask.height)
+//			{
+//				_rect.height = _colorMask.height;
+//			}
+//			_bitmap.copyPixels(_colorMask,_rect,_dest);
+//			if(_rect.height >=_colorMask.height)
+//			{
+//				maskGlow();
+//				dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_END));
+//			}
+//		}
+//	}
 	
 	public function reset():void
 	{
 		_bitmap.copyPixels(_whiteMask,_whiteMask.rect,_dest);
 		_rect.height = 0;
-		_total = 0;
-		_loaded = 0;
-		_percent = 0;
+//		_total = 0;
+//		_loaded = 0;
+//		_percent = 0;
 		_image.filters = null;
 	}
 	
@@ -201,16 +201,17 @@ class Mask extends PixelNode
 	 **/
 	public function progressUpdate(total:Number,loaded:Number):void
 	{
-		_total = total;
-		_loaded = loaded;
-		_target = _loaded / total;
-//		var percent:Number = loaded / total;
-//		_rect.height = _colorMask.height * percent;
-//		if(_rect.height > _colorMask.height)
-//		{
-//			_rect.height = _colorMask.height;
-//		}
-//		_bitmap.copyPixels(_colorMask,_rect,_dest);
+//		_total = total;
+//		_loaded = loaded;
+//		_target = _loaded / total;
+		var percent:Number = loaded / total;
+		_rect.height = _colorMask.height * percent;
+		if(_rect.height >= _colorMask.height)
+		{
+			_rect.height = _colorMask.height;
+			this.maskGlow();
+		}
+		_bitmap.copyPixels(_colorMask,_rect,_dest);
 	}
 	
 	public function textUpdate(value:String):void

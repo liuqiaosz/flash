@@ -50,11 +50,15 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="Sample.as"/>
     <application path="Bleach.as"/>
   </applications>
   <modules>
-    <module application="src/Bleach.as" destPath="BleachLauncher.swf" optimize="false" sourcePath="src/BleachLauncher.as"/>
     <module application="src/Bleach.as" destPath="bleach/module/message/MsgLibrary.swf" optimize="false" sourcePath="src/bleach/module/message/MsgLibrary.as"/>
+    <module application="src/Bleach.as" destPath="BleachLauncher.swf" optimize="false" sourcePath="src/BleachLauncher.as"/>
+    <module application="src/Sample.as" destPath="bleach/scene/LoginScene.swf" optimize="false" sourcePath="src/bleach/scene/LoginScene.as"/>
+    <module application="src/Sample.as" destPath="Mod.swf" optimize="false" sourcePath="src/Mod.as"/>
+    <module application="src/Bleach.as" destPath="bleach/scene/WorldScene.swf" optimize="false" sourcePath="src/bleach/scene/WorldScene.as"/>
   </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>

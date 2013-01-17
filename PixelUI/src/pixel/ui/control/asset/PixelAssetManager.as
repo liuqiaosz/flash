@@ -120,6 +120,18 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		_AssetLibArray.push(lib);
 	}
 	
+	public function removeAssetLibrary(id:String):void
+	{
+		for each(var lib:IAssetLibrary in _AssetLibArray)
+		{
+			if(id == lib.id)
+			{
+				lib.unload();
+				return;
+			}
+		}
+	}
+	
 	private var HookDict:Dictionary = new Dictionary();
 	public function AssetHookRegister(Id:String,Target:UIControl):void
 	{

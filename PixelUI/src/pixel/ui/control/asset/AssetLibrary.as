@@ -52,5 +52,8 @@ package pixel.ui.control.asset
 			}
 			return null;
 		}
+		
+		public function unload():void
+		{}
 	}
 }
