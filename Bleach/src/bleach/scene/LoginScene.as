@@ -30,30 +30,23 @@ package bleach.scene
 			super();
 		}
 		
-		private var s:Sprite = null;
 	 	override public function initializer():void
 		{
-//			var cls:Object = getDefinitionByName("ui.login");
-//			var data:ByteArray = new cls() as ByteArray;
-//			var mod:UIMod = UIControlFactory.instance.decode(data,false);
-//			login = mod.controls.pop().control;
-//			addChild(login);
-//			
-//			var ids:Vector.<String> = login.ChildrenIds;
-//			submit = login.GetChildById("Submit",true) as UIButton;
-//			account = login.GetChildById("accName",true) as UITextInput;
-//			password = login.GetChildById("accPwd",true) as UITextInput;
-//			
-//			if(submit)
-//			{
-//				submit.addEventListener(MouseEvent.CLICK,loginSubmit);
-//			}
+			var cls:Object = getDefinitionByName("ui.login");
+			var data:ByteArray = new cls() as ByteArray;
+			var mod:UIMod = UIControlFactory.instance.decode(data,false);
+			login = mod.controls.pop().control;
+			addChild(login);
 			
-			s = new Sprite();
-			s.graphics.beginFill(0xFF0000);
-			s.graphics.drawRect(0,0,500,500);
-			s.graphics.endFill();
-			addChild(s);
+			var ids:Vector.<String> = login.ChildrenIds;
+			submit = login.GetChildById("Submit",true) as UIButton;
+			account = login.GetChildById("accName",true) as UITextInput;
+			password = login.GetChildById("accPwd",true) as UITextInput;
+			
+			if(submit)
+			{
+				submit.addEventListener(MouseEvent.CLICK,loginSubmit);
+			}
 			//s.addEventListener(MouseEvent.CLICK,loginSubmit);
 		}
 		
@@ -61,19 +54,18 @@ package bleach.scene
 		private var submit:UIButton = null;
 		private var account:UITextInput = null;
 		private var password:UITextInput = null;
-		
-		
+//		
+//		
 		private function loginSubmit(event:MouseEvent):void
 		{
-			s.removeEventListener(MouseEvent.CLICK,loginSubmit);
+
 //			trace("login");
-//			submit.removeEventListener(MouseEvent.CLICK,loginSubmit);
-//			removeChild(login);
+			submit.removeEventListener(MouseEvent.CLICK,loginSubmit);
+			removeChild(login);
+			login.dispose();
 //			login.dispose();
 //			//trace("Name[" + account.text + "] PWD[" + password.text + "]");
-			
-			removeChild(s);
-			s = null;
+
 			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
 			msg.value = "WorldScene";
 			this.dispatchMessage(msg);
@@ -81,8 +73,8 @@ package bleach.scene
 		
 		override public function pause():void
 		{
-			removeChild(s);
-			s = null;
+//			removeChild(s);
+//			s = null;
 		}
 	}
 }

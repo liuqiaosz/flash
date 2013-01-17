@@ -64,10 +64,10 @@ package bleach
 			configInit();
 			
 			this.gameStage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				IScene(_activedScene).pause();
-				swapScene(new Sprite());
-				
-				_module.clear();
+//				IScene(_activedScene).pause();
+//				swapScene(new Sprite());
+//				
+//				_module.clear();
 			});
 		}
 		
