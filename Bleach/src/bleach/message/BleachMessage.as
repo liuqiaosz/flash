@@ -10,9 +10,9 @@ package bleach.message
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
 		
 		
-		public function BleachMessage(msg:String,target:Object = null)
+		public function BleachMessage(msg:String)
 		{
-			super(msg,target);
+			super(msg);
 		}
 	}
 }

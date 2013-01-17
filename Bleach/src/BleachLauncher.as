@@ -3,9 +3,9 @@ package
 	import bleach.BleachDirector;
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
-	import bleach.scene.WorldScene;
 	import bleach.scene.Battle;
 	import bleach.scene.LoginScene;
+	import bleach.scene.WorldScene;
 	import bleach.scene.ui.WorldFlow;
 	
 	import flash.display.Loader;
@@ -45,5 +45,6 @@ package
 			this.dispatchMessage(msg);
 			//this.director.switchScene(LoginScene);
 		}
+		
 	}
 }

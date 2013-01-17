@@ -1,9 +1,11 @@
 package bleach.scene
 {
+	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.module.scene.GenericScene;
 	
 	import flash.display.Loader;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
@@ -11,6 +13,8 @@ package bleach.scene
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
+	
+	import pixel.message.PixelMessageBus;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UIPanel;
@@ -27,58 +31,45 @@ package bleach.scene
 			super();
 		}
 		
-		override public function initializer():void
+	 	override public function initializer():void
 		{
-			
-			//PixelAssetManager.instance.download("login.swf");
-			//PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,downloadComplete);
-			var cls:Object = getDefinitionByName("ui.login");
-			var data:ByteArray = new cls() as ByteArray;
-			var mod:UIMod = UIControlFactory.instance.decode(data);
-			login = mod.controls.pop().control;
-			addChild(login);
-			
-			var ids:Vector.<String> = login.ChildrenIds;
-			submit = login.GetChildById("Submit",true) as UIButton;
-			account = login.GetChildById("accName",true) as UITextInput;
-			password = login.GetChildById("accPwd",true) as UITextInput;
-			
-			if(submit)
-			{
-				submit.addEventListener(MouseEvent.CLICK,loginSubmit);
-			}
+//			var cls:Object = getDefinitionByName("ui.login");
+//			var data:ByteArray = new cls() as ByteArray;
+//			var mod:UIMod = UIControlFactory.instance.decode(data,false);
+//			login = mod.controls.pop().control;
+//			addChild(login);
+//			
+//			var ids:Vector.<String> = login.ChildrenIds;
+//			submit = login.GetChildById("Submit",true) as UIButton;
+//			account = login.GetChildById("accName",true) as UITextInput;
+//			password = login.GetChildById("accPwd",true) as UITextInput;
+			submit = new UIButton();
+			submit.Text = "AAAA";
+			submit.width = 1000;
+			submit.height = 600;
+			//addChild(submit);
+//			if(submit)
+//			{
+//				submit.addEventListener(MouseEvent.CLICK,loginSubmit);
+//			}
 		}
 		
 		private var login:UIPanel = null;
 		private var submit:UIButton = null;
 		private var account:UITextInput = null;
 		private var password:UITextInput = null;
-		private function downloadComplete(event:DownloadEvent):void
-		{
-			var cls:Object = ApplicationDomain.currentDomain.getDefinition("ui.login");
-			var data:ByteArray = new cls() as ByteArray;
-			var mod:UIMod = UIControlFactory.instance.decode(data);
-			login = mod.controls.pop().control;
-			addChild(login);
-			
-			var ids:Vector.<String> = login.ChildrenIds;
-			submit = login.GetChildById("Submit",true) as UIButton;
-			account = login.GetChildById("accName",true) as UITextInput;
-			password = login.GetChildById("accPwd",true) as UITextInput;
-			
-			if(submit)
-			{
-				submit.addEventListener(MouseEvent.CLICK,loginSubmit);
-			}
-			//this.addEventListener(MouseEvent.CLICK,loginSubmit);
-		}
+		
 		
 		private function loginSubmit(event:MouseEvent):void
 		{
-			trace("Name[" + account.text + "] PWD[" + password.text + "]");
-			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT,this);
-			msg.value = "WorldScene";
-			this.dispatchMessage(msg);
+			//this.removeChild(submit);
+			submit = null;
+//			trace("login");
+//			submit.removeEventListener(MouseEvent.CLICK,loginSubmit);
+//			//trace("Name[" + account.text + "] PWD[" + password.text + "]");
+//			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+//			msg.value = "WorldScene";
+//			this.dispatchMessage(msg);
 		}
 	}
 }

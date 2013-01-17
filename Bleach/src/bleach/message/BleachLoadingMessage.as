@@ -28,9 +28,9 @@ package bleach.message
 			return _loaded;
 		}
 		
-		public function BleachLoadingMessage(type:String,target:Object = null)
+		public function BleachLoadingMessage(type:String)
 		{
-			super(type,target);
+			super(type);
 		}
 		
 	}

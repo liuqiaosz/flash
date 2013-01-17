@@ -38,6 +38,14 @@ package pixel.core
 				super.addChild(_canvas);
 			}
 			_canvas.bitmapData = _source;
+			
+//			_source = source;
+//			if(!_canvas && _source)
+//			{
+//				_canvas = new Bitmap();
+//				super.addChild(_canvas);
+//				_canvas.bitmapData = _source;
+//			}
 		}
 		
 		/**

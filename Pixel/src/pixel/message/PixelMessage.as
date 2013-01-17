@@ -13,15 +13,7 @@ package pixel.message
 		{
 			return _message;
 		}
-		private var _target:Object = null;
-		public function get target():Object
-		{
-			return _target;
-		}
-		public function set target(value:Object):void
-		{
-			_target = value;
-		}
+		
 		private var _value:Object = null;
 		public function set value(data:Object):void
 		{
@@ -31,10 +23,9 @@ package pixel.message
 		{
 			return _value;
 		}
-		public function PixelMessage(msg:String,target:Object)
+		public function PixelMessage(msg:String)
 		{
 			_message = msg;
-			_target = target;
 		}
 	}
 }

@@ -19,7 +19,7 @@ package pixel.message
 			}
 		}
 		
-		PixelNs static function get instance():IPixelMessageBus
+		public static function get instance():IPixelMessageBus
 		{
 			return _instance;
 		}

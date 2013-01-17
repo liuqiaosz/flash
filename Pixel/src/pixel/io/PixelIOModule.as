@@ -50,7 +50,7 @@ package pixel.io
 		 **/
 		private function onKeyboardInput(event:KeyboardEvent):void
 		{
-			var message:IOMessage = new IOMessage(IOMessage.KEYBOARD_INPUT,null);
+			var message:IOMessage = new IOMessage(IOMessage.KEYBOARD_INPUT);
 			message.value = event.keyCode;
 			dispatchMessage(message);
 		}

@@ -33,11 +33,12 @@ package
 				}
 				if(event.keyCode == Keyboard.A)
 				{
-					_domain = null;
-					var lod:Loader = null;
+					//mod.clear();
+					//_domain = null;
+					//var lod:Loader = null;
 					//read.unload();
 					//read = null;
-					childReader = null;
+					//childReader = null;
 					mod.clear();
 					trace("clear");
 					

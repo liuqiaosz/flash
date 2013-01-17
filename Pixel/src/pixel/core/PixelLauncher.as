@@ -140,7 +140,7 @@ package pixel.core
 		}
 		
 		private var startSeek:int = 0;
-		private var message:pixel.message.PixelMessage = new pixel.message.PixelMessage(PixelMessage.FRAME_UPDATE,this);
+		private var message:pixel.message.PixelMessage = new pixel.message.PixelMessage(PixelMessage.FRAME_UPDATE);
 		/**
 		 * 主循环
 		 * 

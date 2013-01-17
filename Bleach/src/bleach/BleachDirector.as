@@ -25,6 +25,7 @@ package bleach
 	import pixel.core.IPixelDirector;
 	import pixel.core.PixelDirector;
 	import pixel.core.PixelLauncher;
+	import pixel.core.PixelSprite;
 	import pixel.message.IPixelMessage;
 	import pixel.message.PixelMessageBus;
 	import pixel.ui.control.asset.PixelAssetManager;
@@ -88,7 +89,6 @@ package bleach
 				);
 				
 				var libs:XMLList = sceneNode.library;
-				
 				for each(var lib:XML in libs)
 				{
 					var library:SceneLinkLibrary = new SceneLinkLibrary(
@@ -160,7 +160,7 @@ package bleach
 			if(_module.loaded)
 			{
 				//已经缓存
-				this.swapScene(_module.sceneContent);
+				this.swapScene(_module.sceneContent.content);
 			}
 			else
 			{
@@ -202,8 +202,8 @@ package bleach
 				else
 				{
 					//下载场景主文件
-					//sceneDownload();
-					_module.clear();
+					sceneDownload();
+					
 				}
 			}
 		}
@@ -219,11 +219,11 @@ package bleach
 			_downloader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,libraryDownloadError);
 			
 			_module.library.push(_downloader);
-//			if(_downlodLinkLibrary.isUIlib)
-//			{
-//				//UI库资源
-//				PixelAssetManager.instance.addAssetLibrary(new PixelLoaderAssetLibrary(_downloader,_downlodLinkLibrary.id));
-//			}
+			if(_downlodLinkLibrary.isUIlib)
+			{
+				//UI库资源
+				PixelAssetManager.instance.addAssetLibrary(new PixelLoaderAssetLibrary(_downloader,_downlodLinkLibrary.id));
+			}
 			_downloaded++;
 			var updateMsg:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
 			//全部数量为 链接库数量 + 主文件数量
@@ -267,10 +267,12 @@ package bleach
 			updateMsg.total = _module.scene.librarys.length + 1;
 			updateMsg.loaded = _downloaded;
 			dispatchMessage(updateMsg);
-			
 			this.swapScene(_module.sceneContent.content);
 			dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_HIDE));
 			_module.loaded = true;
+			_module.clear();
+			this.swapScene(new Sprite());
+			
 			
 		}
 		private function sceneDownloadError(event:IOErrorEvent):void
@@ -399,6 +401,7 @@ class SceneModule
 	
 	public function clear():void
 	{
+		
 		var loader:Loader = null;
 		for(var idx:int=0; idx<_library.length; idx++)
 		{
@@ -406,6 +409,7 @@ class SceneModule
 			if(scene.librarys[idx].isUIlib)
 			{
 				PixelAssetManager.instance.removeAssetLibrary(scene.librarys[idx].id);
+				loader.unloadAndStop(true);
 				loader = null;
 			}
 			else

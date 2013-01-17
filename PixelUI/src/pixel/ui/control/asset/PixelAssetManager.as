@@ -126,7 +126,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		{
 			if(id == lib.id)
 			{
-				lib.unload();
+				_AssetLibArray.splice(_AssetLibArray.indexOf(lib),1);
 				return;
 			}
 		}

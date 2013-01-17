@@ -46,10 +46,13 @@ package pixel.core
 			return super.addChild(value as Sprite);
 		}
 		
-		[Deprecated(message="该方法无效,请使用removeNode")]
 		override public function removeChild(child:DisplayObject):DisplayObject
 		{
-			return null;
+			if(childNodes.indexOf(child) != -1)
+			{
+				childNodes.splice(childNodes.indexOf(child),1);
+			}
+			return super.removeChild(child);
 		}
 		
 		
