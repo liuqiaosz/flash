@@ -12,7 +12,6 @@ package bleach.scene
 	
 	import pixel.core.PixelLayer;
 	import bleach.module.message.IMsg;
-	import bleach.module.scene.GenericScene;
 	
 	/**
 	 * 

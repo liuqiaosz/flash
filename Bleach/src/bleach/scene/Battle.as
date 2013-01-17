@@ -4,7 +4,6 @@ package bleach.scene
 	import bleach.view.IViewController;
 	
 	import flash.utils.Dictionary;
-	import bleach.module.scene.GenericScene;
 
 	public class Battle extends GenericScene implements IBattle
 	{

@@ -3,7 +3,6 @@ package bleach.scene
 	import bleach.event.BleachDefenseEvent;
 	import bleach.view.IWorldViewController;
 	import bleach.view.WorldViewController;
-	import bleach.module.scene.GenericScene;
 
 	public class World extends GenericScene
 	{

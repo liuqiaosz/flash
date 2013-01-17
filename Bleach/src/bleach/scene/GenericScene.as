@@ -1,4 +1,4 @@
-package bleach.module.scene
+package bleach.scene
 {
 	import bleach.communicator.CommMarshal;
 	

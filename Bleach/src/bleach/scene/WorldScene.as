@@ -11,7 +11,6 @@ package bleach.scene
 	import pixel.core.PixelLauncher;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UIPanel;
-	import bleach.module.scene.GenericScene;
 	
 	/**
 	 * 世界选择场景

@@ -36,24 +36,24 @@ package pixel.core
 			
 		}
 		
-		override public function addChild(value:DisplayObject):DisplayObject
-		{
-			if(!childNodes)
-			{
-				childNodes = new Vector.<DisplayObject>();
-			}
-			childNodes.push(value);
-			return super.addChild(value as Sprite);
-		}
-		
-		override public function removeChild(child:DisplayObject):DisplayObject
-		{
-			if(childNodes.indexOf(child) != -1)
-			{
-				childNodes.splice(childNodes.indexOf(child),1);
-			}
-			return super.removeChild(child);
-		}
+//		override public function addChild(value:DisplayObject):DisplayObject
+//		{
+//			if(!childNodes)
+//			{
+//				childNodes = new Vector.<DisplayObject>();
+//			}
+//			childNodes.push(value);
+//			return super.addChild(value as Sprite);
+//		}
+//		
+//		override public function removeChild(child:DisplayObject):DisplayObject
+//		{
+//			if(childNodes.indexOf(child) != -1)
+//			{
+//				childNodes.splice(childNodes.indexOf(child),1);
+//			}
+//			return super.removeChild(child);
+//		}
 		
 		
 		

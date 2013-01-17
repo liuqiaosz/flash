@@ -1,7 +1,7 @@
 package bleach.communicator
 {
 	import bleach.module.message.IMsg;
-	import bleach.module.scene.GenericScene;
+	import bleach.scene.GenericScene;
 
 	public interface IComm extends IPixelNetConnection
 	{

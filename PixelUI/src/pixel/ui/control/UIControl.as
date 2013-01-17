@@ -75,7 +75,7 @@ package pixel.ui.control
 		
 		protected function onRemoveFromStage(event:Event):void
 		{
-			this.dispose();
+			stage.removeEventListener(Event.RENDER,StageRender);
 		}
 		
 		protected var _Owner:UIControl = null;
@@ -151,7 +151,7 @@ package pixel.ui.control
 		 **/
 		protected function OnAdded(event:Event):void
 		{
-			removeEventListener(Event.ADDED_TO_STAGE,OnAdded);
+			//removeEventListener(Event.ADDED_TO_STAGE,OnAdded);
 			if(stage)
 			{
 				stage.addEventListener(Event.RENDER,StageRender);
@@ -181,6 +181,10 @@ package pixel.ui.control
 			//RemoveEvent();
 			removeEventListener(Event.ADDED_TO_STAGE,OnAdded);
 			removeEventListener(Event.REMOVED_FROM_STAGE,onRemoveFromStage);
+			if(stage)
+			{
+				stage.removeEventListener(Event.RENDER,StageRender);
+			}
 		}
 		
 		protected function StyleUpdate():void

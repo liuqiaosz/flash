@@ -20,7 +20,7 @@ package bleach.communicator
 }
 import bleach.communicator.IComm;
 import bleach.communicator.MessageParser;
-import bleach.module.scene.GenericScene;
+import bleach.scene.GenericScene;
 
 import flash.events.EventDispatcher;
 import flash.utils.ByteArray;

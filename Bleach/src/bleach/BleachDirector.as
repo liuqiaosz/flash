@@ -4,7 +4,8 @@ package bleach
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.module.loader.MaskLoading;
-	import bleach.module.scene.IScene;
+	import bleach.scene.IScene;
+	import bleach.scene.LoginScene;
 	
 	import com.greensock.TweenLite;
 	
@@ -14,6 +15,7 @@ package bleach
 	import flash.errors.IOError;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.sensors.Accelerometer;
 	import flash.system.ApplicationDomain;
@@ -60,6 +62,13 @@ package bleach
 			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
 			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
 			configInit();
+			
+			this.gameStage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				IScene(_activedScene).pause();
+				swapScene(new Sprite());
+				
+				_module.clear();
+			});
 		}
 		
 		private var _sceneCache:Dictionary = new Dictionary();
@@ -144,7 +153,10 @@ package bleach
 		{
 			if(_module)
 			{
+				swapScene(new Sprite());
 				_module.clear();
+				
+				return;
 			}
 			
 			var id:String = msg.value as String;
@@ -160,7 +172,7 @@ package bleach
 			if(_module.loaded)
 			{
 				//已经缓存
-				this.swapScene(_module.sceneContent.content);
+				swapScene(_module.sceneContent.content);
 			}
 			else
 			{
@@ -270,9 +282,10 @@ package bleach
 			this.swapScene(_module.sceneContent.content);
 			dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_HIDE));
 			_module.loaded = true;
-			_module.clear();
-			this.swapScene(new Sprite());
 			
+			//IScene(this._activedScene).pause();
+			//this.swapScene(new Sprite());
+			//_module.clear();
 			
 		}
 		private function sceneDownloadError(event:IOErrorEvent):void
@@ -299,12 +312,14 @@ package bleach
 		 **/
 		override protected function swapScene(newScene:DisplayObject):void
 		{
+			
 			addScene(newScene);
 			if(_activedScene)
 			{
 				//_newScene = newScene;
 				//sceneFadeOut(_activedScene);
 				removeScene(_activedScene);
+//				IScene(_activedScene).pause();
 				_activedScene = null;
 				_activedScene = newScene;
 			}
@@ -392,7 +407,6 @@ class SceneModule
 	public function set library(value:Vector.<Loader>):void
 	{
 		_library = value;
-		_loaded = true;
 	}
 	public function get library():Vector.<Loader>
 	{
@@ -409,14 +423,10 @@ class SceneModule
 			if(scene.librarys[idx].isUIlib)
 			{
 				PixelAssetManager.instance.removeAssetLibrary(scene.librarys[idx].id);
-				loader.unloadAndStop(true);
-				loader = null;
+				
 			}
-			else
-			{
-				loader.unloadAndStop();
-				loader = null;
-			}
+			loader.unloadAndStop(true);
+			loader = null;
 		}
 		if(_sceneContent)
 		{
