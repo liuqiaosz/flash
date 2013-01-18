@@ -185,6 +185,14 @@ package pixel.ui.control
 			{
 				stage.removeEventListener(Event.RENDER,StageRender);
 			}
+//			if(_Style.BackgroundImage)
+//			{
+//				_Style.BackgroundImage.bitmapData.dispose();
+//				_Style.BackgroundImage = null;
+//			}
+			_Style.dispose();
+			_Owner = null;
+			_Style = null;
 		}
 		
 		protected function StyleUpdate():void

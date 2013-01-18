@@ -21,14 +21,14 @@ package pixel.ui.control
 		
 		override public function initializer():void
 		{
-			addEventListener(FocusEvent.FOCUS_IN,Focus);
-			addEventListener(FocusEvent.FOCUS_OUT,FocusLeave);
+//			addEventListener(FocusEvent.FOCUS_IN,Focus);
+//			addEventListener(FocusEvent.FOCUS_OUT,FocusLeave);
 		}
 		
 		override public function dispose():void
 		{
-			removeEventListener(FocusEvent.FOCUS_IN,Focus);
-			removeEventListener(FocusEvent.FOCUS_OUT,FocusLeave);
+//			removeEventListener(FocusEvent.FOCUS_IN,Focus);
+//			removeEventListener(FocusEvent.FOCUS_OUT,FocusLeave);
 		}
 		
 		override public function set width(value:Number):void
@@ -63,12 +63,12 @@ package pixel.ui.control
 //			}
 //		}
 		
-		protected function Focus(event:FocusEvent):void
-		{
-		}
-		
-		protected function FocusLeave(event:FocusEvent):void
-		{
-		}
+//		protected function Focus(event:FocusEvent):void
+//		{
+//		}
+//		
+//		protected function FocusLeave(event:FocusEvent):void
+//		{
+//		}
 	}
 }

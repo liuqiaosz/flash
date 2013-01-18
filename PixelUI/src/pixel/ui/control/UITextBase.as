@@ -39,6 +39,14 @@ package pixel.ui.control
 			//_TextField.height = height - _Style.BorderThinkness * 2;
 		}
 		
+		override public function dispose():void
+		{
+			super.dispose();
+			removeChild(_TextField);
+			_TextField = null;
+			_Format = null;
+		}
+		
 //		override public function set width(value:Number):void
 //		{
 //			super.width = value;

@@ -21,7 +21,7 @@ package pixel.core
 			_sheet = sheet;
 			//默认第一帧
 			_frame = _sheet.GetFrameByIndex(0);
-			draw(_frame.Bitmap);
+			image = _frame.Bitmap;
 		}
 		
 		public function get imageSheet():Vector.<SpriteSheetFrame>
@@ -55,7 +55,7 @@ package pixel.core
 			}
 			
 			//绘制
-			draw(_frame.Bitmap);
+			image = _frame.Bitmap;
 		}
 	}
 }

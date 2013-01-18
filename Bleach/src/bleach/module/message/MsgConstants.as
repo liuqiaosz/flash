@@ -11,8 +11,8 @@ package bleach.module.message
 		//获取关卡综合数据
 		_cache[MSG_GETLEVEL] = MsgGetLevel;
 		
-		//获取当前世界场景数据
-		_cache[MSG_GETWORLD] = MsgGetWorld;
+		//登陆
+		_cache[MSG_LOGIN] = MsgLogin;
 		
 		//获取全局配置
 		_cache[MSG_GLOBALCFG] = MsgGlobalConfig;

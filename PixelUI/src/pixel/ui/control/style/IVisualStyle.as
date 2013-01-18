@@ -1,8 +1,10 @@
 package pixel.ui.control.style
 {
 	import flash.display.Bitmap;
+	
+	import pixel.utility.IDispose;
 
-	public interface IVisualStyle extends IStyle,IBackgroundStyle
+	public interface IVisualStyle extends IStyle,IBackgroundStyle,IDispose
 	{
 		//边框
 		function set BorderThinkness(Value:int):void;

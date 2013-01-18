@@ -13,10 +13,9 @@ package pixel.core
 	 **/
 	public class PixelSprite extends PixelNode implements IPixelSprite
 	{
-		private var _source:BitmapData = null;
 		public function PixelSprite(source:BitmapData = null)
 		{
-			draw(source);
+			image = source;
 		}
 		
 		/**
@@ -25,27 +24,39 @@ package pixel.core
 		 **/
 		public function get image():BitmapData
 		{
-			return _source;
+			if(_canvas)
+			{
+				return _canvas.bitmapData;
+			}
+			return null;
 		}
 		
 		private var _canvas:Bitmap = null;
-		protected function draw(source:BitmapData):void
+		
+		public function set image(value:BitmapData):void
 		{
-			_source = source;
-			if(!_canvas)
+			if(value)
 			{
-				_canvas = new Bitmap();
-				super.addChild(_canvas);
+				if(!_canvas)
+				{
+					_canvas = new Bitmap();
+					this.addChild(_canvas);
+				}
+				_canvas.bitmapData = value;
 			}
-			_canvas.bitmapData = _source;
-			
-//			_source = source;
-//			if(!_canvas && _source)
-//			{
-//				_canvas = new Bitmap();
-//				super.addChild(_canvas);
-//				_canvas.bitmapData = _source;
-//			}
+		}
+		
+		override public function dispose():void
+		{
+			if(_canvas)
+			{
+				super.removeChild(_canvas);
+				if(_canvas.bitmapData)
+				{
+					_canvas.bitmapData.dispose();
+				}
+				_canvas = null;
+			}
 		}
 		
 		/**

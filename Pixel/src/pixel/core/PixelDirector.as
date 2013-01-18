@@ -130,7 +130,7 @@ package pixel.core
 //			_switchScene = null;
 //		}
 		
-		protected function swapScene(newScene:DisplayObject):void
+		protected function swapScene(newScene:DisplayObject,oldDealloc:Boolean = true):void
 		{
 			if(_activedScene)
 			{
@@ -139,38 +139,41 @@ package pixel.core
 			_activedScene = newScene;
 			addScene(newScene);
 		}
-		
+		private var _sceneQueue:Vector.<DisplayObject> = new Vector.<DisplayObject>();
 		protected function addScene(scene:DisplayObject):void
 		{
-//			if(_sceneQueue.indexOf(scene) < 0)
-//			{
-//				_sceneQueue.push(scene);
-//			}
+			if(_sceneQueue.indexOf(scene) < 0)
+			{
+				_sceneQueue.push(scene);
+			}
 			//this.gameStage.addChild(scene as DisplayObject);
 			_contentLayer.addChild(scene as DisplayObject);
 			//_io.addSceneToScreen(scene);
 		}
 		protected function removeScene(scene:DisplayObject):void
 		{
-//			if(_sceneQueue.indexOf(scene) >= 0)
-//			{
-//				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
-//			}
-//			if(this.gameStage.contains(scene as DisplayObject))
-//			{
-//				//this.gameStage.removeChild(scene as DisplayObject);
-//				_contentLayer.removeChild(scene as DisplayObject);
-//			}
+			if(_sceneQueue.indexOf(scene) >= 0)
+			{
+				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
+			}
 			_contentLayer.removeChild(scene as DisplayObject);
 			//_io.removeSceneFromScreen(scene);
 		}
 		
 		protected function addSceneTop(scene:DisplayObject):void
 		{
+			if(_sceneQueue.indexOf(scene) < 0)
+			{
+				_sceneQueue.push(scene);
+			}
 			_topLayer.addChild(scene);
 		}
 		protected function removeSceneTop(scene:DisplayObject):void
 		{
+			if(_sceneQueue.indexOf(scene) >= 0)
+			{
+				_sceneQueue.splice(_sceneQueue.indexOf(scene),1);
+			}
 			if(_topLayer.contains(scene))
 			{
 				_topLayer.removeChild(scene);

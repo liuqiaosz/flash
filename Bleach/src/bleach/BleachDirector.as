@@ -1,11 +1,17 @@
 package bleach
 {
+	import bleach.cfg.BleachSystem;
+	import bleach.cfg.GlobalConfig;
+	import bleach.communicator.ITCPCommunicator;
+	import bleach.communicator.TCPCommunicator;
 	import bleach.event.BleachDefenseEvent;
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
+	import bleach.message.BleachNetMessage;
 	import bleach.module.loader.MaskLoading;
 	import bleach.scene.IScene;
 	import bleach.scene.LoginScene;
+	import bleach.scene.WorldScene;
 	
 	import com.greensock.TweenLite;
 	
@@ -23,12 +29,15 @@ package bleach
 	import flash.system.System;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.getTimer;
 	
 	import pixel.core.IPixelDirector;
+	import pixel.core.IPixelLayer;
 	import pixel.core.PixelDirector;
 	import pixel.core.PixelLauncher;
 	import pixel.core.PixelSprite;
 	import pixel.message.IPixelMessage;
+	import pixel.message.PixelMessage;
 	import pixel.message.PixelMessageBus;
 	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.asset.PixelLoaderAssetLibrary;
@@ -40,35 +49,53 @@ package bleach
 	 **/
 	public class BleachDirector extends PixelDirector implements IPixelDirector
 	{
+		private var _channel:ITCPCommunicator = null;
 		private var _loading:Boolean = false;
 		private var _topLayer:Sprite = null;
 		private var _contentLayer:Sprite = null;
+		private var _system:BleachSystem = null;
 		public function BleachDirector()
 		{
 			super();
-//			_contentLayer = new Sprite();
-//			_topLayer = new Sprite();
-//			gameStage.addChild(_contentLayer);
-//			gameStage.addChild(_topLayer);
 		}
 		
 		override public function initializer():void
 		{
 			super.initializer();
-			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
 			
-			//Loading消息监听
+			//加载配置
+			configInit();
+			
+			//连接服务器
+			this.addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
+			_channel = new TCPCommunicator();
+			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+			trace("Connect server...");
+		}
+		
+		/**
+		 * 服务端连接成功，开启运行
+		 * 
+		 **/
+		private function serverConnected(msg:BleachNetMessage):void
+		{
+			
+			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
 			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
 			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
 			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
-			configInit();
 			
-			this.gameStage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//				IScene(_activedScene).pause();
-//				swapScene(new Sprite());
-//				
-//				_module.clear();
-			});
+			var notify:BleachMessage = null;
+			trace("Server connected!");
+			switch(BleachSystem.instance.portal)
+			{
+				case GlobalConfig.SYSTEM_PORTAL_NORMAL:
+					notify = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+					notify.value = "loginScene";
+					notify.deallocOld = true;
+					dispatchMessage(notify);
+					break;
+			}
 		}
 		
 		private var _sceneCache:Dictionary = new Dictionary();
@@ -87,6 +114,14 @@ package bleach
 			}
 			var config:XML = new XML(new BleachXML());
 			trace(config.toString());
+			//_system = new BleachSystem();
+			var system:XML = config.system[0];
+			
+			BleachSystem.instance.heartbeat = new Number(system.heartbeat);
+			BleachSystem.instance.host = system.remotehost;
+			BleachSystem.instance.port = new Number(system.remoteport);
+			BleachSystem.instance.portal = new Number(system.portal);
+			
 			var scenes:XMLList = config.scenes[0].scene;
 			
 			for each(var sceneNode:XML in scenes)
@@ -96,7 +131,6 @@ package bleach
 					sceneNode.@version,
 					sceneNode.@url
 				);
-				
 				var libs:XMLList = sceneNode.library;
 				for each(var lib:XML in libs)
 				{
@@ -106,10 +140,13 @@ package bleach
 						lib.@url,
 						lib.@desc
 					);
-					library.isUIlib = new Boolean(lib.@uilib);
+					var uilib:String = lib.@uilib;
+					if(uilib == "true")
+					{
+						library.isUIlib = new Boolean(lib.@uilib);
+					}
 					scene.addLibrary(library);
 				}
-				
 				_sceneMap[scene.id] = scene;
 			}
 			System.disposeXML(config);
@@ -145,18 +182,20 @@ package bleach
 			}
 		}
 		
+		private var _swapDealloc:Boolean = false;
 		/**
 		 * 场景切换
 		 * 
 		 **/
-		private function directScene(msg:IPixelMessage):void
+		private function directScene(msg:BleachMessage):void
 		{
-			if(_module)
+			_downloader = null;
+			_downlodLinkLibrary = null;
+			_swapDealloc = msg.deallocOld;
+			if(_swapDealloc && _module)
 			{
-				swapScene(new Sprite());
 				_module.clear();
-				
-				return;
+				_module = null;
 			}
 			
 			var id:String = msg.value as String;
@@ -164,7 +203,6 @@ package bleach
 			{
 				var profile:SceneVO = _sceneMap[id];
 				_module = new SceneModule(profile);
-				
 				_sceneCache[id] = _module;
 			}
 			
@@ -172,7 +210,7 @@ package bleach
 			if(_module.loaded)
 			{
 				//已经缓存
-				swapScene(_module.sceneContent.content);
+				swapScene(_module.sceneContent.content,_swapDealloc);
 			}
 			else
 			{
@@ -215,7 +253,6 @@ package bleach
 				{
 					//下载场景主文件
 					sceneDownload();
-					
 				}
 			}
 		}
@@ -279,13 +316,9 @@ package bleach
 			updateMsg.total = _module.scene.librarys.length + 1;
 			updateMsg.loaded = _downloaded;
 			dispatchMessage(updateMsg);
-			this.swapScene(_module.sceneContent.content);
+			swapScene(_module.sceneContent.content,_swapDealloc);
 			dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_HIDE));
 			_module.loaded = true;
-			
-			//IScene(this._activedScene).pause();
-			//this.swapScene(new Sprite());
-			//_module.clear();
 			
 		}
 		private function sceneDownloadError(event:IOErrorEvent):void
@@ -300,7 +333,23 @@ package bleach
 			trace("!!!");
 		}
 		
+		/**
+		 * 更新
+		 * 
+		 **/
+		override public function frameUpdate(message:PixelMessage):void
+		{
+			super.frameUpdate(message);
+			if(_activedScene)
+			{
+				IPixelLayer(_activedScene).update();
+			}
+		}
 		
+		private function healthBeat():void
+		{
+			
+		}
 		
 		//private var _newScene:DisplayObject = null;
 		
@@ -310,9 +359,8 @@ package bleach
 		 * 这里加入切换效果的支持
 		 * 
 		 **/
-		override protected function swapScene(newScene:DisplayObject):void
+		override protected function swapScene(newScene:DisplayObject,oldDealloc:Boolean = true):void
 		{
-			
 			addScene(newScene);
 			if(_activedScene)
 			{
@@ -320,6 +368,10 @@ package bleach
 				//sceneFadeOut(_activedScene);
 				removeScene(_activedScene);
 //				IScene(_activedScene).pause();
+				if(oldDealloc)
+				{
+					IScene(_activedScene).dealloc();
+				}
 				_activedScene = null;
 				_activedScene = newScene;
 			}

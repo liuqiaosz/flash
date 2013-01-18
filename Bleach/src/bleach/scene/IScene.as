@@ -6,5 +6,6 @@ package bleach.scene
 	{
 		function pause():void;
 		function resume():void;
+		function dealloc():void;
 	}
 }

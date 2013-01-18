@@ -161,9 +161,9 @@ package pixel.ui.control
 		{
 			for each(var child:DisplayObject in _Children)
 			{
-				if(Content.contains(child))
+				if(_Content.contains(child))
 				{
-					Content.removeChild(child);
+					_Content.removeChild(child);
 				}
 			}
 			
@@ -331,7 +331,17 @@ package pixel.ui.control
 			return null;
 		}
 		
-		
+		override public function dispose():void
+		{
+			super.dispose();
+			var child:UIControl = null;
+			for each(child in _Children)
+			{
+				_Content.removeChild(child);
+				child.dispose();
+				child = null;
+			}
+		}
 		
 		/**
 		 * 获取真实高度

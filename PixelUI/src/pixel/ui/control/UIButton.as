@@ -227,6 +227,8 @@ package pixel.ui.control
 			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut); 
 			removeEventListener(MouseEvent.MOUSE_UP,EventMouseUp);
+			
+			
 		}
 		
 		/**

@@ -1,5 +1,7 @@
 package
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
@@ -9,6 +11,7 @@ package
 	import flash.system.LoaderContext;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
 
 	public class Sample extends Sprite
 	{
@@ -18,6 +21,7 @@ package
 		//private var vec:Vector.<Loader> = new Vector.<Loader>();
 		private var mod:SceneModule = null;
 		//private var cache:Dictionary = new Dictionary();
+		private var s:Sprite = null;
 		public function Sample()
 		{
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
@@ -37,8 +41,10 @@ package
 					//_domain = null;
 					//var lod:Loader = null;
 					//read.unload();
-					//read = null;
-					//childReader = null;
+					_img.bitmapData.dispose();
+					_img = null;
+					read = null;
+					childReader = null;
 					mod.clear();
 					trace("clear");
 					
@@ -55,12 +61,22 @@ package
 			
 				
 			});
+			
+			s = new Sprite();
+			addChild(s);
+			
+			var s1:Sprite = new Sprite();
+			s.addChild(s1);
 		}
-		
+		private var _img:Bitmap = null;
 		private function complete(loader:Loader):void
 		{
 			mod.library.push(loader);
 			childReader = new Reader(function(load:Loader):void{
+				traceDomain();
+				var src:Object = mod.sceneDomain.getDefinition("login007");
+				_img = new Bitmap(new src() as BitmapData);
+				
 				mod.library.push(load);
 				
 				var login:Reader = new Reader(function(loginLoader:Loader):void{
@@ -77,7 +93,7 @@ package
 		
 		private function traceDomain():void
 		{
-			var names:Vector.<String> = _domain.getQualifiedDefinitionNames();
+			var names:Vector.<String> = mod.sceneDomain.getQualifiedDefinitionNames();
 			for each(var name:String in names)
 			{
 				trace(name);

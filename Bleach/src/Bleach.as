@@ -28,6 +28,7 @@ package
 			if(contains(_loader))
 			{
 				removeChild(_loader);
+				_loader = null;
 			}
 		}
 	}

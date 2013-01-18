@@ -29,6 +29,13 @@ package pixel.ui.control.style
 //			this.LeftBottomCorner = this.LeftTopCorner = this.RightBottomCorner = this.RightTopCorner = 4;
 		}
 		
+		override public function dispose():void
+		{
+			super.dispose();
+			_OverStyle.dispose();
+			_PressStyle.dispose();
+		}
+		
 //		private var _Text:String = "";
 //		public function set Text(Value:String):void
 //		{

@@ -37,14 +37,15 @@ package
 			super(BleachDirector);
 		}
 		
-		override protected function initializer():void
-		{
-			super.initializer();
-			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-			msg.value = "loginScene";
-			this.dispatchMessage(msg);
-			//this.director.switchScene(LoginScene);
-		}
+//		override protected function initializer():void
+//		{
+//			super.initializer();
+////			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+////			msg.value = "loginScene";
+////			msg.deallocOld = true;
+////			this.dispatchMessage(msg);
+//			//this.director.switchScene(LoginScene);
+//		}
 		
 	}
 }

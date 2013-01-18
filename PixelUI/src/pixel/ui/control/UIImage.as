@@ -13,7 +13,7 @@ package pixel.ui.control
 
 	public class UIImage extends UIControl
 	{
-		private var _gifFrames:Vector.<GIFFrame> = new Vector.<GIFFrame>();
+		private var _gifFrames:Vector.<GIFFrame> = null;
 		private var _timer:Timer = null;
 		private var _currentIndex:int = 0;
 		private var _count:int = 0;
@@ -39,8 +39,9 @@ package pixel.ui.control
 				var result:int = decoder.read(value);
 				if(result == 0)
 				{
-					_gifFrames.length = 0;
 					_count = decoder.getFrameCount();
+					_gifFrames = new Vector.<GIFFrame>(_count);
+					
 					for(var idx:int = 0; idx<_count; idx++)
 					{
 						_gifFrames.push(decoder.getFrame(idx));	
@@ -83,6 +84,9 @@ package pixel.ui.control
 		
 		override public function dispose():void
 		{
+			super.dispose();
+			img = null;
+			_image = null;
 			if(_timer)
 			{
 				if(_timer.running)

@@ -9,7 +9,15 @@ package bleach.message
 		public static const BLEACH_TEXTURE_DOWNLOADED:String = "TextureDownloaded";
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
 		
-		
+		private var _deallocOld:Boolean = false;
+		public function set deallocOld(value:Boolean):void
+		{
+			_deallocOld = value;
+		}
+		public function get deallocOld():Boolean
+		{
+			return _deallocOld;
+		}
 		public function BleachMessage(msg:String)
 		{
 			super(msg);

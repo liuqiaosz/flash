@@ -9,42 +9,44 @@ package bleach.communicator
 	import flash.system.ApplicationDomain;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
 	
+	import pixel.core.PixelNode;
 	import pixel.message.IPixelMessage;
 
-	public class GenericCommunicator extends EventDispatcher implements IComm
+	public class GenericCommunicator extends PixelNode implements IComm
 	{
 		private var _listenerList:Dictionary = null;
-		private var _parser:IMsgParser = null;
+//		private var _parser:IMsgParser = null;
 		
 		public function GenericCommunicator()
 		{
 			_listenerList = new Dictionary();
-			var pack:String = GlobalConfig.instance.messageParser;
-			var parserClass:Object = ApplicationDomain.currentDomain.getDefinition(pack);
-			if(parserClass)
-			{
-				_parser = new parserClass() as IMsgParser;
-			}
+//			var pack:String = GlobalConfig.instance.messageParser;
+//			var parserClass:Object = getDefinitionByName(pack);
+//			if(parserClass)
+//			{
+//				_parser = new parserClass() as IMsgParser;
+//			}
 		}
-		
-		public function createMessage(id:int):IMsg
-		{
-			if(_parser)
-			{
-				var prototype:Object = _parser.getMsgPrototype(id);
-				if(prototype)
-				{
-					return new prototype() as IMsg;
-				}
-			}
-			return null;
-		}
+//		
+//		public function createMessage(id:int):IMsg
+//		{
+//			if(_parser)
+//			{
+//				var prototype:Object = _parser.getMsgPrototype(id);
+//				if(prototype)
+//				{
+//					return new prototype() as IMsg;
+//				}
+//			}
+//			return null;
+//		}
 		
 		/**
 		 * 添加消息监听
 		 **/
-		public function addMessageListener(id:int,listener:Function):void
+		public function addNetMessageListener(id:int,listener:Function):void
 		{
 			var queue:Vector.<Function> = null;
 			if(id in _listenerList)
@@ -67,7 +69,7 @@ package bleach.communicator
 		 * 移除消息监听
 		 * 
 		 **/
-		public function removeMessageListener(id:int,listener:Function):void
+		public function removeNetMessageListener(id:int,listener:Function):void
 		{
 			if(id in _listenerList)
 			{
@@ -79,10 +81,10 @@ package bleach.communicator
 			}
 		}
 		
-		protected function parseMessage(data:ByteArray):IMsg
-		{
-			return _parser.parse(data);
-		}
+//		protected function parseMessage(data:ByteArray):IMsg
+//		{
+//			return _parser.parse(data);
+//		}
 		
 		protected function reciveNotify(msg:IMsg):void
 		{
@@ -90,10 +92,10 @@ package bleach.communicator
 			{
 				//发起消息到达回调
 				var queue:Vector.<Function> = _listenerList[msg.id];
-				var call:Function = null;
-				for each(call in queue)
+				var invoke:Function = null;
+				for each(invoke in queue)
 				{
-					call(msg);
+					invoke(msg);
 				}
 			}
 		}

@@ -54,27 +54,24 @@ package bleach.scene
 		private var submit:UIButton = null;
 		private var account:UITextInput = null;
 		private var password:UITextInput = null;
-//		
-//		
+		
 		private function loginSubmit(event:MouseEvent):void
 		{
-
-//			trace("login");
-			submit.removeEventListener(MouseEvent.CLICK,loginSubmit);
-			removeChild(login);
-			login.dispose();
-//			login.dispose();
-//			//trace("Name[" + account.text + "] PWD[" + password.text + "]");
-
 			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
 			msg.value = "WorldScene";
+			msg.deallocOld = true;
 			this.dispatchMessage(msg);
 		}
 		
-		override public function pause():void
+		override public function dealloc():void
 		{
-//			removeChild(s);
-//			s = null;
+			submit.removeEventListener(MouseEvent.CLICK,loginSubmit);
+			removeChild(login);
+			login.dispose();
+			login = null;
+			submit = null;
+			account = null;
+			password = null;
 		}
 	}
 }

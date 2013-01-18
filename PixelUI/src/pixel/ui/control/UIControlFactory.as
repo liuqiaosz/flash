@@ -110,7 +110,7 @@ class UIControlFactoryImpl extends EventDispatcher implements IUIControlFactory
 	public function decode(data:ByteArray,cache:Boolean = true):UIMod
 	{
 		var Len:int = 0;
-		var mod:UIMod = new UIMod();
+		var mod:UIMod = null;
 		//var Vec:Vector.<IUIControl> = new Vector.<IUIControl>();
 		var controls:Vector.<UIControlMod> = new Vector.<UIControlMod>();
 		var styleMap:Dictionary = new Dictionary();

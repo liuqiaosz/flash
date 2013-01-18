@@ -4,5 +4,6 @@ package pixel.ui.control
 	{
 		function GetChildById(Id:String,DeepSearch:Boolean = false):IUIControl;
 		function get Children():Array;
+		function removeAllChildren():void;
 	}
 }

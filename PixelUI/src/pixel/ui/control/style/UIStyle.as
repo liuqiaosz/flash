@@ -1,12 +1,11 @@
 package pixel.ui.control.style
 {
-	import pixel.ui.control.utility.Utils;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.net.registerClassAlias;
 	import flash.utils.ByteArray;
 	
+	import pixel.ui.control.utility.Utils;
 	import pixel.utility.Tools;
 	
 	/**
@@ -476,6 +475,17 @@ package pixel.ui.control.style
 			{
 				trace(Err.message);
 			}
+		}
+		
+		public function dispose():void
+		{
+			if(this._BackgroundImage)
+			{
+				_BackgroundImage.bitmapData.dispose();
+				_BackgroundImage = null;
+			
+			}
+			_Font = null;
 		}
 	}
 }

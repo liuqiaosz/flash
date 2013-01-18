@@ -17,6 +17,13 @@ package pixel.utility
 			
 		}
 		
+		public static function readInt64(source:ByteArray):Number
+		{
+			var a:Number = source.readInt();
+			var b:Number = source.readInt();
+			return (new Number(((a * Math.pow(2, 32)) + b)));
+		}
+		
 		/**
 		 * 颜色值抓换成16进制字符串
 		 **/

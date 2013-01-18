@@ -39,6 +39,11 @@ package bleach.scene
 			}
 		}
 		
+		public function dealloc():void
+		{
+			
+		}
+		
 		protected function sceneUpdate():void
 		{}
 	}

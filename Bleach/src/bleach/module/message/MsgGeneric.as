@@ -64,7 +64,7 @@ package bleach.module.message
 		{
 		}
 		
-		protected function parse(data:ByteArray):void
+		public function parse(data:ByteArray):void
 		{
 			var msgId:int = data.readUnsignedShort();
 			

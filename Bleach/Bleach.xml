@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <bleach>
+	<system>
+		<!-- 心跳间隔 -->
+		<heartbeat>60000</heartbeat>
+		
+		<!-- 服务器IP 端口 -->
+		<remotehost>219.234.0.12</remotehost>
+		<remoteport>33445</remoteport>
+		
+		<!-- 
+			接入类型
+			
+			0:	平台
+			1:	QQ
+			2:	xx
+		 -->
+		<portal>0</portal>
+	</system>
+
 	<scenes>
 		<scene id="loginScene" version="1.0" url="bleach/scene/LoginScene.swf">
 			<!-- 链接库 --> 
