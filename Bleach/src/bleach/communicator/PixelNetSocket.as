@@ -13,7 +13,7 @@ package bleach.communicator
 	import bleach.module.message.Charset;
 	import bleach.module.message.IMsg;
 
-	public class PixelNetSocket extends EventDispatcher implements IPixelNetConnection
+	public class PixelNetSocket extends EventDispatcher implements ITCPCommunicator
 	{
 		private var _channel:Socket = null;
 		private var _ip:String = "";

@@ -11,6 +11,9 @@ package bleach.cfg
 		public static const CFG_PARSEVERSION:String = "parse_version";
 		public static const CFG_PARSER:String = "msg_parser";
 		
+		public static const SYSTEM_PORTAL_NORMAL:int = 0;
+		public static const SYSTEM_PORTAL_QQ:int = 1;
+		
 		private static var _instance:GlobalConfig = new GlobalConfig();
 		private var _disk:ShareDisk = null;
 		public function GlobalConfig()
@@ -27,7 +30,7 @@ package bleach.cfg
 		{
 			if(_disk)
 			{
-				return _disk.getValue(CFG_MAINVERSION);
+				return _disk.getValue(CFG_MAINVERSION) as String;
 			}
 			return "";
 		}
@@ -37,7 +40,7 @@ package bleach.cfg
 		{
 			if(_disk)
 			{
-				return _disk.getValue(CFG_RSLVERSION);
+				return _disk.getValue(CFG_RSLVERSION) as String;
 			}
 			return "";
 		}
@@ -47,7 +50,7 @@ package bleach.cfg
 		{
 			if(_disk)
 			{
-				return _disk.getValue(CFG_PARSEVERSION);
+				return _disk.getValue(CFG_PARSEVERSION) as String;
 			}
 			return "";
 		}
@@ -57,7 +60,7 @@ package bleach.cfg
 		{
 			if(_disk)
 			{
-				return _disk.getValue(CFG_PARSER);
+				return _disk.getValue(CFG_PARSER) as String;
 			}
 			return "";
 		}
