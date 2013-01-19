@@ -3,12 +3,19 @@ package bleach
 	import bleach.cfg.BleachSystem;
 	import bleach.cfg.GlobalConfig;
 	import bleach.communicator.ITCPCommunicator;
+	import bleach.communicator.NetObserver;
 	import bleach.communicator.TCPCommunicator;
 	import bleach.event.BleachDefenseEvent;
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
 	import bleach.module.loader.MaskLoading;
+	import bleach.module.message.IMsg;
+	import bleach.module.message.IMsgRequest;
+	import bleach.module.message.MsgGeneric;
+	import bleach.module.message.MsgHeartBeat;
+	import bleach.module.message.MsgHeartBeatResp;
+	import bleach.module.message.MsgIdConstants;
 	import bleach.scene.IScene;
 	import bleach.scene.LoginScene;
 	import bleach.scene.WorldScene;
@@ -41,6 +48,7 @@ package bleach
 	import pixel.message.PixelMessageBus;
 	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.asset.PixelLoaderAssetLibrary;
+	import pixel.utility.math.Int64;
 
 	/**
 	 * 场景控制枢纽
@@ -49,11 +57,13 @@ package bleach
 	 **/
 	public class BleachDirector extends PixelDirector implements IPixelDirector
 	{
+		private var _initialized:Boolean = false;
 		private var _channel:ITCPCommunicator = null;
 		private var _loading:Boolean = false;
 		private var _topLayer:Sprite = null;
 		private var _contentLayer:Sprite = null;
 		private var _system:BleachSystem = null;
+		private var _connectTryCount:int = 0;
 		public function BleachDirector()
 		{
 			super();
@@ -67,10 +77,28 @@ package bleach
 			configInit();
 			
 			//连接服务器
-			this.addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
+			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
+			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECT_ERROR,serverConnectError);
 			_channel = new TCPCommunicator();
 			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 			trace("Connect server...");
+		}
+		
+		/**
+		 * 连接失败
+		 **/
+		private function serverConnectError(msg:BleachNetMessage):void
+		{
+			if(_connectTryCount < BleachSystem.instance.reConnectCount)
+			{
+				_connectTryCount++;
+				_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+				trace("Reconnect server...");
+			}
+			else
+			{
+				//超过重连次数
+			}
 		}
 		
 		/**
@@ -79,23 +107,40 @@ package bleach
 		 **/
 		private function serverConnected(msg:BleachNetMessage):void
 		{
-			
-			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
-			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
-			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
-			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
-			
-			var notify:BleachMessage = null;
+			//重置连接尝试次数
+			_connectTryCount = 0;
 			trace("Server connected!");
-			switch(BleachSystem.instance.portal)
+			if(!_initialized)
 			{
-				case GlobalConfig.SYSTEM_PORTAL_NORMAL:
-					notify = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-					notify.value = "loginScene";
-					notify.deallocOld = true;
-					dispatchMessage(notify);
-					break;
+				_initialized = true;
+				NetObserver.instance.addListener(MsgIdConstants.MSG_HEARTBEAT_RESP,heartbeatResponse);
+				addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
+				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
+				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
+				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
+				addMessageListener(BleachNetMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
+				
+				var notify:BleachMessage = null;
+				
+				switch(BleachSystem.instance.portal)
+				{
+					case GlobalConfig.SYSTEM_PORTAL_NORMAL:
+						notify = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+						notify.value = "loginScene";
+						notify.deallocOld = true;
+						dispatchMessage(notify);
+						break;
+				}
 			}
+		}
+		
+		/**
+		 * 发送消息事件处理
+		 **/
+		private function onMessageSend(msg:BleachNetMessage):void
+		{
+			trace("Message send Command[" + MsgGeneric(msg.value).id + "]");
+			_channel.sendMessage(msg.value as IMsgRequest);
 		}
 		
 		private var _sceneCache:Dictionary = new Dictionary();
@@ -118,6 +163,7 @@ package bleach
 			var system:XML = config.system[0];
 			
 			BleachSystem.instance.heartbeat = new Number(system.heartbeat);
+			BleachSystem.instance.heartbeatot = new Number(system.heartbeattimeout);
 			BleachSystem.instance.host = system.remotehost;
 			BleachSystem.instance.port = new Number(system.remoteport);
 			BleachSystem.instance.portal = new Number(system.portal);
@@ -333,6 +379,11 @@ package bleach
 			trace("!!!");
 		}
 		
+		//上一次心跳
+		private var lastHeartbeat:Number = 0;//new Date().time;
+		private var heartbeat:MsgHeartBeat = new MsgHeartBeat();
+		//等待心跳回应
+		private var waitHeartbeatResp:Boolean = false;
 		/**
 		 * 更新
 		 * 
@@ -344,11 +395,51 @@ package bleach
 			{
 				IPixelLayer(_activedScene).update();
 			}
+			var now:Number = new Date().time;
+			if(waitHeartbeatResp)
+			{
+				//检查等待回应是否超时
+				if(now - lastHeartbeat >= BleachSystem.instance.heartbeatot)
+				{
+					//心跳回应超时
+					//重新链接服务器
+					trace("Heartbeat timeout");
+				}
+			}
+			else
+			{
+				if(now - lastHeartbeat >= BleachSystem.instance.heartbeat)
+				{
+					//到达发送心跳间隔
+					heartbeatRequest();
+				}
+			}
 		}
 		
-		private function healthBeat():void
+		private var _heartbeat:MsgHeartBeat = new MsgHeartBeat();
+		/**
+		 * 发送心跳包
+		 * 
+		 **/
+		private function heartbeatRequest():void
 		{
-			
+			lastHeartbeat = new Date().time;
+			_heartbeat.timestamp = lastHeartbeat;
+			_channel.sendMessage(_heartbeat);
+			waitHeartbeatResp = true;
+			_channel.sendMessage(_heartbeat);
+			trace("Heartbeat send");
+		}
+		
+		/**
+		 * 心跳报回应
+		 * 
+		 **/
+		private function heartbeatResponse(msg:IMsg):void
+		{
+			//更新心跳时间，重置状态
+			lastHeartbeat = MsgHeartBeatResp(msg).timestamp;
+			waitHeartbeatResp = false;
 		}
 		
 		//private var _newScene:DisplayObject = null;

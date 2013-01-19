@@ -10,6 +10,9 @@
     <classEntry path="pixel.utility.data.Tree"/>
     <classEntry path="pixel.utility.ShareObjectHelper"/>
     <classEntry path="pixel.utility.ShareDisk"/>
+    <classEntry path="pixel.utility.math.Binary64"/>
+    <classEntry path="pixel.utility.math.Int64"/>
+    <classEntry path="pixel.utility.math.UInt64"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

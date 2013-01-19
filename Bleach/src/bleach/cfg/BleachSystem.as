@@ -12,6 +12,16 @@ package bleach.cfg
 		{
 			return _heartbeat;
 		}
+		
+		private var _heartbeatot:Number = 0;
+		public function set heartbeatot(value:Number):void
+		{
+			_heartbeatot = value;
+		}
+		public function get heartbeatot():Number
+		{
+			return _heartbeatot;
+		}
 		private var _host:String = "";
 		public function set host(value:String):void
 		{
@@ -39,6 +49,16 @@ package bleach.cfg
 		public function get portal():int
 		{
 			return _portal;
+		}
+		
+		private var _reConnectCount:int = 0;
+		public function set reConnectCount(value:int):void
+		{
+			_reConnectCount = value;
+		}
+		public function get reConnectCount():int
+		{
+			return _reConnectCount;
 		}
 			
 		public function BleachSystem()

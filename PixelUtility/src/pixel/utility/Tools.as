@@ -24,6 +24,15 @@ package pixel.utility
 			return (new Number(((a * Math.pow(2, 32)) + b)));
 		}
 		
+		public static function NumberToInt64(value:Number):ByteArray
+		{
+			var data:ByteArray = new ByteArray();
+			var v1:int = value / Math.pow(256,4);
+			data.writeInt(v1);
+			data.writeInt(value - v1);
+			return data;
+		}
+		
 		/**
 		 * 颜色值抓换成16进制字符串
 		 **/

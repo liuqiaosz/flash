@@ -2,14 +2,14 @@ package bleach.module.message
 {
 	public class MsgIdConstants
 	{
-		//获取当前用户信息
-		public static const MSG_GETUSER:int = 1;
-		//获取关卡综合数据
-		public static const MSG_GETLEVEL:int = 2;
+		//心跳报请求
+		public static const MSG_HEARTBEAT:int = 1;
+		//心跳报返回
+		public static const MSG_HEARTBEAT_RESP:int = 2;
 		//登陆
 		public static const MSG_LOGIN:int = 3;
-		//获取全局配置
-		public static const MSG_GLOBALCFG:int = 4;
+		//登陆返回
+		public static const MSG_LOGIN_RESP:int = 4;
 		
 		
 	}

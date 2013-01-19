@@ -5,17 +5,17 @@ package bleach.module.message
 	public class MsgConstants extends MsgIdConstants
 	{
 		private static var _cache:Dictionary = new Dictionary();
-		//获取当前用户信息
-		_cache[MSG_GETUSER] = MsgGetUser;
+		//心跳
+		_cache[MSG_HEARTBEAT] = MsgHeartBeat;
 		
-		//获取关卡综合数据
-		_cache[MSG_GETLEVEL] = MsgGetLevel;
+		//心跳回应
+		_cache[MSG_HEARTBEAT_RESP] = MsgHeartBeatResp;
 		
 		//登陆
 		_cache[MSG_LOGIN] = MsgLogin;
 		
-		//获取全局配置
-		_cache[MSG_GLOBALCFG] = MsgGlobalConfig;
+		//登陆回应
+		_cache[MSG_LOGIN_RESP] = MsgLoginResp;
 		
 		public static function findMsgById(id:int):Object
 		{

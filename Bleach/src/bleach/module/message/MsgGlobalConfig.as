@@ -9,7 +9,7 @@ package bleach.module.message
 	{
 		public function MsgGlobalConfig()
 		{
-			super(MsgIdConstants.MSG_GLOBALCFG);
+			//super(MsgIdConstants.MSG_GLOBALCFG);
 		}
 	}
 }

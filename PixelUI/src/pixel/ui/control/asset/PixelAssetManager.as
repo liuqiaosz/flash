@@ -368,7 +368,6 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 	public function FindAssetById(Id:String):IAsset
 	{
 		var Lib:IAssetLibrary = null;
-		
 		for each(Lib in _AssetLibArray)
 		{
 			if(Lib.hasDefinition(Id))

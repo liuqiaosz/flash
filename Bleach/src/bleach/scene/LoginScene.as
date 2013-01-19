@@ -2,6 +2,10 @@ package bleach.scene
 {
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
+	import bleach.message.BleachNetMessage;
+	import bleach.module.message.IMsg;
+	import bleach.module.message.MsgIdConstants;
+	import bleach.module.message.MsgLogin;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -55,12 +59,36 @@ package bleach.scene
 		private var account:UITextInput = null;
 		private var password:UITextInput = null;
 		
+		/**
+		 * 登陆提交
+		 **/
 		private function loginSubmit(event:MouseEvent):void
 		{
-			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-			msg.value = "WorldScene";
-			msg.deallocOld = true;
-			this.dispatchMessage(msg);
+//			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+//			msg.value = "WorldScene";
+//			msg.deallocOld = true;
+//			dispatchMessage(msg);
+			//监听登陆消息响应
+//			addMessageListener(BleachNetMessage.BLEACH_NET_RECVMESSAGE,onLoginResponse);
+			
+			this.addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
+			//发送登陆消息
+			var msg:MsgLogin = new MsgLogin();
+			msg.accName = "User";
+			msg.accPwsd = "111111";
+			var login:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
+			login.value = msg;
+			dispatchMessage(login);
+		}
+		
+		/**
+		 * 登陆报文返回回调
+		 * 
+		 **/
+		private function onLoginResponse(message:IMsg):void
+		{
+			removeNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
+			
 		}
 		
 		override public function dealloc():void

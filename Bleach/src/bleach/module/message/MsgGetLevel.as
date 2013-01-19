@@ -15,8 +15,8 @@ package bleach.module.message
 		private var _levels:Vector.<MSGLevel> = null;
 		public function MsgGetLevel()
 		{
-			super(MsgIdConstants.MSG_GETLEVEL);
-			_levels = new Vector.<MSGLevel>();
+//			super(MsgIdConstants.MSG_GETLEVEL);
+//			_levels = new Vector.<MSGLevel>();
 		}
 		
 //		override public function decode(data:ByteArray):void

@@ -7,7 +7,6 @@ package bleach.module.message
 		public function MsgLibrary()
 		{
 			MsgConstants;
-			MsgParser;
 		}
 	}
 }

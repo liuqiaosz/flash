@@ -2,7 +2,7 @@ package bleach.module.message
 {
 	import flash.utils.ByteArray;
 
-	public class MsgLogin extends MsgGeneric implements IMsg
+	public class MsgLogin extends MsgRequest
 	{
 		private var _accName:String = "";
 		public function set accName(value:String):void
@@ -25,18 +25,12 @@ package bleach.module.message
 		
 		public function MsgLogin()
 		{
-			
+			super(MsgIdConstants.MSG_LOGIN);
 		}
 		
-		override public function parse(data:ByteArray):void
+		override public function getMessage():ByteArray
 		{
-			var len:int = data.readInt();
-		}
-		
-		override public function getMessage():Object
-		{
-			var data:ByteArray = new ByteArray();
-			data.writeInt(MsgIdConstants.MSG_LOGIN);
+			var data:ByteArray = super.getMessage();
 			data.writeUTF(_accName);
 			data.writeUTF(_accPwsd);
 			

@@ -1,9 +1,10 @@
 package bleach.scene
 {
 	import bleach.communicator.CommMarshal;
+	import bleach.communicator.NetObserver;
+	import bleach.module.message.IMsg;
 	
 	import pixel.core.PixelLayer;
-	import bleach.module.message.IMsg;
 
 	public class GenericScene extends PixelLayer implements IScene
 	{
@@ -46,5 +47,15 @@ package bleach.scene
 		
 		protected function sceneUpdate():void
 		{}
+		
+		protected function addNetListener(command:int,callback:Function):void
+		{
+			NetObserver.instance.addListener(command,callback);
+		}
+		protected function removeNetListener(command:int,callback:Function):void
+		{
+			NetObserver.instance.removeListener(command,callback);
+		}
+			
 	}
 }

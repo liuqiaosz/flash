@@ -1,6 +1,7 @@
 package bleach.communicator
 {
 	import bleach.module.message.IMsg;
+	import bleach.module.message.IMsgRequest;
 	
 	import flash.events.IEventDispatcher;
 	
@@ -9,7 +10,7 @@ package bleach.communicator
 	{
 		function connect(ip:String = "",port:int = 9090,encode:String = ""):void;
 		function close():void;
-		function sendMessage(msg:IMsg):void;
+		function sendMessage(msg:IMsgRequest):void;
 		function sendString(value:String):void;
 		function isConnected():Boolean;
 	}

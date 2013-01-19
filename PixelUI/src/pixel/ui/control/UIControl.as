@@ -263,7 +263,7 @@ package pixel.ui.control
 					{
 						if(!Style.ImagePack)
 						{
-							var Img:Bitmap = PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId) as Bitmap;
+							var Img:Bitmap = AssetImage(PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId)).image;
 							if(Img)
 							{
 								//资源已经欲载
