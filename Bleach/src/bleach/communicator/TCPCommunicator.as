@@ -59,12 +59,13 @@ package bleach.communicator
 		{
 			//将所有数据读入接收缓存
 			_channel.readBytes(dataBuffer,0,event.bytesLoaded);
-			
+			trace("收到数据[" + dataBuffer.length + "]");
 			while(dataBuffer.length >= 4)
 			{
 				position = dataBuffer.length;
 				dataBuffer.position = 0;
-				packLength = dataBuffer.readUnsignedInt();
+				//4字节ID长度
+				packLength = dataBuffer.readUnsignedInt() + 4;
 				
 				if(dataBuffer.bytesAvailable >= packLength)
 				{
@@ -80,6 +81,10 @@ package bleach.communicator
 						dataBuffer.clear();
 						dataBuffer.writeBytes(remainBuffer);
 						remainBuffer.clear();
+					}
+					else
+					{
+						dataBuffer.clear();
 					}
 				}
 				else
@@ -143,7 +148,7 @@ package bleach.communicator
 		public function sendMessage(msg:IMsgRequest):void
 		{
 			var data:ByteArray = msg.getMessage() ;
-			_channel.writeInt(data.length);
+			_channel.writeInt(data.length - 4);
 			_channel.writeBytes(data,0,data.length);
 			_channel.flush();
 		}

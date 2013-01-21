@@ -40,7 +40,7 @@ class ObserverImpl implements INetObserver
 		{
 			_diction[command] = new Vector.<Function>();
 		}
-		_diction[command] = callback;
+		_diction[command].push(callback);
 	}
 	public function removeListener(command:int,callback:Function):void
 	{

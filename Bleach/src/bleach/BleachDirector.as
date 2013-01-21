@@ -403,7 +403,7 @@ package bleach
 				{
 					//心跳回应超时
 					//重新链接服务器
-					trace("Heartbeat timeout");
+					
 				}
 			}
 			else
@@ -411,7 +411,7 @@ package bleach
 				if(now - lastHeartbeat >= BleachSystem.instance.heartbeat)
 				{
 					//到达发送心跳间隔
-					heartbeatRequest();
+					heartbeatRequest(now);
 				}
 			}
 		}
@@ -421,14 +421,12 @@ package bleach
 		 * 发送心跳包
 		 * 
 		 **/
-		private function heartbeatRequest():void
+		private function heartbeatRequest(time:Number):void
 		{
-			lastHeartbeat = new Date().time;
+			lastHeartbeat = time;
 			_heartbeat.timestamp = lastHeartbeat;
 			_channel.sendMessage(_heartbeat);
 			waitHeartbeatResp = true;
-			_channel.sendMessage(_heartbeat);
-			trace("Heartbeat send");
 		}
 		
 		/**
@@ -438,7 +436,7 @@ package bleach
 		private function heartbeatResponse(msg:IMsg):void
 		{
 			//更新心跳时间，重置状态
-			lastHeartbeat = MsgHeartBeatResp(msg).timestamp;
+			//lastHeartbeat = MsgHeartBeatResp(msg).timestamp;
 			waitHeartbeatResp = false;
 		}
 		
