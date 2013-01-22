@@ -17,6 +17,11 @@ package bleach.module.message
 		{
 			return _name;
 		}
+		private var _level:int = 0;
+		public function get level():int
+		{
+			return _level;
+		}
 		private var _gender:int = 0;
 		public function get gender():int
 		{
@@ -35,6 +40,7 @@ package bleach.module.message
 				if(_respCode == 0)
 				{
 					_name = source.readUTF();
+					_level = source.readInt();
 					_gender = source.readByte();
 				}
 			}

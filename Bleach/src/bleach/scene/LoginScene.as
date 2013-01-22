@@ -71,11 +71,11 @@ package bleach.scene
 			//监听登陆消息响应
 //			addMessageListener(BleachNetMessage.BLEACH_NET_RECVMESSAGE,onLoginResponse);
 			
-			this.addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
+			addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
 			//发送登陆消息
 			var msg:MsgLogin = new MsgLogin();
 			msg.accName = "User";
-			msg.accPwsd = "111111";
+			msg.accPwsd = "";
 			var login:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
 			login.value = msg;
 			dispatchMessage(login);
