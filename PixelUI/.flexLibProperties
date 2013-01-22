@@ -23,6 +23,9 @@
     <classEntry path="pixel.ui.control.style.UIStyleLinkEmu"/>
     <classEntry path="pixel.ui.control.asset.PixelAssetEmu"/>
     <classEntry path="pixel.ui.control.asset.PixelTextureAssetLibrary"/>
+    <classEntry path="pixel.ui.control.UICheckBox"/>
+    <classEntry path="pixel.ui.control.UICheckButton"/>
+    <classEntry path="pixel.ui.control.style.UICheckButtonStyle"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

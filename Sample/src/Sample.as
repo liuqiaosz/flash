@@ -79,6 +79,7 @@ package
 	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.LayoutConstant;
 	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UICheckBox;
 	import pixel.ui.control.UICombobox;
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
@@ -217,42 +218,8 @@ package
 			s.x = stage.stageWidth - s.width;
 			addChild(s);
 			
-			var chnnel:Socket = new Socket();
-			chnnel.addEventListener(SecurityErrorEvent.SECURITY_ERROR,function(event:SecurityErrorEvent):void{
-				//trace(event.text);
-				trace("!!!");
-			});
-			
-			chnnel.addEventListener(IOErrorEvent.IO_ERROR,function(event:IOErrorEvent):void{
-				trace("~~");
-			});
-			
-			chnnel.addEventListener(ProgressEvent.SOCKET_DATA,function(event:ProgressEvent):void{
-			
-				//var data:ByteArray = new ByteArray();
-				trace(chnnel.readUTFBytes(chnnel.bytesAvailable));
-			});
-			
-			chnnel.addEventListener(Event.CONNECT,function(event:Event):void{
-				trace("connected");
-				chnnel.writeUTFBytes("Test!!!");
-			});
-			
-			
-			chnnel.connect("219.234.0.12",33445);
-			
-//			PixelAssetManager.instance.download("login.swf");
-//			PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:DownloadEvent):void{
-//				var loader:URLLoader = new URLLoader();
-//				loader.dataFormat = URLLoaderDataFormat.BINARY;
-//				loader.addEventListener(Event.COMPLETE,function(event:Event):void{
-//					var data:ByteArray = loader.data as ByteArray;
-//					var mod:UIMod = UIControlFactory.instance.decode(data);
-//					stage.addChild(mod.controls.pop().control);
-//				});
-//				loader.load(new URLRequest("login01.mod"));
-//			});
-			
+			var check:UICheckBox = new UICheckBox();
+			addChild(check);
 		}
 		
 		private function showcase():void

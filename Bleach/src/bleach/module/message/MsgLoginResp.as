@@ -1,6 +1,7 @@
 package bleach.module.message
 {
 	import flash.utils.ByteArray;
+	import flash.utils.CompressionAlgorithm;
 	
 	/**
 	 * 登陆返回消息

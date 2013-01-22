@@ -74,8 +74,8 @@ package bleach.scene
 			addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
 			//发送登陆消息
 			var msg:MsgLogin = new MsgLogin();
-			msg.accName = "User";
-			msg.accPwsd = "";
+			msg.accName = "user1";
+			msg.accPwsd = "1";
 			var login:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
 			login.value = msg;
 			dispatchMessage(login);

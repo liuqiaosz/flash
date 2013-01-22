@@ -59,7 +59,6 @@ package bleach.communicator
 		{
 			//将所有数据读入接收缓存
 			_channel.readBytes(dataBuffer,0,event.bytesLoaded);
-			trace("收到数据[" + dataBuffer.length + "]");
 			while(dataBuffer.length >= 4)
 			{
 				position = dataBuffer.length;
@@ -104,6 +103,7 @@ package bleach.communicator
 		{
 			data.position = 0;
 			command = data.readInt();
+			trace("Command[" + command + "] Reponse...");
 			var prototype:Object = MsgConstants.findMsgById(command);
 			if(prototype)
 			{

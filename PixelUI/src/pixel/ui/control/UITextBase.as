@@ -19,7 +19,7 @@ package pixel.ui.control
 		protected var _TextValue:String = "";
 		protected var _TextField:TextField = null;
 		protected var _Format:TextFormat = null;
-		public function UITextBase(Skin:Class,Text:String = "")
+		public function UITextBase(Skin:Class = null,Text:String = "")
 		{
 			super(Skin);
 			_TextField = new TextField();

@@ -395,25 +395,25 @@ package bleach
 			{
 				IPixelLayer(_activedScene).update();
 			}
-			var now:Number = new Date().time;
-			if(waitHeartbeatResp)
-			{
-				//检查等待回应是否超时
-				if(now - lastHeartbeat >= BleachSystem.instance.heartbeatot)
-				{
-					//心跳回应超时
-					//重新链接服务器
-					
-				}
-			}
-			else
-			{
-				if(now - lastHeartbeat >= BleachSystem.instance.heartbeat)
-				{
-					//到达发送心跳间隔
-					heartbeatRequest(now);
-				}
-			}
+//			var now:Number = new Date().time;
+//			if(waitHeartbeatResp)
+//			{
+//				//检查等待回应是否超时
+//				if(now - lastHeartbeat >= BleachSystem.instance.heartbeatot)
+//				{
+//					//心跳回应超时
+//					//重新链接服务器
+//					
+//				}
+//			}
+//			else
+//			{
+//				if(now - lastHeartbeat >= BleachSystem.instance.heartbeat)
+//				{
+//					//到达发送心跳间隔
+//					heartbeatRequest(now);
+//				}
+//			}
 		}
 		
 		private var _heartbeat:MsgHeartBeat = new MsgHeartBeat();
