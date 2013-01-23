@@ -224,6 +224,11 @@
 					label: "Window",
 					id: Utils.WINDOW,
 					icon: windowIcon
+				},
+				{
+					label: "CheckBox",
+					id: Utils.CHECKBOX,
+					icon: windowIcon
 				}
 				
 			]);
@@ -1121,16 +1126,21 @@
 				
 				<mx:Accordion width="100%" height="100%">
 					<mx:VBox label="基本控件" horizontalAlign="center" width="100%">
-						<s:List dataProvider="{controls}" borderVisible="false">
-							<s:itemRenderer>
-								<fx:Component>
-									<mx:VBox horizontalAlign="center" borderVisible="false" paddingTop="20">
-										<s:Image source="{data.icon}" name="{data.id}"  mouseDown="outerDocument.StartDrag(event)"/>
-										<s:Label text="{data.label}" />
-									</mx:VBox>
-								</fx:Component>
-							</s:itemRenderer>
-						</s:List>
+						<s:Scroller width="100%" height="100%">
+							<s:Group>
+								<s:List dataProvider="{controls}" borderVisible="false">
+									<s:itemRenderer>
+										<fx:Component>
+											<mx:VBox horizontalAlign="center" borderVisible="false" paddingTop="20">
+												<s:Image source="{data.icon}" name="{data.id}"  mouseDown="outerDocument.StartDrag(event)"/>
+												<s:Label text="{data.label}" />
+											</mx:VBox>
+										</fx:Component>
+									</s:itemRenderer>
+								</s:List>
+							</s:Group>
+						</s:Scroller>
+						
 					</mx:VBox>
 					
 					<mx:VBox label="自定义组件" id="ComponentLibrary" width="100%">

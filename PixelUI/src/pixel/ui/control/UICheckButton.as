@@ -43,14 +43,16 @@ package pixel.ui.control
 		override protected function StyleRender(style:IVisualStyle):void
 		{
 			var draw:Graphics = this.graphics;
+			draw.clear();
 			if(style.BorderThinkness > 0)
 			{
 				draw.lineStyle(style.BorderThinkness,style.BorderColor,style.BorderAlpha);
 				draw.drawRect(0,0,width,height);
 			}
-			draw.lineStyle(0);
-			var fillW:int = width - (style.BorderThinkness * 2) - (_lineGap * 2);
-			var fillH:int = height - (style.BorderThinkness * 2) - (_lineGap * 2);
+			draw.lineStyle(0,0,0);
+			var s:Boolean = Boolean(style.BorderThinkness & 1);
+			var fillW:int = width - (style.BorderThinkness * 2) - (_lineGap * (s ? 1:2));
+			var fillH:int = height - (style.BorderThinkness * 2) - (_lineGap * (s ? 1:2));
 			var pos:int = style.BorderThinkness + _lineGap;
 			if(_selected)
 			{
