@@ -6,6 +6,7 @@ package bleach.scene
 	import bleach.module.message.IMsg;
 	import bleach.module.message.MsgIdConstants;
 	import bleach.module.message.MsgLogin;
+	import bleach.utils.Constants;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -19,12 +20,18 @@ package bleach.scene
 	
 	import pixel.message.PixelMessageBus;
 	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UICheckBox;
+	import pixel.ui.control.UIContainer;
+	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UITextInput;
 	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.event.DownloadEvent;
+	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.vo.UIMod;
+	import pixel.utility.ShareDisk;
+	import pixel.utility.ShareObjectHelper;
 
 
 	public class LoginScene extends GenericScene
@@ -33,20 +40,35 @@ package bleach.scene
 		{
 			super();
 		}
-		
+		private var cfg:ShareDisk = ShareObjectHelper.findShareDisk(Constants.CFG_LOCAL);
 	 	override public function initializer():void
 		{
+			//var cfg:ShareDisk = ShareObjectHelper.findShareDisk(Constants.CFG_LOCAL);
+			var saveAccount:Boolean = false;
+			if(cfg.containKey(Constants.CFG_KEY_SAVELOGINNAME))
+			{
+				saveAccount = cfg.getValue(Constants.CFG_KEY_SAVELOGINNAME) as Boolean;
+			}
+			
 			var cls:Object = getDefinitionByName("ui.login");
 			var data:ByteArray = new cls() as ByteArray;
 			var mod:UIMod = UIControlFactory.instance.decode(data,false);
 			login = mod.controls.pop().control;
 			addChild(login);
 			
-			var ids:Vector.<String> = login.ChildrenIds;
+			
 			submit = login.GetChildById("Submit",true) as UIButton;
 			account = login.GetChildById("accName",true) as UITextInput;
 			password = login.GetChildById("accPwd",true) as UITextInput;
+			checkbox = login.GetChildById("C961",true) as UICheckBox;
+			checkbox.selected = saveAccount;
 			
+			checkbox.addEventListener(UIControlEvent.CHANGE,loginNameSaveChange);
+			if(saveAccount)
+			{
+				//从本地获取保存的账号
+				account.text = cfg.getValue(Constants.CFG_KEY_LOGINNAME) as String;
+			}
 			if(submit)
 			{
 				submit.addEventListener(MouseEvent.CLICK,loginSubmit);
@@ -58,27 +80,30 @@ package bleach.scene
 		private var submit:UIButton = null;
 		private var account:UITextInput = null;
 		private var password:UITextInput = null;
+		private var checkbox:UICheckBox = null;
 		
 		/**
 		 * 登陆提交
 		 **/
 		private function loginSubmit(event:MouseEvent):void
 		{
-//			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-//			msg.value = "WorldScene";
-//			msg.deallocOld = true;
-//			dispatchMessage(msg);
-			//监听登陆消息响应
-//			addMessageListener(BleachNetMessage.BLEACH_NET_RECVMESSAGE,onLoginResponse);
-			
 			addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
 			//发送登陆消息
 			var msg:MsgLogin = new MsgLogin();
-			msg.accName = "user1";
-			msg.accPwsd = "1";
 			var login:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
 			login.value = msg;
 			dispatchMessage(login);
+		}
+		
+		private function loginNameSaveChange(event:UIControlEvent):void
+		{
+			cfg.addValue(Constants.CFG_KEY_SAVELOGINNAME,checkbox.selected);
+			var acc:String = "";
+			if(checkbox.selected)
+			{
+				acc = account.text;
+			}
+			cfg.addValue(Constants.CFG_KEY_LOGINNAME,acc);
 		}
 		
 		/**
@@ -88,7 +113,6 @@ package bleach.scene
 		private function onLoginResponse(message:IMsg):void
 		{
 			removeNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
-			
 		}
 		
 		override public function dealloc():void
@@ -100,6 +124,9 @@ package bleach.scene
 			submit = null;
 			account = null;
 			password = null;
+			cfg.close();
+			cfg = null;
+			checkbox = null;
 		}
 	}
 }

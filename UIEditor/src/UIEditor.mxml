@@ -1073,22 +1073,14 @@
 			 **/
 			protected function exportList():void
 			{
-				var nextLine:String = "";
-				var itemTemplate:String = "<control id=\"{id}\" type=\"{type}\" />"  + nextLine;
-				var doc:String = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + nextLine + "<controls>" + nextLine;
+				var itemTemplate:String = "<control id=\"{id}\" type=\"{type}\">";
+				var doc:String = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><controls>";
 				
 				var controls:Vector.<IUIControl> = this.EditWorkspace.Children;
-				var id:String = "";
-				var type:String = "";
-				var item:String = "";
+				
 				for each(var control:IUIControl in controls)
 				{
-					id = control.Id;
-					type = flash.utils.getQualifiedClassName(control);
-					type = type.replace("::",".");
-					item = itemTemplate.replace("{id}",id);
-					item = item.replace("{type}",type);
-					doc += item;
+					doc += exportControl(control);
 				}
 				
 				doc += "</controls>";
@@ -1102,6 +1094,29 @@
 					writer.close();
 				});
 				browser.browseForSave("保存路径");
+			}
+			private var itemTemplate:String = "<control id=\"{id}\" type=\"{type}\">";
+			private function exportControl(control:IUIControl):String
+			{
+				var id:String = "";
+				var type:String = "";
+				var item:String = "";
+				id = control.Id;
+				type = flash.utils.getQualifiedClassName(control);
+				type = type.replace("::",".");
+				item = itemTemplate.replace("{id}",id);
+				item = item.replace("{type}",type);
+				
+				if((control is UIContainer))
+				{
+					var controls:Array = UIContainer(control).Children;
+					for each(var child:UIControl in controls)
+					{
+						item += exportControl(child);
+					}
+				}
+				item += "</control>";
+				return item;
 			}
 			
 			protected function closeWorkeidt(event:CloseEvent):void

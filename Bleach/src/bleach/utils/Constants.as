@@ -11,6 +11,10 @@ package bleach.utils
 		
 		public static const RES_WORLD_BG:String = "image.world.background";
 		
+		public static const CFG_LOCAL:String = "CfgLocal";
+		public static const CFG_KEY_SAVELOGINNAME:String = "SaveLoginName";
+		public static const CFG_KEY_LOGINNAME:String = "LoginName";
+		
 		public function Constants()
 		{
 		}

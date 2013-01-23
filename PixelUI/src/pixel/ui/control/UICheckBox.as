@@ -80,7 +80,10 @@ package pixel.ui.control
 		{
 			return _label.text;
 		}
-		
+		public function set selected(value:Boolean):void
+		{
+			_btn.selected = value;
+		}
 		public function get selected():Boolean
 		{
 			return _btn.selected;

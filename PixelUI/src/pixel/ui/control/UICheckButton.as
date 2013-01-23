@@ -3,6 +3,7 @@ package pixel.ui.control
 	import flash.display.Graphics;
 	import flash.events.MouseEvent;
 	
+	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UICheckButtonStyle;
 	import pixel.ui.core.PixelUINS;
@@ -19,7 +20,11 @@ package pixel.ui.control
 		public function get selected():Boolean
 		{
 			return _selected;
-			
+		}
+		public function set selected(value:Boolean):void
+		{
+			_selected = value;
+			this.Update();
 		}
 		
 		override public function initializer():void
@@ -37,6 +42,7 @@ package pixel.ui.control
 		{
 			_selected = !_selected;
 			StyleUpdate();
+			dispatchEvent(new UIControlEvent(UIControlEvent.CHANGE,true));
 		}
 		
 		/**
