@@ -65,7 +65,7 @@ package pixel.ui.control
 			addEventListener(Event.REMOVED_FROM_STAGE,onRemoveFromStage);
 			//this.mouseEnabled = false;
 			
-			initializer();
+			//initializer();
 		}
 		
 		public function initializer():void

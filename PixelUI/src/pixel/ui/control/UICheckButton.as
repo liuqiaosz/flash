@@ -19,22 +19,24 @@ package pixel.ui.control
 		public function get selected():Boolean
 		{
 			return _selected;
+			
 		}
 		
 		override public function initializer():void
 		{
-			addEventListener(MouseEvent.CLICK,onClick);
+			
 		}
 		
 		public function UICheckButton(style:Class = null)
 		{
 			super(style ? style:UICheckButtonStyle);
+			addEventListener(MouseEvent.CLICK,onClick);
 		}
 		
 		private function onClick(event:MouseEvent):void
 		{
 			_selected = !_selected;
-			this.StyleUpdate();
+			StyleUpdate();
 		}
 		
 		/**
@@ -47,22 +49,27 @@ package pixel.ui.control
 			if(style.BorderThinkness > 0)
 			{
 				draw.lineStyle(style.BorderThinkness,style.BorderColor,style.BorderAlpha);
-				draw.drawRect(0,0,width,height);
 			}
-			draw.lineStyle(0,0,0);
-			var s:Boolean = Boolean(style.BorderThinkness & 1);
-			var fillW:int = width - (style.BorderThinkness * 2) - (_lineGap * (s ? 1:2));
-			var fillH:int = height - (style.BorderThinkness * 2) - (_lineGap * (s ? 1:2));
-			var pos:int = style.BorderThinkness + _lineGap;
+			else
+			{
+				draw.lineStyle(0,0,0);
+			}
+//			var s:Boolean = Boolean(style.BorderThinkness & 1);
+//			var fillW:int = width - (style.BorderThinkness * 2) - (_lineGap * (s ? 1:2));
+//			var fillH:int = height - (style.BorderThinkness * 2) - (_lineGap * (s ? 1:2));
+//			var fillW:int = width - (style.BorderThinkness * 2);
+//			var fillH:int = height - (style.BorderThinkness * 2);
+//			var pos:int = style.BorderThinkness * 2 + style.BorderThinkness;
 			if(_selected)
 			{
 				draw.beginFill(style.BackgroundColor,style.BackgroundAlpha);
 			}
 			else
 			{
-				draw.beginFill(0xFFFFFF);
+				draw.beginFill(0xFFFFFF,0.2);
 			}
-			draw.drawRect(pos,pos,fillW,fillH);
+			//draw.drawRect(pos,pos,fillW,fillH);
+			draw.drawRect(0,0,width,height);
 			draw.endFill();
 		}
 		

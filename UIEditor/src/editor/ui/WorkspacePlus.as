@@ -291,7 +291,6 @@ package editor.ui
 		
 		private function DragStart(event:MouseEvent):void
 		{
-			
 			OnComponentChoice(event.target);
 			
 			if(_Children.indexOf(event.target) >= 0 )

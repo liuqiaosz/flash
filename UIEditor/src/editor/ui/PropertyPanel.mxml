@@ -29,6 +29,7 @@
 			import pixel.ui.control.TabBar;
 			import pixel.ui.control.TabContent;
 			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UICheckBox;
 			import pixel.ui.control.UICombobox;
 			import pixel.ui.control.UIContainer;
 			import pixel.ui.control.UIControl;
@@ -78,6 +79,8 @@
 			private var VerticalPanelStyleFlag:Boolean = false;
 			[Bindable]
 			private var ProgressStyleFlag:Boolean = false;
+			[Bindable]
+			private var checkboxStyleFlag:Boolean = false;
 			
 			[Bindable]
 			private var StyleLinkEnabled:Boolean = false;
@@ -293,6 +296,12 @@
 					ProgressStyleFlag = true;
 					ProgressStyle.Control = _CurrentControl;
 				}
+				else if(_CurrentControl is UICheckBox)
+				{
+					Category.text = "复选框";
+					checkboxStyleFlag = true;
+					checkboxStyle.Control = _CurrentControl;
+				}
 				CategoryFlag = true;
 			}
 			
@@ -451,6 +460,7 @@
 				<My:ComboboxPropertie id="ComboboxStyle" visible="{ComboboxStyleFlag}" includeInLayout="{ComboboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
 				<My:UIVerticalScrollPropertie id="VPanelStyle" visible="{VerticalPanelStyleFlag}" includeInLayout="{VerticalPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
 				<My:UIProgressPropertie id="ProgressStyle" visible="{ProgressStyleFlag}" includeInLayout="{ProgressStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
+				<My:UICheckBoxProperty id="checkboxStyle" visible="{checkboxStyleFlag}" includeInLayout="{checkboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}" />
 			</s:Group>
 			
 		</s:VGroup>

@@ -25,6 +25,7 @@ package pixel.ui.control.utility
 		public static const COMBOBOXPOP:int = 17;		//下拉框弹出面板
 		public static const VPANEL:int = 18;
 		public static const CHECKBOX:int = 19;
+		public static const CHECKBOXBTN:int = 20;
 		
 		public static const CUSTOMER:uint = 99;			//自定义控件
 		
@@ -107,6 +108,10 @@ package pixel.ui.control.utility
 			{
 				return CHECKBOX;
 			}
+			else if(Control is UICheckButton)
+			{
+				return CHECKBOXBTN;
+			}
 			return 99;
 		}
 		
@@ -168,6 +173,10 @@ package pixel.ui.control.utility
 			{
 				return UICheckBox;
 			}
+			else if(Control is UICheckButton)
+			{
+				return UICheckButton;
+			}
 			return null;
 		}
 		
@@ -223,6 +232,9 @@ package pixel.ui.control.utility
 				case CHECKBOX:
 					return UICheckBox;
 					break;
+				case CHECKBOXBTN:
+					return UICheckBox;
+					break;
 			}
 			return null;
 		}
@@ -275,6 +287,9 @@ package pixel.ui.control.utility
 					break;
 				case WINDOW:
 					return UIWindow;
+					break;
+				case CHECKBOXBTN:
+					return UICheckBox;
 					break;
 			}
 			return null;
@@ -331,6 +346,10 @@ package pixel.ui.control.utility
 			{
 				return CHECKBOX;
 			}
+			else if(Control is UICheckButton)
+			{
+				return CHECKBOXBTN;
+			}
 			return 99;
 		}
 		
@@ -385,6 +404,9 @@ package pixel.ui.control.utility
 					break;
 				case CHECKBOX:
 					return "Checkbox";
+					break;
+				case CHECKBOXBTN:
+					return "CheckBoxButton";
 					break;
 			}
 			return null;

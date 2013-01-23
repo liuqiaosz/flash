@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import pixel.ui.control.UICheckBox;
+			
+			private var check:UICheckBox = null;
+			override protected function Initialized():void
+			{
+				check = CurrentControl as UICheckBox;
+				Border.Control = check.boxField;
+				label.Control = check.labelField;
+				Background.Control = check.boxField;
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<ui:SimpleProperty id="Simple" Control="{CurrentControl}" enabled="{_propertieEnabled}" />
+	
+	<ui:BordeStyleProperty id="Border"  enabled="{_styleEnabled}" />
+	<ui:LabelPropery id="label"  enableSimpleStyle = "false" /> 
+	<ui:Background id="Background" />
+</ui:GenericProperty>

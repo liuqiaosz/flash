@@ -214,12 +214,18 @@ package
 			//progress();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
-			var s:Stat = new Stat();
-			s.x = stage.stageWidth - s.width;
-			addChild(s);
+//			var s:Stat = new Stat();
+//			s.x = stage.stageWidth - s.width;
+//			addChild(s);
 			
-			var check:UICheckBox = new UICheckBox();
-			addChild(check);
+//			var check:UICheckBox = new UICheckBox();
+//			addChild(check);
+			var s:Sprite = new Sprite();
+			s.graphics.lineStyle(3,0xFF0000);
+			s.graphics.beginFill(0x00FF00);
+			s.graphics.drawRect(0,0,100,100);
+			s.graphics.endFill();
+			addChild(s);
 		}
 		
 		private function showcase():void
