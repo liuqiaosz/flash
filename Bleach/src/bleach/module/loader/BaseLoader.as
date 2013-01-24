@@ -3,9 +3,6 @@ package bleach.module.loader
 	import bleach.event.BleachDefenseEvent;
 	import bleach.module.GenericModule;
 	import bleach.utils.Constants;
-	import bleach.utils.ShareDisk;
-	import bleach.utils.ShareObjectHelper;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;

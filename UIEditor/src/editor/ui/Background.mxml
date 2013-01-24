@@ -40,11 +40,8 @@
 				BindBackgroundAlphaText = BindBackgroundAlpha + "";
 				BindBackgroundImgId = Control.BackgroundImageId;
 				BindEnabled = Control.Style.HaveImage;
-				if(BindEnabled)
-				{
-					ImageFillType.selectedIndex = Control.BackgroundImageFill;
-					ImagePackType.selectedIndex = int(Control.ImagePack);
-				}
+				ImageFillType.selectedIndex = Control.BackgroundImageFill;
+				ImagePackType.selectedIndex = int(Control.ImagePack);
 			}
 			
 			/**
@@ -107,7 +104,7 @@
 	
 	<s:HGroup>
 		<s:Label text="图片模式" height="100%" verticalAlign="middle" width="60" enabled="{BindEnabled}"/>
-		<s:ComboBox width="90" selectedIndex="1" change="ImageFillTypeChanged(event)" id="ImageFillType">
+		<s:ComboBox width="90" change="ImageFillTypeChanged(event)" id="ImageFillType">
 			<s:ArrayCollection>
 				<fx:String>拉伸填充</fx:String>
 				<fx:String>平铺</fx:String>
@@ -117,10 +114,12 @@
 	
 	<s:HGroup>
 		<s:Label text="资源映射" height="100%" verticalAlign="middle" width="60" enabled="{BindEnabled}"/>
-		<s:ComboBox width="90" selectedIndex="1" change="ImagePackTypeChanged(event)" id="ImagePackType">
+		<s:ComboBox width="90" change="ImagePackTypeChanged(event)" id="ImagePackType">
 			<s:ArrayCollection>
 				<fx:String>外挂</fx:String>
 				<fx:String>打包</fx:String>
+				
+				
 			</s:ArrayCollection>
 		</s:ComboBox>
 		<s:Image smooth="true" source="@Embed('../assets/Help.png')" buttonMode="true" toolTip="生成组件模型时通过该选项决定是否将图形资源打包进模型数据(打包会大幅度增加组件模型文件体积)"/>

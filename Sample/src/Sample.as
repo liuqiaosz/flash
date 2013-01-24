@@ -27,8 +27,10 @@ package
 	import flash.display.Loader;
 	import flash.display.PNGEncoderOptions;
 	import flash.display.Sprite;
+	import flash.display.Stage3D;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.display3D.Context3D;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.KeyboardEvent;
@@ -220,12 +222,28 @@ package
 			
 //			var check:UICheckBox = new UICheckBox();
 //			addChild(check);
-			var s:Sprite = new Sprite();
-			s.graphics.lineStyle(3,0xFF0000);
-			s.graphics.beginFill(0x00FF00);
-			s.graphics.drawRect(0,0,100,100);
-			s.graphics.endFill();
-			addChild(s);
+			
+//			PixelAssetManager.instance.download("login.swf");
+//			PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:Event):void{
+//			
+//				var loader:URLLoader = new URLLoader();
+//				loader.dataFormat = URLLoaderDataFormat.BINARY;
+//				loader.addEventListener(Event.COMPLETE,function(event:Event):void{
+//					
+//					var mod:UIMod = UIControlFactory.instance.decode(loader.data);
+//					addChild(mod.controls.pop().control);
+//				});
+//				
+//				loader.load(new URLRequest("login.mod"));
+//			});
+			
+			var s3d:Stage3D = stage.stage3Ds[0];
+			s3d.addEventListener(Event.CONTEXT3D_CREATE,function(event:Event):void{
+				s3d.context3D.configureBackBuffer(1280,600,0);
+			
+			});
+			s3d.requestContext3D();
+			
 		}
 		
 		private function showcase():void

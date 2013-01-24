@@ -74,7 +74,7 @@ package pixel.ui.control.style
 		
 		override public function set ImagePack(Value:Boolean):void
 		{
-			_OverStyle.ImagePack = _PressStyle.ImagePack = Value;
+			super.ImagePack = _OverStyle.ImagePack = _PressStyle.ImagePack = Value;
 		}
 	}
 }

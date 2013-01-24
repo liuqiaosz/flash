@@ -317,7 +317,8 @@ package pixel.ui.control
 		
 		override public function set ImagePack(Value:Boolean):void
 		{
-			_MouseOverStyle.ImagePack = _MouseDownStyle.ImagePack = _NormalStyle.ImagePack = Value;
+			//_MouseOverStyle.ImagePack = _MouseDownStyle.ImagePack = _NormalStyle.ImagePack = Value;
+			_NormalStyle.ImagePack = Value;
 		}
 		
 		override public function AssetComleteNotify(Id:String,Asset:Object):void

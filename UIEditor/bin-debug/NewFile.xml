@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controls>
+	<control id="C226" type="pixel.ui.control.UIPanel">
+		<control id="C845" type="pixel.ui.control.UIPanel">
+			<control id="C141" type="pixel.ui.control.UIImage"></control>
+			<control id="C825" type="pixel.ui.control.UIImage"></control>
+			<control id="accName" type="pixel.ui.control.UITextInput"></control>
+			<control id="accPwd" type="pixel.ui.control.UITextInput"></control>
+			<control id="Submit" type="pixel.ui.control.UIButton"></control>
+			<control id="saveAccount" type="pixel.ui.control.UICheckBox">
+				<control id="C210" type="pixel.ui.control.UICheckButton"></control>
+				<control id="C151" type="pixel.ui.control.UITextBase"></control>
+			</control>
+		</control>
+	</control>
+</controls>

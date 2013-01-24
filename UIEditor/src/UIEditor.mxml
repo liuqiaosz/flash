@@ -766,15 +766,10 @@
 							{
 								var Browser:File = new File();
 								Browser.addEventListener(Event.SELECT,function(event:Event):void{
-									var Data:ByteArray = EditWorkspace.GenerateControlModel();
-									var ModelFile:File = new File(Browser.nativePath + ".mod");
-									var Writer:FileStream = new FileStream();
-									Writer.open(ModelFile,FileMode.WRITE);
-									Writer.writeBytes(current);
-									Writer.close();
+									fileSave();
 								});
 								
-								Browser.browseForSave("请选择保存控件模型路径");
+								//Browser.browseForSave("请选择保存控件模型路径");
 							}
 							else
 							{
@@ -809,7 +804,7 @@
 					writer.writeBytes(current);
 					writer.close();
 					
-					EditWorkspace.DecodeWorkspaceByModel(current,originalNav);
+					//EditWorkspace.DecodeWorkspaceByModel(current,originalNav);
 				}
 				else
 				{

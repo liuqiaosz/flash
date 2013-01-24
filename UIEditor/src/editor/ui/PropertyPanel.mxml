@@ -325,6 +325,7 @@
 				styleCombo.textInput.text = "";
 				styleEnabledBind = true;
 				StyleLink.selected = false;
+				checkboxStyleFlag = false;
 			}
 			
 			[Bindable]

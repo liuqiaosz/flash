@@ -6,6 +6,7 @@ package bleach.scene
 	import bleach.module.message.IMsg;
 	import bleach.module.message.MsgIdConstants;
 	import bleach.module.message.MsgLogin;
+	import bleach.module.message.MsgLoginResp;
 	import bleach.utils.Constants;
 	
 	import flash.display.Loader;
@@ -60,7 +61,7 @@ package bleach.scene
 			submit = login.GetChildById("Submit",true) as UIButton;
 			account = login.GetChildById("accName",true) as UITextInput;
 			password = login.GetChildById("accPwd",true) as UITextInput;
-			checkbox = login.GetChildById("C961",true) as UICheckBox;
+			checkbox = login.GetChildById("saveAccount",true) as UICheckBox;
 			checkbox.selected = saveAccount;
 			
 			checkbox.addEventListener(UIControlEvent.CHANGE,loginNameSaveChange);
@@ -113,6 +114,15 @@ package bleach.scene
 		private function onLoginResponse(message:IMsg):void
 		{
 			removeNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
+			var msg:MsgLoginResp = message as MsgLoginResp;
+			if(msg.respCode == 0)
+			{
+				//登陆成功，跳转场景
+			}
+			else
+			{
+				//登陆失败，弹出提示框
+			}
 		}
 		
 		override public function dealloc():void
