@@ -237,12 +237,14 @@ package
 //				loader.load(new URLRequest("login.mod"));
 //			});
 			
-			var s3d:Stage3D = stage.stage3Ds[0];
-			s3d.addEventListener(Event.CONTEXT3D_CREATE,function(event:Event):void{
-				s3d.context3D.configureBackBuffer(1280,600,0);
+//			var s3d:Stage3D = stage.stage3Ds[0];
+//			s3d.addEventListener(Event.CONTEXT3D_CREATE,function(event:Event):void{
+//				s3d.context3D.configureBackBuffer(1280,600,0);
+//			
+//			});
+//			s3d.requestContext3D();
 			
-			});
-			s3d.requestContext3D();
+			var s:Sprite = new Sprite();
 			
 		}
 		

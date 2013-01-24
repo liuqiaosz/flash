@@ -88,12 +88,15 @@ package bleach.scene
 		 **/
 		private function loginSubmit(event:MouseEvent):void
 		{
-			addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
-			//发送登陆消息
-			var msg:MsgLogin = new MsgLogin();
-			var login:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
-			login.value = msg;
-			dispatchMessage(login);
+//			addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
+//			//发送登陆消息
+//			var msg:MsgLogin = new MsgLogin();
+//			var login:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
+//			login.value = msg;
+//			dispatchMessage(login);
+			var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+			direct.value = "ChooseRoleScene";
+			dispatchMessage(direct);
 		}
 		
 		private function loginNameSaveChange(event:UIControlEvent):void
