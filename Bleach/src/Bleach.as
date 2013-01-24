@@ -16,11 +16,8 @@ package
 	public class Bleach extends Sprite
 	{
 		private var _loader:BaseLoader = null;
-		private var d:Date = new Date();
 		public function Bleach()
 		{
-			var d:Date = new Date();
-			trace(d.time);
 //			var value:Number = new Date().time;
 //			
 //			trace("[" + value + "]");
@@ -42,7 +39,6 @@ package
 		
 		private function initComplete(event:BleachDefenseEvent):void
 		{
-			trace(d.time);
 			_loader.visible = false;
 			addChild(_loader.mainApp);
 			if(contains(_loader))

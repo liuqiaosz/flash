@@ -7,7 +7,6 @@
 		<!-- 心跳超时 -->
 		<heartbeattimeout>10000</heartbeattimeout>
 		
-		
 		<!-- 服务器IP 端口 -->
 		<remotehost>219.234.0.12</remotehost>
 		<remoteport>33445</remoteport>
@@ -33,7 +32,8 @@
 		</scene>
 		
 		<scene id="ChooseRoleScene" version="1.0" url="bleach/scene/ChooseRoleScene.swf">
-			<library id="chooseRole" version="1.0" url="choose_role.swf" desc="资源" />
+			<library id="LoginUI" version="1.0" url="UI.swf" desc="UI定义" />
+			<library id="chooseRole" version="1.0" url="choose_role.swf" desc="资源" uilib="true" />
 		</scene>
 		
 		<scene id="WorldScene" version="1.0" url="bleach/scene/WorldScene.swf">

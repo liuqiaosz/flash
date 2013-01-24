@@ -188,14 +188,5 @@ package bleach.module.loader
 			var notify:BleachDefenseEvent = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_INIT_COMPLETE);
 			dispatchEvent(notify);
 		}
-		
-		private function traceDomain():void
-		{
-			var params:Vector.<String> = ApplicationDomain.currentDomain.getQualifiedDefinitionNames();
-			for each(var param:String in params)
-			{
-				trace(param);
-			}
-		}
 	}
 }

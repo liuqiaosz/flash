@@ -288,7 +288,18 @@
 			{
 				if(_queue.length > 0)
 				{
-					_loader.load(new URLRequest(_queue.shift()));
+					var f:File = new File(_queue.shift());
+					var r:FileStream = new FileStream();
+					r.open(f,FileMode.READ);
+					var d:ByteArray = new ByteArray();
+					r.readBytes(d,0,r.bytesAvailable);
+					
+					var l:Loader = new Loader();
+					l.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+						trace("!!");
+					});
+					l.loadBytes(d);
+					//_loader.load(new URLRequest(_queue.shift()));
 				}
 				else
 				{

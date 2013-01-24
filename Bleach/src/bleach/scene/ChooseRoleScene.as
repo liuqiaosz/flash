@@ -21,6 +21,8 @@ package bleach.scene
 			var data:ByteArray = new cls() as ByteArray;
 			var mod:UIMod = UIControlFactory.instance.decode(data,false);
 			ui = mod.controls.pop().control;
+			ui.x = 0;
+			ui.y = 0;
 			addChild(ui);
 		}
 		

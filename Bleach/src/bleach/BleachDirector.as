@@ -314,6 +314,12 @@ package bleach
 			_downloader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,libraryDownloadError);
 			
 			_module.library.push(_downloader);
+			
+			var ids:Vector.<String> = _module.sceneDomain.getQualifiedDefinitionNames();
+			for each(var id:String in ids)
+			{
+				trace(id);
+			}
 			if(_downlodLinkLibrary.isUIlib)
 			{
 				//UI库资源
