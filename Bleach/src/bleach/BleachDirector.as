@@ -80,8 +80,9 @@ package bleach
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECT_ERROR,serverConnectError);
 			_channel = new TCPCommunicator();
-			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+			//_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 			trace("Connect server...");
+			serverConnected(null);
 		}
 		
 		/**
