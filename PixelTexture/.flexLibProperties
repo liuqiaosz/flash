@@ -7,6 +7,7 @@
     <classEntry path="pixel.texture.vo.PixelTexturePackage"/>
     <classEntry path="pixel.texture.PixelTextureEncodeEmu"/>
     <classEntry path="pixel.texture.PixelTextureNS"/>
+    <classEntry path="pixel.texture.event.PixelTextureEvent"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

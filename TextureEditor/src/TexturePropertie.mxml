@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Metadata>
+		[Event(name="UpdatePreview", type="pixel.tools.texture.event.TextureToolEvent")]
+		[Event(name="ApplyChange", type="pixel.tools.texture.event.TextureToolEvent")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.event.PixelEditorEvent;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.IUIComponent;
+			import mx.events.CloseEvent;
+			import mx.events.DragEvent;
+			import mx.events.ListEvent;
+			import mx.managers.DragManager;
+			
+			import pixel.texture.PixelTextureEncodeEmu;
+			import pixel.texture.PixelTextureFactory;
+			import pixel.texture.vo.PixelTexture;
+			import pixel.texture.vo.PixelTexturePackage;
+			import pixel.tools.texture.event.TextureToolEvent;
+			import pixel.tools.texture.utils.TextureEncoder;
+			import pixel.utility.BitmapTools;
+			import pixel.utility.ColorCode;
+			
+			import spark.events.IndexChangeEvent;
+			[Bindable]
+			private var pixelCompress:Boolean = false;
+			[Bindable]
+			private var customAnchor:Boolean = false;
+			[Bindable]
+			private var _texture:PixelTexture = null;
+			[Bindable]
+			private var list:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			private var changeApply:Boolean = false;
+			[Bindable]
+			private var encoderApply:Boolean = false;
+			[Bindable]
+			private var encoderQuality:Boolean = false;
+			[Bindable]
+			private var finalSize:int = 0;
+			[Bindable]
+			private var image:BitmapData = null;
+			[Bindable]
+			private var imageWidth:int = 0;
+			[Bindable]
+			private var imageHeight:int = 0;
+			[Bindable]
+			private var textureId:String = "";
+			[Bindable]
+			private var editEnabled:Boolean = false;
+			[Bindable]
+			private var alphaCut:Boolean = false;
+			
+			[Bindable]
+			private static var PIXEL_COMPRESS_OPTION:ArrayCollection = new ArrayCollection([
+				
+				{
+					label : "ARGB4444",
+					value : PixelTextureEncodeEmu.PIXELENCODE_ARGB4444
+				},
+				//				{
+				//					label : "RGB555",
+				//					value : PixelCompressOption.COMPRESS_RGB555
+				//				},
+				{
+					label : "RGB565",
+					value : PixelTextureEncodeEmu.PIXELENCODE_RGB565
+				},
+				//				{
+				//					label : "ARGB1555",
+				//					value : PixelCompressOption.COMPRESS_ARGB1555
+				//				}
+			]);
+			
+			[Bindable]
+			private static var ENCODER:ArrayCollection = new ArrayCollection([
+				{
+					label : "JPG",
+					value : PixelTextureEncodeEmu.ENCODE_JPG
+				},
+				{
+					label : "PNG",
+					value : PixelTextureEncodeEmu.ENCODE_PNG
+				},
+				{
+					label : "JPG-XR",
+					value : PixelTextureEncodeEmu.ENCODE_JPGXR
+				}
+			]);
+			
+			[Bindable]
+			private static var ENCODE_QUALITY:ArrayCollection = new ArrayCollection([
+				
+				{
+					label : "高",
+					value : PixelTextureEncodeEmu.QUALITY_HIGHT
+				},
+				{
+					label : "中",
+					value : PixelTextureEncodeEmu.QUALITY_MID
+				},
+				{
+					label : "低",
+					value : PixelTextureEncodeEmu.QUALITY_LOW
+				}
+				
+			]);
+			
+			[Bindable]
+			private static var COMPRESS_OPTION:ArrayCollection = new ArrayCollection([
+				{
+					label : "API图形编码",
+					value : PixelTextureEncodeEmu.ENCODER_API
+				},
+				{
+					label : "像素有损编码",
+					value : PixelTextureEncodeEmu.ENCODER_PIXEL
+				}
+			]);
+			
+			protected function alphaCutChanged(event:Event):void
+			{
+				_texture.alphaCut = alphaCut = alphaCutCheck.selected;
+				updatePreview();
+			}
+			
+			protected function encoderOptionChanged(event:IndexChangeEvent):void
+			{
+				var value:int = COMPRESS_OPTION[event.newIndex].value;
+				_texture.encoderEnabled = true;
+				_texture.encoder = value;
+				switch(value)
+				{
+					case PixelTextureEncodeEmu.ENCODER_API:
+						encoderQuality = encoderApply = true;
+						_texture.encodeQuality = encodeQuality.selectedItem.value;
+						_texture.encodeType = encoder.selectedItem.value;
+						pixelCompress = false;
+						pixelOption.selectedIndex = -1;
+						break;
+					case PixelTextureEncodeEmu.ENCODER_PIXEL:
+						encoderQuality = encoderApply = false;
+						pixelCompress = true;
+						pixelOption.selectedIndex = 0;
+						_texture.pixelCompressOp = pixelOption.selectedItem.value;
+						break;
+					default:
+						_texture.encoderEnabled = false;
+						_texture.encoder = 0;
+						break;
+				}
+				
+				this.updatePreview();
+			}
+			
+			protected function encoderChanged(event:IndexChangeEvent):void
+			{
+				//compress = compressCheck.selected;
+				//_texture.compress = compress;
+				_texture.encodeType = ENCODER[event.newIndex].value;
+				_texture.encodeQuality =  PixelTextureEncodeEmu.QUALITY_HIGHT;
+				encodeQuality.selectedIndex = 0;
+				encoderQuality = (_texture.encodeType == PixelTextureEncodeEmu.ENCODE_JPG || _texture.encodeType == PixelTextureEncodeEmu.ENCODE_JPGXR);
+				updatePreview();
+			}
+			
+			protected function encodeQulityChanged(event:IndexChangeEvent):void
+			{
+				var value:int = ENCODE_QUALITY.getItemAt(event.newIndex).value;
+				_texture.encodeQuality = value;
+				updatePreview();
+			}
+			
+			protected function pixelCompressChanged(event:IndexChangeEvent):void
+			{
+				var value:int = PIXEL_COMPRESS_OPTION[event.newIndex].value;
+				_texture.pixelCompressOp = value;
+				updatePreview();
+			}
+			public function get texture():PixelTexture
+			{
+				return _texture;
+			}
+			public function set texture(value:PixelTexture):void
+			{
+				if(value)
+				{
+					var idx:int = 0;
+					var item:Object = null;
+					editEnabled = true;
+					_texture = value;
+					alphaCut = _texture.alphaCut;
+					finalSize = _texture.source.length / 1024;
+					
+					encoder.selectedIndex = 0;
+					encodeQuality.selectedIndex = 0;
+					pixelOption.selectedIndex = 0;
+					encoderType.selectedIndex = -1;
+					encoderQuality = encoderApply = false;
+					pixelCompress = false;
+					if(_texture.encoderEnabled)
+					{
+						switch(_texture.encoder)
+						{
+							case PixelTextureEncodeEmu.ENCODER_API:
+								encoderQuality = encoderApply = true;
+								encoderType.selectedIndex = 0;
+								//编码器类型
+								for(idx = 0; idx<ENCODER.length; idx++)
+								{
+									item = ENCODER[idx];
+									if(item.value == _texture.encodeType)
+									{
+										encoder.selectedItem = item;
+									}
+								}
+								if(_texture.encodeType == PixelTextureEncodeEmu.ENCODE_JPG || _texture.encodeType == PixelTextureEncodeEmu.ENCODE_JPGXR)
+								{
+									encoderQuality = true;
+									//编码器质量
+									for(idx = 0; idx<ENCODE_QUALITY.length; idx++)
+									{
+										item = ENCODE_QUALITY[idx];
+										if(item.value == _texture.encodeQuality)
+										{
+											encodeQuality.selectedItem = item;
+										}
+									}
+								}
+								//encodeTexture(_texture.source);
+								//image = _texture.bitmap;
+								break;
+							case PixelTextureEncodeEmu.ENCODER_PIXEL:
+								encoderType.selectedIndex = 1;
+								pixelCompress = true;
+								for(idx = 0; idx<PIXEL_COMPRESS_OPTION.length; idx++)
+								{
+									item = PIXEL_COMPRESS_OPTION.getItemAt(idx);
+									if(item.value == _texture.pixelCompressOp)
+									{
+										pixelOption.selectedItem = item;
+									}
+								}
+								//image = _texture.bitmap;
+								break;
+						}
+					}
+					image = _texture.bitmap;
+					customAnchor = _texture.customAnchor;
+					if(image)
+					{
+						imageWidth = image.width;
+						imageHeight = image.height;
+					}
+					
+					textureId = _texture.id;
+					changeApply = false;
+					this.updatePreview();
+				}
+			}
+			
+			private function saveChanged(event:MouseEvent):void
+			{
+				//_texture.alphaCut = alphaCut;
+				//_texture.bitmap = image;
+				//_texture.compress = compress;
+				//TextureEncoder.textureEncode(_texture);
+				var notify:TextureToolEvent = new TextureToolEvent(TextureToolEvent.TEXTURE_APPLYCHANGE,false);
+				dispatchEvent(notify);
+			}
+			
+			private function updatePreview():void
+			{
+				var notify:TextureToolEvent = new TextureToolEvent(TextureToolEvent.TEXTURE_UPDATEPREVIEW);
+				dispatchEvent(notify);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:HGroup verticalAlign="middle">
+		<s:Label width="100" text="透明剪裁" />
+		<s:CheckBox selected="{alphaCut}" id="alphaCutCheck" change="alphaCutChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup verticalAlign="middle">
+		<s:Label width="100" text="编码方式" />
+		<s:ComboBox dataProvider="{COMPRESS_OPTION}" change="encoderOptionChanged(event)" id="encoderType" />
+	</s:HGroup>
+	<s:HGroup verticalAlign="middle" visible="{encoderApply}" includeInLayout="{encoderApply}">
+		<s:Label width="100" text="编码器" />
+		<s:ComboBox id="encoder" dataProvider="{ENCODER}" change="encoderChanged(event)" selectedIndex="0"/>
+	</s:HGroup>
+	
+	<s:HGroup verticalAlign="middle" visible="{encoderQuality}" includeInLayout="{encoderQuality}">
+		<s:Label width="100" text="编码质量" />
+		<s:ComboBox id="encodeQuality" dataProvider="{ENCODE_QUALITY}" change="encodeQulityChanged(event)" selectedIndex="0" />
+	</s:HGroup>
+	
+	<s:HGroup verticalAlign="middle" visible="{pixelCompress}" includeInLayout="{pixelCompress}">
+		<s:Label width="100" text="编码选项" />
+		<s:ComboBox dataProvider="{PIXEL_COMPRESS_OPTION}" id="pixelOption" change="pixelCompressChanged(event)" selectedIndex="0"/>
+	</s:HGroup>
+	<s:HGroup verticalAlign="middle" width="100%">
+		<s:Button width="100%" label="应用" click="saveChanged(event)" />
+		
+	</s:HGroup>
+</s:VGroup>

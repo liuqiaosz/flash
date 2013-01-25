@@ -46,6 +46,7 @@
       <libraryPathEntry kind="3" linkType="1" path="/PixelUI/bin-debug/PixelUI.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin-debug/PixelUtility.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="1" linkType="1" path="/Users/LiuQiao/Documents/Developer/Code/flash/libs"/>
+      <libraryPathEntry kind="3" linkType="1" path="/PixelTexture/bin-debug/PixelTexture.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

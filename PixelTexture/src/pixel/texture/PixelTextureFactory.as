@@ -30,6 +30,7 @@ import flash.utils.ByteArray;
 import pixel.texture.IPixelTextureFactory;
 import pixel.texture.PixelTextureEncodeEmu;
 import pixel.texture.PixelTextureNS;
+import pixel.texture.event.PixelTextureEvent;
 import pixel.texture.vo.PixelTexture;
 import pixel.texture.vo.PixelTexturePackage;
 
@@ -81,6 +82,56 @@ class PixelTextureFactoryImpl extends EventDispatcher implements IPixelTextureFa
 			pack.addTexture(item);
 		}
 		return pack;
+	}
+	
+	private var _asyncLoader:Loader = null;
+	private var _asyncQueue:Vector.<PixelTexture> = null;
+	private var _asyncLoadIndex:int = 0;
+	private var _asyncLoadTexture:PixelTexture = null;
+	
+	/**
+	 * 同步解码纹理包
+	 * 
+	 **/
+	public function asyncDecodeTexturePackage(pack:PixelTexturePackage):void
+	{
+		_asyncLoader = new Loader();
+		_asyncLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,decodeComplete);
+		_asyncQueue = pack.textures;
+		if(pack.textures.length > 0)
+		{
+			asyncDecodeTexture(_asyncQueue[_asyncLoadIndex]);
+		}
+	}
+	var t:Number = 0;
+	private function asyncDecodeTexture(texture:PixelTexture):void
+	{
+		t = new Date().time;
+		_asyncLoadTexture = texture;
+		_asyncLoader.loadBytes(texture.source);
+	}
+	
+	private function decodeComplete(event:Event):void
+	{
+		trace(new Date().time - t);
+		var bitmap:BitmapData = Bitmap(_asyncLoader.content).bitmapData;
+		var pixels:ByteArray = bitmap.getPixels(bitmap.rect);
+		pixels.position = 0;
+		_asyncLoadTexture.bitmap.setPixels(bitmap.rect,pixels);
+		_asyncLoadIndex++;
+		
+		if(_asyncLoadIndex < _asyncQueue.length)
+		{
+			asyncDecodeTexture(_asyncQueue[_asyncLoadIndex]);
+		}
+		else
+		{
+			_asyncLoader.unload();
+			_asyncLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,decodeComplete);
+			_asyncLoader = null;
+			var notify:PixelTextureEvent = new PixelTextureEvent(PixelTextureEvent.PACKAGE_DECODE_SUCCESS);
+			dispatchEvent(notify);
+		}
 	}
 	
 	public function asyncLoadTexture(texture:PixelTexture):void

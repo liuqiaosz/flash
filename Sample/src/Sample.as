@@ -37,6 +37,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -63,6 +64,7 @@ package
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	import flash.utils.Proxy;
+	import flash.utils.Timer;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 	
@@ -74,6 +76,7 @@ package
 	import pixel.error.PixelNetError;
 	import pixel.particle.PixelParticleEmitterPropertie;
 	import pixel.texture.PixelTextureFactory;
+	import pixel.texture.event.PixelTextureEvent;
 	import pixel.texture.vo.PixelTexture;
 	import pixel.texture.vo.PixelTexturePackage;
 	import pixel.ui.control.ComboboxItem;
@@ -174,7 +177,7 @@ package
 	//	import utility.bitmap.png.PNGDecoder;
 	//	import utility.bitmap.tga.TGADecoder;
 	
-	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
+	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0x000000")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="arrow_down.png")]
@@ -199,7 +202,7 @@ package
 		[Embed(source="xr",mimeType="application/octet-stream")]
 		private var XR:Class;
 		
-		[Embed(source="11111.tpk",mimeType="application/octet-stream")]
+		[Embed(source="effect.tpk",mimeType="application/octet-stream")]
 		private var TPK:Class;
 		
 		
@@ -243,9 +246,7 @@ package
 //			
 //			});
 //			s3d.requestContext3D();
-			
-			var s:Sprite = new Sprite();
-			
+			textureTest();
 		}
 		
 		private function showcase():void
@@ -473,16 +474,29 @@ package
 		private function textureTest():void
 		{
 			var data:ByteArray = new TPK() as ByteArray;
-			
+			var t:Number = new Date().time;
 			var pack:PixelTexturePackage = PixelTextureFactory.instance.decode(data);
-			
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+			PixelTextureFactory.instance.addEventListener(PixelTextureEvent.PACKAGE_DECODE_SUCCESS,function(event:Event):void{
 				var textures:Vector.<PixelTexture> = pack.textures;
+				stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+					timer.start();
+				});
+				var show:Bitmap = new Bitmap();
+				addChild(show);
 				
-				var img:Bitmap = new Bitmap(textures[0].bitmap);
-				stage.addChild(img);
-				
+				var idx:int = 0;
+				var timer:Timer = new Timer(100,0);
+				timer.addEventListener(TimerEvent.TIMER,function(event:TimerEvent):void{
+					
+					if(idx >= textures.length)
+					{
+						idx = 0;
+					}
+					show.bitmapData = textures[idx].bitmap;
+					idx++;
+				});
 			});
+			PixelTextureFactory.instance.asyncDecodeTexturePackage(pack);
 		}
 		
 		private function pixelTest():void

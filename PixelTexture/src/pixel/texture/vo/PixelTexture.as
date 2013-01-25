@@ -139,7 +139,7 @@ package pixel.texture.vo
 		{
 			if(!_bitmap)
 			{
-				_bitmap = new BitmapData(_imageWidth,_imageHeight);
+				_bitmap = new BitmapData(_imageWidth,_imageHeight,true,0);
 				if(_source)
 				{
 					_source.position = 0;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" close="OnCloseWindow(event)" width="200" height="200" initialize="Initialized(event)">
+			   xmlns:mx="library://ns.adobe.com/flex/mx" close="OnCloseWindow(event)" width="200" height="200" initialize="initializedComplete(event)">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -42,7 +42,7 @@
 				CloseWindow();
 			}
 			
-			protected function Initialized(event:FlexEvent):void
+			protected function initializedComplete(event:FlexEvent):void
 			{
 				
 			}
