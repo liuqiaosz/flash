@@ -31,6 +31,12 @@ package pixel.ui.control
 			return _value;
 		}
 		
+		override public function EnableEditMode():void
+		{
+			super.EnableEditMode();
+			SliderButton.mouseEnabled = false;
+		}
+		
 		/**
 		 * 
 		 * 滑动步进值
@@ -247,14 +253,13 @@ package pixel.ui.control
 	}
 }
 import pixel.ui.control.UIButton;
-import pixel.ui.control.UIImage;
-import pixel.ui.control.SimpleShape;
 import pixel.ui.control.UIControl;
+import pixel.ui.control.UIImage;
 
 /**
  * 滑动杆拖动按钮
  **/
-class SimpleSliderButton extends SimpleShape
+class SimpleSliderButton extends UIControl
 {
 	public function SimpleSliderButton():void
 	{

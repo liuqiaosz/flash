@@ -13,7 +13,8 @@ package pixel.ui.control.style
 		{
 			super();
 			this.BorderThinkness = 0;
-			this.BackgroundColor = 0x5d5d5d;
+			this.BackgroundColor = 0x000000;
+			this.BackgroundAlpha = 0.3;
 		}
 	}
 }

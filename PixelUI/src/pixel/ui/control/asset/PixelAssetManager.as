@@ -97,7 +97,10 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		task.type = type;
 		DownloadQueue.push(task);
 		
-		StartDownloadQueue();
+		if(!_Busy)
+		{
+			StartDownloadQueue();
+		}
 	}
 	
 //	public function Download(Uri:Array):void
@@ -214,7 +217,7 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		if(!_Busy)
 		{
 			_Busy = true;
-			loadingTask = DownloadQueue.pop();
+			loadingTask = DownloadQueue.shift();
 			
 			//var ctx:LoaderContext = new LoaderContext();
 			//ctx.allowCodeImport = true;
@@ -262,31 +265,33 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 					_AssetLibArray.push(lib);
 					CheckHook(lib);
 					Notify = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
-					_self.dispatchEvent(Notify);
+					dispatchEvent(Notify);
+					if(DownloadQueue.length > 0)
+					{
+						//继续加载下一个资源
+						StartDownloadQueue();
+					}
+					else
+					{
+						_Busy = false;
+					}
 				});
 				var ctx:LoaderContext = new LoaderContext();
 				//ctx.applicationDomain = ApplicationDomain.currentDomain;
 				ctx.allowCodeImport = true;
 				reader.loadBytes(_loader.data as ByteArray,ctx);
 				break;
-			case PixelAssetEmu.ASSET_TPK:
-				lib = new PixelTextureAssetLibrary(id,_loader.data as ByteArray);
-				_AssetLibArray.push(lib);
-				CheckHook(lib);
-				Notify = new DownloadEvent(DownloadEvent.DOWNLOAD_SUCCESS);
-				_self.dispatchEvent(Notify);
-				break;
 		}
 		
-		if(DownloadQueue.length > 0)
-		{
-			//继续加载下一个资源
-			StartDownloadQueue();
-		}
-		else
-		{
-			_Busy = false;
-		}
+//		if(DownloadQueue.length > 0)
+//		{
+//			//继续加载下一个资源
+//			StartDownloadQueue();
+//		}
+//		else
+//		{
+//			_Busy = false;
+//		}
 		//继续加载下一个资源
 	}
 	

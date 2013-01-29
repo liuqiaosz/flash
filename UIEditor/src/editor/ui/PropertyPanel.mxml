@@ -119,12 +119,10 @@
 						if(style.styleName == currentStyleName)
 						{
 							styles.addItem({
-								
 								label : style.id,
 								style : style,
 								scope : UIStyleLinkEmu.SCOPE_INLINE,
 								scopeLabel : "局部"
-								
 							});
 						}
 						if(_CurrentControl.styleLinked && _CurrentControl.styleLinkScope == UIStyleLinkEmu.SCOPE_INLINE)

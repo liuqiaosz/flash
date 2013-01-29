@@ -3,8 +3,9 @@ package pixel.core
 	import flash.display.DisplayObject;
 	
 	import pixel.utility.IDispose;
+	import pixel.utility.IUpdate;
 
-	public interface IPixelLayer extends IPixelGeneric,IDispose,IPixelMessageProxy
+	public interface IPixelLayer extends IPixelGeneric,IDispose,IPixelMessageProxy,IUpdate
 	{
 		function initializer():void;
 		function reset():void;

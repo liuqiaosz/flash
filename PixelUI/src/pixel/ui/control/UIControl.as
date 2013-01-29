@@ -859,5 +859,8 @@ package pixel.ui.control
 		{
 			return _Style.ImagePack;
 		}
+		
+		public function update():void
+		{}
 	}
 }

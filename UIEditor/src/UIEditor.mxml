@@ -318,7 +318,7 @@
 				
 			}
 			
-			
+			private var _resFiles:Array = null;
 			/**
 			 * 资源库加载
 			 * 
@@ -326,38 +326,59 @@
 			 **/
 			private function initializerRes():void
 			{
-				var Url:Array = [];
+//				var Url:Array = [];
 				var dirRes:File = new File(Common.DEFAULT_DIR_RES);
 				if(!dirRes.exists)
 				{
 					dirRes.createDirectory();
 					return;
 				}
-				var res:Array = [];
+				//var res:Array = [];
 				PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
 				if(dirRes.exists && dirRes.isDirectory)
 				{
+					_resFiles = [];
 					var files:Array = dirRes.getDirectoryListing();
-					for(var idx:int = 0; idx<files.length; idx++)
+					for each(var f:File in files)
 					{
-						var file:File = files[idx];
-						if(!file.isDirectory)
+						if(f.extension == "swf")
 						{
-							if(file.extension == "swf")
-							{
-								PixelAssetManager.instance.download("res/" + file.name);
-							}
-							else if(file.extension == "tpk")
-							{
-								PixelAssetManager.instance.download(file.nativePath,PixelAssetEmu.ASSET_TPK);
-							}
+							_resFiles.push(f);
 						}
 					}
+					loadResourceLibrary();
 				}
-				
-				//PixelAssetManager.instance.download(Url);
 			}
 			
+			private var file:File = null;
+			private var resLoader:Loader = null;
+			private function loadResourceLibrary():void
+			{
+				resLoader = new Loader();
+				resLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,resourceLibraryComplete);
+				
+				file = _resFiles.shift();
+				var reader:FileStream = new FileStream();
+				reader.open(file,FileMode.READ);
+				var data:ByteArray = new ByteArray();
+				reader.readBytes(data);
+				var ctx:LoaderContext = new LoaderContext();
+				ctx.allowCodeImport = true;
+				resLoader.loadBytes(data,ctx);
+			}
+			private function resourceLibraryComplete(event:Event):void
+			{
+				var lib:PixelLoaderAssetLibrary = new PixelLoaderAssetLibrary(resLoader,file.name);
+				Globals.AppendAssetLibrary(lib);
+				AssetLibraryTree.addItem(lib);
+				resLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,resourceLibraryComplete);
+				resLoader = null;
+				
+				if(_resFiles.length > 0)
+				{
+					loadResourceLibrary();
+				}
+			}
 			
 			private function initializerStyle():void
 			{
@@ -379,7 +400,7 @@
 					Globals.AppendAssetLibrary(Lib);
 					AssetLibraryTree.addItem(Lib);
 				}
-				PixelAssetManager.instance.removeEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
+				//PixelAssetManager.instance.removeEventListener(DownloadEvent.DOWNLOAD_SUCCESS,AssetLibraryInitalized);
 			}
 			
 			private function ModelFileLoaded(ModelFile:File,Data:ByteArray):void

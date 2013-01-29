@@ -177,7 +177,7 @@ package
 	//	import utility.bitmap.png.PNGDecoder;
 	//	import utility.bitmap.tga.TGADecoder;
 	
-	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0x000000")]
+	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="arrow_down.png")]
@@ -189,6 +189,9 @@ package
 		private var SCROLLERARROW_UP:Class;
 		[Embed(source="scrolldown.png")]
 		private var SCROLLERARROW_DOWN:Class;
+		
+		[Embed(source="scrollhandler.png")]
+		private var SCROLLER_HANDLER:Class;
 		
 		[Embed(source="map2.jpg")]
 		private var IMG:Class;
@@ -252,6 +255,7 @@ package
 		private function scrollTest():void
 		{
 			var panel:UIVerticalPanel = new UIVerticalPanel();
+			panel.initializer();
 			panel.width = 200;
 			panel.height = 300;
 			panel.Gap = 10;
@@ -266,6 +270,17 @@ package
 				panel.addChild(btn);
 			
 			});
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:Event):void{
+			
+				
+				panel.scroller.width = 20;
+			});
+			panel.scroller.BackgroundColor = 0x000000;
+			panel.scroller.BackgroundAlpha = 0.3;
+			//panel.scroller.scrollHandler.backgroundImageForAllState = new SCROLLER_HANDLER() as Bitmap;
+			//panel.scroller.scrollHandler.scale9GridForAllState(10,10,10,10);
+			//panel.scroller.scrollHandler.BorderThinkness = 0;
 		}
 		
 		private function showcase():void

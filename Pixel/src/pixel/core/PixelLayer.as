@@ -5,6 +5,7 @@ package pixel.core
 	
 	import pixel.message.IPixelMessage;
 	import pixel.message.PixelMessageBus;
+	import pixel.utility.IUpdate;
 	
 	use namespace PixelNs;
 	/**
@@ -36,49 +37,47 @@ package pixel.core
 			
 		}
 		
-//		override public function addChild(value:DisplayObject):DisplayObject
-//		{
-//			if(!childNodes)
-//			{
-//				childNodes = new Vector.<DisplayObject>();
-//			}
-//			childNodes.push(value);
-//			return super.addChild(value as Sprite);
-//		}
-//		
-//		override public function removeChild(child:DisplayObject):DisplayObject
-//		{
-//			if(childNodes.indexOf(child) != -1)
-//			{
-//				childNodes.splice(childNodes.indexOf(child),1);
-//			}
-//			return super.removeChild(child);
-//		}
-		
-		
-		
-		/**
-		 * 删除节点
-		 * 
-		 **/
-		public function removeNode(value:IPixelNode):void
+		override public function addChild(value:DisplayObject):DisplayObject
 		{
-			if(value && childNodes.indexOf(value) >= 0)
+			if(!childNodes)
 			{
-				childNodes.splice(childNodes.indexOf(value),1);
-				super.removeChild(value as Sprite);
+				childNodes = new Vector.<DisplayObject>();
 			}
+			childNodes.push(value);
+			return super.addChild(value as Sprite);
 		}
+		
+		override public function removeChild(child:DisplayObject):DisplayObject
+		{
+			if(childNodes.indexOf(child) != -1)
+			{
+				childNodes.splice(childNodes.indexOf(child),1);
+			}
+			return super.removeChild(child);
+		}
+		
+//		/**
+//		 * 删除节点
+//		 * 
+//		 **/
+//		public function removeNode(value:IPixelNode):void
+//		{
+//			if(value && childNodes.indexOf(value) >= 0)
+//			{
+//				childNodes.splice(childNodes.indexOf(value),1);
+//				super.removeChild(value as Sprite);
+//			}
+//		}
 		
 		/**
 		 * 清除所有节点
 		 **/
 		public function clearNodes():void
 		{
-			var node:IPixelNode = null;
+			var node:Sprite = null;
 			for each(node in childNodes)
 			{
-				removeNode(node);
+				removeChild(node);
 			}
 		}
 		
@@ -97,13 +96,13 @@ package pixel.core
 			return childNodes;
 		}
 		
-		protected var _node:IPixelNode = null;
+		protected var _node:IUpdate = null;
 		override public function update():void
 		{
-//			for each(_node in childNodes)
-//			{
-//				_node.update();
-//			}
+			for each(_node in childNodes)
+			{
+				_node.update();
+			}
 		}
 	}
 }

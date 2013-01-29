@@ -5,13 +5,14 @@ package pixel.ui.control
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.utility.IDispose;
 	import pixel.utility.ISerializable;
+	import pixel.utility.IUpdate;
 
 	/**
 	 * 
 	 * UI基本接口
 	 * 
 	 **/
-	public interface IUIControl extends IDispose,IEventDispatcher,ISerializable
+	public interface IUIControl extends IDispose,IEventDispatcher,ISerializable,IUpdate
 	{
 		//绘制接口
 		function Render():void;

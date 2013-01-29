@@ -1,8 +1,8 @@
 package pixel.particle
 {
-	import pixel.core.IPixel;
+	import pixel.utility.IUpdate;
 
-	public interface IPixelParticleBase extends IPixel
+	public interface IPixelParticleBase extends IUpdate
 	{
 		function reset():void;
 		//更新粒子生命状态

@@ -11,19 +11,20 @@
 			import mx.events.FlexEvent;
 			
 			import pixel.ui.control.LayoutConstant;
+			import pixel.ui.control.UIContainer;
 			import pixel.ui.control.UIPanel;
 			
 			import spark.events.IndexChangeEvent;
 			[Bindable]
 			protected var BindTabContentLayout:int = 0;
 			[Bindable]
-			private var Panel:UIPanel = null;
+			private var Panel:UIContainer = null;
 			[Bindable]
 			private var gapVisible:Boolean = false;
 			
 			override protected function Initialized():void
 			{
-				Panel = Control as UIPanel;
+				Panel = Control as UIContainer;
 	
 				if(Panel.Layout != LayoutConstant.ABSOLUTE)
 				{

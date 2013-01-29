@@ -38,6 +38,10 @@ package pixel.ui.control
 		override public function EnableEditMode():void
 		{
 			super.EnableEditMode();
+			//_scroller.visible = true;
+			_scroller.EnableEditMode();
+			_scroller.mouseChildren = false;
+			_scroller.mouseEnabled = false;
 			//this.mouseChildren = false;
 		}
 		

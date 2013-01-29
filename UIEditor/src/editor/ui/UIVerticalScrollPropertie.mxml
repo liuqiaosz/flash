@@ -9,6 +9,7 @@
 	<fx:Script>
 		<![CDATA[
 			import pixel.ui.control.UIButton;
+			import pixel.ui.control.UIContainer;
 			import pixel.ui.control.UIVerticalPanel;
 			[Bindable]
 			private var _scrollHandler:UIButton = null;
@@ -16,6 +17,12 @@
 			private var _scrollUp:UIButton = null;
 			[Bindable]
 			private var _scrollDown:UIButton = null;
+			[Bindable]
+			private var _scrollContain:UIContainer = null;
+			[Bindable]
+			private var _scrollHandlerWidth:int = 0;
+			[Bindable]
+			private var _scrollHandlerWidthText:String = "";
 			
 			private var panel:UIVerticalPanel = null;
 			override protected function Initialized():void
@@ -24,6 +31,14 @@
 				_scrollHandler = panel.scroller.scrollHandler;
 				_scrollUp = panel.scroller.buttonUp;
 				_scrollDown = panel.scroller.buttonDown;
+				_scrollContain = panel.scroller;
+				_scrollHandlerWidth = panel.scroller.width;
+				_scrollHandlerWidthText = "" + _scrollHandlerWidth;
+			}
+			
+			protected function handlerWidthChanged(event:Event):void
+			{
+				panel.scroller.width = handlerWidth.value;
 			}
 		]]>
 	</fx:Script>
@@ -34,9 +49,18 @@
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}" />
 	<ui:ScaleProperty id="ScaleStyle" Control="{CurrentControl}" />
 	
-	<s:Label text="滑动条样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
-	<ui:ButtonProperty  Control="{_scrollHandler}" enableSimpleStyle="false"/>
+	<s:Label text="滑动条容器样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
+	<s:HGroup>
+		<s:Label text="滚动条宽度" height="100%" verticalAlign="middle" width="60"/>
+		<s:HSlider width="100" value="{_scrollHandlerWidth}" maximum="100" 
+				   stepSize="1" minimum="20" id="handlerWidth" change="handlerWidthChanged(event)" />
+		<s:Label text="{_scrollHandlerWidthText}" />
+	</s:HGroup>
+	<ui:PanelProperty  Control="{_scrollContain}" enableSimpleStyle="false"/>
 	
+	<s:Label text="滑动条样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
+	
+	<ui:ButtonProperty  Control="{_scrollHandler}" enableSimpleStyle="false"/>
 	
 	<s:Label text="控制按钮样式(上)" color="0xFF0000" fontSize="16" paddingTop="20"/>
 	<ui:ButtonProperty  Control="{_scrollUp}" enableSimpleStyle="false"/>

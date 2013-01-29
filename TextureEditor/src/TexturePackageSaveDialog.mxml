@@ -20,6 +20,12 @@
 			[Bindable]
 			private var isAnim:Boolean = false;
 			
+			[Bindable]
+			private var gapText:String = "30";
+			
+			[Bindable]
+			private var gapEditable:Boolean = false;
+			
 			protected function isAnimChanged(event:Event):void
 			{
 				isAnim = anim.selected;
@@ -51,6 +57,25 @@
 				return anim.selected;
 			}
 			
+			private function playGapChanged(event:Event):void
+			{
+				gapText = playGap.value + "";
+			}
+			
+			protected function gapTextEditable(event:MouseEvent):void
+			{
+				gapEditable = true;
+				
+			}
+			protected function onGapTextEnterChanged(event:Event):void
+			{
+				var value:Number = new Number(gapValue.text);
+				gapValue.text = "" + value;
+				playGap.value = value;
+			
+				gapEditable =false;
+			}
+			
 		]]>
 	</fx:Script>
 	<ui:layout>
@@ -70,8 +95,13 @@
 	
 	<s:HGroup verticalAlign="middle" visible="{isAnim}" includeInLayout="{isAnim}">
 		<s:Label width="120" text="帧间隔时间(毫秒)" />
-		<s:HSlider width="200" value="30" minimum="30" maximum="5000" id="playGap" />
-		<s:Label text="300"/>
+		<s:HSlider width="200" value="30" minimum="30" maximum="5000" id="playGap" stepSize="10" change="playGapChanged(event)"  />
+		<s:TextInput id="gapValue" text="{gapText}" editable="{gapEditable}"
+					 borderVisible="{gapEditable}"
+					 width = "50" 
+					 doubleClick="gapTextEditable(event)" 
+					 enter="onGapTextEnterChanged(event)" 
+					 restrict="0-9" />
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="middle" width="100%" horizontalAlign="center">

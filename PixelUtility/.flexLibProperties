@@ -13,7 +13,7 @@
     <classEntry path="pixel.utility.math.Binary64"/>
     <classEntry path="pixel.utility.math.Int64"/>
     <classEntry path="pixel.utility.math.UInt64"/>
-    <classEntry path="pixel.utility.IPixel"/>
+    <classEntry path="pixel.utility.IUpdate"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

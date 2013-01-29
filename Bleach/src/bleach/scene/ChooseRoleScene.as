@@ -76,7 +76,7 @@ package bleach.scene
 				var h:int = rolePower.frame.bitmap.height;
 				role.x = rolePower.x = (1000 - w) /2;
 				role.y = rolePower.y = (600 - h) /2 + 100;
-				rolePower.update();
+				//rolePower.update();
 			}
 		}
 		

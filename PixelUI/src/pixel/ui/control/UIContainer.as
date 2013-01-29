@@ -71,6 +71,12 @@ package pixel.ui.control
 			return UIContainerStyle(_Style).padding;
 		}
 		
+		override public function set BorderThinkness(Value:int):void
+		{
+			super.BorderThinkness = Value;
+			_Content.x = _Content.y = UIContainerStyle(_Style).padding + Value;
+		}
+		
 		public function get contentWidth():int
 		{
 			return width - (UIContainerStyle(_Style).padding * 2);

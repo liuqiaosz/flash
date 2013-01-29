@@ -45,7 +45,6 @@ package pixel.ui.control
 			_MouseDownStyle = UIButtonStyle(Style).PressStyle;
 			_NormalStyle = Style;
 			
-			
 			this.buttonMode = true;
 			_Text = new UILabel(_TextValue);
 			_Text.mouseEnabled = false;
@@ -63,7 +62,7 @@ package pixel.ui.control
 		{
 			this.buttonMode = false;
 			super.EnableEditMode();
-			
+			this.mouseChildren = true;
 			removeEventListener(MouseEvent.MOUSE_DOWN,EventMouseDown);
 			removeEventListener(MouseEvent.MOUSE_OVER,EventMouseOver);
 			removeEventListener(MouseEvent.MOUSE_OUT,EventMouseOut);
@@ -358,6 +357,29 @@ package pixel.ui.control
 			UIButtonStyle(_NormalStyle).BorderThinkness = value;
 			UIButtonStyle(_NormalStyle).OverStyle.BorderThinkness = value;
 			UIButtonStyle(_NormalStyle).PressStyle.BorderThinkness = value;
+		}
+		
+		public function scale9GridForAllState(left:int,top:int,right:int,bottom:int):void
+		{
+			UIButtonStyle(_NormalStyle).Scale9Grid = 
+				UIButtonStyle(_NormalStyle).OverStyle.Scale9Grid = 
+				UIButtonStyle(_NormalStyle).PressStyle.Scale9Grid = true;
+			
+			UIButtonStyle(_NormalStyle).Scale9GridLeft = 
+				UIButtonStyle(_NormalStyle).OverStyle.Scale9GridLeft = 
+				UIButtonStyle(_NormalStyle).PressStyle.Scale9GridLeft = left;
+			
+			UIButtonStyle(_NormalStyle).Scale9GridTop = 
+				UIButtonStyle(_NormalStyle).OverStyle.Scale9GridTop = 
+				UIButtonStyle(_NormalStyle).PressStyle.Scale9GridTop = top;
+			
+			UIButtonStyle(_NormalStyle).Scale9GridRight = 
+				UIButtonStyle(_NormalStyle).OverStyle.Scale9GridRight = 
+				UIButtonStyle(_NormalStyle).PressStyle.Scale9GridRight = right;
+			
+			UIButtonStyle(_NormalStyle).Scale9GridBottom = 
+				UIButtonStyle(_NormalStyle).OverStyle.Scale9GridBottom = 
+				UIButtonStyle(_NormalStyle).PressStyle.Scale9GridBottom = top;
 		}
 	}
 }
