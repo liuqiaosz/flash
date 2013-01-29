@@ -705,6 +705,18 @@ package pixel.ui.control
 					this.BackgroundImage = Img;
 				}
 			}
+			if(_Style.Scale9Grid)
+			{
+				if(null == _Scale9Grid)
+				{
+					_Scale9Grid = new Scale9GridBitmap(_Style.BackgroundImage);
+					_Scale9Grid.Scale9Grid(_Style.Scale9GridLeft,_Style.Scale9GridTop,_Style.Scale9GridRight,_Style.Scale9GridBottom);
+					_Scale9Grid.width = _ActualWidth;
+					_Scale9Grid.height = _ActualHeight;
+					
+				}
+			}
+			
 			StyleUpdate();
 		}
 		

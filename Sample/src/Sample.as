@@ -83,6 +83,7 @@ package
 	import pixel.ui.control.HorizontalScroller;
 	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.LayoutConstant;
+	import pixel.ui.control.ToolTipManager;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UICheckBox;
 	import pixel.ui.control.UICombobox;
@@ -96,6 +97,7 @@ package
 	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.event.DownloadEvent;
+	import pixel.ui.control.style.UIPanelStyle;
 	import pixel.ui.control.style.VerticalScrollerStyle;
 	import pixel.ui.control.vo.UIControlMod;
 	import pixel.ui.control.vo.UIMod;
@@ -252,24 +254,27 @@ package
 //			});
 //			s3d.requestContext3D();
 //			scrollTest();
-			var data:ByteArray = new PRO() as ByteArray;
-			var m:UIMod = UIControlFactory.instance.decode(data);
-			var cs:Vector.<UIControlMod> = m.controls;
-			var pro:UIProgress = null;
-			for each(var c:UIControlMod in cs)
-			{
-				if(c.control is UIProgress)
-				{
-					pro = c.control as UIProgress;
-					addChild(pro);
-					pro.x = 100;
-					pro.y = 100;
-				}
-			}
-			var v:int = 0
+			
+			var panel:UIPanel = new UIPanel();
+			panel.width = 200;
+			panel.height = 100;
+			
+			panel.x = 100;
+			panel.y = 100;
+			
+			addChild(panel);
+			
+			panel.ToolTip = "AAA房的司法的";
+			
 			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				v+=10;
-				pro.UpdateProgress(v,100);
+				
+				var style:UIPanelStyle = new UIPanelStyle();
+				var img:Bitmap = new IMG() as Bitmap;
+				style.BackgroundImage = img;
+				style.Scale9Grid = true;
+				style.Scale9GridBottom = style.Scale9GridLeft = style.Scale9GridRight = style.Scale9GridTop = 5;
+				ToolTipManager.Instance.ChangeSkin(style);
+				
 			});
 		}
 		
