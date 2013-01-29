@@ -17,6 +17,8 @@
 			import editor.uitility.ui.PopUpWindowManager;
 			import editor.uitility.ui.event.PixelEditorEvent;
 			
+			import flash.display3D.textures.Texture;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.IUIComponent;
@@ -226,10 +228,20 @@
 
 			protected function saveFile():void
 			{
-				var browser:File = new File();
-				browser.addEventListener(Event.SELECT,function(fileEvent:Event):void{
-					var path:String = browser.nativePath + ".tpk";
+				var window:TexturePackageSaveDialog = PopUpWindowManager.PopUp(TexturePackageSaveDialog) as TexturePackageSaveDialog;
+				window.addEventListener(TextureToolEvent.TEXTURE_SAVETPK,function(event:TextureToolEvent):void{
+					var path:String = event.value as String;
+					if(path.indexOf(".tpk") < 0)
+					{
+						path += ".tpk";
+					}
+					
 					var pack:PixelTexturePackage = new PixelTexturePackage();
+					pack.isAnim = window.isTextureAnim;
+					if(pack.isAnim)
+					{
+						pack.playGap = window.animPlayGap;
+					}
 					var file:File = new File(path);
 					for each(var texture:PixelTexture in list)
 					{
@@ -242,8 +254,24 @@
 					writer.writeBytes(data);
 					writer.close();
 				});
-				
-				browser.browseForSave("选择保存路径");
+//				var browser:File = new File();
+//				browser.addEventListener(Event.SELECT,function(fileEvent:Event):void{
+//					var path:String = browser.nativePath + ".tpk";
+//					var pack:PixelTexturePackage = new PixelTexturePackage();
+//					var file:File = new File(path);
+//					for each(var texture:PixelTexture in list)
+//					{
+//						TextureEncoder.textureEncode(texture);
+//						pack.addTexture(texture);
+//					}
+//					var data:ByteArray = PixelTextureFactory.instance.encode(pack);
+//					var writer:FileStream = new FileStream();
+//					writer.open(file,FileMode.WRITE);
+//					writer.writeBytes(data);
+//					writer.close();
+//				});
+//				
+//				browser.browseForSave("选择保存路径");
 			}
 
 			private static const MENU_BATCH:int = 0;

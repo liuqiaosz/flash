@@ -11,6 +11,24 @@ package pixel.texture.vo
 	 **/
 	public class PixelTexturePackage
 	{
+		private var _isAnim:Boolean = false;
+		public function set isAnim(value:Boolean):void
+		{
+			_isAnim = value;
+		}
+		public function get isAnim():Boolean
+		{
+			return _isAnim;
+		}
+		private var _playGap:int = 0;
+		public function set playGap(value:int):void
+		{
+			_playGap = value;
+		}
+		public function get playGap():int
+		{
+			return _playGap;
+		}
 		private var _textures:Vector.<PixelTexture> = null;
 		public function PixelTexturePackage()
 		{

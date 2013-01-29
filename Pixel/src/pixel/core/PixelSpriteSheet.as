@@ -5,6 +5,8 @@ package pixel.core
 	
 	import pixel.codec.spr.ISpriteSheet;
 	import pixel.codec.spr.SpriteSheetFrame;
+	import pixel.texture.vo.PixelTexture;
+	import pixel.texture.vo.PixelTexturePackage;
 
 	/**
 	 * 位图序列精灵
@@ -13,20 +15,23 @@ package pixel.core
 	 **/
 	public class PixelSpriteSheet extends PixelSprite implements IPixelSpriteSheet
 	{
-		private var _sheet:ISpriteSheet = null;
-		private var _frame:SpriteSheetFrame = null;
-		public function PixelSpriteSheet(sheet:ISpriteSheet)
+//		private var _sheet:ISpriteSheet = null;
+//		private var _frame:SpriteSheetFrame = null;
+//		public function PixelSpriteSheet(sheet:ISpriteSheet)
+//		{
+//			super();
+//			_sheet = sheet;
+//			//默认第一帧
+//			_frame = _sheet.GetFrameByIndex(0);
+//			image = _frame.Bitmap;
+//		}
+		private var _frameIdx:int = 0;
+		private var _frameTexture:PixelTexture = null;
+		private var _package:PixelTexturePackage = null;
+		public function PixelSpriteSheet(pack:PixelTexturePackage)
 		{
-			super();
-			_sheet = sheet;
-			//默认第一帧
-			_frame = _sheet.GetFrameByIndex(0);
-			image = _frame.Bitmap;
-		}
-		
-		public function get imageSheet():Vector.<SpriteSheetFrame>
-		{
-			return _sheet.Frames;
+			_package = pack;
+			_frameTexture = _package.textures[0];
 		}
 		
 		/**
@@ -36,7 +41,7 @@ package pixel.core
 		 **/
 		override public function get image():BitmapData
 		{
-			return _frame.Bitmap;
+			return _frameTexture.bitmap;
 		}
 		
 		protected var _lastUpdate:int = 0;
@@ -48,14 +53,29 @@ package pixel.core
 		override public function update():void
 		{
 			var timer:int = flash.utils.getTimer();
-			if((timer - _lastUpdate) >= _sheet.Delay)
+			if((timer - _lastUpdate) >= _package.playGap)
 			{
 				_lastUpdate = timer;
-				_frame = _sheet.NextFrame();
+				_frameTexture = _package.textures[_frameIdx];
+				_frameIdx++;
+				if(_frameIdx >= _package.textures.length)
+				{
+					_frameIdx = 0;
+				}
 			}
-			
 			//绘制
-			image = _frame.Bitmap;
+			image = _frameTexture.bitmap;
 		}
+		
+		public function get frame():PixelTexture
+		{
+			return _frameTexture;
+		}
+		
+		override public function dispose():void
+		{
+			
+		}
+		
 	}
 }

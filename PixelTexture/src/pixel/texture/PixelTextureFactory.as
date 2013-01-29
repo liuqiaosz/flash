@@ -52,6 +52,12 @@ class PixelTextureFactoryImpl extends EventDispatcher implements IPixelTextureFa
 	{
 		var textures:Vector.<PixelTexture> = texturePackage.textures;
 		var data:ByteArray = new ByteArray();
+		
+		data.writeByte(int(texturePackage.isAnim));
+		if(texturePackage.isAnim)
+		{
+			data.writeShort(texturePackage.playGap);
+		}
 		data.writeShort(textures.length);
 		var item:PixelTexture = null;
 		var itemData:ByteArray = null;
@@ -68,6 +74,12 @@ class PixelTextureFactoryImpl extends EventDispatcher implements IPixelTextureFa
 	public function decode(data:ByteArray):PixelTexturePackage
 	{
 		var pack:PixelTexturePackage = new PixelTexturePackage();
+		var isAnim:Boolean = Boolean(data.readByte());
+		pack.isAnim = isAnim;
+		if(pack.isAnim)
+		{
+			pack.playGap = data.readShort();
+		}
 		var count:int = data.readShort();
 		var len:int = 0;
 		var itemData:ByteArray = null;
@@ -103,17 +115,14 @@ class PixelTextureFactoryImpl extends EventDispatcher implements IPixelTextureFa
 			asyncDecodeTexture(_asyncQueue[_asyncLoadIndex]);
 		}
 	}
-	var t:Number = 0;
 	private function asyncDecodeTexture(texture:PixelTexture):void
 	{
-		t = new Date().time;
 		_asyncLoadTexture = texture;
 		_asyncLoader.loadBytes(texture.source);
 	}
 	
 	private function decodeComplete(event:Event):void
 	{
-		trace(new Date().time - t);
 		var bitmap:BitmapData = Bitmap(_asyncLoader.content).bitmapData;
 		var pixels:ByteArray = bitmap.getPixels(bitmap.rect);
 		pixels.position = 0;

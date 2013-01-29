@@ -734,12 +734,13 @@
 								var Browser:File = new File();
 								Browser.addEventListener(Event.SELECT,function(event:Event):void{
 									
-									var modFile:File = new File(Browser.nativePath + ".mod");
-									writer = new FileStream();
-									writer.open(modFile,FileMode.WRITE);
-									writer.writeBytes(current);
-									writer.close();
+//									var modFile:File = new File(Browser.nativePath + ".mod");
+//									writer = new FileStream();
+//									writer.open(modFile,FileMode.WRITE);
+//									writer.writeBytes(current);
+//									writer.close();
 									
+									saveModStream(current,Browser.nativePath);
 									resetEditor();
 									
 								});
@@ -811,11 +812,12 @@
 					var Browser:File = new File();
 					Browser.addEventListener(Event.SELECT,function(event:Event):void{
 						var Data:ByteArray = EditWorkspace.GenerateControlModel();
-						var ModelFile:File = new File(Browser.nativePath + ".mod");
-						var Writer:FileStream = new FileStream();
-						Writer.open(ModelFile,FileMode.WRITE);
-						Writer.writeBytes(current);
-						Writer.close();
+						saveModStream(Data,Browser.nativePath);
+//						var ModelFile:File = new File(Browser.nativePath + ".mod");
+//						var Writer:FileStream = new FileStream();
+//						Writer.open(ModelFile,FileMode.WRITE);
+//						Writer.writeBytes(current);
+//						Writer.close();
 					});
 					
 					Browser.browseForSave("请选择保存控件模型的目标路径");
@@ -833,14 +835,25 @@
 				var Browser:File = new File();
 				Browser.addEventListener(Event.SELECT,function(event:Event):void{
 					var Data:ByteArray = EditWorkspace.GenerateControlModel();
-					var ModelFile:File = new File(Browser.nativePath + ".mod");
-					var Writer:FileStream = new FileStream();
-					Writer.open(ModelFile,FileMode.WRITE);
-					Writer.writeBytes(current);
-					Writer.close();
+					saveModStream(Data,Browser.nativePath);
+//					var ModelFile:File = new File(Browser.nativePath + ".mod");
+//					var Writer:FileStream = new FileStream();
+//					Writer.open(ModelFile,FileMode.WRITE);
+//					Writer.writeBytes(current);
+//					Writer.close();
 				});
 				
 				Browser.browseForSave("请选择保存控件模型的目标路径");
+			}
+			
+			private function saveModStream(data:ByteArray,nav:String):void
+			{
+				var filePath:String = nav.indexOf(".mod") < 0 ? nav + ".mod":nav;
+				var ModelFile:File = new File(filePath);
+				var Writer:FileStream = new FileStream();
+				Writer.open(ModelFile,FileMode.WRITE);
+				Writer.writeBytes(data);
+				Writer.close();
 			}
 			
 			/**

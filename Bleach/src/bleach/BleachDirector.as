@@ -80,7 +80,7 @@ package bleach
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECT_ERROR,serverConnectError);
 			_channel = new TCPCommunicator();
-			//_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 			trace("Connect server...");
 			serverConnected(null);
 		}
@@ -315,12 +315,6 @@ package bleach
 			_downloader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,libraryDownloadError);
 			
 			_module.library.push(_downloader);
-			
-			var ids:Vector.<String> = _module.sceneDomain.getQualifiedDefinitionNames();
-			for each(var id:String in ids)
-			{
-				trace(id);
-			}
 			if(_downlodLinkLibrary.isUIlib)
 			{
 				//UI库资源

@@ -246,7 +246,26 @@ package
 //			
 //			});
 //			s3d.requestContext3D();
-			textureTest();
+			scrollTest();
+		}
+		
+		private function scrollTest():void
+		{
+			var panel:UIVerticalPanel = new UIVerticalPanel();
+			panel.width = 200;
+			panel.height = 300;
+			panel.Gap = 10;
+			addChild(panel);
+			
+			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
+				
+				var btn:UIButton = new UIButton();
+				btn.width = 100;
+				btn.height = 50;
+				btn.initializer();
+				panel.addChild(btn);
+			
+			});
 		}
 		
 		private function showcase():void

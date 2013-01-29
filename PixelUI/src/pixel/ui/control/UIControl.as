@@ -263,11 +263,11 @@ package pixel.ui.control
 					{
 						if(!Style.ImagePack)
 						{
-							var Img:Bitmap = AssetImage(PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId)).image;
-							if(Img)
+							var asset:AssetImage = PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId) as AssetImage;
+							if(asset)
 							{
 								//资源已经欲载
-								BackgroundImage = Img;
+								BackgroundImage = asset.image;
 								BitmapRender();
 							}
 							else
@@ -544,10 +544,11 @@ package pixel.ui.control
 //						this.BackgroundImage = Img;
 //					}
 //				}
-				var Img:Bitmap = AssetImage(PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId)).image;
-				if(Img)
+				var asset:AssetImage = PixelAssetManager.instance.FindAssetById(Style.BackgroundImageId) as AssetImage;
+				
+				if(asset)
 				{
-					this.BackgroundImage = Img;
+					this.BackgroundImage = asset.image;
 				}
 			}
 		}
