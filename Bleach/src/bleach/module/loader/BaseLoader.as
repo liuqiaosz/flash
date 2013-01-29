@@ -99,16 +99,6 @@ package bleach.module.loader
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
 				loader.unload();
-				
-//				var colorImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadColor");
-//				var whiteImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadWhite");
-//				
-//				var colorBitmap:BitmapData = new colorImgClass() as BitmapData;
-//				var whiteBitmap:BitmapData = new whiteImgClass() as BitmapData;
-//				
-//				_loading = new LoadMask(whiteBitmap,colorBitmap);
-//				_loading.x = (stage.stageWidth - whiteBitmap.width) * 0.5;
-//				_loading.y = (stage.stageHeight - whiteBitmap.height) * 0.5;
 				addChild(MaskLoading.instance);
 				
 				rslLibraryDownload();

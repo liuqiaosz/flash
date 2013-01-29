@@ -57,7 +57,6 @@ package bleach.scene
 			login = mod.controls.pop().control;
 			addChild(login);
 			
-			
 			submit = login.GetChildById("Submit",true) as UIButton;
 			account = login.GetChildById("accName",true) as UITextInput;
 			password = login.GetChildById("accPwd",true) as UITextInput;

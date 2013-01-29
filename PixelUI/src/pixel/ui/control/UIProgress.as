@@ -35,6 +35,13 @@ package pixel.ui.control
 			return _ProgressBar;
 		}
 		
+//		override protected function StyleUpdate():void
+//		{
+////			_ProgressBar.x = this.BorderThinkness;
+////			_ProgressBar.y = this.BorderThinkness;
+//			super.StyleUpdate();
+//		}
+		
 		/**
 		 * 更新进度
 		 **/
@@ -44,11 +51,11 @@ package pixel.ui.control
 			{
 				if(_TweenEnable)
 				{
-					TweenLite.to(_ProgressBar,0.3,{"width":ContentWidth * (Value / Maxmize)});
+					TweenLite.to(_ProgressBar,0.3,{"width":(width - BorderThinkness) * (Value / Maxmize)});
 				}
 				else
 				{
-					_ProgressBar.width = ContentWidth * (Value / Maxmize);
+					_ProgressBar.width = (width - BorderThinkness) * (Value / Maxmize);
 				}
 			}
 		}
@@ -68,6 +75,8 @@ package pixel.ui.control
 		{
 			Data.readByte();
 			_ProgressBar.decode(Data);
+			_ProgressBar.x = _ProgressBar.y = 0;
+			_ProgressBar.height = height;
 		}
 	}
 }

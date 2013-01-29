@@ -208,6 +208,8 @@ package
 		[Embed(source="effect.tpk",mimeType="application/octet-stream")]
 		private var TPK:Class;
 		
+		[Embed(source="1111.mod",mimeType="application/octet-stream")]
+		private var PRO:Class;
 		
 		private var sid:String = "";
 		private var center:Point = new Point();
@@ -249,7 +251,26 @@ package
 //			
 //			});
 //			s3d.requestContext3D();
-			scrollTest();
+//			scrollTest();
+			var data:ByteArray = new PRO() as ByteArray;
+			var m:UIMod = UIControlFactory.instance.decode(data);
+			var cs:Vector.<UIControlMod> = m.controls;
+			var pro:UIProgress = null;
+			for each(var c:UIControlMod in cs)
+			{
+				if(c.control is UIProgress)
+				{
+					pro = c.control as UIProgress;
+					addChild(pro);
+					pro.x = 100;
+					pro.y = 100;
+				}
+			}
+			var v:int = 0
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				v+=10;
+				pro.UpdateProgress(v,100);
+			});
 		}
 		
 		private function scrollTest():void

@@ -598,10 +598,12 @@ package pixel.ui.control
 		protected function get ContentWidth():Number
 		{
 			return (width - _Style.BorderThinkness * 2);
+//			return (width - _Style.BorderThinkness);
 		}
 		protected function get ContentHeight():Number
 		{
 			return (height - _Style.BorderThinkness * 2);
+//			return (height - _Style.BorderThinkness);
 		}
 		
 		public function get RealWidth():Number
