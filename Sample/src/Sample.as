@@ -14,6 +14,8 @@ package
 	//	import flash.display.Loader;
 	//	import flash.display.Shape;
 	//	import flash.display.SpreadMethod;
+	import com.adobe.utils.AGALMiniAssembler;
+	import com.adobe.utils.PerspectiveMatrix3D;
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	
@@ -31,6 +33,13 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3D;
+	import flash.display3D.Context3DProgramType;
+	import flash.display3D.Context3DTextureFormat;
+	import flash.display3D.Context3DVertexBufferFormat;
+	import flash.display3D.IndexBuffer3D;
+	import flash.display3D.Program3D;
+	import flash.display3D.VertexBuffer3D;
+	import flash.display3D.textures.Texture;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.KeyboardEvent;
@@ -45,8 +54,10 @@ package
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
+	import flash.geom.Matrix3D;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.geom.Vector3D;
 	import flash.net.SharedObject;
 	import flash.net.Socket;
 	import flash.net.URLLoader;
@@ -119,66 +130,6 @@ package
 	
 	import ui.aa;
 	
-	//	import flash.display.StageAlign;
-	//	import flash.display.StageScaleMode;
-	//	import flash.events.Event;
-	//	import flash.events.KeyboardEvent;
-	//	import flash.events.MouseEvent;
-	//	import flash.filesystem.File;
-	//	import flash.filesystem.FileMode;
-	//	import flash.filesystem.FileStream;
-	//	import flash.geom.Matrix;
-	//	import flash.geom.Point;
-	//	import flash.geom.Rectangle;
-	//	import flash.net.URLLoader;
-	//	import flash.net.URLLoaderDataFormat;
-	//	import flash.net.URLRequest;
-	//	import flash.system.ApplicationDomain;
-	//	import flash.system.LoaderContext;
-	//	import flash.system.MessageChannel;
-	//	import flash.system.Security;
-	//	import flash.system.SecurityDomain;
-	//	import flash.system.Worker;
-	//	import flash.system.WorkerDomain;
-	//	import flash.text.TextField;
-	//	import flash.text.TextFieldType;
-	//	import flash.text.engine.ContentElement;
-	//	import flash.text.engine.ElementFormat;
-	//	import flash.text.engine.GroupElement;
-	//	import flash.text.engine.TextBlock;
-	//	import flash.text.engine.TextElement;
-	//	import flash.text.engine.TextLine;
-	//	import flash.ui.Keyboard;
-	//	import flash.utils.ByteArray;
-	//	import flash.utils.CompressionAlgorithm;
-	//	import flash.utils.Dictionary;
-	//	import flash.utils.getTimer;
-	//	
-	//	import editor.uitility.ui.ActiveFrame;
-	//	
-	//	import game.sdk.error.GameError;
-	//	import game.sdk.event.GameEvent;
-	//	import game.sdk.map.layer.DiamondLayer;
-	//	import game.sdk.map.layer.GenericLayer;
-	//	import game.sdk.map.terrain.TerrainData;
-	//	import game.sdk.spr.SpriteManager;
-	//	import game.sdk.spr.SpriteSheet;
-	//	
-	//	import pixel.core.PixelLauncher;
-	//	import pixel.ui.control.IUIControl;
-	//	import pixel.ui.control.UIButton;
-	//	import pixel.worker.core.PixelWorker;
-	//	import pixel.worker.core.PixelWorkerGeneric;
-	//	import pixel.worker.core.PixelWorkerHelper;
-	//	import pixel.worker.event.PixelWorkerEvent;
-	//	
-	//	import utility.BitmapTools;
-	//	import utility.ColorCode;
-	//	import utility.RGBA;
-	//	import utility.Tools;
-	//	import utility.bitmap.png.PNGDecoder;
-	//	import utility.bitmap.tga.TGADecoder;
-	
 	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
 	public class Sample extends Sprite
 	{
@@ -215,6 +166,8 @@ package
 		
 		[Embed(source="333.mod",mimeType="application/octet-stream")]
 		private var TIP:Class;
+		[Embed(source="arrow_down.png")]
+		private var DOWN:Class;
 		
 		private var sid:String = "";
 		private var center:Point = new Point();
@@ -281,24 +234,92 @@ package
 //				ToolTipManager.Instance.ChangeSkin(style);
 //				
 //			});
-			var data:ByteArray = new TIP() as ByteArray;
-			var mod:UIMod = UIControlFactory.instance.decode(data);
+//			var data:ByteArray = new TIP() as ByteArray;
+//			var mod:UIMod = UIControlFactory.instance.decode(data);
+//			
+//			var tip:SkillTip = new SkillTip();
+//			tip.updateStyle(mod.styles);
+//			var panel:UIPanel = new UIPanel();
+//			panel.width = 300;
+//			panel.height = 300;
+//			
+//			panel.ToolTip = "AAAA";
+//			
+//			addChild(panel);
+//			panel.x = 200;
+//			panel.y = 100;
+//			
+//			
+//			ToolTipManager.Instance.changeTip(tip);
+			stage.stage3Ds[0].addEventListener(Event.CONTEXT3D_CREATE,function(event:Event):void{
+				perstes(stage.stage3Ds[0].context3D);
+				//addChild(pers);
+			});
 			
-			var tip:SkillTip = new SkillTip();
-			tip.updateStyle(mod.styles);
-			var panel:UIPanel = new UIPanel();
-			panel.width = 300;
-			panel.height = 300;
+			stage.stage3Ds[0].requestContext3D();
+		}
+		
+		
+		private var _context:Context3D = null;
+		private var vertices:Vector.<Number> = null;
+		private var index:IndexBuffer3D = null;
+		private var ver:VertexBuffer3D = null;
+		private var program:Program3D = null;
+		private var texture:Texture = null;
+		private var per:PerspectiveMatrix3D = null;
+		private function perstes(context:Context3D):void
+		{
+			_context = context;
 			
-			panel.ToolTip = "AAAA";
+			//设置矩形的顶点
+			vertices = Vector.<Number>([
+				-0.3,-0.3,0, 0, 0,
+				-0.3, 0.3, 0, 0, 1,
+				0.3, 0.3, 0, 1, 1,
+				0.3, -0.3, 0, 1, 0]);
 			
-			addChild(panel);
-			panel.x = 200;
-			panel.y = 100;
+			ver = _context.createVertexBuffer(4,5);
+			ver.uploadFromVector(vertices,0,4);
+			index = _context.createIndexBuffer(6);
+			index.uploadFromVector(Vector.<uint>([0,1,2,2,3,0]),0,6);
 			
+			var bit:Bitmap = new DOWN() as Bitmap;
+			texture = _context.createTexture(bit.width,bit.height,Context3DTextureFormat.BGRA,false);
+			texture.uploadFromBitmapData(bit.bitmapData);
 			
-			ToolTipManager.Instance.changeTip(tip);
+			var assembler:AGALMiniAssembler = new AGALMiniAssembler();
+			assembler.assemble(Context3DProgramType.VERTEX,
+				"m44 op,va0,vc0\n" +
+				"mov v0,va1");
 			
+			var fragmentAssembler:AGALMiniAssembler = new AGALMiniAssembler();
+			fragmentAssembler.assemble(Context3DProgramType.FRAGMENT,
+				"tex ft1,v0,fs0<2D,linear,nomip>\n" +
+				"mov oc,ft1");
+			
+			program = _context.createProgram();
+			program.upload(assembler.agalcode,fragmentAssembler.agalcode);
+			per = new PerspectiveMatrix3D();
+			per.perspectiveFieldOfViewLH(45*Math.PI/180,4/3,0.1,1000);
+			
+			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
+				
+				_context.clear(0,0,0,0);
+				_context.setVertexBufferAt(0,ver,0,Context3DVertexBufferFormat.FLOAT_3);
+				_context.setVertexBufferAt(1,ver,3,Context3DVertexBufferFormat.FLOAT_2);
+				_context.setTextureAt(0,texture);
+				_context.setProgram(program);
+				
+				var m:Matrix3D = new Matrix3D();
+				m.appendRotation(getTimer()/30, Vector3D.Y_AXIS);
+				m.appendRotation(getTimer()/10, Vector3D.X_AXIS);
+				m.appendTranslation(0, 0, 2);
+				m.append(per);
+				
+				_context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, m, true);
+				_context.drawTriangles(index);
+				_context.present();
+			});
 		}
 		
 		private function scrollTest():void
