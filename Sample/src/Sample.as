@@ -130,7 +130,7 @@ package
 	
 	import ui.aa;
 	
-	[SWF(width="1280",height="600",frameRate="30",backgroundColor="0xFFFFFF")]
+	[SWF(width="1280",height="600")]
 	public class Sample extends Sprite
 	{
 		[Embed(source="arrow_down.png")]
@@ -257,6 +257,7 @@ package
 			});
 			
 			stage.stage3Ds[0].requestContext3D();
+			
 		}
 		
 		
@@ -270,6 +271,7 @@ package
 		private function perstes(context:Context3D):void
 		{
 			_context = context;
+			_context.configureBackBuffer(stage.stageWidth,stage.stageHeight,2,true);
 			
 			//设置矩形的顶点
 			vertices = Vector.<Number>([
@@ -300,25 +302,30 @@ package
 			program = _context.createProgram();
 			program.upload(assembler.agalcode,fragmentAssembler.agalcode);
 			per = new PerspectiveMatrix3D();
-			per.perspectiveFieldOfViewLH(45*Math.PI/180,4/3,0.1,1000);
-			
+			//per.perspectiveFieldOfViewLH(45*Math.PI/180,4/3,0.5,1000);
+			per.perspectiveFieldOfViewLH(5,4/3,0.5,1000);
+			var z:int = 1;
 			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
 				
-				_context.clear(0,0,0,0);
+				_context.clear(1,1,1,1);
 				_context.setVertexBufferAt(0,ver,0,Context3DVertexBufferFormat.FLOAT_3);
 				_context.setVertexBufferAt(1,ver,3,Context3DVertexBufferFormat.FLOAT_2);
 				_context.setTextureAt(0,texture);
 				_context.setProgram(program);
 				
 				var m:Matrix3D = new Matrix3D();
-				m.appendRotation(getTimer()/30, Vector3D.Y_AXIS);
-				m.appendRotation(getTimer()/10, Vector3D.X_AXIS);
-				m.appendTranslation(0, 0, 2);
+				//m.appendRotation(getTimer()/30, Vector3D.Y_AXIS);
+				//m.appendRotation(getTimer()/10, Vector3D.X_AXIS);
+				m.appendTranslation(0, 0, z);
 				m.append(per);
 				
 				_context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, m, true);
 				_context.drawTriangles(index);
 				_context.present();
+			});
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent):void{
+				z+=1;
 			});
 		}
 		
