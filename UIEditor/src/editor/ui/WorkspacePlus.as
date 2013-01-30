@@ -375,7 +375,7 @@ package editor.ui
 			}
 			var mod:UIMod = new UIMod(controls,InlineStyle.styles);
 			var data:ByteArray = UIControlFactory.instance.encode(mod);
-			InlineStyle.clear();
+			//InlineStyle.clear();
 			return data;
 			
 //			var Data:ByteArray = new ByteArray();

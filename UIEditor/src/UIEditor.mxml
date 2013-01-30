@@ -220,11 +220,11 @@
 					id: Utils.IMAGE,
 					icon: imageIcon
 				},
-				{
-					label: "Window",
-					id: Utils.WINDOW,
-					icon: windowIcon
-				},
+//				{
+//					label: "Window",
+//					id: Utils.WINDOW,
+//					icon: windowIcon
+//				},
 				{
 					label: "CheckBox",
 					id: Utils.CHECKBOX,
@@ -832,8 +832,8 @@
 				{
 					var Browser:File = new File();
 					Browser.addEventListener(Event.SELECT,function(event:Event):void{
-						var Data:ByteArray = EditWorkspace.GenerateControlModel();
-						saveModStream(Data,Browser.nativePath);
+//						var Data:ByteArray = EditWorkspace.GenerateControlModel();
+						saveModStream(current,Browser.nativePath);
 //						var ModelFile:File = new File(Browser.nativePath + ".mod");
 //						var Writer:FileStream = new FileStream();
 //						Writer.open(ModelFile,FileMode.WRITE);
@@ -915,6 +915,7 @@
 				WorkspaceContainer.visible = true;
 				EditWorkspace.addEventListener(NotifyEvent.COMPONENT_SELECTED,UpdateParameter);
 				closeEnabled = true;
+				InlineStyle.clear();
 			}
 
 			private function resetEditor():void

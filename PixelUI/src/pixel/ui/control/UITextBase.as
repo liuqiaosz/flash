@@ -47,11 +47,11 @@ package pixel.ui.control
 			_Format = null;
 		}
 		
-//		override public function set width(value:Number):void
-//		{
-//			super.width = value;
-//			_TextField.width = value;
-//		}
+		override public function set width(value:Number):void
+		{
+			super.width = value;
+			_TextField.width = value;
+		}
 //		override public function set height(value:Number):void
 //		{
 //			super.height = value;

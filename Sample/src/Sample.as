@@ -195,7 +195,7 @@ package
 		[Embed(source="scrollhandler.png")]
 		private var SCROLLER_HANDLER:Class;
 		
-		[Embed(source="map2.jpg")]
+		[Embed(source="tip.png")]
 		private var IMG:Class;
 		
 		[Embed(source="map1.jpg")]
@@ -212,6 +212,9 @@ package
 		
 		[Embed(source="1111.mod",mimeType="application/octet-stream")]
 		private var PRO:Class;
+		
+		[Embed(source="333.mod",mimeType="application/octet-stream")]
+		private var TIP:Class;
 		
 		private var sid:String = "";
 		private var center:Point = new Point();
@@ -255,27 +258,47 @@ package
 //			s3d.requestContext3D();
 //			scrollTest();
 			
-			var panel:UIPanel = new UIPanel();
-			panel.width = 200;
-			panel.height = 100;
+//			var panel:UIPanel = new UIPanel();
+//			panel.width = 200;
+//			panel.height = 100;
+//			
+//			panel.x = 100;
+//			panel.y = 100;
+//			
+//			addChild(panel);
+//			
+//			panel.ToolTip = "AAA房的司法的";
+//			
+//			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+//				
+//				var style:UIPanelStyle = new UIPanelStyle();
+//				var img:Bitmap = new IMG() as Bitmap;
+//				style.BackgroundImage = img;
+//				style.Scale9Grid = true;
+//				style.Scale9GridBottom = style.Scale9GridRight = style.Scale9GridTop = 20;
+//				style.Scale9GridLeft = 30;
+//				style.BorderThinkness = 0;
+//				ToolTipManager.Instance.ChangeSkin(style);
+//				
+//			});
+			var data:ByteArray = new TIP() as ByteArray;
+			var mod:UIMod = UIControlFactory.instance.decode(data);
 			
-			panel.x = 100;
-			panel.y = 100;
+			var tip:SkillTip = new SkillTip();
+			tip.updateStyle(mod.styles);
+			var panel:UIPanel = new UIPanel();
+			panel.width = 300;
+			panel.height = 300;
+			
+			panel.ToolTip = "AAAA";
 			
 			addChild(panel);
+			panel.x = 200;
+			panel.y = 100;
 			
-			panel.ToolTip = "AAA房的司法的";
 			
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				
-				var style:UIPanelStyle = new UIPanelStyle();
-				var img:Bitmap = new IMG() as Bitmap;
-				style.BackgroundImage = img;
-				style.Scale9Grid = true;
-				style.Scale9GridBottom = style.Scale9GridLeft = style.Scale9GridRight = style.Scale9GridTop = 5;
-				ToolTipManager.Instance.ChangeSkin(style);
-				
-			});
+			ToolTipManager.Instance.changeTip(tip);
+			
 		}
 		
 		private function scrollTest():void

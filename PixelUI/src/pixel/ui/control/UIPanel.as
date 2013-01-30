@@ -88,18 +88,5 @@ package pixel.ui.control
 			_DragTarget = null;
 		}
 		
-		/**
-		 * 重写拖拽释放后的添加子对象动作
-		 * 
-		 * 这里禁止TabPanel加入到子对象
-		 **/
-		override public function OnDrop(Control:UIControl):void
-		{
-//			if(Control is SimpleTabPanel)
-//			{
-//				throw new Error("Valid operation");
-//			}
-			super.OnDrop(Control);
-		}
 	}
 }
