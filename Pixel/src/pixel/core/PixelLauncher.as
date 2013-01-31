@@ -180,7 +180,7 @@ package pixel.core
 			return launcher.frameRate;
 		}
 		
-		PixelNs static function get launcher():PixelLauncher
+		public static function get launcher():PixelLauncher
 		{
 			return _launcher;
 		}
