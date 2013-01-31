@@ -8,24 +8,22 @@
 	</fx:Metadata>
 	<fx:Script>
 		<![CDATA[
-			
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
 			
 			import pixel.ui.control.UIButton;
 			import pixel.ui.control.UILabel;
+			import pixel.ui.control.UIToggleButton;
 			import pixel.utility.Tools;
 			
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
-			private var Button:UIButton = null;
+			private var Button:UIToggleButton = null;
 			[Bindable]
 			private var _Label:UILabel = null;
-			
-			[Bindable]
-			private var _FamilyArray:ArrayCollection = new ArrayCollection();
 			
 			[Bindable]
 			private var _simpleStyleEnable:Boolean = true;
@@ -42,11 +40,10 @@
 //					_FamilyArray.addItem(font.fontName);
 //				}
 				ButtonState.selectedIndex = 0;
-				Button = Control as pixel.ui.control.UIButton;
+				Button = Control as UIToggleButton;
 //				SimpleStyle.Control = Button;
 //				BorderStyle.Control = Button;
 //				BackgroundStyle.Control = Button;
-				_Label = Button.textLabel;
 //				_FontSize = Button.textLabel.FontSize;
 //				_FontSizeText = "" + _FontSize;
 //				FontColorPicker.selectedColor = Button.textLabel.FontColor;
@@ -63,18 +60,27 @@
 			/**
 			 * 编辑控件为按钮时响应状态切换
 			 **/
-			private function ButtonStateChanged(Event:IndexChangeEvent):void
+			private function ButtonStateChanged(event:IndexChangeEvent):void
 			{
-				Button.State = Event.newIndex;
-				//_CurrentControl.Update();
-				
+				Button.state = comboboxData.getItemAt(event.newIndex).value;
 				SimpleStyle.Control = Button;
 				BorderStyle.Control = Button;
 				BackgroundStyle.Control = Button;
 				ScaleStyle.Control = Button;
 			}
 			
+			[Bindable]
+			private var comboboxData:ArrayCollection = new ArrayCollection([
+				{
+					label : '弹起',
+					value : 3
+				},
+				{
+					label : '按下',
+					value : 4
+				}
 			
+			]);
 //			/**
 //			 * 文本定位
 //			 **/
@@ -154,51 +160,13 @@
 			
 		]]>
 	</fx:Script>
-	<ui:LabelPropery Control="{_Label}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}" enableSimpleStyle="false" /> 
-	<!--
-	<s:HGroup id="Label">
-		<s:Label text="文本" height="100%" verticalAlign="middle" width="60"/>
-		<s:TextInput id="ButtonText" text="{_Label}" change="LabelChanged(event)" />
-	</s:HGroup>
-	
-	<s:HGroup>
-		<s:Label text="文本大小" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100" value="{_FontSize}" maximum="100" stepSize="1" minimum="10" id="FontSize" change="FontSizeChanged(event)" />
-		<s:Label text="{_FontSizeText}" />
-	</s:HGroup>
-	
-	<s:HGroup>
-		<s:Label text="文本颜色" height="100%" verticalAlign="middle" width="60"/>
-		<s:TextInput width="70" enter="FontColorTextChanged(event)" text="{_BindFontColorText}"/>
-		<mx:ColorPicker showTextField="true" id="FontColorPicker" selectedColor="{_BindFontColor}" change="FontColorChanged(event)" />
-	</s:HGroup>
-	
-	<s:HGroup>
-		<s:Label text="文本字体" height="100%" verticalAlign="middle" width="60"/>
-		<s:ComboBox width="120" change="LabelFontFamilyChanged(event)" id="LabelFamily" selectedIndex="0" dataProvider="{_FamilyArray}">
-			
-		</s:ComboBox>
-	</s:HGroup>
-	
-	<s:HGroup>
-		<s:Label text="文本位置" height="100%" verticalAlign="middle" width="60"/>
-		<s:ComboBox width="80" change="ButtonLabelAlignChanged(event)" id="LabelAlign" selectedIndex="0">
-			<s:ArrayCollection>
-				<fx:String>居中对齐</fx:String>
-				<fx:String>左对齐</fx:String>
-				<fx:String>右对齐</fx:String>
-			</s:ArrayCollection>
-		</s:ComboBox>
-	</s:HGroup>
-	-->
+
 	<s:HGroup id="StateSwitch">
-		<s:Label text="按钮状态" height="100%" verticalAlign="middle" width="60"/>
-		<s:ComboBox width="80" change="ButtonStateChanged(event)" id="ButtonState" selectedIndex="0">
-			<s:ArrayCollection>
-				<fx:String>普通</fx:String>
-				<fx:String>滑过</fx:String>
-				<fx:String>按下</fx:String>
-			</s:ArrayCollection>
+		<s:Label text="状态" height="100%" verticalAlign="middle" width="60"/>
+		<s:ComboBox width="80" change="ButtonStateChanged(event)" id="ButtonState" selectedIndex="0" 
+					dataProvider="{comboboxData}"
+				    labelField="label">
+			
 		</s:ComboBox>
 	</s:HGroup>
 	

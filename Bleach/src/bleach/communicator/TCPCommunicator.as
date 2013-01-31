@@ -122,10 +122,11 @@ package bleach.communicator
 		private function channelIoError(event:IOErrorEvent):void
 		{
 			trace(event.text);
+			this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_CONNECT_ERROR));
 		}
 		private function channelSecurityError(event:SecurityErrorEvent):void
 		{
-			trace(event.text);
+			this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR));
 		}
 		
 		public function isConnected():Boolean

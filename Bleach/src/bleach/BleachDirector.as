@@ -5,11 +5,12 @@ package bleach
 	import bleach.communicator.ITCPCommunicator;
 	import bleach.communicator.NetObserver;
 	import bleach.communicator.TCPCommunicator;
-	import bleach.event.BleachDefenseEvent;
+	import bleach.event.BleachEvent;
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
 	import bleach.module.loader.MaskLoading;
+	import bleach.module.loader.ProgressLoading;
 	import bleach.module.message.IMsg;
 	import bleach.module.message.IMsgRequest;
 	import bleach.module.message.MsgGeneric;
@@ -48,7 +49,6 @@ package bleach
 	import pixel.message.PixelMessageBus;
 	import pixel.ui.control.asset.PixelAssetManager;
 	import pixel.ui.control.asset.PixelLoaderAssetLibrary;
-	import pixel.utility.math.Int64;
 
 	/**
 	 * 场景控制枢纽
@@ -64,6 +64,7 @@ package bleach
 		private var _contentLayer:Sprite = null;
 		private var _system:BleachSystem = null;
 		private var _connectTryCount:int = 0;
+		private var _progressLoad:ILoading = null;
 		public function BleachDirector()
 		{
 			super();
@@ -79,10 +80,10 @@ package bleach
 			//连接服务器
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECT_ERROR,serverConnectError);
+			addMessageListener(BleachNetMessage.BLEACH_NET_RECONNECT,serverConnectError);
 			_channel = new TCPCommunicator();
 			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
-			trace("Connect server...");
-			serverConnected(null);
+			//serverConnected(null);
 		}
 		
 		/**
@@ -94,14 +95,16 @@ package bleach
 			{
 				_connectTryCount++;
 				_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
-				trace("Reconnect server...");
+				trace("连接错误,重连...");
 			}
 			else
 			{
 				//超过重连次数
+				trace("重连超过次数");
 			}
 		}
 		
+		private var _heartBeat:HeartBeat = null;
 		/**
 		 * 服务端连接成功，开启运行
 		 * 
@@ -110,19 +113,17 @@ package bleach
 		{
 			//重置连接尝试次数
 			_connectTryCount = 0;
-			trace("Server connected!");
 			if(!_initialized)
 			{
+				_heartBeat = new HeartBeat(BleachSystem.instance.heartbeat,BleachSystem.instance.heartbeatot);
 				_initialized = true;
-				NetObserver.instance.addListener(MsgIdConstants.MSG_HEARTBEAT_RESP,heartbeatResponse);
 				addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
+				addMessageListener(BleachMessage.BLEACH_POPWINDOW_MODEL,popUpWindowModel);
 				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
 				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
 				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
 				addMessageListener(BleachNetMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
-				
 				var notify:BleachMessage = null;
-				
 				switch(BleachSystem.instance.portal)
 				{
 					case GlobalConfig.SYSTEM_PORTAL_NORMAL:
@@ -133,6 +134,25 @@ package bleach
 						break;
 				}
 			}
+			//重新开启心跳
+			_heartBeat.start();
+		}
+		
+		/**
+		 * 非模式弹出窗
+		 **/
+		private function popUpWindow(msg:BleachMessage):void
+		{
+		}
+		
+		/**
+		 * 模式弹出窗
+		 **/
+		private function popUpWindowModel(msg:BleachMessage):void
+		{
+			//var id:String = msg.value as String;
+			_progressLoad = ProgressLoading.instance;
+			this.addSceneTop(_progressLoad as Sprite);
 		}
 		
 		/**
@@ -140,7 +160,6 @@ package bleach
 		 **/
 		private function onMessageSend(msg:BleachNetMessage):void
 		{
-			trace("Message send Command[" + MsgGeneric(msg.value).id + "]");
 			_channel.sendMessage(msg.value as IMsgRequest);
 		}
 		
@@ -160,12 +179,13 @@ package bleach
 			}
 			var config:XML = new XML(new BleachXML());
 			trace(config.toString());
-			//_system = new BleachSystem();
 			var system:XML = config.system[0];
 			
 			BleachSystem.instance.heartbeat = new Number(system.heartbeat);
 			BleachSystem.instance.heartbeatot = new Number(system.heartbeattimeout);
+			BleachSystem.instance.reConnectCount = new Number(system.reconnect);
 			BleachSystem.instance.host = system.remotehost;
+			BleachSystem.instance.host = "125.65.108.148";
 			BleachSystem.instance.port = new Number(system.remoteport);
 			BleachSystem.instance.portal = new Number(system.portal);
 			
@@ -202,13 +222,13 @@ package bleach
 		
 		private function loadingShow(msg:BleachLoadingMessage):void
 		{
-			addSceneTop(MaskLoading.instance);
+			addSceneTop(_progressLoad as Sprite);
 			_loading = true;
 		}
 		
 		private function loadingHide(msg:BleachLoadingMessage):void
 		{
-			TweenLite.to(MaskLoading.instance,0.5,{
+			TweenLite.to(_progressLoad,0.5,{
 				"alpha" : 0,
 				onComplete : hideComplete
 			});
@@ -216,8 +236,9 @@ package bleach
 		
 		private function hideComplete():void
 		{
-			removeSceneTop(MaskLoading.instance);
-			MaskLoading.instance.alpha = 1;
+			removeSceneTop(_progressLoad as Sprite);
+			//MaskLoading.instance.alpha = 1;
+			Sprite(_progressLoad).alpha = 1;
 			_loading = false;
 		}
 		
@@ -225,7 +246,7 @@ package bleach
 		{
 			if(_loading)
 			{
-				MaskLoading.instance.progressUpdate(msg.total,msg.loaded);
+				_progressLoad.progressUpdate(msg.total,msg.loaded);
 			}
 		}
 		
@@ -236,8 +257,10 @@ package bleach
 		 **/
 		private function directScene(msg:BleachMessage):void
 		{
+			//场景切换使用面具加载
+			_progressLoad = MaskLoading.instance;
 			_downloader = null;
-			_downlodLinkLibrary = null;
+//			_downlodLinkLibrary = null;
 			_swapDealloc = msg.deallocOld;
 			if(_swapDealloc && _module)
 			{
@@ -262,129 +285,47 @@ package bleach
 			else
 			{
 				//创建该场景的域
-				_module.sceneDomain = new ApplicationDomain(ApplicationDomain.currentDomain);
+//				_module.sceneDomain = new ApplicationDomain(ApplicationDomain.currentDomain);
 				//_librarys = new Vector.<Loader>();
-				_module.library = new Vector.<Loader>();
-				_downloaded = 0;
-				libraryDownload();
+//				_module.library = new Vector.<Loader>();
+//				_downloaded = 0;
+//				libraryDownload();
 				//显示加载界面
+				_downloader = new SceneDownloader(_module);
+				_downloader.addEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_COMPLETE,onSceneDownloadComplete);
+				_downloader.addEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_FAILURE,onSceneDownloadFailure);
+				_downloader.begin();
 				dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_SHOW));
 			}
 		}
 		
-		private var _module:SceneModule = null;
-		private var _downloaded:int = 0;
-		//private var _librarys:Vector.<Loader> = null;
-		private var _downloader:Loader = null;
-		private var _downlodLinkLibrary:SceneLinkLibrary = null;
 		/**
-		 * 当前加载场景的链接库下载
+		 * 场景链接库，主文件下载完毕
 		 * 
 		 **/
-		private function libraryDownload():void
+		private function onSceneDownloadComplete(event:BleachEvent):void
 		{
-			if(_module)
-			{
-				if(_downloaded < _module.scene.librarys.length)
-				{
-					_downlodLinkLibrary = _module.scene.librarys[_downloaded];
-					_downloader = new Loader();
-					_downloader.contentLoaderInfo.addEventListener(Event.COMPLETE,libraryDownloadComplete);
-					_downloader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,libraryDownloadError);
-					var ctx:LoaderContext = new LoaderContext();
-					ctx.applicationDomain = _module.sceneDomain;
-					_downloader.load(new URLRequest(_downlodLinkLibrary.url),ctx);
-					ctx = null;
-				}
-				else
-				{
-					//下载场景主文件
-					sceneDownload();
-				}
-			}
-		}
-		
-		/**
-		 * 
-		 * 链接库下载完毕
-		 * 
-		 **/
-		private function libraryDownloadComplete(event:Event):void
-		{
-			_downloader.contentLoaderInfo.removeEventListener(Event.COMPLETE,libraryDownloadComplete);
-			_downloader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,libraryDownloadError);
-			
-			_module.library.push(_downloader);
-			if(_downlodLinkLibrary.isUIlib)
-			{
-				//UI库资源
-				PixelAssetManager.instance.addAssetLibrary(new PixelLoaderAssetLibrary(_downloader,_downlodLinkLibrary.id));
-			}
-			_downloaded++;
-			var updateMsg:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
-			//全部数量为 链接库数量 + 主文件数量
-			updateMsg.total = _module.scene.librarys.length + 1;
-			updateMsg.loaded = _downloaded;
-			dispatchMessage(updateMsg);
+			var module:SceneModule = event.value as SceneModule;
+			swapScene(module.sceneContent.content,_swapDealloc);
+			this.loadingHide(null);
+			_downloader.removeEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_COMPLETE,onSceneDownloadComplete);
+			_downloader.removeEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_FAILURE,onSceneDownloadFailure);
 			_downloader = null;
-			libraryDownload();
-		}
-		
-		private var _sceneLoader:Loader = null;
-		/**
-		 * 场景主文件下载
-		 * 
-		 **/
-		private function sceneDownload():void
-		{
-			_sceneLoader = new Loader();
-			_sceneLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sceneDownloadComplete);
-			_sceneLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,sceneDownloadError);
-			var ctx:LoaderContext = new LoaderContext();
-			ctx.applicationDomain = _module.sceneDomain;
-			var url:String = _module.scene.url;
-			_sceneLoader.load(new URLRequest(url),ctx);
-			
 		}
 		
 		/**
-		 * 场景主文件下载完成
-		 * 
+		 * 场景模块下载失败
 		 **/
-		private function sceneDownloadComplete(event:Event):void
+		private function onSceneDownloadFailure(event:BleachEvent):void
 		{
-			_sceneLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,sceneDownloadComplete);
-			_sceneLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,sceneDownloadError);
-			_module.sceneContent = _sceneLoader;
-			_sceneLoader = null;
-			_downloaded++;
-			var updateMsg:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
-			//全部数量为 链接库数量 + 主文件数量
-			updateMsg.total = _module.scene.librarys.length + 1;
-			updateMsg.loaded = _downloaded;
-			dispatchMessage(updateMsg);
-			swapScene(_module.sceneContent.content,_swapDealloc);
-			dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_HIDE));
-			_module.loaded = true;
-			
+			this.loadingHide(null);
+			_downloader.removeEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_COMPLETE,onSceneDownloadComplete);
+			_downloader.removeEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_FAILURE,onSceneDownloadFailure);
+			_downloader = null;
 		}
-		private function sceneDownloadError(event:IOErrorEvent):void
-		{}
-		
-		/**
-		 * 链接库下载异常
-		 * 
-		 **/
-		private function libraryDownloadError(event:IOErrorEvent):void
-		{
-			trace("!!!");
-		}
-		
-		//上一次心跳
-		private var lastHeartbeat:Number = 0;//new Date().time;
-		private var heartbeat:MsgHeartBeat = new MsgHeartBeat();
-		//等待心跳回应
-		private var waitHeartbeatResp:Boolean = false;
+		private var _downloader:SceneDownloader = null;
+		private var _module:SceneModule = null;
+
 		/**
 		 * 更新
 		 * 
@@ -392,57 +333,16 @@ package bleach
 		override public function frameUpdate(message:PixelMessage):void
 		{
 			super.frameUpdate(message);
+			if(_heartBeat)
+			{
+				_heartBeat.update();
+			}
 			if(_activedScene)
 			{
 				IPixelLayer(_activedScene).update();
 			}
-//			var now:Number = new Date().time;
-//			if(waitHeartbeatResp)
-//			{
-//				//检查等待回应是否超时
-//				if(now - lastHeartbeat >= BleachSystem.instance.heartbeatot)
-//				{
-//					//心跳回应超时
-//					//重新链接服务器
-//					
-//				}
-//			}
-//			else
-//			{
-//				if(now - lastHeartbeat >= BleachSystem.instance.heartbeat)
-//				{
-//					//到达发送心跳间隔
-//					heartbeatRequest(now);
-//				}
-//			}
 		}
-		
-		private var _heartbeat:MsgHeartBeat = new MsgHeartBeat();
-		/**
-		 * 发送心跳包
-		 * 
-		 **/
-		private function heartbeatRequest(time:Number):void
-		{
-			lastHeartbeat = time;
-			_heartbeat.timestamp = lastHeartbeat;
-			_channel.sendMessage(_heartbeat);
-			waitHeartbeatResp = true;
-		}
-		
-		/**
-		 * 心跳报回应
-		 * 
-		 **/
-		private function heartbeatResponse(msg:IMsg):void
-		{
-			//更新心跳时间，重置状态
-			//lastHeartbeat = MsgHeartBeatResp(msg).timestamp;
-			waitHeartbeatResp = false;
-		}
-		
-		//private var _newScene:DisplayObject = null;
-		
+
 		/**
 		 * 
 		 * 场景切换重写
@@ -451,12 +351,16 @@ package bleach
 		 **/
 		override protected function swapScene(newScene:DisplayObject,oldDealloc:Boolean = true):void
 		{
+			//激活
+			IScene(newScene).actived();
 			addScene(newScene);
 			if(_activedScene)
 			{
 				//_newScene = newScene;
 				//sceneFadeOut(_activedScene);
+				
 				removeScene(_activedScene);
+				IScene(_activedScene).unactived();
 //				IScene(_activedScene).pause();
 				if(oldDealloc)
 				{
@@ -471,218 +375,5 @@ package bleach
 				//sceneFadeIn(_activedScene);
 			}
 		}
-		
-//		protected function sceneFadeIn(scene:DisplayObject):void
-//		{
-//			_activedScene.alpha = 0;
-//			TweenLite.to(_activedScene,1,{
-//				"alpha" : 1
-//			});
-//		}
-//		
-//		protected function sceneFadeOut(scene:DisplayObject):void
-//		{
-//			_activedScene.alpha = 1;
-//			TweenLite.to(_activedScene,0.5,{
-//				"alpha" : 0
-//			});
-//		}
-	}
-}
-import flash.display.Loader;
-import flash.display.Scene;
-import flash.system.ApplicationDomain;
-
-import pixel.ui.control.asset.PixelAssetManager;
-
-class SceneModule
-{
-	private var _sceneContent:Loader = null;
-	public function set sceneContent(value:Loader):void
-	{
-		_sceneContent = value;
-	}
-	public function get sceneContent():Loader
-	{
-		return _sceneContent;
-	}
-	private var _loaded:Boolean = false;
-	public function get loaded():Boolean
-	{
-		return _loaded;
-	}
-	public function set loaded(value:Boolean):void
-	{
-		_loaded = value;
-	}
-	private var _domain:ApplicationDomain = null;
-	public function get sceneDomain():ApplicationDomain
-	{
-		return _domain;
-	}
-	public function set sceneDomain(value:ApplicationDomain):void
-	{
-		_domain = value;
-	}
-	private var _scene:SceneVO = null;
-	public function get id():String
-	{
-		return _scene.id;
-	}
-	
-	public function get scene():SceneVO
-	{
-		return _scene;
-	}
-	public function SceneModule(scene:SceneVO)
-	{
-		_scene = scene;
-		//_library = new Vector.<Loader>(_scene.librarys.length);
-	}
-	
-	private var _library:Vector.<Loader> = null;
-//	public function addLibrary(value:Loader):void
-//	{
-//		_library.push(value);
-//	}
-	
-	public function set library(value:Vector.<Loader>):void
-	{
-		_library = value;
-	}
-	public function get library():Vector.<Loader>
-	{
-		return _library;
-	}
-	
-	public function clear():void
-	{
-		
-		var loader:Loader = null;
-		for(var idx:int=0; idx<_library.length; idx++)
-		{
-			loader = _library[idx];
-			if(scene.librarys[idx].isUIlib)
-			{
-				PixelAssetManager.instance.removeAssetLibrary(scene.librarys[idx].id);
-				
-			}
-			loader.unloadAndStop(true);
-			loader = null;
-		}
-		if(_sceneContent)
-		{
-			_sceneContent.unloadAndStop(true);
-			_sceneContent = null;
-		}
-		_library = null;
-		_domain = null;
-		_loaded = false;
-	}
-}
-
-class SceneVO
-{
-	private var _id:String = "";
-	public function set id(value:String):void
-	{
-		_id = value;
-	}
-	public function get id():String
-	{
-		return _id;
-	}
-	private var _version:String = "";
-	public function set version(value:String):void
-	{
-		_version = value;
-	}
-	public function get version():String
-	{
-		return _version;
-	}
-	private var _url:String = "";
-	public function set url(value:String):void
-	{
-		_url = value;
-	}
-	public function get url():String
-	{
-		return _url;
-	}
-	
-	public function SceneVO(id:String,version:String,url:String)
-	{
-		_id = id;
-		_version = version;
-		_url = url;
-	}
-	private var _librarys:Vector.<SceneLinkLibrary> = new Vector.<SceneLinkLibrary>();
-	public function addLibrary(value:SceneLinkLibrary):void
-	{
-		_librarys.push(value);
-	}
-	
-	public function get librarys():Vector.<SceneLinkLibrary>
-	{
-		return _librarys;
-	}
-}
-
-class SceneLinkLibrary
-{
-	private var _desc:String = "";
-	public function set desc(value:String):void
-	{
-		_desc = value;
-	}
-	public function get desc():String
-	{
-		return _desc;
-	}
-	private var _id:String = "";
-	public function set id(value:String):void
-	{
-		_id = value;
-	}
-	public function get id():String
-	{
-		return _id;
-	}
-	private var _version:String = "";
-	public function set version(value:String):void
-	{
-		_version = value;
-	}
-	public function get version():String
-	{
-		return _version;
-	}
-	private var _url:String = "";
-	public function set url(value:String):void
-	{
-		_url = value;
-	}
-	public function get url():String
-	{
-		return _url;
-	}
-	
-	private var _isUIlib:Boolean = false;
-	public function set isUIlib(value:Boolean):void
-	{
-		_isUIlib = value;
-	}
-	public function get isUIlib():Boolean
-	{
-		return _isUIlib;
-	}
-	
-	public function SceneLinkLibrary(id:String,version:String,url:String,desc:String)
-	{
-		_id = id;
-		_version = version;
-		_url = url;
-		_desc = desc;
 	}
 }

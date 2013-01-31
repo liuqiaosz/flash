@@ -104,6 +104,7 @@ package
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
 	import pixel.ui.control.UITextInput;
+	import pixel.ui.control.UIToggleButton;
 	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.asset.PixelAssetManager;
@@ -182,84 +183,19 @@ package
 			//progress();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
-//			var s:Stat = new Stat();
-//			s.x = stage.stageWidth - s.width;
-//			addChild(s);
 			
-//			var check:UICheckBox = new UICheckBox();
-//			addChild(check);
-			
-//			PixelAssetManager.instance.download("login.swf");
-//			PixelAssetManager.instance.addEventListener(DownloadEvent.DOWNLOAD_SUCCESS,function(event:Event):void{
-//			
-//				var loader:URLLoader = new URLLoader();
-//				loader.dataFormat = URLLoaderDataFormat.BINARY;
-//				loader.addEventListener(Event.COMPLETE,function(event:Event):void{
-//					
-//					var mod:UIMod = UIControlFactory.instance.decode(loader.data);
-//					addChild(mod.controls.pop().control);
-//				});
-//				
-//				loader.load(new URLRequest("login.mod"));
-//			});
-			
-//			var s3d:Stage3D = stage.stage3Ds[0];
-//			s3d.addEventListener(Event.CONTEXT3D_CREATE,function(event:Event):void{
-//				s3d.context3D.configureBackBuffer(1280,600,0);
-//			
-//			});
-//			s3d.requestContext3D();
-//			scrollTest();
-			
-//			var panel:UIPanel = new UIPanel();
-//			panel.width = 200;
-//			panel.height = 100;
-//			
-//			panel.x = 100;
-//			panel.y = 100;
-//			
-//			addChild(panel);
-//			
-//			panel.ToolTip = "AAA房的司法的";
-//			
-//			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//				
-//				var style:UIPanelStyle = new UIPanelStyle();
-//				var img:Bitmap = new IMG() as Bitmap;
-//				style.BackgroundImage = img;
-//				style.Scale9Grid = true;
-//				style.Scale9GridBottom = style.Scale9GridRight = style.Scale9GridTop = 20;
-//				style.Scale9GridLeft = 30;
-//				style.BorderThinkness = 0;
-//				ToolTipManager.Instance.ChangeSkin(style);
-//				
-//			});
-//			var data:ByteArray = new TIP() as ByteArray;
-//			var mod:UIMod = UIControlFactory.instance.decode(data);
-//			
-//			var tip:SkillTip = new SkillTip();
-//			tip.updateStyle(mod.styles);
-//			var panel:UIPanel = new UIPanel();
-//			panel.width = 300;
-//			panel.height = 300;
-//			
-//			panel.ToolTip = "AAAA";
-//			
-//			addChild(panel);
-//			panel.x = 200;
-//			panel.y = 100;
-//			
-//			
-//			ToolTipManager.Instance.changeTip(tip);
+			var mod:UIMod = UIControlFactory.instance.decode(new TIP() as ByteArray);
+			addChild(mod.controls.pop().control);
+		}
+		
+		private function test3d():void
+		{
 			stage.stage3Ds[0].addEventListener(Event.CONTEXT3D_CREATE,function(event:Event):void{
 				perstes(stage.stage3Ds[0].context3D);
-				//addChild(pers);
 			});
 			
 			stage.stage3Ds[0].requestContext3D();
-			
 		}
-		
 		
 		private var _context:Context3D = null;
 		private var vertices:Vector.<Number> = null;

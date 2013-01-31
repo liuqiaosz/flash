@@ -26,6 +26,7 @@ package pixel.ui.control.utility
 		public static const VPANEL:int = 18;
 		public static const CHECKBOX:int = 19;
 		public static const CHECKBOXBTN:int = 20;
+		public static const TOGGLE_BUTTON:int = 21;		//状态切换按钮
 		
 		public static const CUSTOMER:uint = 99;			//自定义控件
 		
@@ -112,6 +113,10 @@ package pixel.ui.control.utility
 			{
 				return CHECKBOXBTN;
 			}
+			else if(Control is UIToggleButton)
+			{
+				return TOGGLE_BUTTON;
+			}
 			return 99;
 		}
 		
@@ -177,6 +182,10 @@ package pixel.ui.control.utility
 			{
 				return UICheckButton;
 			}
+			else if(Control is UIToggleButton)
+			{
+				return UIToggleButton;
+			}
 			return null;
 		}
 		
@@ -235,8 +244,12 @@ package pixel.ui.control.utility
 				case CHECKBOXBTN:
 					return UICheckBox;
 					break;
+				case TOGGLE_BUTTON:
+					return UIToggleButton;
+					break;
 			}
 			return null;
+			
 		}
 		
 		public static function getStylePrototypeByType(type:int):Class
@@ -291,8 +304,12 @@ package pixel.ui.control.utility
 				case CHECKBOXBTN:
 					return UICheckBox;
 					break;
+				case TOGGLE_BUTTON:
+					return UIToggleButtonStyle;
+					break;
 			}
 			return null;
+			
 		}
 		
 		public static function getStyleTypeByPrototype(Control:IVisualStyle):int
@@ -349,6 +366,10 @@ package pixel.ui.control.utility
 			else if(Control is UICheckButton)
 			{
 				return CHECKBOXBTN;
+			}
+			else if(Control is UIToggleButtonStyle)
+			{
+				return TOGGLE_BUTTON;
 			}
 			return 99;
 		}
@@ -407,6 +428,9 @@ package pixel.ui.control.utility
 					break;
 				case CHECKBOXBTN:
 					return "CheckBoxButton";
+					break;
+				case TOGGLE_BUTTON:
+					return "ToggleButton";
 					break;
 			}
 			return null;

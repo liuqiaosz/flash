@@ -4,6 +4,7 @@ package pixel.core
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.EventDispatcher;
+	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	
 	import pixel.graphic.PixelRenderMode;
@@ -31,6 +32,22 @@ package pixel.core
 			_topLayer = new Sprite();
 			gameStage.addChild(_contentLayer);
 			gameStage.addChild(_topLayer);
+			
+			gameStage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyboardDown);
+			gameStage.addEventListener(KeyboardEvent.KEY_UP,onKeyboardUp);
+		}
+		
+		private function onKeyboardDown(event:KeyboardEvent):void
+		{
+			var msg:PixelMessage = new PixelMessage(PixelMessage.IO_KEYPRESSED);
+			msg.value = event.keyCode;
+			dispatchMessage(msg);
+		}
+		private function onKeyboardUp(event:KeyboardEvent):void
+		{
+			var msg:PixelMessage = new PixelMessage(PixelMessage.IO_KEYRELEASE);
+			msg.value = event.keyCode;
+			dispatchMessage(msg);
 		}
 		
 		/**

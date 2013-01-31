@@ -1,7 +1,7 @@
 package bleach.view
 {
 	import bleach.communicator.CommMarshal;
-	import bleach.event.BleachDefenseEvent;
+	import bleach.event.BleachEvent;
 	import bleach.scene.vo.WorldNodeVO;
 	import bleach.scene.vo.WorldVO;
 	
@@ -38,7 +38,7 @@ package bleach.view
 		}
 	}
 }
-import bleach.event.BleachDefenseEvent;
+import bleach.event.BleachEvent;
 import bleach.message.BleachMessage;
 import bleach.scene.IWorldNode;
 import bleach.scene.vo.WorldNodeVO;

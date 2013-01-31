@@ -3,6 +3,8 @@ package pixel.message
 	public class PixelMessage implements IPixelMessage
 	{
 		public static const FRAME_UPDATE:String = "FrameUpdate";
+		public static const IO_KEYPRESSED:String = "KeyboardPressed";
+		public static const IO_KEYRELEASE:String = "KeyboardRelease";
 		
 		private var _message:String = "";
 		public function set message(value:String):void

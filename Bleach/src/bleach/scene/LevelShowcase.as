@@ -3,7 +3,7 @@ package bleach.scene
 	import bleach.communicator.CommMarshal;
 	import bleach.module.message.MsgConstants;
 	import bleach.module.message.MsgGetLevel;
-	import bleach.event.BleachDefenseEvent;
+	import bleach.event.BleachEvent;
 	import bleach.view.IViewController;
 	
 	import flash.display.DisplayObject;
@@ -80,7 +80,7 @@ package bleach.scene
 		override public function syncSceneData():void
 		{
 			//Loading场景加载
-			var notify:BleachDefenseEvent = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_SYNCSCENEDATA);
+			var notify:BleachEvent = new BleachEvent(BleachEvent.BLEACH_SYNCSCENEDATA);
 			dispatchEvent(notify);
 			
 			//获取关卡数据

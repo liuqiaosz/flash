@@ -4,8 +4,8 @@ package bleach.scene
 
 	public interface IScene extends IEventDispatcher
 	{
-		function pause():void;
-		function resume():void;
+		function unactived():void;
+		function actived():void;
 		function dealloc():void;
 	}
 }

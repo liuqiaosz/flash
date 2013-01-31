@@ -1,5 +1,7 @@
 package bleach.scene
 {
+	import bleach.message.BleachMessage;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -9,6 +11,7 @@ package bleach.scene
 	
 	import pixel.core.PixelSprite;
 	import pixel.core.PixelSpriteSheet;
+	import pixel.message.PixelMessage;
 	import pixel.texture.PixelTextureFactory;
 	import pixel.texture.event.PixelTextureEvent;
 	import pixel.texture.vo.PixelTexturePackage;
@@ -59,11 +62,12 @@ package bleach.scene
 			
 			role01 = UIContainer(ui).GetChildById("chooserole001",true) as UIButton;
 			role01.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				var a:Object = getDefinitionByName("choose_role013");
-				if(a)
-				{
-					role.image = new a() as BitmapData;
-				}
+//				var a:Object = getDefinitionByName("choose_role013");
+//				if(a)
+//				{
+//					role.image = new a() as BitmapData;
+//				}
+				dispatchMessage(new BleachMessage(BleachMessage.BLEACH_POPWINDOW_MODEL));
 			});
 			addChild(role);
 		}

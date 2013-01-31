@@ -8,6 +8,8 @@ package bleach.message
 		public static const BLEACH_SYNCSCENEDATA:String = "SyncSceneData";
 		public static const BLEACH_TEXTURE_DOWNLOADED:String = "TextureDownloaded";
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
+		public static const BLEACH_POPWINDOW_MODEL:String = "PopWindowModel";
+		public static const BLEACH_POPWINDOW:String = "PopWindow";
 		
 		private var _deallocOld:Boolean = false;
 		public function set deallocOld(value:Boolean):void

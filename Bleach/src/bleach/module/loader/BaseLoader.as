@@ -1,6 +1,6 @@
 package bleach.module.loader
 {
-	import bleach.event.BleachDefenseEvent;
+	import bleach.event.BleachEvent;
 	import bleach.module.GenericModule;
 	import bleach.utils.Constants;
 	import flash.display.Bitmap;
@@ -175,7 +175,7 @@ package bleach.module.loader
 			_lazy.stop();
 			_lazy.removeEventListener(TimerEvent.TIMER,completeLazy);
 			_lazy = null;
-			var notify:BleachDefenseEvent = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_INIT_COMPLETE);
+			var notify:BleachEvent = new BleachEvent(BleachEvent.BLEACH_INIT_COMPLETE);
 			dispatchEvent(notify);
 		}
 	}

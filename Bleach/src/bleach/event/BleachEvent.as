@@ -2,7 +2,7 @@ package bleach.event
 {
 	import flash.events.Event;
 
-	public class BleachDefenseEvent extends Event
+	public class BleachEvent extends Event
 	{
 		//同步场景数据
 		public static const BLEACH_SYNCSCENEDATA:String = "SyncSceneData";
@@ -14,6 +14,9 @@ package bleach.event
 		
 		public static const BLEACH_FLOW_SELECTED:String = "FlowItemSelected";
 		
+		public static const BLEACH_SCENE_DOWNLOAD_COMPLETE:String = "SceneDownloadComplete";
+		public static const BLEACH_SCENE_DOWNLOAD_FAILURE:String = "SceneDownloadFailure";
+		
 		private var _value:Object = null;
 		public function set value(data:Object):void
 		{
@@ -24,7 +27,7 @@ package bleach.event
 			return _value;
 		}
 		
-		public function BleachDefenseEvent(type:String,bubbles:Boolean = true)
+		public function BleachEvent(type:String,bubbles:Boolean = true)
 		{
 			super(type,bubbles);
 		}

@@ -2,16 +2,19 @@ package bleach.module.loader
 {
 //	import bleach.module.scene.GenericScene;
 	
+	import bleach.ILoading;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.system.ApplicationDomain;
+	import flash.utils.getDefinitionByName;
 	
 //	import pixel.utility.IDispose;
 
-	public class MaskLoading extends Sprite
+	public class MaskLoading extends Sprite implements ILoading
 	{
 		private static var _instance:MaskLoading = null;
 		private var _mask:Mask = null;
@@ -22,8 +25,8 @@ package bleach.module.loader
 			{
 				throw new Error("Singlton");
 			}
-			var colorImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadColor");
-			var whiteImgClass:Object = ApplicationDomain.currentDomain.getDefinition("image.loadWhite");
+			var colorImgClass:Object = getDefinitionByName("image.loadColor");
+			var whiteImgClass:Object = getDefinitionByName("image.loadWhite");
 			
 			var colorBitmap:BitmapData = new colorImgClass() as BitmapData;
 			var whiteBitmap:BitmapData = new whiteImgClass() as BitmapData;

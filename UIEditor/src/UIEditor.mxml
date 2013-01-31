@@ -146,6 +146,10 @@
 			private var ImageIcon:Class;
 			private var imageIcon:Bitmap = new ImageIcon() as Bitmap;
 			
+			[Embed(source="assets/Toggle.png")]
+			private var ToggleIcon:Class;
+			private var toggleIcon:Bitmap = new ToggleIcon() as Bitmap;
+			
 			//当前弹出的菜单
 			private var PopupWindow:SkinnableContainer = null;
 			//当前窗体类型
@@ -229,6 +233,11 @@
 					label: "CheckBox",
 					id: Utils.CHECKBOX,
 					icon: windowIcon
+				},
+				{
+					labe : "ToggleButton",
+					id: Utils.TOGGLE_BUTTON,
+					icon: toggleIcon
 				}
 				
 			]);

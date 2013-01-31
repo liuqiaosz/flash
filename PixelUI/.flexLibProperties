@@ -27,6 +27,8 @@
     <classEntry path="pixel.ui.control.UICheckButton"/>
     <classEntry path="pixel.ui.control.style.UICheckButtonStyle"/>
     <classEntry path="pixel.ui.control.UITabBar"/>
+    <classEntry path="pixel.ui.control.UIToggleButton"/>
+    <classEntry path="pixel.ui.control.style.UIToggleButtonStyle"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

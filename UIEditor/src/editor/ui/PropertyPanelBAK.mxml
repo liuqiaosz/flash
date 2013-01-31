@@ -45,7 +45,6 @@
 			import pixel.ui.control.asset.IAsset;
 			import pixel.ui.control.style.UIStyleLinkEmu;
 			import pixel.ui.control.style.UIStyleManager;
-			import pixel.ui.control.style.UITextInputStyle;
 			import pixel.ui.control.utility.Utils;
 			import pixel.ui.control.vo.UIStyleGroup;
 			import pixel.ui.control.vo.UIStyleMod;
@@ -55,36 +54,36 @@
 			import spark.events.TextOperationEvent;
 			private var _CurrentControl:UIControl = null;
 			
-//			[Bindable]
-//			private var ButtonStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var TabStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var SliderStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var TabPanelStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var PanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var ButtonStyleFlag:Boolean = false;
+			[Bindable]
+			private var TabStyleFlag:Boolean = false;
+			[Bindable]
+			private var SliderStyleFlag:Boolean = false;
+			[Bindable]
+			private var TabPanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var PanelStyleFlag:Boolean = false;
 			[Bindable]
 			private var CategoryFlag:Boolean = false;
-//			[Bindable]
-//			private var LabelStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var WindowStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var ImageStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var TextInputStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var ComboboxStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var VerticalPanelStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var ProgressStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var checkboxStyleFlag:Boolean = false;
-//			[Bindable]
-//			private var toggleStyleFlag:Boolean = false;
+			[Bindable]
+			private var LabelStyleFlag:Boolean = false;
+			[Bindable]
+			private var WindowStyleFlag:Boolean = false;
+			[Bindable]
+			private var ImageStyleFlag:Boolean = false;
+			[Bindable]
+			private var TextInputStyleFlag:Boolean = false;
+			[Bindable]
+			private var ComboboxStyleFlag:Boolean = false;
+			[Bindable]
+			private var VerticalPanelStyleFlag:Boolean = false;
+			[Bindable]
+			private var ProgressStyleFlag:Boolean = false;
+			[Bindable]
+			private var checkboxStyleFlag:Boolean = false;
+			[Bindable]
+			private var toggleStyleFlag:Boolean = false;
 			
 			[Bindable]
 			private var StyleLinkEnabled:Boolean = false;
@@ -94,7 +93,7 @@
 			[Bindable]
 			private var propertieEnabledBind:Boolean = true;
 			
-			private var propertie:GenericProperty = null;
+			
 			override protected function Initialized():void
 			{
 				Reset();
@@ -176,14 +175,12 @@
 				Name.text = _CurrentControl.Id;
 				//类型
 				
-				
 				if(_CurrentControl is UISlider)
 				{
 					Category.text = "滑动条";
-					//SliderStyleFlag = true;
-//					CategoryFlag = true;
-					//SliderStyle.Control = _CurrentControl;
-					propertie = new SliderProperty();
+					SliderStyleFlag = true;
+					CategoryFlag = true;
+					SliderStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is SimpleTabPanel)
 				{
@@ -191,46 +188,45 @@
 					//TabPanelStyle.visible = true;
 					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
 					//TabPanelStyle.visible = true;
-					//TabPanelStyleFlag = true;
-//					CategoryFlag = true;
+					TabPanelStyleFlag = true;
+					CategoryFlag = true;
 					//BasicStyleFlag = false;
-					//TabPanelStyle.Control = _CurrentControl;
-					propertie = new TabPanelProperty();
+					TabPanelStyle.Control = _CurrentControl;
 					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
 				}
 				else if(_CurrentControl is TabBar)
 				{
-					//Category.text = "标签面板";
+					Category.text = "标签面板";
 					//TabPanelStyle.visible = true;
 					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
 					//TabPanelStyle.visible = true;
-					//TabPanelStyleFlag = true;
-					//CategoryFlag = true;
+					TabPanelStyleFlag = true;
+					CategoryFlag = true;
 					//BasicStyleFlag = false;
 					//TabPanelStyle.DisplayControl(TabBar(_CurrentControl).Owner);
 					
-					//TabPanelStyle.Control = TabBar(_CurrentControl).Owner;
-					//_CurrentControl = TabBar(_CurrentControl).Owner;
+					TabPanelStyle.Control = TabBar(_CurrentControl).Owner;
+					_CurrentControl = TabBar(_CurrentControl).Owner;
 				}
 				else if(_CurrentControl is Tab)
 				{
-//					Category.text = "标签";
-//					TabStyleFlag = true;
-//					CategoryFlag = true;
-//					TabStyle.Control = _CurrentControl;
+					Category.text = "标签";
+					TabStyleFlag = true;
+					CategoryFlag = true;
+					TabStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is TabContent)
 				{
-//					Category.text = "标签面板";
-//					//TabPanelStyle.visible = true;
-//					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
-//					//TabPanelStyle.visible = true;
-//					TabPanelStyleFlag = true;
-//					CategoryFlag = true;
-//					//BasicStyleFlag = false;
-//					_CurrentControl = TabContent(_CurrentControl).Owner.parent.parent as SimpleTabPanel;
-//					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
-//					TabPanelStyle.Control = _CurrentControl;
+					Category.text = "标签面板";
+					//TabPanelStyle.visible = true;
+					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
+					//TabPanelStyle.visible = true;
+					TabPanelStyleFlag = true;
+					CategoryFlag = true;
+					//BasicStyleFlag = false;
+					_CurrentControl = TabContent(_CurrentControl).Owner.parent.parent as SimpleTabPanel;
+					//TabPanelStyle.DisplayControl(_CurrentControl as SimpleTabPanel);
+					TabPanelStyle.Control = _CurrentControl;
 				}
 //				else if(_CurrentControl is HorizontalPanel)
 //				{
@@ -243,8 +239,7 @@
 				else if(_CurrentControl is UIToggleButton)
 				{
 					Category.text = "状态切换按钮";
-//					toggleStyleFlag = true;
-					propertie = new ToggleButtonPropertie();
+					toggleStyleFlag = true;
 					
 				}
 				else if(_CurrentControl is pixel.ui.control.UIButton)
@@ -253,9 +248,8 @@
 					//					ButtonOverStyle.visible = true;
 					//					ButtonPressStyle.visible = true;
 					//					ButtonStateSwitch.visible = true;
-					//ButtonStyleFlag = true;
-					//ButtonStyle.Control = _CurrentControl;
-					propertie = new ButtonProperty();
+					ButtonStyleFlag = true;
+					ButtonStyle.Control = _CurrentControl;
 					//ButtonOverStyle.DisplayControl(_CurrentControl as corecom.control.SimpleButton);
 					//ButtonPressStyle.DisplayControl(_CurrentControl as corecom.control.SimpleButton);
 					
@@ -264,102 +258,81 @@
 				else if(_CurrentControl is UIVerticalPanel)
 				{
 					Category.text = "垂直滚动面板";
-//					VerticalPanelStyleFlag = true;
-//					VPanelStyle.Control = _CurrentControl;
-					propertie = new UIVerticalScrollPropertie();
+					VerticalPanelStyleFlag = true;
+					VPanelStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is UIPanel)
 				{
 					Category.text = "简单面板";
-//					PanelStyleFlag = true;
-//					PanelStyle.Control = _CurrentControl;
-					propertie = new PanelProperty();
+					PanelStyleFlag = true;
+					PanelStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is pixel.ui.control.UILabel)
 				{
 					Category.text = "文本";
-//					LabelStyleFlag = true;
-//					LabelStyle.Control = _CurrentControl;
-					propertie = new LabelPropery();
+					LabelStyleFlag = true;
+					LabelStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is UIWindow)
 				{
-//					Category.text = "视窗";
-//					WindowStyleFlag = true;
-//					WindowStyle.Control = _CurrentControl;
+					Category.text = "视窗";
+					WindowStyleFlag = true;
+					WindowStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is UIImage)
 				{
 					Category.text = "图形";
-//					ImageStyleFlag = true;
-//					ImageStyle.Control = _CurrentControl;
-					propertie = new UIImageProperty();
+					ImageStyleFlag = true;
+					ImageStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is UITextInput)
 				{
 					Category.text = "文本输入框";
-//					TextInputStyleFlag = true;
-//					TextInputStyle.Control = _CurrentControl;
-					propertie = new TextInputProperty();
+					TextInputStyleFlag = true;
+					TextInputStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is UICombobox)
 				{
 					Category.text = "下拉框";
-//					ComboboxStyleFlag = true;
-//					ComboboxStyle.Control = _CurrentControl;
-					propertie = new ComboboxPropertie();
+					ComboboxStyleFlag = true;
+					ComboboxStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is UIProgress)
 				{
 					Category.text = "加载条";
-//					ProgressStyleFlag = true;
-//					ProgressStyle.Control = _CurrentControl;
-					propertie = new UIProgressPropertie();
+					ProgressStyleFlag = true;
+					ProgressStyle.Control = _CurrentControl;
 				}
 				else if(_CurrentControl is UICheckBox)
 				{
 					Category.text = "复选框";
-//					checkboxStyleFlag = true;
-//					checkboxStyle.Control = _CurrentControl;
-					propertie = new ComboboxPropertie();
+					checkboxStyleFlag = true;
+					checkboxStyle.Control = _CurrentControl;
 				}
-//				CategoryFlag = true;
-				if(propertie)
-				{
-					propertie.Control = _CurrentControl;
-					StyleGroup.addElement(propertie);
-					CategoryFlag = true;
-					propertie.addEventListener(NotifyEvent.CHANGEIMAGE,OnSubStyleChangeImage);
-				}
+				CategoryFlag = true;
 			}
 			
 			override public function Reset():void
 			{
-				if(propertie)
-				{
-					propertie.removeEventListener(NotifyEvent.CHANGEIMAGE,OnSubStyleChangeImage);
-					StyleGroup.removeAllElements();
-					propertie = null;
-				}
-//				ButtonStyleFlag = false;
-//				TabStyleFlag = false;
-//				SliderStyleFlag = false;
-//				TabPanelStyleFlag = false;
-//				PanelStyleFlag = false;
-//				CategoryFlag = false;
-//				WindowStyleFlag = false;
-//				LabelStyleFlag = false;
-//				ImageStyleFlag = false;
-//				TextInputStyleFlag = false;
-//				ComboboxStyleFlag = false;
-//				VerticalPanelStyleFlag = false;
-//				ProgressStyleFlag = false;
+				ButtonStyleFlag = false;
+				TabStyleFlag = false;
+				SliderStyleFlag = false;
+				TabPanelStyleFlag = false;
+				PanelStyleFlag = false;
+				CategoryFlag = false;
+				WindowStyleFlag = false;
+				LabelStyleFlag = false;
+				ImageStyleFlag = false;
+				TextInputStyleFlag = false;
+				ComboboxStyleFlag = false;
+				VerticalPanelStyleFlag = false;
+				ProgressStyleFlag = false;
 				Name.text = "";
 				styleCombo.textInput.editable = false;
 				styleCombo.textInput.text = "";
 				styleEnabledBind = true;
 				StyleLink.selected = false;
-//				checkboxStyleFlag = false;
+				checkboxStyleFlag = false;
 			}
 			
 			[Bindable]
@@ -483,7 +456,6 @@
 				</s:HGroup>
 			</s:VGroup>
 			<s:Group id="StyleGroup">
-				<!--
 				<My:WindowProperty id="WindowStyle" visible="{WindowStyleFlag}" includeInLayout="{WindowStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)" styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}" />
 				<My:PanelProperty id="PanelStyle" visible="{PanelStyleFlag}" includeInLayout="{PanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
 				<My:ButtonProperty id="ButtonStyle" visible="{ButtonStyleFlag}" includeInLayout="{ButtonStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
@@ -497,7 +469,6 @@
 				<My:UIVerticalScrollPropertie id="VPanelStyle" visible="{VerticalPanelStyleFlag}" includeInLayout="{VerticalPanelStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
 				<My:UIProgressPropertie id="ProgressStyle" visible="{ProgressStyleFlag}" includeInLayout="{ProgressStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}"/>
 				<My:UICheckBoxProperty id="checkboxStyle" visible="{checkboxStyleFlag}" includeInLayout="{checkboxStyleFlag}" OnChangeImage="OnSubStyleChangeImage(event)"  styleEnabled="{styleEnabledBind}" propertieEnabled="{propertieEnabledBind}" />
-				-->
 			</s:Group>
 			
 		</s:VGroup>

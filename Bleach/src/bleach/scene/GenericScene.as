@@ -22,11 +22,11 @@ package bleach.scene
 		{
 		}
 		
-		public function pause():void
+		public function unactived():void
 		{
 			_pause = true;
 		}
-		public function resume():void
+		public function actived():void
 		{
 			_pause = false;
 		}

@@ -1,6 +1,6 @@
 package bleach.scene
 {
-	import bleach.event.BleachDefenseEvent;
+	import bleach.event.BleachEvent;
 	import bleach.view.IWorldViewController;
 	import bleach.view.WorldViewController;
 

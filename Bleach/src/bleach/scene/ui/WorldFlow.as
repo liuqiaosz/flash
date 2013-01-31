@@ -2,7 +2,7 @@ package bleach.scene.ui
 {
 	import com.greensock.TweenMax;
 	
-	import bleach.event.BleachDefenseEvent;
+	import bleach.event.BleachEvent;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -114,7 +114,7 @@ package bleach.scene.ui
 		
 		private function selectedNotify():void
 		{
-			var notify:BleachDefenseEvent = new BleachDefenseEvent(BleachDefenseEvent.BLEACH_FLOW_SELECTED);
+			var notify:BleachEvent = new BleachEvent(BleachEvent.BLEACH_FLOW_SELECTED);
 			notify.value = _content.Children[_scrollSeek];
 			dispatchEvent(notify);
 		}

@@ -6,6 +6,7 @@ package bleach.message
 	{
 		public static const BLEACH_LOADING_SHOW:String = "LoadingShow";
 		public static const BLEACH_LOADING_UPDATE:String = "LoadingUpdate";
+		public static const BLEACH_LOADING_COMPLETE:String = "LoadingComplete";
 		public static const BLEACH_LOADING_HIDE:String = "LoadingHide";
 		public static const BLEACH_LOADING_END:String = "LoadingEnd";
 		

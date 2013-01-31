@@ -1,6 +1,6 @@
 package
 {
-	import bleach.event.BleachDefenseEvent;
+	import bleach.event.BleachEvent;
 	import bleach.module.loader.BaseLoader;
 	
 	import flash.display.Sprite;
@@ -12,7 +12,7 @@ package
 	import pixel.utility.Tools;
 	import pixel.utility.math.Int64;
 	
-	[SWF(width="1000",height="600",backgroundColor="0x000000")]
+	[SWF(width="1000",height="600",backgroundColor="0xFFFFFF")]
 	public class Bleach extends Sprite
 	{
 		private var _loader:BaseLoader = null;
@@ -34,10 +34,10 @@ package
 			this.stage.align = StageAlign.TOP_LEFT;
 			_loader = new BaseLoader();
 			addChild(_loader);
-			addEventListener(BleachDefenseEvent.BLEACH_INIT_COMPLETE,initComplete);
+			addEventListener(BleachEvent.BLEACH_INIT_COMPLETE,initComplete);
 		}
 		
-		private function initComplete(event:BleachDefenseEvent):void
+		private function initComplete(event:BleachEvent):void
 		{
 			_loader.visible = false;
 			addChild(_loader.mainApp);
