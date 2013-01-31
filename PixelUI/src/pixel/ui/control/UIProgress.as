@@ -35,13 +35,6 @@ package pixel.ui.control
 			return _ProgressBar;
 		}
 		
-//		override protected function StyleUpdate():void
-//		{
-////			_ProgressBar.x = this.BorderThinkness;
-////			_ProgressBar.y = this.BorderThinkness;
-//			super.StyleUpdate();
-//		}
-		
 		/**
 		 * 更新进度
 		 **/
@@ -80,13 +73,3 @@ package pixel.ui.control
 		}
 	}
 }
-
-//import corecom.control.UIControl;
-//import corecom.control.style.UIProgressBarStyle;
-//class ProgressBar extends UIControl
-//{
-//	public function ProgressBar(Style:Class = null)
-//	{
-//		super(Style?Style:UIProgressBarStyle);
-//	}
-//}

@@ -10,6 +10,7 @@ package bleach.message
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
 		public static const BLEACH_POPWINDOW_MODEL:String = "PopWindowModel";
 		public static const BLEACH_POPWINDOW:String = "PopWindow";
+		public static const BLEACH_POPCLOSE:String = "PopClose";
 		
 		private var _deallocOld:Boolean = false;
 		public function set deallocOld(value:Boolean):void

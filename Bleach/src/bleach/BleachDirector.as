@@ -6,6 +6,7 @@ package bleach
 	import bleach.communicator.NetObserver;
 	import bleach.communicator.TCPCommunicator;
 	import bleach.event.BleachEvent;
+	import bleach.event.BleachProgressEvent;
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
@@ -19,6 +20,7 @@ package bleach
 	import bleach.module.message.MsgIdConstants;
 	import bleach.scene.IScene;
 	import bleach.scene.LoginScene;
+	import bleach.scene.PopUpMaskScene;
 	import bleach.scene.WorldScene;
 	
 	import com.greensock.TweenLite;
@@ -121,8 +123,11 @@ package bleach
 				addMessageListener(BleachMessage.BLEACH_POPWINDOW_MODEL,popUpWindowModel);
 				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
 				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
-				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
+//				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
 				addMessageListener(BleachNetMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
+				
+				addMessageListener(BleachMessage.BLEACH_POPCLOSE,onClosePopScene);
+				
 				var notify:BleachMessage = null;
 				switch(BleachSystem.instance.portal)
 				{
@@ -138,11 +143,18 @@ package bleach
 			_heartBeat.start();
 		}
 		
+		private function onClosePopScene(msg:PixelMessage):void
+		{
+			PopUpMaskScene.instance.hide();
+			this.removeSceneTop(PopUpMaskScene.instance);
+		}
+		
 		/**
 		 * 非模式弹出窗
 		 **/
 		private function popUpWindow(msg:BleachMessage):void
 		{
+			
 		}
 		
 		/**
@@ -151,8 +163,11 @@ package bleach
 		private function popUpWindowModel(msg:BleachMessage):void
 		{
 			//var id:String = msg.value as String;
-			_progressLoad = ProgressLoading.instance;
-			this.addSceneTop(_progressLoad as Sprite);
+			//_progressLoad = ProgressLoading.instance;
+			//this.addSceneTop(_progressLoad as Sprite);
+			//PopUpMaskScene.instance.show(_sceneCache[msg.value] as SceneModule);
+			PopUpMaskScene.instance.show(_sceneCache["loginScene"] as SceneModule);
+			addSceneTop(PopUpMaskScene.instance);
 		}
 		
 		/**
@@ -242,13 +257,6 @@ package bleach
 			_loading = false;
 		}
 		
-		private function loadingUpdate(msg:BleachLoadingMessage):void
-		{
-			if(_loading)
-			{
-				_progressLoad.progressUpdate(msg.total,msg.loaded);
-			}
-		}
 		
 		private var _swapDealloc:Boolean = false;
 		/**
@@ -291,11 +299,22 @@ package bleach
 //				_downloaded = 0;
 //				libraryDownload();
 				//显示加载界面
+				
 				_downloader = new SceneDownloader(_module);
 				_downloader.addEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_COMPLETE,onSceneDownloadComplete);
 				_downloader.addEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_FAILURE,onSceneDownloadFailure);
+				_downloader.addEventListener(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS,progressUpdate);
 				_downloader.begin();
 				dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_SHOW));
+			}
+		}
+		
+		
+		private function progressUpdate(event:BleachProgressEvent):void
+		{
+			if(_loading)
+			{
+				_progressLoad.progressUpdate(event.total,event.loaded);
 			}
 		}
 		
@@ -310,6 +329,7 @@ package bleach
 			this.loadingHide(null);
 			_downloader.removeEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_COMPLETE,onSceneDownloadComplete);
 			_downloader.removeEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_FAILURE,onSceneDownloadFailure);
+			_downloader.removeEventListener(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS,progressUpdate);
 			_downloader = null;
 		}
 		

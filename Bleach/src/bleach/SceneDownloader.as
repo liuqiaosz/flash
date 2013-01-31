@@ -1,6 +1,7 @@
 package bleach
 {
 	import bleach.event.BleachEvent;
+	import bleach.event.BleachProgressEvent;
 	import bleach.message.BleachLoadingMessage;
 	
 	import flash.display.Loader;
@@ -79,11 +80,16 @@ package bleach
 				PixelAssetManager.instance.addAssetLibrary(new PixelLoaderAssetLibrary(_downloader,_downlodLinkLibrary.id));
 			}
 			_downloaded++;
-			var updateMsg:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
-			//全部数量为 链接库数量 + 主文件数量
-			updateMsg.total = _module.scene.librarys.length + 1;
-			updateMsg.loaded = _downloaded;
-			dispatchMessage(updateMsg);
+//			var updateMsg:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
+//			//全部数量为 链接库数量 + 主文件数量
+//			updateMsg.total = _module.scene.librarys.length + 1;
+//			updateMsg.loaded = _downloaded;
+//			dispatchMessage(updateMsg);
+			
+			var update:BleachProgressEvent = new BleachProgressEvent(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS);
+			update.total = _module.scene.librarys.length + 1;
+			update.loaded = _downloaded;
+			this.dispatchEvent(update);
 			_downloader = null;
 			libraryDownload();
 		}
@@ -116,11 +122,10 @@ package bleach
 			_module.sceneContent = _sceneLoader;
 			_sceneLoader = null;
 			_downloaded++;
-			var updateMsg:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
-			//全部数量为 链接库数量 + 主文件数量
-			updateMsg.total = _module.scene.librarys.length + 1;
-			updateMsg.loaded = _downloaded;
-			dispatchMessage(updateMsg);
+			var update:BleachProgressEvent = new BleachProgressEvent(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS);
+			update.total = _module.scene.librarys.length + 1;
+			update.loaded = _downloaded;
+			this.dispatchEvent(update);
 //			var complete:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_COMPLETE);
 //			complete.value = _module;
 //			dispatchMessage(complete);
