@@ -170,8 +170,8 @@
 		</s:ComboBox>
 	</s:HGroup>
 	
-	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"  />
+	<ui:BasicPropertie id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"  />
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"/>
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
-	<ui:ScaleProperty id="ScaleStyle" Control="{CurrentControl}" />
+	<ui:ScalePropertie id="ScaleStyle" Control="{CurrentControl}" />
 </ui:GenericProperty>

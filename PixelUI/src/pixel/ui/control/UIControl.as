@@ -112,11 +112,11 @@ package pixel.ui.control
 			_ToolTip = Value;
 			if(null != _ToolTip && "" != _ToolTip)
 			{
-				ToolTipManager.Instance.Bind(this);
+				UIToolTipManager.Instance.Bind(this);
 			}
 			else
 			{
-				ToolTipManager.Instance.UnBind(this);	
+				UIToolTipManager.Instance.UnBind(this);	
 			}
 		}
 		public function get ToolTip():String

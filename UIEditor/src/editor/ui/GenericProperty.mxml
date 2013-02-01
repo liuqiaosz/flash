@@ -71,6 +71,8 @@
 				dispatchEvent(Notify);
 			}
 			
+			
+			
 			protected function OnImageSelectedNotify(LibraryId:String,AssetId:String):void
 			{
 				var AssetItem:IAsset = Globals.FindAssetById(LibraryId,AssetId);

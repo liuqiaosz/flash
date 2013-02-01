@@ -67,7 +67,9 @@ package bleach.scene
 //				{
 //					role.image = new a() as BitmapData;
 //				}
-				dispatchMessage(new BleachMessage(BleachMessage.BLEACH_POPWINDOW_MODEL));
+				var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_POPWINDOW_MODEL);
+				msg.value = "loginScene"; 
+				dispatchMessage(msg);
 			});
 			addChild(role);
 		}

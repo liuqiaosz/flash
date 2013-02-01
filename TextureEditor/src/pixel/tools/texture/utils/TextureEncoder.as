@@ -17,7 +17,8 @@ package pixel.tools.texture.utils
 		{
 			try
 			{
-				var source:BitmapData = BitmapTools.BitmapClone(texture.bitmap);
+				//var source:BitmapData = BitmapTools.BitmapClone(texture.bitmap);
+				var source:BitmapData = texture.bitmap.clone();
 				//var pixels:ByteArray = _texture.bitmap.getPixels(_texture.bitmap.rect);
 				//_texture.id = pixelTextureId.text;
 				var compressPixels:ByteArray = null;

@@ -8,8 +8,8 @@
     <classEntry path="pixel.ui.control.style.UIVerticalScrollerStyle"/>
     <classEntry path="pixel.ui.control.style.UIVerticalPanelStyle"/>
     <classEntry path="pixel.ui.control.style.UIImageStyle"/>
-    <classEntry path="pixel.ui.control.DefaultTip"/>
-    <classEntry path="pixel.ui.control.IPixelTip"/>
+    <classEntry path="pixel.ui.control.UITipDefault"/>
+    <classEntry path="pixel.ui.control.IUITip"/>
     <classEntry path="pixel.ui.control.vo.UIMod"/>
     <classEntry path="pixel.ui.control.vo.UIStyleMod"/>
     <classEntry path="pixel.ui.control.style.UIStyleFactory"/>

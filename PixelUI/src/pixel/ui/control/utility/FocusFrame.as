@@ -21,7 +21,7 @@ package pixel.ui.control.utility
 		//protected var _FrameWidth:int = 0;
 		//protected var _FrameHeight:int = 0;
 		protected var _BorderColor:uint = 0x1B8DEA;
-		protected var _PointSize:int = 8;
+		protected var _PointSize:int = 6;
 		//protected var _Actived:Boolean = false;
 		private var _lt:AnchorPoint = null;
 		private var _lm:AnchorPoint = null;

@@ -179,7 +179,7 @@
 			{
 				changeApply = true;
 				var _texture:PixelTexture = texturePropertie.texture;
-				var source:BitmapData = BitmapTools.BitmapClone(texturePropertie.texture.bitmap);
+				var source:BitmapData = texturePropertie.texture.bitmap.clone();
 				if(_texture.alphaCut)
 				{
 					source = BitmapTools.CutAlpha(source);

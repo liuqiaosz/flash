@@ -1,8 +1,6 @@
 package pixel.ui.control.event
 {
 	import pixel.ui.control.asset.IAssetLibrary;
-	
-	import pixel.utility.swf.Swf;
 
 	public class DownloadEvent extends UIControlEvent
 	{

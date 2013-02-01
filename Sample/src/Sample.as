@@ -91,10 +91,9 @@ package
 	import pixel.texture.vo.PixelTexture;
 	import pixel.texture.vo.PixelTexturePackage;
 	import pixel.ui.control.ComboboxItem;
-	import pixel.ui.control.HorizontalScroller;
 	import pixel.ui.control.IUIControl;
-	import pixel.ui.control.LayoutConstant;
-	import pixel.ui.control.ToolTipManager;
+	import pixel.ui.control.UILayoutConstant;
+	import pixel.ui.control.UIToolTipManager;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UICheckBox;
 	import pixel.ui.control.UICombobox;
@@ -126,8 +125,6 @@ package
 	import pixel.utility.data.QuadNode;
 	import pixel.utility.data.QuadTree;
 	import pixel.utility.loader.Loader;
-	import pixel.utility.swf.Swf;
-	import pixel.utility.swf.SwfFactory;
 	
 	import ui.aa;
 	
@@ -1017,7 +1014,7 @@ package
 
 import flash.display.Bitmap;
 
-import pixel.ui.control.LayoutConstant;
+import pixel.ui.control.UILayoutConstant;
 import pixel.ui.control.UIContainer;
 import pixel.ui.control.UIImage;
 import pixel.utility.BitmapTools;
@@ -1032,7 +1029,7 @@ class WorldFlowItem extends UIContainer
 	{
 		super();
 		//this.LeftBottomCorner = this.LeftTopCorner = this.RightBottomCorner = this.RightTopCorner = 5;
-		this.Layout = LayoutConstant.VERTICAL;
+		this.Layout = UILayoutConstant.VERTICAL;
 		this.Gap = this.padding = 5;
 		this.BorderThinkness = 0;
 		if(itemWidth > 0)
@@ -1075,7 +1072,7 @@ import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.geom.Rectangle;
 
-import pixel.ui.control.LayoutConstant;
+import pixel.ui.control.UILayoutConstant;
 import pixel.ui.control.UIContainer;
 import pixel.ui.control.UIPanel;
 
@@ -1096,7 +1093,7 @@ class ShowcaseFlow extends Sprite
 	{
 		super();
 		_content = new UIContainer();
-		_content.Layout = LayoutConstant.HORIZONTAL;
+		_content.Layout = UILayoutConstant.HORIZONTAL;
 		super.addChild(_content);
 		_scrollWidth = sizeW;
 		_scrollHeight = sizeH;

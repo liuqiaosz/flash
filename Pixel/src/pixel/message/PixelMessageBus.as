@@ -36,6 +36,8 @@ class MessageBusImpl implements IPixelMessageBus
 {
 	use namespace PixelNs;
 	
+	private var _messagePool:Vector.<IPixelMessage> = new Vector.<IPixelMessage>();
+	
 	//消息
 	private var _pool:Dictionary = new Dictionary();
 	
@@ -57,7 +59,6 @@ class MessageBusImpl implements IPixelMessageBus
 	//取消注册消息
 	public function unRegister(message:String,callback:Function):void
 	{
-		
 		if(message in _pool)
 		{
 			var queue:Vector.<Function> = _pool[message];
@@ -71,13 +72,32 @@ class MessageBusImpl implements IPixelMessageBus
 	private var _queue:Vector.<Function> = null;
 	public function dispatchMessage(message:IPixelMessage):void
 	{
-		if(message.message in _pool)
+//		if(message.message in _pool)
+//		{
+//			_queue = _pool[message.message];
+//			var callback:Function = null;
+//			for each(callback in _queue)
+//			{
+//				callback(message);
+//			}
+//		}
+		_messagePool.push(message);
+	}
+	
+	private var _msg:IPixelMessage = null;
+	public function update():void
+	{
+		while(_messagePool.length > 0)
 		{
-			_queue = _pool[message.message];
-			var callback:Function = null;
-			for each(callback in _queue)
+			_msg = _messagePool.shift();
+			if(_msg.message in _pool)
 			{
-				callback(message);
+				_queue = _pool[_msg.message];
+				var callback:Function = null;
+				for each(callback in _queue)
+				{
+					callback(_msg);
+				}
 			}
 		}
 	}

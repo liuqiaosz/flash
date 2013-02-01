@@ -16,7 +16,7 @@ package pixel.ui.control
 		public function UIComboboxItem(Data:ComboboxItem = null,Img:Bitmap = null)
 		{
 			super();
-			this.Layout = LayoutConstant.HORIZONTAL;
+			this.Layout = UILayoutConstant.HORIZONTAL;
 			this.BorderThinkness = 0;
 			this.BackgroundAlpha = 0;
 			_Item = Data;

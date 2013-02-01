@@ -28,10 +28,12 @@ import flash.utils.Dictionary;
 
 class ObserverImpl implements INetObserver
 {
+	private var _reciveQueue:Vector.<IMsg> = null;
 	private var _diction:Dictionary = null;
 	public function ObserverImpl()
 	{
 		_diction = new Dictionary();
+		_reciveQueue = new Vector.<IMsg>();
 	}
 	
 	public function addListener(command:int,callback:Function):void
@@ -56,13 +58,26 @@ class ObserverImpl implements INetObserver
 	
 	public function broadcast(msg:IMsg):void
 	{
-		if(msg.id in _diction)
+		_reciveQueue.push(msg);
+		
+	}
+	private var _recive:IMsg = null;
+	public function update():void
+	{
+		if(_reciveQueue.length > 0)
 		{
-			var calls:Vector.<Function> = _diction[msg.id];
-			var invoke:Function = null;
-			for each(invoke in calls)
+			_recive = _reciveQueue.shift();
+			if(_recive)
 			{
-				invoke(msg);
+				if(_recive.id in _diction)
+				{
+					var calls:Vector.<Function> = _diction[_recive.id];
+					var invoke:Function = null;
+					for each(invoke in calls)
+					{
+						invoke(_recive);
+					}
+				}
 			}
 		}
 	}

@@ -7,7 +7,7 @@
 		<![CDATA[
 			import mx.events.FlexEvent;
 			
-			import pixel.ui.control.LayoutConstant;
+			import pixel.ui.control.UILayoutConstant;
 			import pixel.ui.control.UIContainer;
 			
 			import spark.events.IndexChangeEvent;
@@ -33,7 +33,7 @@
 				_Gap = UIContainer(CurrentControl).Gap + "";
 				ControlLayout.selectedIndex = UIContainer(CurrentControl).Layout;
 
-				if(UIContainer(CurrentControl).Layout != LayoutConstant.ABSOLUTE)
+				if(UIContainer(CurrentControl).Layout != UILayoutConstant.ABSOLUTE)
 				{
 					BindGapVisible = true;
 					_padding = UIContainer(CurrentControl).padding;

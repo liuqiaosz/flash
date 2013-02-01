@@ -6,7 +6,6 @@ package pixel.ui.control
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
-	import pixel.ui.control.style.ImageStyle;
 	import pixel.ui.control.style.UIImageStyle;
 	import pixel.utility.bitmap.gif.GIFDecoder;
 	import pixel.utility.bitmap.gif.GIFFrame;

@@ -1,10 +1,11 @@
 package pixel.message
 {
 	import pixel.core.PixelNs;
+	import pixel.utility.IUpdate;
 
 	use namespace PixelNs;
 	
-	public interface IPixelMessageBus
+	public interface IPixelMessageBus extends IUpdate
 	{
 		//注册消息
 		function register(message:String,callback:Function):void;

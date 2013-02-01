@@ -165,8 +165,8 @@ package bleach
 			//var id:String = msg.value as String;
 			//_progressLoad = ProgressLoading.instance;
 			//this.addSceneTop(_progressLoad as Sprite);
-			//PopUpMaskScene.instance.show(_sceneCache[msg.value] as SceneModule);
-			PopUpMaskScene.instance.show(_sceneCache["loginScene"] as SceneModule);
+			PopUpMaskScene.instance.show(_sceneCache[msg.value] as SceneModule);
+			
 			addSceneTop(PopUpMaskScene.instance);
 		}
 		
@@ -257,7 +257,6 @@ package bleach
 			_loading = false;
 		}
 		
-		
 		private var _swapDealloc:Boolean = false;
 		/**
 		 * 场景切换
@@ -292,14 +291,6 @@ package bleach
 			}
 			else
 			{
-				//创建该场景的域
-//				_module.sceneDomain = new ApplicationDomain(ApplicationDomain.currentDomain);
-				//_librarys = new Vector.<Loader>();
-//				_module.library = new Vector.<Loader>();
-//				_downloaded = 0;
-//				libraryDownload();
-				//显示加载界面
-				
 				_downloader = new SceneDownloader(_module);
 				_downloader.addEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_COMPLETE,onSceneDownloadComplete);
 				_downloader.addEventListener(BleachEvent.BLEACH_SCENE_DOWNLOAD_FAILURE,onSceneDownloadFailure);
@@ -308,7 +299,6 @@ package bleach
 				dispatchMessage(new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_SHOW));
 			}
 		}
-		
 		
 		private function progressUpdate(event:BleachProgressEvent):void
 		{
@@ -353,6 +343,7 @@ package bleach
 		override public function frameUpdate(message:PixelMessage):void
 		{
 			super.frameUpdate(message);
+			NetObserver.instance.update();
 			if(_heartBeat)
 			{
 				_heartBeat.update();

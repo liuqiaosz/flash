@@ -9,7 +9,7 @@ package pixel.ui.control
 	import flash.utils.ByteArray;
 	
 	import pixel.ui.control.ComboboxItem;
-	import pixel.ui.control.LayoutConstant;
+	import pixel.ui.control.UILayoutConstant;
 	import pixel.ui.control.UIComboboxItem;
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControl;
@@ -29,7 +29,7 @@ package pixel.ui.control
 		public function UIComboboxPop()
 		{
 			super();
-			this.Layout = LayoutConstant.VERTICAL;
+			this.Layout = UILayoutConstant.VERTICAL;
 			this.BorderThinkness = 1;
 			width = 150;
 			//height = 150;

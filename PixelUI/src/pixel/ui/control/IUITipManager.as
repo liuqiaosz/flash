@@ -1,0 +1,18 @@
+package pixel.ui.control
+{
+	import pixel.ui.control.style.IVisualStyle;
+
+	public interface IUITipManager
+	{
+		//给控件绑定ToolTip
+		function Bind(Control:UIControl):void;
+		//解绑
+		function UnBind(Control:UIControl):void;
+		//变更皮肤
+		function ChangeSkin(Skin:IVisualStyle):void;
+		
+		function changeTip(tip:IUITip):void;
+		
+		function set LazyTime(Value:int):void;
+	}
+}

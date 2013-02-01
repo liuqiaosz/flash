@@ -1,6 +1,6 @@
 package bleach.scene.ui
 {
-	import pixel.ui.control.IPixelTip;
+	import pixel.ui.control.IUITip;
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UILabel;
 	
@@ -8,7 +8,7 @@ package bleach.scene.ui
 	 * 技能Tip
 	 * 
 	 **/
-	public class SkillTip extends UIContainer implements IPixelTip
+	public class SkillTip extends UIContainer implements IUITip
 	{
 		private var _title:UILabel = null;
 		private var _expend:UILabel = null;

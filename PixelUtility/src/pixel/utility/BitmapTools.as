@@ -64,12 +64,12 @@ package pixel.utility
 			return CuteBitmapData;
 		}
 		
-		public static function BitmapClone(Source:BitmapData):BitmapData
-		{
-			var Data:BitmapData = new BitmapData(Source.width,Source.height,true,0);
-			Data.copyPixels(Source,Source.rect,new Point());
-			return Data;
-		}
+//		public static function BitmapClone(Source:BitmapData):BitmapData
+//		{
+//			var Data:BitmapData = new BitmapData(Source.width,Source.height,true,0);
+//			Data.copyPixels(Source,Source.rect,new Point());
+//			return Data;
+//		}
 		
 		public static function BitmapMirrorX(Source:Bitmap):void
 		{

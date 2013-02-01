@@ -62,7 +62,6 @@
 			import mx.events.MenuEvent;
 			
 			import pixel.ui.control.IUIControl;
-			import pixel.ui.control.SimpleTabPanel;
 			import pixel.ui.control.UIButton;
 			import pixel.ui.control.UICombobox;
 			import pixel.ui.control.UIContainer;
@@ -335,6 +334,7 @@
 			 **/
 			private function initializerRes():void
 			{
+				AssetLibraryTree.removeAll();
 //				var Url:Array = [];
 				var dirRes:File = new File(Common.DEFAULT_DIR_RES);
 				if(!dirRes.exists)
@@ -363,17 +363,21 @@
 			private var resLoader:Loader = null;
 			private function loadResourceLibrary():void
 			{
-				resLoader = new Loader();
-				resLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,resourceLibraryComplete);
+				if(_resFiles.length > 0)
+				{
+					resLoader = new Loader();
+					resLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,resourceLibraryComplete);
+					
+					file = _resFiles.shift();
+					var reader:FileStream = new FileStream();
+					reader.open(file,FileMode.READ);
+					var data:ByteArray = new ByteArray();
+					reader.readBytes(data);
+					var ctx:LoaderContext = new LoaderContext();
+					ctx.allowCodeImport = true;
+					resLoader.loadBytes(data,ctx);
+				}
 				
-				file = _resFiles.shift();
-				var reader:FileStream = new FileStream();
-				reader.open(file,FileMode.READ);
-				var data:ByteArray = new ByteArray();
-				reader.readBytes(data);
-				var ctx:LoaderContext = new LoaderContext();
-				ctx.allowCodeImport = true;
-				resLoader.loadBytes(data,ctx);
 			}
 			private function resourceLibraryComplete(event:Event):void
 			{
@@ -418,7 +422,7 @@
 				Component.ModelFile = ModelFile;
 				var ComponentItem:ControlLibraryItem = new ControlLibraryItem();
 				ComponentItem.AddComponent(Component);
-				ComponentLibrary.addElement(ComponentItem);
+				//ComponentLibrary.addElement(ComponentItem);
 			}
 			
 			private var Total:int = 10;
@@ -577,8 +581,8 @@
 			
 			private function ImportSwfLibrary(event:MouseEvent):void
 			{
-				var window:IFlexDisplayObject = PopUpWindowManager.PopUp(SwfImportWindow);
-				window.addEventListener(NotifyEvent.IMPORTSWF,OnImportSwfLibrary);
+				PopupWindow = PopUpWindowManager.PopUp(SwfImportWindow) as SkinnableContainer;
+				PopupWindow.addEventListener(NotifyEvent.IMPORTSWF,OnImportSwfLibrary);
 			}
 			
 			/**
@@ -1172,12 +1176,12 @@
 	<ui1:AdvanceMenuBar width="100%" id="mainMenu" MenuSelected="menuSelected(event)" dataProvider="{menuData}" />
 
 	<mx:HDividedBox width="100%" height="100%" >
-		<s:VGroup width="154" height="100%" minWidth="154">
+		<s:VGroup width="154" height="99%">
 			<s:Panel width="100%" height="100%" dropShadowVisible="false" title="控件列表" id="ComponentBar" enabled="false">
 				<s:layout>
 					<s:VerticalLayout horizontalAlign="center" />
 				</s:layout>
-				
+				<!--
 				<mx:Accordion width="100%" height="100%">
 					<mx:VBox label="基本控件" horizontalAlign="center" width="100%">
 						<s:Scroller width="100%" height="100%">
@@ -1194,17 +1198,29 @@
 								</s:List>
 							</s:Group>
 						</s:Scroller>
-						
 					</mx:VBox>
-					
 					<mx:VBox label="自定义组件" id="ComponentLibrary" width="100%">
-					
 					</mx:VBox>
 				</mx:Accordion>
+				-->
+				<s:Scroller width="100%" height="100%">
+					<s:Group>
+						<s:List dataProvider="{controls}" borderVisible="false">
+							<s:itemRenderer>
+								<fx:Component>
+									<mx:VBox horizontalAlign="center" borderVisible="false" paddingTop="20">
+										<s:Image source="{data.icon}" name="{data.id}"  mouseDown="outerDocument.StartDrag(event)"/>
+										<s:Label text="{data.label}" />
+									</mx:VBox>
+								</fx:Component>
+							</s:itemRenderer>
+						</s:List>
+					</s:Group>
+				</s:Scroller>
 			</s:Panel>
 		</s:VGroup>
 		
-		<ui:AdvanceTitleWindow width="100%" height="100%" dropShadowVisible="false" 
+		<ui:AdvanceTitleWindow width="100%" height="99%" dropShadowVisible="false" 
 							   title="组件编辑区" id="EditorWindow" closeButtonEnabled="{closeEnabled}" close="closeWorkeidt(event)">
 			<ui:layout>
 				<s:VerticalLayout paddingLeft="10" paddingTop="10" />
@@ -1220,15 +1236,17 @@
 			</s:Scroller>
 		</ui:AdvanceTitleWindow>
 
-		<mx:Accordion width="220" height="100%" creationPolicy="all" minWidth="220">
+		<mx:Accordion width="220" height="99%" creationPolicy="all" >
 			<mx:VBox label="属性" horizontalAlign="center" width="100%" height="100%">
-				<ui:PropertyPanel id="ControlProperty" width="100%" height="100%"  OnChangeImage="OnChangeControlImage(event)"/>	
+				<ui:Propertie id="ControlProperty" width="100%" height="100%"  OnChangeImage="OnChangeControlImage(event)"/>	
 			</mx:VBox>
 			
 			<mx:VBox label="资源库" horizontalAlign="center" width="100%">
 				<s:HGroup gap="20" paddingTop="5">
 					<s:Image source="@Embed('../assets/Search.png')" width="24" height="24" smooth="true" click="ImportSwfLibrary(event)" buttonMode="true" toolTip="从本地导入SWF资源"/>
+					<!--
 					<s:Image source="@Embed('../assets/Import.png')" width="24" height="24" smooth="true" click="DownloadSwfLibrary(event)" buttonMode="true" toolTip="通过URL下载外部SWF资源"/>
+					-->
 					<s:Image source="@Embed('../assets/Refresh.png')" width="24" height="24" smooth="true" click="OnRefreshAssetLibrary(event)" buttonMode="true" toolTip="刷新资源库"/>
 				</s:HGroup>
 				<mx:HRule width="200" height="1"/>

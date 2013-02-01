@@ -90,6 +90,12 @@
 				Control.BackgroundImageId = id;
 			}
 			
+			protected function deleteImage(event:MouseEvent):void
+			{
+				this.Control.BackgroundImage = null;
+				BackgroundImg.text = "";
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -98,7 +104,8 @@
 	
 	<s:HGroup>
 		<s:Label text="背景图片" height="100%" verticalAlign="middle" width="60"/>
-		<s:TextInput width="90" id="BackgroundImg" enter="backgroundImageEnterChanged(event)" text="{BindBackgroundImgId}" />
+		<s:TextInput width="60" id="BackgroundImg" enter="backgroundImageEnterChanged(event)" text="{BindBackgroundImgId}"/>
+		<s:Image source="@Embed('../assets/Delete.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="deleteImage(event)" />
 		<s:Image source="@Embed('../assets/Search.png')" width="26" height="26" smooth="true" smoothingQuality="high" buttonMode="true" click="BrowserImage(event)" />
 	</s:HGroup>
 	

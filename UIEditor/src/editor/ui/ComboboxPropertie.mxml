@@ -64,7 +64,7 @@
 		]]>
 	</fx:Script>
 	
-	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" />
+	<ui:BasicPropertie id="SimpleStyle" Control="{CurrentControl}" />
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}"/>
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>
 	
@@ -97,5 +97,5 @@
 		<s:Label width="80" text="下拉框数据" />
 		<s:Image width="24" height="24" source="@Embed('../assets/Edit.png')" smooth="true" click="editComboboxItem(event)" buttonMode="true"/>	
 	</s:HGroup>
-	<ui:PanelProperty Control="{_pop}" enableSimpleStyle="false" />
+	<ui:PanelPropertie Control="{_pop}" enableSimpleStyle="false" />
 </ui:GenericProperty>

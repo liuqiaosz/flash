@@ -8,8 +8,6 @@ package pixel.utility
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
 	
-	import pixel.utility.swf.tag.FileAttribute;
-	
 	public class Tools
 	{
 		public function Tools()

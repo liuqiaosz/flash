@@ -34,9 +34,6 @@ package pixel.ui.control
 			_TextField.defaultTextFormat = _Format;
 			Align = TextAlign.LEFT;
 			addChild(_TextField);
-			
-			//_TextField.width = width - _Style.BorderThinkness * 2;
-			//_TextField.height = height - _Style.BorderThinkness * 2;
 		}
 		
 		override public function dispose():void
@@ -212,6 +209,7 @@ package pixel.ui.control
 			super.EnableEditMode();
 			Input = false;
 			addEventListener(MouseEvent.MOUSE_DOWN,DownProxy,true);
+			_TextField.mouseEnabled = false;
 		}
 		
 		override public function set Style(value:IVisualStyle):void

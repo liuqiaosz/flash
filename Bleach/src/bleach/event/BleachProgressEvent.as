@@ -20,6 +20,26 @@ package bleach.event
 		{
 			_loaded = value;
 		}
+		
+		private var _taskTotal:Number = 0;
+		public function set taskTotal(value:Number):void
+		{
+			_taskTotal = value;
+		}
+		public function get taskTotal():Number
+		{
+			return _taskTotal;
+		}
+		private var _taskLoaded:Number = 0;
+		public function set taskLoaded(value:Number):void
+		{
+			_taskLoaded = value;
+		}
+		public function get taskLoaded():Number
+		{
+			return _taskLoaded;
+		}
+		
 		public function get loaded():Number
 		{
 			return _loaded;

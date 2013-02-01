@@ -140,7 +140,7 @@
 			
 		]]>
 	</fx:Script>
-	<ui:SimpleProperty id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}" />
+	<ui:BasicPropertie id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}" />
 	
 	<s:VGroup >
 		<s:HGroup enabled="{_propertieEnabled}">

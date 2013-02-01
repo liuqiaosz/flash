@@ -2,7 +2,7 @@ package pixel.ui.control.style
 {
 	import flash.utils.ByteArray;
 	
-	import pixel.ui.control.LayoutConstant;
+	import pixel.ui.control.UILayoutConstant;
 
 	/**
 	 * 容器组件样式
@@ -36,7 +36,7 @@ package pixel.ui.control.style
 			return _padding;
 		}
 
-		private var _Layout:uint = LayoutConstant.ABSOLUTE;
+		private var _Layout:uint = UILayoutConstant.ABSOLUTE;
 		public function set Layout(Value:uint):void
 		{
 			_Layout = Value;

@@ -45,23 +45,23 @@ package pixel.ui.control.utility
 //			{
 //				return ControlType.CUSTOMER;
 //			}
-			if(Control is Tab)
-			{
-				return TAB;
-			}
-			else if(Control is TabBar)
-			{
-				return TABBAR;
-			}
-			else if(Control is TabContent)
-			{
-				return TABCONTENT;
-			}
-			else if(Control is SimpleTabPanel)
-			{
-				return TABPANEL;
-			}
-			else if(Control is UISlider)
+//			if(Control is Tab)
+//			{
+//				return TAB;
+//			}
+//			else if(Control is TabBar)
+//			{
+//				return TABBAR;
+//			}
+//			else if(Control is TabContent)
+//			{
+//				return TABCONTENT;
+//			}
+//			else if(Control is SimpleTabPanel)
+//			{
+//				return TABPANEL;
+//			}
+			if(Control is UISlider)
 			{
 				return SLIDER;
 			}
@@ -122,23 +122,23 @@ package pixel.ui.control.utility
 		
 		public static function GetPrototype(Control:UIControl):Class
 		{
-			if(Control is Tab)
-			{
-				return Tab;
-			}
-			else if(Control is TabBar)
-			{
-				return TabBar;
-			}
-			else if(Control is TabContent)
-			{
-				return TabContent;
-			}
-			else if(Control is SimpleTabPanel)
-			{
-				return SimpleTabPanel;
-			}
-			else if(Control is UISlider)
+//			if(Control is Tab)
+//			{
+//				return Tab;
+//			}
+//			else if(Control is TabBar)
+//			{
+//				return TabBar;
+//			}
+//			else if(Control is TabContent)
+//			{
+//				return TabContent;
+//			}
+//			else if(Control is SimpleTabPanel)
+//			{
+//				return SimpleTabPanel;
+//			}
+			if(Control is UISlider)
 			{
 				return UISlider;
 			}
@@ -196,18 +196,18 @@ package pixel.ui.control.utility
 				case SIMPLEBUTTON:
 					return UIButton;
 					break;
-				case TABPANEL:
-					return SimpleTabPanel;
-					break;
-				case TAB:
-					return Tab;
-					break;
-				case TABBAR:
-					return TabBar;
-					break;
-				case TABCONTENT:
-					return TabContent;
-					break;
+//				case TABPANEL:
+//					return SimpleTabPanel;
+//					break;
+//				case TAB:
+//					return Tab;
+//					break;
+//				case TABBAR:
+//					return TabBar;
+//					break;
+//				case TABCONTENT:
+//					return TabContent;
+//					break;
 				case SLIDER:
 					return UISlider;
 					break;
@@ -262,15 +262,15 @@ package pixel.ui.control.utility
 				case TABPANEL:
 					return UIPanelStyle;
 					break;
-				case TAB:
-					return Tab;
-					break;
-				case TABBAR:
-					return TabBar;
-					break;
-				case TABCONTENT:
-					return TabContent;
-					break;
+//				case TAB:
+//					return Tab;
+//					break;
+//				case TABBAR:
+//					return TabBar;
+//					break;
+//				case TABCONTENT:
+//					return TabContent;
+//					break;
 				case SLIDER:
 					return UISliderStyle;
 					break;

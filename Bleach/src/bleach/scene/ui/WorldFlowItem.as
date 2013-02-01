@@ -2,7 +2,7 @@ package bleach.scene.ui
 {
 	import flash.display.Bitmap;
 	
-	import pixel.ui.control.LayoutConstant;
+	import pixel.ui.control.UILayoutConstant;
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIImage;
 	import pixel.utility.BitmapTools;
@@ -17,7 +17,7 @@ package bleach.scene.ui
 		{
 			super();
 			this.LeftBottomCorner = this.LeftTopCorner = this.RightBottomCorner = this.RightTopCorner = 5;
-			this.Layout = LayoutConstant.VERTICAL;
+			this.Layout = UILayoutConstant.VERTICAL;
 			this.Gap = this.padding = 5;
 			if(itemWidth > 0)
 			{

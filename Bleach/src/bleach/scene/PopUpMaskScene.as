@@ -12,6 +12,7 @@ package bleach.scene
 	
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.filters.BlurFilter;
 	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	
@@ -84,7 +85,6 @@ package bleach.scene
 					_progress.y = (_screen.screenHeight - _progress.height) * .5;
 				}
 			}
-			
 		}
 		
 		private function progressUpdate(event:BleachProgressEvent):void
@@ -107,8 +107,8 @@ package bleach.scene
 			_downloader.removeEventListener(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS,progressUpdate);
 			_downloader = null;
 			removeChild(_progress);
-			//addContent(module.sceneContent.content as Sprite);
-			this.dispatchMessage(new BleachMessage(BleachMessage.BLEACH_POPCLOSE));
+			addContent(module.sceneContent.content as Sprite);
+			dispatchMessage(new BleachMessage(BleachMessage.BLEACH_POPCLOSE));
 		}
 		
 		/**

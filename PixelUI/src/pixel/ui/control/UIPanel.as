@@ -45,7 +45,7 @@ package pixel.ui.control
 				{
 					_DragTarget = event.target as UIControl;
 					var Layout:int = ChildContainerLayout(event.target);
-					if(Layout == LayoutConstant.ABSOLUTE)
+					if(Layout == UILayoutConstant.ABSOLUTE)
 					{
 						OffsetX = event.localX;
 						OffsetY = event.localY;

@@ -54,9 +54,7 @@ package pixel.ui.control
 //			_openButton.NormalStyle.BackgroundImage = 
 //				_openButton.MouseOverStyle.BackgroundImage = 
 //				_openButton.MouseDownStyle.BackgroundImage = new Arrow_down() as Bitmap;
-			_openButton.width = _openButton.height = 16;
-			
-			
+			_openButton.width = _openButton.height = 15;
 			_openButton.NormalStyle.BorderThinkness = 
 				_openButton.MouseOverStyle.BorderThinkness = 
 				_openButton.MouseDownStyle.BorderThinkness = 0;
@@ -132,6 +130,7 @@ package pixel.ui.control
 			super.EnableEditMode();
 			removeEventListener(MouseEvent.MOUSE_DOWN,popup);
 			this.mouseChildren = false;
+			buttonMode = false;
 			showPop();
 		}
 		

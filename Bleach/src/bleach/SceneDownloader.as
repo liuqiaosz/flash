@@ -3,11 +3,13 @@ package bleach
 	import bleach.event.BleachEvent;
 	import bleach.event.BleachProgressEvent;
 	import bleach.message.BleachLoadingMessage;
+	import bleach.scene.GenericScene;
 	
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
@@ -32,7 +34,6 @@ package bleach
 		}
 		
 		private var _downloaded:int = 0;
-		//private var _librarys:Vector.<Loader> = null;
 		private var _downloader:Loader = null;
 		private var _downlodLinkLibrary:SceneLinkLibrary = null;
 		/**
@@ -43,12 +44,12 @@ package bleach
 		{
 			if(_module)
 			{
-				var a:URLRequest
 				if(_downloaded < _module.scene.librarys.length)
 				{
 					_downlodLinkLibrary = _module.scene.librarys[_downloaded];
 					_downloader = new Loader();
 					_downloader.contentLoaderInfo.addEventListener(Event.COMPLETE,libraryDownloadComplete);
+					_downloader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,downloadProgress);
 					_downloader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,libraryDownloadError);
 					var ctx:LoaderContext = new LoaderContext();
 					ctx.applicationDomain = _module.sceneDomain;
@@ -61,6 +62,8 @@ package bleach
 					sceneDownload();
 				}
 			}
+
+
 		}
 		
 		/**
@@ -72,7 +75,7 @@ package bleach
 		{
 			_downloader.contentLoaderInfo.removeEventListener(Event.COMPLETE,libraryDownloadComplete);
 			_downloader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,libraryDownloadError);
-			
+			_downloader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,downloadProgress);
 			_module.library.push(_downloader);
 			if(_downlodLinkLibrary.isUIlib)
 			{
@@ -80,16 +83,6 @@ package bleach
 				PixelAssetManager.instance.addAssetLibrary(new PixelLoaderAssetLibrary(_downloader,_downlodLinkLibrary.id));
 			}
 			_downloaded++;
-//			var updateMsg:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_UPDATE);
-//			//全部数量为 链接库数量 + 主文件数量
-//			updateMsg.total = _module.scene.librarys.length + 1;
-//			updateMsg.loaded = _downloaded;
-//			dispatchMessage(updateMsg);
-			
-			var update:BleachProgressEvent = new BleachProgressEvent(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS);
-			update.total = _module.scene.librarys.length + 1;
-			update.loaded = _downloaded;
-			this.dispatchEvent(update);
 			_downloader = null;
 			libraryDownload();
 		}
@@ -104,6 +97,7 @@ package bleach
 			_sceneLoader = new Loader();
 			_sceneLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,sceneDownloadComplete);
 			_sceneLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,sceneDownloadError);
+			_sceneLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,downloadProgress);
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = _module.sceneDomain;
 			var url:String = _module.scene.url;
@@ -119,16 +113,10 @@ package bleach
 		{
 			_sceneLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,sceneDownloadComplete);
 			_sceneLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,sceneDownloadError);
+			_sceneLoader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS,downloadProgress);
 			_module.sceneContent = _sceneLoader;
 			_sceneLoader = null;
 			_downloaded++;
-			var update:BleachProgressEvent = new BleachProgressEvent(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS);
-			update.total = _module.scene.librarys.length + 1;
-			update.loaded = _downloaded;
-			this.dispatchEvent(update);
-//			var complete:BleachLoadingMessage = new BleachLoadingMessage(BleachLoadingMessage.BLEACH_LOADING_COMPLETE);
-//			complete.value = _module;
-//			dispatchMessage(complete);
 			var notify:BleachEvent = new BleachEvent(BleachEvent.BLEACH_SCENE_DOWNLOAD_COMPLETE);
 			notify.value = _module;
 			_module.loaded = true;
@@ -144,6 +132,14 @@ package bleach
 		private function libraryDownloadError(event:IOErrorEvent):void
 		{
 			trace("!!!");
+		}
+		
+		private function downloadProgress(event:ProgressEvent):void
+		{
+			var update:BleachProgressEvent = new BleachProgressEvent(BleachProgressEvent.BLEACH_DOWNLOAD_PROGRESS);
+			update.total = _module.scene.librarys.length + 1;
+			update.loaded = _downloaded + (event.bytesLoaded / event.bytesTotal);
+			this.dispatchEvent(update);
 		}
 	}
 }

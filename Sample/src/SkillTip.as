@@ -2,13 +2,13 @@ package
 {
 	import flash.utils.Dictionary;
 	
-	import pixel.ui.control.IPixelTip;
-	import pixel.ui.control.LayoutConstant;
+	import pixel.ui.control.IUITip;
+	import pixel.ui.control.UILayoutConstant;
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UILabel;
 	import pixel.ui.control.vo.UIStyleMod;
 	
-	public class SkillTip  extends UIContainer implements IPixelTip
+	public class SkillTip  extends UIContainer implements IUITip
 	{
 		private var _title:UILabel = null;
 		private var _expend:UILabel = null;
@@ -24,7 +24,7 @@ package
 			_expend.height = 20;
 			_desc.height = 20;
 			
-			Layout = LayoutConstant.VERTICAL;
+			Layout = UILayoutConstant.VERTICAL;
 			
 			width = 200;
 			height = 200;

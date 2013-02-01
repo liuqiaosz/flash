@@ -103,7 +103,7 @@
 		]]>
 	</fx:Script>
 	
-	<ui:SimpleProperty id="Simple" Control="{CurrentControl}" />
+	<ui:BasicPropertie id="Simple" Control="{CurrentControl}" />
 	
 	<s:Label text="滑动线样式" styleName="LabelTitle"/>
 	<mx:HRule width="100%" />

@@ -15,7 +15,7 @@ package pixel.ui.control
 		public function UIVerticalPanel(Skin:Class = null)
 		{
 			super(Skin?Skin:UIVerticalPanelStyle);
-			super.Layout = LayoutConstant.VERTICAL;
+			super.Layout = UILayoutConstant.VERTICAL;
 			
 //			_scroller = new VerticalScroller();
 //			_scroller.width = 15;

@@ -50,7 +50,6 @@ import pixel.ui.control.asset.PixelTextureAssetLibrary;
 import pixel.ui.control.event.DownloadEvent;
 import pixel.utility.IDispose;
 import pixel.utility.Tools;
-import pixel.utility.swf.Swf;
 
 class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetManager,IDispose
 {
@@ -328,11 +327,6 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 //	}
 	
 	private function definitionParse():Vector.<Object>
-	{
-		return null;
-	}
-	
-	private function swfParse():Swf
 	{
 		return null;
 	}

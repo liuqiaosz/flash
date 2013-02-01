@@ -22,14 +22,14 @@
 		]]>
 	</fx:Script>
 	
-	<ui:SimpleProperty id="simple" Control="{CurrentControl}"/>
+	<ui:BasicPropertie id="simple" Control="{CurrentControl}"/>
 	
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" />
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}" />
-	<ui:ScaleProperty id="ScaleStyle" Control="{CurrentControl}" />
+	<ui:ScalePropertie id="ScaleStyle" Control="{CurrentControl}" />
 	
 	<s:Label text="加载条样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
 	<ui:BordeStyleProperty  Control="{progressBar}" />
 	<ui:Background  Control="{progressBar}" />
-	<ui:ScaleProperty  Control="{progressBar}" />
+	<ui:ScalePropertie  Control="{progressBar}" />
 </ui:GenericProperty>

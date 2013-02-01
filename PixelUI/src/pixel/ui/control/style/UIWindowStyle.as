@@ -1,7 +1,7 @@
 package pixel.ui.control.style
 {
 	import pixel.ui.control.UIContainer;
-	import pixel.ui.control.LayoutConstant;
+	import pixel.ui.control.UILayoutConstant;
 
 	public class UIWindowStyle extends UIContainerStyle
 	{
@@ -14,7 +14,7 @@ package pixel.ui.control.style
 			RightBottomCorner = 4;
 //			Width = 150;
 //			Height = 100;
-			Layout = LayoutConstant.VERTICAL;
+			Layout = UILayoutConstant.VERTICAL;
 			
 			//BackgroundColor = 0xEEEEEE;
 		}

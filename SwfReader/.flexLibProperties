@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="swf.SwfHeader"/>
+    <classEntry path="swf.ISwfProcess"/>
+    <classEntry path="swf.ByteStream"/>
+    <classEntry path="swf.BitByte"/>
+    <classEntry path="swf.SwfFactory"/>
+    <classEntry path="swf.SwfBitmap"/>
+    <classEntry path="swf.SwfRect"/>
+    <classEntry path="swf.Swf"/>
+    <classEntry path="swf.tag.BitJPEG2"/>
+    <classEntry path="swf.tag.GenericTag"/>
+    <classEntry path="swf.tag.GenericBit"/>
+    <classEntry path="swf.tag.SymbolClass"/>
+    <classEntry path="swf.tag.DoABC"/>
+    <classEntry path="swf.tag.Tag"/>
+    <classEntry path="swf.tag.BitLossless2"/>
+    <classEntry path="swf.tag.ITag"/>
+    <classEntry path="swf.tag.FileAttribute"/>
+    <classEntry path="swf.tag.BitLossless"/>
+    <classEntry path="swf.tag.SetBackgroundColor"/>
+    <classEntry path="swf.tag.DefineSound"/>
+    <classEntry path="swf.event.SWFEvent"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

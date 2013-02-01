@@ -20,7 +20,7 @@ package pixel.ui.control
 	 * 响应子组件的更新
 	 * 
 	 **/
-	public class UIContainer extends UIControl implements IContainer
+	public class UIContainer extends UIControl implements IUIContainer
 	{
 		//protected var _Padding:int = 0
 		
@@ -188,7 +188,7 @@ package pixel.ui.control
 			var conHeight:int = contentHeight;
 			switch(Layout)
 			{
-				case LayoutConstant.HORIZONTAL:
+				case UILayoutConstant.HORIZONTAL:
 					for(Idx=0; Idx<Len; Idx++)
 					{
 						_Children[Idx].x = Seek;
@@ -196,7 +196,7 @@ package pixel.ui.control
 						Seek = (_Children[Idx].x + _Children[Idx].width + Gap);
 					}
 					break;
-				case LayoutConstant.VERTICAL:
+				case UILayoutConstant.VERTICAL:
 					for(Idx=0; Idx<Len; Idx++)
 					{
 						_Children[Idx].x = 0;
@@ -204,7 +204,7 @@ package pixel.ui.control
 						Seek = (_Children[Idx].y + _Children[Idx].height + Gap);
 					}
 					break;
-				case LayoutConstant.GRID:
+				case UILayoutConstant.GRID:
 					var SeekY:int = 0;
 					for(Idx=0; Idx<Len; Idx++)
 					{
@@ -256,7 +256,7 @@ package pixel.ui.control
 			var Last:DisplayObject = _Children.length > 0 ? _Children[_Children.length - 1]:null;
 			switch(UIContainerStyle(Style).Layout)
 			{
-				case LayoutConstant.HORIZONTAL:
+				case UILayoutConstant.HORIZONTAL:
 					if(Last)
 					{
 						Child.x = Last.x + Last.width + Gap + pad;
@@ -268,7 +268,7 @@ package pixel.ui.control
 						Child.y = 0;
 					}
 					break;
-				case LayoutConstant.VERTICAL:
+				case UILayoutConstant.VERTICAL:
 					if(Last)
 					{
 						Child.x = Last.x;
@@ -280,7 +280,7 @@ package pixel.ui.control
 						Child.y = 0;
 					}
 					break;
-				case LayoutConstant.GRID:
+				case UILayoutConstant.GRID:
 					if(Last)
 					{
 						if((Last.x + Last.width + Child.width + Gap) >= width)

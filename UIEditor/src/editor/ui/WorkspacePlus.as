@@ -1,7 +1,5 @@
 package editor.ui
 {
-	import editor.code.ClassFactory;
-	import editor.code.ComponentClass;
 	import editor.event.NotifyEvent;
 	import editor.model.ComponentModel;
 	import editor.model.ModelFactory;
@@ -28,10 +26,6 @@ package editor.ui
 	import mx.utils.StringUtil;
 	
 	import pixel.ui.control.IUIControl;
-	import pixel.ui.control.SimpleTabPanel;
-	import pixel.ui.control.Tab;
-	import pixel.ui.control.TabBar;
-	import pixel.ui.control.TabContent;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControl;
@@ -182,18 +176,18 @@ package editor.ui
 				}
 				
 				_FocusControl = Choice;
-				if(_FocusControl is Tab)
-				{
-					_FocusControl = Tab(_FocusControl).parent.parent as UIControl;
-				}
-				else if(_FocusControl is TabBar)
-				{
-					_FocusControl = TabBar(_FocusControl).Owner;
-				}
-				else if(_FocusControl is TabContent)
-				{
-					_FocusControl = TabContent(_FocusControl).Owner;
-				}
+//				if(_FocusControl is Tab)
+//				{
+//					_FocusControl = Tab(_FocusControl).parent.parent as UIControl;
+//				}
+//				else if(_FocusControl is TabBar)
+//				{
+//					_FocusControl = TabBar(_FocusControl).Owner;
+//				}
+//				else if(_FocusControl is TabContent)
+//				{
+//					_FocusControl = TabContent(_FocusControl).Owner;
+//				}
 				
 				if(_FocusControl)
 				{

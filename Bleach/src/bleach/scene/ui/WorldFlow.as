@@ -11,7 +11,7 @@ package bleach.scene.ui
 	
 	import pixel.core.PixelNode;
 	import pixel.core.PixelSprite;
-	import pixel.ui.control.LayoutConstant;
+	import pixel.ui.control.UILayoutConstant;
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIPanel;
 
@@ -31,7 +31,7 @@ package bleach.scene.ui
 		public function WorldFlow(sizeW:int,sizeH:int,nodeW:int,nodeH:int)
 		{
 			super();
-			_content.Layout = LayoutConstant.HORIZONTAL;
+			_content.Layout = UILayoutConstant.HORIZONTAL;
 			super.addChild(_content);
 			_scrollWidth = sizeW;
 			_scrollHeight = sizeH;

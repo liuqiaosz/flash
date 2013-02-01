@@ -196,7 +196,7 @@ class TitleBar extends UIPanel
 }
 
 
-import pixel.ui.control.LayoutConstant;
+import pixel.ui.control.UILayoutConstant;
 import pixel.ui.control.style.UIContainerStyle;
 
 class TitleBarStyle extends UIContainerStyle

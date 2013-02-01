@@ -17,7 +17,6 @@
 			
 			import pixel.ui.control.asset.IAsset;
 			import pixel.ui.control.asset.IAssetLibrary;
-			import pixel.ui.control.asset.SwfAssetLibrary;
 			
 			private var Item:IAssetLibrary = null;
 			private var NeedInitialize:Boolean = false;

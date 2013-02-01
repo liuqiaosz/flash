@@ -43,11 +43,11 @@
 		]]>
 	</fx:Script>
 	
-	<ui:SimpleProperty id="simple" Control="{CurrentControl}"/>
+	<ui:BasicPropertie id="simple" Control="{CurrentControl}"/>
 	<ui:LayoutProperty id="LayoutStyle" Control="{CurrentControl}" enableLayoutEdit="false"/>
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" />
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}" />
-	<ui:ScaleProperty id="ScaleStyle" Control="{CurrentControl}" />
+	<ui:ScalePropertie id="ScaleStyle" Control="{CurrentControl}" />
 	
 	<s:Label text="滑动条容器样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
 	<s:HGroup>
@@ -56,7 +56,7 @@
 				   stepSize="1" minimum="20" id="handlerWidth" change="handlerWidthChanged(event)" />
 		<s:Label text="{_scrollHandlerWidthText}" />
 	</s:HGroup>
-	<ui:PanelProperty  Control="{_scrollContain}" enableSimpleStyle="false"/>
+	<ui:PanelPropertie  Control="{_scrollContain}" enableSimpleStyle="false"/>
 	
 	<s:Label text="滑动条样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
 	

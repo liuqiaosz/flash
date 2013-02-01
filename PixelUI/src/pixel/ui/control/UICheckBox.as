@@ -12,7 +12,7 @@ package pixel.ui.control
 			super();
 			this.BorderThinkness = 0;
 			this.BackgroundAlpha = 0;
-			super.Layout = LayoutConstant.HORIZONTAL;
+			super.Layout = UILayoutConstant.HORIZONTAL;
 		}
 		
 		/**

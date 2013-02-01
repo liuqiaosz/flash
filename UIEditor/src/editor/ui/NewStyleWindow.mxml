@@ -80,7 +80,7 @@
 					//Category.text = "简单面板";
 					PanelStyleFlag = true;
 					//PanelStyle.Control = _control;
-					styleCom = new PanelProperty();
+					styleCom = new PanelPropertie();
 				}
 				else if(_control is UILabel)
 				{
@@ -100,14 +100,14 @@
 					//Category.text = "图形";
 					ImageStyleFlag = true;
 					//ImageStyle.Control = _control;
-					styleCom = new UIImageProperty();
+					styleCom = new UIImagePropertie();
 				}
 				else if(_control is UITextInput)
 				{
 					//Category.text = "文本输入框";
 					TextInputStyleFlag = true;
 					//TextInputStyle.Control = _control;
-					styleCom = new TextInputProperty();
+					styleCom = new TextInputPropertie();
 				}
 //				else if(_control is UICombobox)
 //				{
