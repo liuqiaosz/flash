@@ -18,6 +18,10 @@ package pixel.ui.control
 	{
 		protected var _TextValue:String = "";
 		protected var _TextField:TextField = null;
+		public function get textfield():TextField
+		{
+			return _TextField;
+		}
 		protected var _Format:TextFormat = null;
 		public function UITextBase(Skin:Class = null,Text:String = "")
 		{

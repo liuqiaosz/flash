@@ -207,6 +207,11 @@
 					icon: labelIcon
 				},
 				{
+					label: "Colorful Label",
+					id: Utils.COLORFULLABEL,
+					icon: labelIcon
+				},
+				{
 					label: "TextInput",
 					id: Utils.TEXTINPUT,
 					icon: textinputIcon

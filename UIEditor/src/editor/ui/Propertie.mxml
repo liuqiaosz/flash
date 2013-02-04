@@ -25,6 +25,7 @@
 			
 			import pixel.ui.control.UIButton;
 			import pixel.ui.control.UICheckBox;
+			import pixel.ui.control.UIColorfulLabel;
 			import pixel.ui.control.UICombobox;
 			import pixel.ui.control.UIContainer;
 			import pixel.ui.control.UIControl;
@@ -263,6 +264,11 @@
 				{
 					Category.text = "单选按钮群组";
 					propertie = new PanelPropertie();
+				}
+				else if(_CurrentControl is UIColorfulLabel)
+				{
+					Category.text = "高级文本";
+					propertie = new UIColorfulLabelPropertie();
 				}
 				if(propertie)
 				{

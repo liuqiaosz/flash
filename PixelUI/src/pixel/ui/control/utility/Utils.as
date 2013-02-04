@@ -29,6 +29,7 @@ package pixel.ui.control.utility
 		public static const TOGGLE_BUTTON:int = 21;		//状态切换按钮
 		public static const RADIO:int = 22;				//radio按钮
 		public static const RADIOGROUP:int = 23;		//radio group
+		public static const COLORFULLABEL:int = 24;		//Colorful label
 		
 		public static const CUSTOMER:uint = 99;			//自定义控件
 		
@@ -127,6 +128,10 @@ package pixel.ui.control.utility
 			{
 				return RADIOGROUP;
 			}
+			else if(Control is UIColorfulLabel)
+			{
+				return COLORFULLABEL;
+			}
 			return 99;
 		}
 		
@@ -204,6 +209,10 @@ package pixel.ui.control.utility
 			{
 				return UIRadioGroup;
 			}
+			else if(Control is UIColorfulLabel)
+			{
+				return UIRadioGroup;
+			}
 			return null;
 		}
 		
@@ -271,6 +280,9 @@ package pixel.ui.control.utility
 				case RADIOGROUP:
 					return UIRadioGroup;
 					break;
+				case COLORFULLABEL:
+					return UIColorfulLabel;
+					break;
 			}
 			return null;
 			
@@ -336,6 +348,10 @@ package pixel.ui.control.utility
 					break;
 				case RADIOGROUP:
 					return UIRadioGroupStyle;
+					break;
+				case COLORFULLABEL:
+					return UILabelStyle;
+					break;
 			}
 			return null;
 			
@@ -408,6 +424,10 @@ package pixel.ui.control.utility
 			{
 				return RADIOGROUP;
 			}
+			else if(Control is UILabelStyle)
+			{
+				return COLORFULLABEL;
+			}
 			return 99;
 		}
 		
@@ -474,6 +494,9 @@ package pixel.ui.control.utility
 					break;
 				case RADIOGROUP:
 					return "RadioGroup";
+					break;
+				case COLORFULLABEL:
+					return "ColorfulLabel";
 					break;
 			}
 			return null;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import editor.uitility.ui.PopUpWindowManager;
+			
+			import pixel.ui.control.UIColorfulLabel;
+			override protected function Initialized():void
+			{
+				super.Initialized();
+			}
+			
+			protected function openColorfulEditWindow(event:MouseEvent):void
+			{
+				var window:ColorfulEditWindow = PopUpWindowManager.PopUp(ColorfulEditWindow) as ColorfulEditWindow;
+				
+				window.control = CurrentControl as UIColorfulLabel;
+			}
+			
+		]]>
+	</fx:Script>
+	<ui:LabelPropery Control="{CurrentControl}" />
+	
+	<s:HGroup verticalAlign="middle">
+		<s:Label text="高级样式" width="60"/>
+		<s:Image source="@Embed('../assets/Edit.png')" buttonMode="true" click="openColorfulEditWindow(event)" width="24" height="24"/>
+	</s:HGroup>
+</ui:GenericProperty>

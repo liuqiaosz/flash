@@ -95,6 +95,7 @@ package
 	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UICheckBox;
+	import pixel.ui.control.UIColorfulLabel;
 	import pixel.ui.control.UICombobox;
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
@@ -113,6 +114,7 @@ package
 	import pixel.ui.control.event.DownloadEvent;
 	import pixel.ui.control.style.UIPanelStyle;
 	import pixel.ui.control.style.VerticalScrollerStyle;
+	import pixel.ui.control.vo.ColorFormat;
 	import pixel.ui.control.vo.ComboboxItem;
 	import pixel.ui.control.vo.UIControlMod;
 	import pixel.ui.control.vo.UIMod;
@@ -194,22 +196,29 @@ package
 //				UIProgress(control).progressUpdate(100,value);
 //			});
 			
-			var text:TextField = new TextField();
+			var txt:UIColorfulLabel = new UIColorfulLabel();
+			txt.width = 300;
+			txt.height= 20;
 			
-			var format:TextFormat = new TextFormat();
+			txt.x = txt.y = 100;
+			var ftm:ColorFormat = new ColorFormat();
+			ftm.color = 0xff0000;
+			ftm.startIndex = 3;
+			ftm.endIndex = 5;
+			ftm.size = 14
+			txt.addColorFormat(ftm);
 			
-			format.color = 0xff0000;
-			format.size = 20;
+			var ftm2:ColorFormat = new ColorFormat();
+			ftm2.color = 0x00ff00;
+			ftm2.size = 8;
+			ftm2.startIndex = 6;
+			ftm2.endIndex = 8;
+			txt.addColorFormat(ftm2);
 			
-			format.underline = true;
-			format.url = "event:POP:test";
-			text.text = "我是绿色我是红色";
-			text.setTextFormat(format,2,6);
-			text.addEventListener(TextEvent.LINK,function(event:TextEvent):void{
-				trace(event.text);
-			});
-			text.width = 200;
-			addChild(text);
+			txt.text = "0123456789";
+			var f:TextField;
+			
+			addChild(txt);
 		}
 		
 		private function test3d():void
