@@ -92,18 +92,19 @@ package
 	import pixel.texture.vo.PixelTexturePackage;
 	import pixel.ui.control.ComboboxItem;
 	import pixel.ui.control.IUIControl;
-	import pixel.ui.control.UILayoutConstant;
-	import pixel.ui.control.UIToolTipManager;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UICheckBox;
 	import pixel.ui.control.UICombobox;
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UIImage;
+	import pixel.ui.control.UILayoutConstant;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
+	import pixel.ui.control.UIRadio;
 	import pixel.ui.control.UITextInput;
 	import pixel.ui.control.UIToggleButton;
+	import pixel.ui.control.UIToolTipManager;
 	import pixel.ui.control.UIVerticalPanel;
 	import pixel.ui.control.UIVerticalScroller;
 	import pixel.ui.control.asset.PixelAssetManager;
@@ -181,8 +182,14 @@ package
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
 			
-			var mod:UIMod = UIControlFactory.instance.decode(new TIP() as ByteArray);
-			addChild(mod.controls.pop().control);
+			var control:UIControl = UIMod(UIControlFactory.instance.decode(new TIP() as ByteArray)).controls.pop().control as UIControl;
+			addChild(control);
+			var value:int = 0;
+			UIProgress(control).progressUpdate(100,5);
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+				value += 10;
+				UIProgress(control).progressUpdate(100,value);
+			});
 		}
 		
 		private function test3d():void
@@ -550,29 +557,6 @@ package
 			p = ColorCode.ARGB8888ToARGB4444(p);
 			trace(p.toString(2));
 		}
-		
-		private function progress():void
-		{
-			var pro:UIProgress = new UIProgress();
-			addChild(pro);
-			pro.x = 10;
-			pro.y = 10;
-			pro.width = 150;
-			pro.height = 20;
-			var i:int = 0;
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void
-			{
-				i += 10;
-				pro.UpdateProgress(i,100);
-			});
-			
-			stage.addEventListener(MouseEvent.RIGHT_CLICK,function(event:MouseEvent):void{
-				
-				pro.rotation = 90;
-			});
-		}
-		
-		
 		
 		[Embed(source="map_terrain.png")]
 		private var MAPT:Class;

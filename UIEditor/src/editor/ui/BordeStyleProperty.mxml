@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" xmlns:ui1="editor.uitility.ui.*">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
@@ -15,30 +15,27 @@
 			import pixel.utility.Tools;
 			[Bindable]
 			protected var BindBorderThinkness:int = 0;
-			[Bindable]
-			protected var BindBorderThinknessText:String = "";
+//			[Bindable]
+//			protected var BindBorderThinknessText:String = "";
 			[Bindable]
 			protected var BindBorderAlpha:Number = 0;
-			[Bindable]
-			protected var BindBorderAlphaText:String = "";
+//			[Bindable]
+//			protected var BindBorderAlphaText:String = "";
 			[Bindable]
 			protected var BindBorderColor:uint = 0;
-			[Bindable]
-			protected var BindBorderColorText:String = "";
 			
 			override protected function Initialized():void
 			{
 				BorderThinkness.value = BindBorderThinkness = Control.BorderThinkness;
-				BindBorderThinknessText = BindBorderThinkness + "";
+//				BindBorderThinknessText = BindBorderThinkness + "";
 				
 				BindBorderAlpha = Control.BorderAlpha;
-				BindBorderAlphaText = BindBorderAlpha + "";
+//				BindBorderAlphaText = BindBorderAlpha + "";
 				
 				BindBorderColor = Control.BorderColor;
-				BindBorderColorText = Tools.Color2Hex(BindBorderColor);
 				if(BorderColorPicker)
 				{
-					BorderColorPicker.selectedColor = BindBorderColor;
+					BorderColorPicker.color = BindBorderColor;
 				}
 			}
 			
@@ -48,7 +45,7 @@
 			protected function BorderThinknessChanged(event:Event):void
 			{
 				Control.BorderThinkness = BorderThinkness.value;
-				BindBorderThinknessText = BorderThinkness.value + "";
+//				BindBorderThinknessText = BorderThinkness.value + "";
 			}
 			
 			
@@ -58,7 +55,7 @@
 			protected function BorderAlphaChanged(event:Event):void
 			{
 				Control.BorderAlpha = BorderAlpha.value;
-				BindBorderAlphaText = "" + BorderAlpha.value;
+//				BindBorderAlphaText = "" + BorderAlpha.value;
 			}
 			
 			
@@ -68,32 +65,8 @@
 			protected function BorderColorChanged(event:ColorPickerEvent):void
 			{
 				Control.BorderColor = event.color;
-				BindBorderColorText = Tools.Color2Hex(event.color);
 			}
 			
-			/**
-			 * 标签内容面板边框颜色文本变更
-			 **/
-			protected function BorderColorTextChanged(event:FlexEvent):void
-			{
-				var Value:String = event.currentTarget.text;
-				if(Value.indexOf("#") == 0)
-				{
-					Value = Value.replace("#","0x");
-				}
-				else
-				{
-					if(Value.length != 6)
-					{
-						Alert.show("输入颜色代码非法,请重新输入");
-						return;
-					}
-					Value = "0x" + Value;
-				}
-				var Code:uint = new uint(Value);
-				BorderColorPicker.selectedColor = Code;
-				Control.BorderColor = Code;
-			}
 			
 			/**
 			 * 标签内容面板边框透明度
@@ -101,27 +74,34 @@
 			protected function BorderCornerChanged(event:Event):void
 			{
 				Control.BorderAlpha = BorderAlpha.value;
-				BindBorderAlphaText = "" + BorderAlpha.value;
-				var Value:int = HSlider(event.currentTarget).value;
-				switch(HSlider(event.currentTarget).toolTip)
+//				BindBorderAlphaText = "" + BorderAlpha.value;
+				var Value:int = AdvanceHSlider(event.currentTarget).value;
+				switch(AdvanceHSlider(event.currentTarget).toolTip)
 				{
 					case "左上角":
-						LeftTopLabel.text = "" + Value;
+//						LeftTopLabel.text = "" + Value;
 						Control.LeftTopCorner = Value;
 						break;
 					case "左下角":
-						LeftBottomLabel.text = "" + Value;
+//						LeftBottomLabel.text = "" + Value;
 						Control.LeftBottomCorner = Value;
 						break;
 					case "右上角":
-						RightTopLabel.text = "" + Value;
+//						RightTopLabel.text = "" + Value;
 						Control.RightTopCorner = Value;
 						break;
 					case "右下角":
-						RightBottomLabel.text = "" + Value;
+//						RightBottomLabel.text = "" + Value;
 						Control.RightBottomCorner = Value;
 						break;
 				}
+			}
+			
+			[Bindable]
+			private var _cornerEnable:Boolean = true;
+			public function set cornerEnable(value:Boolean):void
+			{
+				_cornerEnable = value;
 			}
 		]]>
 	</fx:Script>
@@ -130,43 +110,42 @@
 	<mx:HRule width="100%" />
 	<s:HGroup>
 		<s:Label text="边框宽度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100" value="{BindBorderThinkness}" maximum="20" stepSize="1" minimum="0" id="BorderThinkness" change="BorderThinknessChanged(event)" />
-		<s:Label text="{BindBorderThinknessText}" />
+		<ui1:AdvanceHSlider width="100" value="{BindBorderThinkness}" maximum="20" stepSize="1" minimum="0" id="BorderThinkness" change="BorderThinknessChanged(event)" />
+
 	</s:HGroup>
 	
 	<s:HGroup>
 		<s:Label text="边框颜色" height="100%" verticalAlign="middle" width="60"/>
-		<s:TextInput width="70" enter="BorderColorTextChanged(event)" text="{BindBorderColorText}"/>
-		<mx:ColorPicker showTextField="true" id="BorderColorPicker" selectedColor="{BindBorderColor}" change="BorderColorChanged(event)" />
+		<ui1:AdvanceColorPicker id="BorderColorPicker" color="{BindBorderColor}" change="BorderColorChanged(event)" />
 	</s:HGroup>
 	
 	<s:HGroup>
 		<s:Label text="边框透明" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100" value="{BindBorderAlpha}" maximum="1.0" stepSize="0.1" minimum="0" id="BorderAlpha" change="BorderAlphaChanged(event)" />
-		<s:Label text="{BindBorderAlphaText}" />
+		<ui1:AdvanceHSlider width="100" value="{BindBorderAlpha}" maximum="1.0" stepSize="0.1" minimum="0" id="BorderAlpha" change="BorderAlphaChanged(event)" />
+
 	</s:HGroup>
 	
-	<s:HGroup>
+	<s:HGroup enabled="{_cornerEnable}">
 		<s:Label text="左上角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="LeftTopCorner" change="BorderCornerChanged(event)" toolTip="左上角" />
-		<s:Label id = "LeftTopLabel" />
+		<ui1:AdvanceHSlider width="100"  maximum="50" stepSize="1" minimum="0" id="LeftTopCorner" change="BorderCornerChanged(event)" toolTip="左上角" />
+
 	</s:HGroup>
 	
-	<s:HGroup>
+	<s:HGroup enabled="{_cornerEnable}">
 		<s:Label text="右上角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="RightTopCorner" change="BorderCornerChanged(event)" toolTip="右上角" />
-		<s:Label id = "RightTopLabel" />
+		<ui1:AdvanceHSlider width="100"  maximum="50" stepSize="1" minimum="0" id="RightTopCorner" change="BorderCornerChanged(event)" toolTip="右上角" />
+
 	</s:HGroup>
 	
-	<s:HGroup>
+	<s:HGroup enabled="{_cornerEnable}">
 		<s:Label text="左下角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="LeftBottomCorner" change="BorderCornerChanged(event)" toolTip="左下角" />
-		<s:Label id = "LeftBottomLabel" />
+		<ui1:AdvanceHSlider width="100" maximum="50" stepSize="1" minimum="0" id="LeftBottomCorner" change="BorderCornerChanged(event)" toolTip="左下角"/>
+
 	</s:HGroup>
 	
-	<s:HGroup>
+	<s:HGroup enabled="{_cornerEnable}">
 		<s:Label text="右上角弧度" height="100%" verticalAlign="middle" width="60"/>
-		<s:HSlider width="100"  maximum="50" stepSize="1" minimum="0" id="RightBottomCorner" change="BorderCornerChanged(event)" toolTip="右下角" />
-		<s:Label id = "RightBottomLabel" />
+		<ui1:AdvanceHSlider width="100"  maximum="50" stepSize="1" minimum="0" id="RightBottomCorner" change="BorderCornerChanged(event)" toolTip="右下角" />
+
 	</s:HGroup>
 </ui:GenericProperty>

@@ -91,7 +91,7 @@ package bleach.scene
 		{
 			if(_progress)
 			{
-				_progress.UpdateProgress(event.total,event.loaded);
+				_progress.progressUpdate(event.total,event.loaded);
 			}
 		}
 		

@@ -29,6 +29,10 @@
     <classEntry path="pixel.ui.control.UITabBar"/>
     <classEntry path="pixel.ui.control.UIToggleButton"/>
     <classEntry path="pixel.ui.control.style.UIToggleButtonStyle"/>
+    <classEntry path="pixel.ui.control.UIRadio"/>
+    <classEntry path="pixel.ui.control.style.UIRadioStyle"/>
+    <classEntry path="pixel.ui.control.UIProgress"/>
+    <classEntry path="pixel.ui.control.style.UIProgressStyle"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:GenericProperty xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*">
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" xmlns:ui1="editor.uitility.ui.*">
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
+			import flash.net.dns.AAAARecord;
+			
+			import mx.events.ColorPickerEvent;
+			
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.UIProgress;
 			//import pixel.ui.control.UIProgressBar;
@@ -15,21 +19,50 @@
 			[Bindable]
 			private var progressBar:UIControl = null;
 			
+			[Bindable]
+			private var _barColor:uint = 0xCCCCCC;
+			
+			[Bindable]
+			private var _barAlpha:Number = 1;
+			
+			private var _control:UIProgress = null;
 			override protected function Initialized():void
 			{
-				progressBar = UIProgress(CurrentControl).progressBar;
+				_control = CurrentControl as UIProgress;
+				_barColor = _control.barColor;
+				_barAlpha = _control.barAlpha;
 			}
+			
+			protected function barColorChanged(event:ColorPickerEvent):void
+			{
+				_control.barColor = event.color;
+			}
+			
+			protected function barAlphaChanged(event:Event):void
+			{
+				_control.barAlpha = barAlpha.value;
+			}
+			
 		]]>
 	</fx:Script>
 	
 	<ui:BasicPropertie id="simple" Control="{CurrentControl}"/>
+	<s:HGroup>
+		<s:Label text="加载条背景色" height="100%" verticalAlign="middle" width="60"/>
+		<ui1:AdvanceColorPicker id="barColor" color="{_barColor}" change="barColorChanged(event)"   />
+	</s:HGroup>
 	
+	<s:HGroup>
+		<s:Label text="加载条透明" height="100%" verticalAlign="middle" width="60"/>
+		<ui1:AdvanceHSlider id="barAlpha" maximum="1" stepSize="0.1" value="{_barAlpha}" change="barAlphaChanged(event)" />
+	</s:HGroup>
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" />
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}" />
 	<ui:ScalePropertie id="ScaleStyle" Control="{CurrentControl}" />
-	
+	<!--
 	<s:Label text="加载条样式" color="0xFF0000" fontSize="16" paddingTop="20"/>
 	<ui:BordeStyleProperty  Control="{progressBar}" />
 	<ui:Background  Control="{progressBar}" />
 	<ui:ScalePropertie  Control="{progressBar}" />
+	-->
 </ui:GenericProperty>

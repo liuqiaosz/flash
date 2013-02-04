@@ -257,7 +257,7 @@ package pixel.ui.control
 				{
 					if(Style.BackgroundImage != null)
 					{
-						BitmapRender();
+						bitmapRender();
 					}
 					else
 					{
@@ -268,7 +268,7 @@ package pixel.ui.control
 							{
 								//资源已经欲载
 								BackgroundImage = asset.image;
-								BitmapRender();
+								bitmapRender();
 							}
 							else
 							{
@@ -313,7 +313,7 @@ package pixel.ui.control
 			}
 		}
 		
-		protected function BitmapRender():void
+		protected function bitmapRender():void
 		{
 			var Pen:Graphics = graphics;
 			if(!Style.Scale9Grid)
@@ -552,11 +552,11 @@ package pixel.ui.control
 				}
 			}
 		}
-		protected function SpecialDecode(Data:ByteArray):void
+		protected function SpecialDecode(data:ByteArray):void
 		{
 			
 		}
-		protected function SpecialEncode(Data:ByteArray):void
+		protected function SpecialEncode(data:ByteArray):void
 		{
 			
 		}

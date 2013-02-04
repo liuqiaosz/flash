@@ -9,11 +9,11 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.events.FlexEvent;
+			
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.event.EditModeEvent;
 			import pixel.ui.control.event.UIControlEvent;
-			
-			import mx.events.FlexEvent;
 			
 			[Bindable]
 			protected var _ControlWidth:int = 0;
@@ -25,6 +25,10 @@
 			protected var _ControlY:int = 0;
 			[Bindable]
 			protected var _ControlTip:String = "";
+			[Bindable]
+			protected var _sizeEditEnabled:Boolean = true;
+			[Bindable]
+			protected var _posEditEnabled:Boolean = true;
 			
 			private var _Control:UIControl = null;
 			
@@ -92,6 +96,15 @@
 				_ControlTip = Control.ToolTip;
 			}
 			
+			public function set sizeEditEnabled(value:Boolean):void
+			{
+				_sizeEditEnabled = value;
+			}
+			
+			public function set posEditEnabled(value:Boolean):void
+			{
+				_posEditEnabled = value;
+			}
 			
 		]]>
 	</fx:Script>
@@ -99,22 +112,22 @@
 	<s:Label text="控件基本属性"  styleName="LabelTitle"/>
 	<mx:HRule width="100%" />
 	
-	<s:HGroup verticalAlign="middle">
+	<s:HGroup verticalAlign="middle" enabled="{_sizeEditEnabled}">
 		<s:Label text="宽度" width="60"/>
 		<s:TextInput width="60" id="SliderWidth" text="{_ControlWidth}" enter="WidthChanged(event)"  restrict="0-9"/>
 	</s:HGroup>
 	
-	<s:HGroup verticalAlign="middle">
+	<s:HGroup verticalAlign="middle" enabled="{_sizeEditEnabled}">
 		<s:Label text="高度" width="60"/>
 		<s:TextInput width="60" id="SliderHeight" text="{_ControlHeight}" enter="HeightChanged(event)" restrict="0-9" />
 	</s:HGroup>
 	
-	<s:HGroup verticalAlign="middle">
+	<s:HGroup verticalAlign="middle" enabled="{_posEditEnabled}">
 		<s:Label text="X" width="60"/>
 		<s:TextInput width="60" id="PosX" text="{_ControlX}" enter="ChangeX(event)"   restrict="0-9"/>
 	</s:HGroup>
 	
-	<s:HGroup verticalAlign="middle">
+	<s:HGroup verticalAlign="middle"  enabled="{_posEditEnabled}">
 		<s:Label text="Y" width="60"/>
 		<s:TextInput width="60" id="PosY" text="{_ControlY}" enter="ChangeY(event)"  restrict="0-9"/>
 	</s:HGroup>

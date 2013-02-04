@@ -149,6 +149,10 @@
 			private var ToggleIcon:Class;
 			private var toggleIcon:Bitmap = new ToggleIcon() as Bitmap;
 			
+			[Embed(source="assets/Radio.png")]
+			private var RadioIcon:Class;
+			private var radioIcon:Bitmap = new RadioIcon() as Bitmap;
+			
 			//当前弹出的菜单
 			private var PopupWindow:SkinnableContainer = null;
 			//当前窗体类型
@@ -237,6 +241,11 @@
 					labe : "ToggleButton",
 					id: Utils.TOGGLE_BUTTON,
 					icon: toggleIcon
+				},
+				{
+					label : "Radio",
+					id: Utils.RADIO,
+					icon: radioIcon
 				}
 				
 			]);

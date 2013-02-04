@@ -23,15 +23,16 @@
 			
 			import mx.collections.ArrayCollection;
 			
-			import pixel.ui.control.UILayoutConstant;
 			import pixel.ui.control.UIButton;
 			import pixel.ui.control.UICheckBox;
 			import pixel.ui.control.UICombobox;
 			import pixel.ui.control.UIContainer;
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.UIImage;
+			import pixel.ui.control.UILayoutConstant;
 			import pixel.ui.control.UIPanel;
 			import pixel.ui.control.UIProgress;
+			import pixel.ui.control.UIRadio;
 			import pixel.ui.control.UISlider;
 			import pixel.ui.control.UITextInput;
 			import pixel.ui.control.UIToggleButton;
@@ -250,7 +251,12 @@
 				else if(_CurrentControl is UICheckBox)
 				{
 					Category.text = "复选框";
-					propertie = new ComboboxPropertie();
+					propertie = new UICheckBoxPropertie()
+				}
+				else if(_CurrentControl is UIRadio)
+				{
+					Category.text = "单选按钮";
+					propertie = new UIRadioPropertie();
 				}
 				if(propertie)
 				{

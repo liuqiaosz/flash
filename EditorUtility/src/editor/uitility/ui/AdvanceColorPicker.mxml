@@ -49,5 +49,5 @@
 	</fx:Script>
 	
 	<mx:ColorPicker id="picker" showTextField="true" change="colorChanged(event)" editable="{colorEditableBind}" color="0x000000" />
-	<s:Label id="colorText" visible="{showColorTextBind}" includeInLayout="{showColorTextBind}" text="0x000000" />
+	<s:Label id="colorText" visible="{showColorTextBind}" includeInLayout="{showColorTextBind}" text="{picker.selectedColor}" />
 </s:HGroup>

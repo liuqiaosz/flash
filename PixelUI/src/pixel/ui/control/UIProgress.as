@@ -1,75 +1,125 @@
 package pixel.ui.control
 {
-	import com.greensock.TweenLite;
-	import com.greensock.core.TweenCore;
+	import flash.display.Graphics;
 	
-	import flash.utils.ByteArray;
-	
+	import pixel.ui.control.asset.AssetImage;
+	import pixel.ui.control.asset.PixelAssetManager;
+	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UIProgressStyle;
 
-	public class UIProgress extends UIContainer
+	public class UIProgress extends UIControl
 	{
-		private var _ProgressBar:UIProgressBar = null;
-		public function UIProgress(Style:Class = null)
+		
+		public function set barColor(value:uint):void
 		{
-			super(Style?Style:UIProgressStyle);
-			_ProgressBar =  new UIProgressBar();
-			
-			addChild(_ProgressBar);
+			UIProgressStyle(_Style).barColor = value;
+			Update();
+		}
+		public function get barColor():uint
+		{
+			return UIProgressStyle(_Style).barColor;
+		}
+		
+		public function set barAlpha(value:Number):void
+		{
+			UIProgressStyle(_Style).barAlpha = value;
+			Update();
+		}
+		public function get barAlpha():Number
+		{
+			return UIProgressStyle(_Style).barAlpha;
+		}
+		public function UIProgress(skin:Class = null)
+		{
+			super(skin ? skin:UIProgressStyle);
 			width = 150;
-			height = 30;
+			height = 20;
 		}
 		
-		private var _TweenEnable:Boolean = true;
-		public function set TweenEnable(Value:Boolean):void
+		override public function EnableEditMode():void
 		{
-			_TweenEnable = Value;
-		}
-		public function get TweenEnable():Boolean
-		{
-			return _TweenEnable;
+			super.EnableEditMode();
+			_percentWidth = width * 0.5;
 		}
 		
-		public function get progressBar():UIProgressBar
+		override protected function StyleRender(Style:IVisualStyle):void
 		{
-			return _ProgressBar;
-		}
-		
-		/**
-		 * 更新进度
-		 **/
-		public function UpdateProgress(Value:Number,Maxmize:Number):void
-		{
-			if(Value <= Maxmize)
+			var style:UIProgressStyle = Style as UIProgressStyle;
+			var pen:Graphics = this.graphics;
+			pen.clear();
+			
+			if(style.BorderThinkness > 0)
 			{
-				if(_TweenEnable)
+				pen.lineStyle(style.BorderThinkness,style.BorderColor,style.BorderAlpha);
+			}
+			pen.beginFill(style.BackgroundColor,style.BackgroundAlpha);
+			if(style.HaveImage)
+			{
+				if(style.BackgroundImage != null)
 				{
-					TweenLite.to(_ProgressBar,0.3,{"width":(width - BorderThinkness) * (Value / Maxmize)});
+					bitmapRender();
 				}
 				else
 				{
-					_ProgressBar.width = (width - BorderThinkness) * (Value / Maxmize);
+					if(!style.ImagePack)
+					{
+						var asset:AssetImage = PixelAssetManager.instance.FindAssetById(style.BackgroundImageId) as AssetImage;
+						if(asset)
+						{
+							//资源已经欲载
+							BackgroundImage = asset.image;
+							bitmapRender();
+						}
+						else
+						{
+							//注册资源加载通知
+							PixelAssetManager.instance.AssetHookRegister(style.BackgroundImageId,this);
+						}
+					}
 				}
+				
 			}
+			else
+			{
+				graphics.beginFill(Style.BackgroundColor,Style.BackgroundAlpha);
+			}
+			
+			if(style.LeftBottomCorner > 0 || style.LeftTopCorner > 0 || style.RightTopCorner > 0 || style.RightBottomCorner > 0)
+			{
+				//graphics.drawRoundRectComplex(0,0,Style.Width,Style.Height,Style.LeftTopCorner,Style.RightTopCorner,Style.LeftBottomCorner,Style.RightBottomCorner);
+				graphics.drawRoundRectComplex(0,0,_ActualWidth,_ActualHeight,style.LeftTopCorner,style.RightTopCorner,style.LeftBottomCorner,style.RightBottomCorner);
+			}
+			else
+			{
+				graphics.drawRect(0,0,_ActualWidth,_ActualHeight);
+				//graphics.drawRect(0,0,Style.Width,Style.Height);
+			}
+			
+			pen.endFill();
+			pen.beginFill(style.barColor,style.barAlpha);
+			if(style.LeftBottomCorner > 0 || style.LeftTopCorner > 0 || style.RightTopCorner > 0 || style.RightBottomCorner > 0)
+			{
+				//graphics.drawRoundRectComplex(0,0,Style.Width,Style.Height,Style.LeftTopCorner,Style.RightTopCorner,Style.LeftBottomCorner,Style.RightBottomCorner);
+				graphics.drawRoundRectComplex(0,0,_percentWidth,_ActualHeight,style.LeftTopCorner,style.RightTopCorner,style.LeftBottomCorner,style.RightBottomCorner);
+			}
+			else
+			{
+				graphics.drawRect(0,0,_percentWidth,_ActualHeight);
+				//graphics.drawRect(0,0,Style.Width,Style.Height);
+			}
+			pen.endFill();
 		}
 		
-		override public function set height(value:Number):void
+		private var _percentWidth:Number = 0;
+		private var _total:Number = 0;
+		private var _value:Number = 0;
+		public function progressUpdate(total:Number,value:Number):void
 		{
-			super.height = value;
-			_ProgressBar.height = ContentHeight;
-		}
-		
-		override protected function SpecialEncode(Data:ByteArray):void
-		{
-			var data:ByteArray = _ProgressBar.encode();
-			Data.writeBytes(data);
-		}
-		override protected function SpecialDecode(Data:ByteArray):void
-		{
-			Data.readByte();
-			_ProgressBar.decode(Data);
-			_ProgressBar.x = _ProgressBar.y = 0;
-			_ProgressBar.height = height;
+			_total = total;
+			_value = value;
+			
+			_percentWidth = (_value / _total) * width;
+			Update();
 		}
 	}
 }
