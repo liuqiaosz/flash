@@ -46,6 +46,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.TextEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -73,6 +74,7 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
+	import flash.text.engine.TextElement;
 	import flash.utils.ByteArray;
 	import flash.utils.Proxy;
 	import flash.utils.Timer;
@@ -90,7 +92,6 @@ package
 	import pixel.texture.event.PixelTextureEvent;
 	import pixel.texture.vo.PixelTexture;
 	import pixel.texture.vo.PixelTexturePackage;
-	import pixel.ui.control.ComboboxItem;
 	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UICheckBox;
@@ -102,6 +103,7 @@ package
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
 	import pixel.ui.control.UIRadio;
+	import pixel.ui.control.UIRadioGroup;
 	import pixel.ui.control.UITextInput;
 	import pixel.ui.control.UIToggleButton;
 	import pixel.ui.control.UIToolTipManager;
@@ -111,6 +113,7 @@ package
 	import pixel.ui.control.event.DownloadEvent;
 	import pixel.ui.control.style.UIPanelStyle;
 	import pixel.ui.control.style.VerticalScrollerStyle;
+	import pixel.ui.control.vo.ComboboxItem;
 	import pixel.ui.control.vo.UIControlMod;
 	import pixel.ui.control.vo.UIMod;
 	import pixel.utility.BitmapTools;
@@ -182,14 +185,31 @@ package
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
 			
-			var control:UIControl = UIMod(UIControlFactory.instance.decode(new TIP() as ByteArray)).controls.pop().control as UIControl;
-			addChild(control);
-			var value:int = 0;
-			UIProgress(control).progressUpdate(100,5);
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-				value += 10;
-				UIProgress(control).progressUpdate(100,value);
+//			var control:UIControl = UIMod(UIControlFactory.instance.decode(new TIP() as ByteArray)).controls.pop().control as UIControl;
+//			addChild(control);
+//			var value:int = 0;
+//			UIProgress(control).progressUpdate(100,5);
+//			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+//				value += 10;
+//				UIProgress(control).progressUpdate(100,value);
+//			});
+			
+			var text:TextField = new TextField();
+			
+			var format:TextFormat = new TextFormat();
+			
+			format.color = 0xff0000;
+			format.size = 20;
+			
+			format.underline = true;
+			format.url = "event:POP:test";
+			text.text = "我是绿色我是红色";
+			text.setTextFormat(format,2,6);
+			text.addEventListener(TextEvent.LINK,function(event:TextEvent):void{
+				trace(event.text);
 			});
+			text.width = 200;
+			addChild(text);
 		}
 		
 		private function test3d():void

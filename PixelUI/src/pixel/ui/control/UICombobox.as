@@ -9,6 +9,7 @@ package pixel.ui.control
 	import pixel.ui.control.style.UICombStyle;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.core.PixelUINS;
+	import pixel.ui.control.vo.ComboboxItem;
 	
 	use namespace PixelUINS;
 	/**
@@ -37,7 +38,6 @@ package pixel.ui.control
 		{
 			var StyleSkin:Class = Skin ? Skin:UICombStyle;
 			super(StyleSkin);
-			
 			
 			_LabelField = new UITextInput("Combobox");
 			_LabelField.Input = false;
@@ -286,4 +286,3 @@ package pixel.ui.control
 		}
 	}
 }
-

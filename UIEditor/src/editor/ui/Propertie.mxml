@@ -33,6 +33,7 @@
 			import pixel.ui.control.UIPanel;
 			import pixel.ui.control.UIProgress;
 			import pixel.ui.control.UIRadio;
+			import pixel.ui.control.UIRadioGroup;
 			import pixel.ui.control.UISlider;
 			import pixel.ui.control.UITextInput;
 			import pixel.ui.control.UIToggleButton;
@@ -257,6 +258,11 @@
 				{
 					Category.text = "单选按钮";
 					propertie = new UIRadioPropertie();
+				}
+				else if(_CurrentControl is UIRadioGroup)
+				{
+					Category.text = "单选按钮群组";
+					propertie = new PanelPropertie();
 				}
 				if(propertie)
 				{

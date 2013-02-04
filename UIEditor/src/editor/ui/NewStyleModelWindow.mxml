@@ -19,7 +19,7 @@
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			
-			import pixel.ui.control.ComboboxItem;
+			import pixel.ui.control.vo.ComboboxItem;
 			import pixel.ui.control.UICombobox;
 			import pixel.ui.control.UIControl;
 			import pixel.ui.control.utility.Utils;

@@ -1,7 +1,5 @@
 package pixel.ui.control
 {
-	import pixel.ui.control.utility.ScaleRect;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -10,6 +8,11 @@ package pixel.ui.control
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	
+	import pixel.ui.control.utility.ScaleRect;
+	import pixel.ui.core.PixelUINS;
+	
+	use namespace PixelUINS;
 
 	/**
 	 * 九宫格缩放图形

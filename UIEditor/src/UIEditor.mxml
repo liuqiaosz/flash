@@ -153,6 +153,10 @@
 			private var RadioIcon:Class;
 			private var radioIcon:Bitmap = new RadioIcon() as Bitmap;
 			
+			[Embed(source="assets/RadioGroup.png")]
+			private var RadioGroupIcon:Class;
+			private var radioGroupIcon:Bitmap = new RadioGroupIcon() as Bitmap;
+			
 			//当前弹出的菜单
 			private var PopupWindow:SkinnableContainer = null;
 			//当前窗体类型
@@ -238,7 +242,7 @@
 					icon: windowIcon
 				},
 				{
-					labe : "ToggleButton",
+					label : "ToggleButton",
 					id: Utils.TOGGLE_BUTTON,
 					icon: toggleIcon
 				},
@@ -246,6 +250,11 @@
 					label : "Radio",
 					id: Utils.RADIO,
 					icon: radioIcon
+				},
+				{
+					label : "RadioGroup",
+					id: Utils.RADIOGROUP,
+					icon: radioGroupIcon
 				}
 				
 			]);
@@ -268,11 +277,6 @@
 							label : "导出描述文件",
 							enabled : false
 						},
-//						{
-//							id: MENU_CLOSE,
-//							label: "关闭文件",
-//							enabled: false
-//						},
 						{
 							id: MENU_SAVE,
 							label: "保存",
@@ -1190,28 +1194,7 @@
 				<s:layout>
 					<s:VerticalLayout horizontalAlign="center" />
 				</s:layout>
-				<!--
-				<mx:Accordion width="100%" height="100%">
-					<mx:VBox label="基本控件" horizontalAlign="center" width="100%">
-						<s:Scroller width="100%" height="100%">
-							<s:Group>
-								<s:List dataProvider="{controls}" borderVisible="false">
-									<s:itemRenderer>
-										<fx:Component>
-											<mx:VBox horizontalAlign="center" borderVisible="false" paddingTop="20">
-												<s:Image source="{data.icon}" name="{data.id}"  mouseDown="outerDocument.StartDrag(event)"/>
-												<s:Label text="{data.label}" />
-											</mx:VBox>
-										</fx:Component>
-									</s:itemRenderer>
-								</s:List>
-							</s:Group>
-						</s:Scroller>
-					</mx:VBox>
-					<mx:VBox label="自定义组件" id="ComponentLibrary" width="100%">
-					</mx:VBox>
-				</mx:Accordion>
-				-->
+				
 				<s:Scroller width="100%" height="100%">
 					<s:Group>
 						<s:List dataProvider="{controls}" borderVisible="false">

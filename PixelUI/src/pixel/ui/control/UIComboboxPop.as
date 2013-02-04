@@ -8,7 +8,7 @@ package pixel.ui.control
 	import flash.ui.MouseCursor;
 	import flash.utils.ByteArray;
 	
-	import pixel.ui.control.ComboboxItem;
+	import pixel.ui.control.vo.ComboboxItem;
 	import pixel.ui.control.UILayoutConstant;
 	import pixel.ui.control.UIComboboxItem;
 	import pixel.ui.control.UIContainer;
@@ -18,6 +18,7 @@ package pixel.ui.control
 	import pixel.ui.control.style.FontStyle;
 	import pixel.ui.core.PixelUINS;
 	import pixel.utility.Tools;
+	import pixel.ui.control.vo.ComboboxItem;
 
 	use namespace PixelUINS;
 	public class UIComboboxPop extends UIContainer

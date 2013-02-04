@@ -15,7 +15,7 @@ package pixel.ui.control.event
 		public static const EDIT_LOADRES_OUTSIDE:String = "EditLoadImageOutside";
 		
 		public static const CHANGE:String = "Change";
-		
+		public static const SELECTED:String = "Selected";
 		private var _Message:String = "";
 		public function set Message(Value:String):void
 		{

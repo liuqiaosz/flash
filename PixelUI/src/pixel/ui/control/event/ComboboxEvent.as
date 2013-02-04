@@ -1,6 +1,6 @@
 package pixel.ui.control.event
 {
-	import pixel.ui.control.ComboboxItem;
+	import pixel.ui.control.vo.ComboboxItem;
 
 	public class ComboboxEvent extends UIControlEvent
 	{

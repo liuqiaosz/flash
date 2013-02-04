@@ -33,6 +33,10 @@
     <classEntry path="pixel.ui.control.style.UIRadioStyle"/>
     <classEntry path="pixel.ui.control.UIProgress"/>
     <classEntry path="pixel.ui.control.style.UIProgressStyle"/>
+    <classEntry path="pixel.ui.control.UIRadioGroup"/>
+    <classEntry path="pixel.ui.control.style.UIRadioGroupStyle"/>
+    <classEntry path="pixel.ui.control.UIColorfulLabel"/>
+    <classEntry path="pixel.ui.control.vo.ColorFormat"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

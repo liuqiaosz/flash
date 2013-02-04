@@ -27,7 +27,8 @@ package pixel.ui.control.utility
 		public static const CHECKBOX:int = 19;
 		public static const CHECKBOXBTN:int = 20;
 		public static const TOGGLE_BUTTON:int = 21;		//状态切换按钮
-		public static const RADIO:int = 22				//radio按钮
+		public static const RADIO:int = 22;				//radio按钮
+		public static const RADIOGROUP:int = 23;		//radio group
 		
 		public static const CUSTOMER:uint = 99;			//自定义控件
 		
@@ -122,6 +123,10 @@ package pixel.ui.control.utility
 			{
 				return RADIO;
 			}
+			else if(Control is UIRadioGroup)
+			{
+				return RADIOGROUP;
+			}
 			return 99;
 		}
 		
@@ -195,6 +200,10 @@ package pixel.ui.control.utility
 			{
 				return UIRadio;
 			}
+			else if(Control is UIRadioGroup)
+			{
+				return UIRadioGroup;
+			}
 			return null;
 		}
 		
@@ -259,6 +268,9 @@ package pixel.ui.control.utility
 				case RADIO:
 					return UIRadio;
 					break;
+				case RADIOGROUP:
+					return UIRadioGroup;
+					break;
 			}
 			return null;
 			
@@ -322,6 +334,8 @@ package pixel.ui.control.utility
 				case RADIO:
 					return UIRadioStyle;
 					break;
+				case RADIOGROUP:
+					return UIRadioGroupStyle;
 			}
 			return null;
 			
@@ -390,6 +404,10 @@ package pixel.ui.control.utility
 			{
 				return RADIO;
 			}
+			else if(Control is UIRadioGroupStyle)
+			{
+				return RADIOGROUP;
+			}
 			return 99;
 		}
 		
@@ -453,6 +471,9 @@ package pixel.ui.control.utility
 					break;
 				case RADIO:
 					return "Radio";
+					break;
+				case RADIOGROUP:
+					return "RadioGroup";
 					break;
 			}
 			return null;

@@ -4,11 +4,23 @@ package pixel.ui.control
 	import flash.events.MouseEvent;
 	import flash.utils.ByteArray;
 	
+	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UIRadioStyle;
 
 	public class UIRadio extends UIControl
 	{
+		private var _value:String = null;
+		public function set value(data:String):void
+		{
+			_value = data;
+		}
+		public function get value():String
+		{
+			return _value;
+		}
+			
+		private var _label:UITextBase = null;
 		private var _isFocus:Boolean = false;
 		private var _selected:Boolean = false;
 		
@@ -16,7 +28,18 @@ package pixel.ui.control
 		{
 			_selected = value;
 			Update();
+			if(_selected)
+			{
+				var notify:UIControlEvent = new UIControlEvent(UIControlEvent.SELECTED,true);
+				dispatchEvent(notify);
+			}	
 		}
+		
+		public function get label():UITextBase
+		{
+			return _label;
+		}
+		
 		public function get selected():Boolean
 		{
 			return _selected;
@@ -35,7 +58,7 @@ package pixel.ui.control
 		public function set frameSize(value:int):void
 		{
 			_frameSize = value;
-			width = height = (_frameSize * 2);
+			width = height = (_frameSize * 2) + _label.width;
 			Update();
 		}
 		public function get frameSize():int
@@ -78,8 +101,15 @@ package pixel.ui.control
 			this.addEventListener(MouseEvent.MOUSE_MOVE,onRadioFocus);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,onRadioPressed);
 			this.addEventListener(MouseEvent.MOUSE_OUT,onRadioFocusOut);
-			this.width = this.height = (_frameSize * 2);
 			
+			_label = new UITextBase();
+			_label.width = 50;
+			_label.height = _frameSize * 2;
+			
+			height = (_frameSize * 2);
+			width = _frameSize * 2 + _label.width + 2;
+			addChild(_label);
+			_label.x = _frameSize * 2 + 2;
 		}
 		
 		override public function dispose():void
@@ -103,8 +133,10 @@ package pixel.ui.control
 		
 		protected function onRadioPressed(event:MouseEvent):void
 		{
-			_selected = true;
-			Update();
+			if(!_selected)
+			{
+				selected = true;
+			}
 		}
 		
 		protected function onRadioFocusOut(event:MouseEvent):void
@@ -145,18 +177,29 @@ package pixel.ui.control
 				pen.drawCircle(_frameSize,_frameSize,_inlineSize);
 				pen.endFill();
 			}
+			
+			_label.x = _frameSize * 2 + 2;
+			_label.y = ((_frameSize * 2) - _label.height) * 0.5;
+			_label.y = _label.y < 0 ? 0: _label.y;
 		}
 		
 		override protected function SpecialDecode(data:ByteArray):void
 		{
 			_frameSize = data.readShort();
 			_inlineSize = data.readShort();
+			_value = data.readUTF();
+			data.readByte();
+		
+			_label.decode(data);
 		}
 		
 		override protected function SpecialEncode(data:ByteArray):void
 		{
 			data.writeShort(_frameSize);
 			data.writeShort(_inlineSize);
+			data.writeUTF(_value);
+			var labelData:ByteArray = _label.encode();
+			data.writeBytes(labelData);
 		}
 	}
 }

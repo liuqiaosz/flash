@@ -12,6 +12,9 @@
 			
 			import pixel.ui.control.UIRadio;
 			import pixel.ui.control.style.UIRadioStyle;
+			
+			import spark.events.TextOperationEvent;
+			[Bindable]
 			private var _control:UIRadio = null;
 			[Bindable]
 			private var _frameSize:int = 6;
@@ -32,7 +35,6 @@
 				_selectColor = _control.selectColor;
 				_focusColor = _control.focusColor;
 				_focusAlpha = _control.focusAlpha;
-				
 			}
 			
 			protected function frameRadiusChanged(event:Event):void
@@ -59,10 +61,22 @@
 				_control.focusColor = event.color;
 			}
 			
+			protected function valueChanged(event:TextOperationEvent):void
+			{
+				_control.value = radioValue.text;
+			}
+			
 		]]>
 	</fx:Script>
 	<ui:BasicPropertie id="Simple" Control="{CurrentControl}" 
 					   enabled="{_propertieEnabled}" sizeEditEnabled="false" />
+	
+	<ui:LabelPropery Control="{_control.label}" enableSimpleStyle="false" />
+	
+	<s:HGroup verticalAlign="middle">
+		<s:Label text="数据值" width="60"/>
+		<s:TextInput id="radioValue" width="100" text="{_control.value}" change="valueChanged(event)" restrict="0-9 a-z A-Z" />
+	</s:HGroup>
 	
 	<s:HGroup verticalAlign="middle">
 		<s:Label text="外框半径" width="60"/>

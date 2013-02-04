@@ -27,7 +27,7 @@ package pixel.ui.control
 		//布局样式,默认为绝对布局
 		//private var _Layout:uint = LayoutConstant.ABSOLUTE;
 		//子对象队列
-		private var _Children:Array = [];
+		protected var _Children:Array = [];
 		public function UIContainer(Skin:Class = null)
 		{
 			var SkinStyle:Class = Skin ? Skin: UIContainerStyle;

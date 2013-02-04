@@ -34,6 +34,8 @@ package pixel.ui.control
 			_TextField.defaultTextFormat = _Format;
 			Align = TextAlign.LEFT;
 			addChild(_TextField);
+			this.BorderThinkness = 0;
+			this.BackgroundAlpha = 0;
 		}
 		
 		override public function dispose():void

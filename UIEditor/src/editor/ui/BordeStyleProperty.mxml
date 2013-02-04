@@ -108,11 +108,7 @@
 	
 	<s:Label text="边框样式" styleName="LabelTitle"/>
 	<mx:HRule width="100%" />
-	<s:HGroup>
-		<s:Label text="边框宽度" height="100%" verticalAlign="middle" width="60"/>
-		<ui1:AdvanceHSlider width="100" value="{BindBorderThinkness}" maximum="20" stepSize="1" minimum="0" id="BorderThinkness" change="BorderThinknessChanged(event)" />
-
-	</s:HGroup>
+	
 	
 	<s:HGroup>
 		<s:Label text="边框颜色" height="100%" verticalAlign="middle" width="60"/>
@@ -120,27 +116,28 @@
 	</s:HGroup>
 	
 	<s:HGroup>
+		<s:Label text="边框宽度" height="100%" verticalAlign="middle" width="60"/>
+		<ui1:AdvanceHSlider width="100" value="{BindBorderThinkness}" maximum="20" stepSize="1" minimum="0" id="BorderThinkness" change="BorderThinknessChanged(event)" />
+	</s:HGroup>
+	
+	<s:HGroup>
 		<s:Label text="边框透明" height="100%" verticalAlign="middle" width="60"/>
 		<ui1:AdvanceHSlider width="100" value="{BindBorderAlpha}" maximum="1.0" stepSize="0.1" minimum="0" id="BorderAlpha" change="BorderAlphaChanged(event)" />
-
 	</s:HGroup>
 	
 	<s:HGroup enabled="{_cornerEnable}">
 		<s:Label text="左上角弧度" height="100%" verticalAlign="middle" width="60"/>
 		<ui1:AdvanceHSlider width="100"  maximum="50" stepSize="1" minimum="0" id="LeftTopCorner" change="BorderCornerChanged(event)" toolTip="左上角" />
-
 	</s:HGroup>
 	
 	<s:HGroup enabled="{_cornerEnable}">
 		<s:Label text="右上角弧度" height="100%" verticalAlign="middle" width="60"/>
 		<ui1:AdvanceHSlider width="100"  maximum="50" stepSize="1" minimum="0" id="RightTopCorner" change="BorderCornerChanged(event)" toolTip="右上角" />
-
 	</s:HGroup>
 	
 	<s:HGroup enabled="{_cornerEnable}">
 		<s:Label text="左下角弧度" height="100%" verticalAlign="middle" width="60"/>
 		<ui1:AdvanceHSlider width="100" maximum="50" stepSize="1" minimum="0" id="LeftBottomCorner" change="BorderCornerChanged(event)" toolTip="左下角"/>
-
 	</s:HGroup>
 	
 	<s:HGroup enabled="{_cornerEnable}">

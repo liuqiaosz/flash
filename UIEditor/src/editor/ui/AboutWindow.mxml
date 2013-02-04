@@ -11,10 +11,15 @@
 	</ui:layout>
 	
 	<s:Scroller width="100%" height="100%">
-		<s:VGroup width="100%" height="100%">
-			<s:Label text="当前版本 0.0.8 2012-12-21"  fontWeight="bold"/>
+		<s:VGroup width="100%" height="100%" >
+			<s:Label text="当前版本 0.1.2 2013-02-04"  fontWeight="bold"/>
+			<s:Label text="版本: 0.1.2" fontWeight="bold" color="#23E1ED" />
+			<s:Label text="1> 添加Radio组件" fontWeight="bold" />
+			<s:Label text="2> 重写Progress组件" fontWeight="bold" />
+			<s:Label text="3> Bug修复" fontWeight="bold" />
+			<mx:HRule width="100%" />
 			
-			<s:Label text="版本: 0.0.8" fontWeight="bold" color="0x00FF00" />
+			<s:Label text="版本: 0.0.8" fontWeight="bold" />
 			<s:Label text="1> 添加样式编辑支持" fontWeight="bold" />
 			<s:Label text="2> 修正BUG" fontWeight="bold" />
 			<s:Label text="3> 调整数据格式" fontWeight="bold" />

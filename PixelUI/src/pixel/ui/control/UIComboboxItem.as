@@ -4,6 +4,7 @@ package pixel.ui.control
 	import flash.utils.ByteArray;
 	
 	import pixel.ui.core.PixelUINS;
+	import pixel.ui.control.vo.ComboboxItem;
 	
 	use namespace PixelUINS;
 	

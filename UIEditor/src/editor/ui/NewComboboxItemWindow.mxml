@@ -14,7 +14,7 @@
 			import mx.collections.ArrayCollection;
 			import mx.core.IFlexDisplayObject;
 			
-			import pixel.ui.control.ComboboxItem;
+			import pixel.ui.control.vo.ComboboxItem;
 			import pixel.ui.control.asset.AssetImage;
 			import pixel.ui.control.asset.PixelAssetManager;
 			import pixel.ui.control.asset.IAssetLibrary;

@@ -1,4 +1,4 @@
-package pixel.ui.control
+package pixel.ui.control.vo
 {
 	import flash.display.BitmapData;
 	import flash.utils.ByteArray;

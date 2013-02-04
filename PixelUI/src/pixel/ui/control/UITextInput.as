@@ -17,6 +17,7 @@ package pixel.ui.control
 			width = 100;
 			height = 20;
 			this.Input = true;
+			this.BorderThinkness = 1;
 		}
 		
 		override public function initializer():void
