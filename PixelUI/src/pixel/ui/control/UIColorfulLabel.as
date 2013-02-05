@@ -11,11 +11,11 @@ package pixel.ui.control
 	 **/
 	public class UIColorfulLabel extends UITextBase
 	{
-		private var formats:Vector.<ColorFormat> = null;
+		private var _formats:Vector.<ColorFormat> = null;
 		public function UIColorfulLabel()
 		{
 			super();
-			formats = new Vector.<ColorFormat>();
+			_formats = new Vector.<ColorFormat>();
 			text = "Label";
 			width = 100;
 			height = 30;
@@ -26,9 +26,20 @@ package pixel.ui.control
 		 **/
 		public function addColorFormat(format:ColorFormat):void
 		{
-			formats.push(format);
+			_formats.push(format);
+			textFormatUpdate();
 		}
 		
+		public function get colorFormat():Vector.<ColorFormat>
+		{
+			return _formats;
+		}
+		
+		public function clearFormat():void
+		{
+			_formats.length = 0;
+			textFormatUpdate();
+		}
 		override public function EnableEditMode():void
 		{
 			super.EnableEditMode();
@@ -47,10 +58,16 @@ package pixel.ui.control
 		 **/
 		protected function textFormatUpdate():void
 		{
+			_TextField.setTextFormat(_TextField.defaultTextFormat);
 			var format:ColorFormat = null;
 			var txtFormat:TextFormat = null;
-			for each(format in formats)
+			var textLen:int = _TextField.text.length;
+			for each(format in _formats)
 			{
+				if(format.startIndex >= textLen)
+				{
+					continue;
+				}
 				txtFormat = new TextFormat();
 				txtFormat.color = format.color;
 				txtFormat.size = format.size;
@@ -59,16 +76,17 @@ package pixel.ui.control
 					txtFormat.url = "event:" + format.linkId;
 					txtFormat.underline = true;
 				}
-				_TextField.setTextFormat(txtFormat,format.startIndex,format.endIndex);
+				
+				_TextField.setTextFormat(txtFormat,format.startIndex,format.endIndex <= textLen ? format.endIndex:-1);
 			}
 		}
 		
 		override protected function SpecialEncode(data:ByteArray):void
 		{
 			super.SpecialEncode(data);
-			data.writeByte(formats.length);
+			data.writeByte(_formats.length);
 			var format:ColorFormat = null;
-			for each(format in formats)
+			for each(format in _formats)
 			{
 				data.writeBytes(format.encode());
 			}
@@ -83,8 +101,14 @@ package pixel.ui.control
 			{
 				format = new ColorFormat();
 				format.decode(data);
-				formats.push(format);
+				_formats.push(format);
 			}
+			textFormatUpdate();
+		}
+		
+		override protected function updateFormat():void
+		{
+			super.updateFormat();
 			textFormatUpdate();
 		}
 	}

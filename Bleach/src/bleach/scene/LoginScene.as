@@ -94,7 +94,7 @@ package bleach.scene
 //			login.value = msg;
 //			dispatchMessage(login);
 			var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-			direct.value = "ChooseRoleScene";
+			direct.value = "RoomSquareScene";
 			dispatchMessage(direct);
 		}
 		

@@ -11,9 +11,9 @@ package pixel.ui.control
 	
 	public class UITextInput extends UITextBase
 	{
-		public function UITextInput(Text:String = "",Skin:Class = null)
+		public function UITextInput(text:String = "",Skin:Class = null)
 		{
-			super(Skin?Skin:UITextInputStyle,Text);
+			super(text,Skin?Skin:UITextInputStyle);
 			width = 100;
 			height = 20;
 			this.Input = true;

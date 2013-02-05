@@ -267,7 +267,7 @@ package pixel.ui.control
 							if(asset)
 							{
 								//资源已经欲载
-								BackgroundImage = asset.image;
+								_Style.BackgroundImage = asset.image;
 								bitmapRender();
 							}
 							else
@@ -277,7 +277,6 @@ package pixel.ui.control
 							}
 						}
 					}
-					
 				}
 				else
 				{

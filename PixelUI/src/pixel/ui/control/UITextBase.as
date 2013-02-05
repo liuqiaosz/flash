@@ -18,28 +18,36 @@ package pixel.ui.control
 	{
 		protected var _TextValue:String = "";
 		protected var _TextField:TextField = null;
+		protected var _letterSpacing:int = 1;
 		public function get textfield():TextField
 		{
 			return _TextField;
 		}
 		protected var _Format:TextFormat = null;
-		public function UITextBase(Skin:Class = null,Text:String = "")
+		public function UITextBase(Text:String = "",Skin:Class = null)
 		{
 			super(Skin);
 			_TextField = new TextField();
 			_TextValue = Text;
-			_TextField.text = _TextValue;
 			_TextField.selectable = false;
 			_Format = new TextFormat();
+			_Format.letterSpacing = _letterSpacing;
 			_Format.size = _Style.FontTextStyle.FontSize;
 			_Format.color = _Style.FontTextStyle.FontColor;
 			_Format.font = _Style.FontTextStyle.FontFamily;
 			_Format.bold = _Style.FontTextStyle.FontBold;
+			
 			_TextField.defaultTextFormat = _Format;
+			_TextField.text = _TextValue;
 			Align = TextAlign.LEFT;
 			addChild(_TextField);
 			this.BorderThinkness = 0;
 			this.BackgroundAlpha = 0;
+		}
+		
+		public function get defaultFormat():TextFormat
+		{
+			return _TextField.defaultTextFormat;
 		}
 		
 		override public function dispose():void
@@ -152,7 +160,7 @@ package pixel.ui.control
 			updateFormat();
 		}
 		
-		private function updateFormat():void
+		protected function updateFormat():void
 		{
 			_TextField.defaultTextFormat = _Format;
 			_TextField.text = _TextField.text;

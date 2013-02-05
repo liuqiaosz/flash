@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:AdvanceTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="500" height="500" title="" xmlns:ui1="editor.uitility.ui.*">
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ui="editor.ui.*" width="600" height="500" title="" xmlns:ui1="editor.uitility.ui.*">
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.ListEvent;
+			
 			import pixel.ui.control.UIColorfulLabel;
 			import pixel.ui.control.vo.ColorFormat;
 			
@@ -14,10 +17,12 @@
 			{
 				_control = value;
 				_textField = new TextField();
-				_textField.text = _control.text;
-				_textField.width = 400;
+				
+				_textField.width = 550;
 				_textField.height = 200;
 				_textField.multiline = true;
+				_textField.defaultTextFormat = _control.defaultFormat;
+				_textField.text = _control.text;
 				fieldContainer.addChild(_textField);
 				
 				_textField.addEventListener(MouseEvent.MOUSE_DOWN,onDragStart);
@@ -56,20 +61,30 @@
 			
 			private function appendColorFormat(event:MouseEvent):void
 			{
-				var format:ColorFormat = new ColorFormat();
+				if(selectLabel.text == "")
+				{
+					Alert.show("请选择需要配置样式的文字区段...");
+					return;
+				}
+				var format:ColorfulFormatDataGridItem = new ColorfulFormatDataGridItem();
 				format.startIndex = int(startIndex.text);
 				format.endIndex = int(endIndex.text);
 				format.color = fontColor.color;
 				format.isLink = Boolean(fontLink.selectedIndex);
 				format.linkId = linkCommand.text;
 				format.size = fontSize.value;
+				format.selectText = selectLabel.text;
 				addFormat(format);
 				reset();
 			}
-			private var formats:Vector.<ColorFormat> = new Vector.<ColorFormat>();
-			private function addFormat(format:ColorFormat):void
+			
+			[Bindable]
+			private var formats:ArrayCollection = new ArrayCollection();
+			//private var formats:Vector.<ColorfulFormatDataGridItem> = new Vector.<ColorFormat>();
+			private function addFormat(format:ColorfulFormatDataGridItem):void
 			{
-				formats.push(format);
+				formats.addItem(format);
+				//formats.push(format);
 				var txtFormat:TextFormat = new TextFormat();
 				txtFormat.color = format.color;
 				txtFormat.size = format.size;
@@ -78,8 +93,58 @@
 					txtFormat.url = "event:" + format.linkId;
 					txtFormat.underline = true;
 				}
-				
 				_textField.setTextFormat(txtFormat,format.startIndex,format.endIndex);
+			}
+			
+			protected function save(event:MouseEvent):void
+			{
+				for(var idx:int = 0; idx<formats.length; idx++)
+				{
+					var format:ColorfulFormatDataGridItem = formats.getItemAt(idx) as ColorfulFormatDataGridItem;
+					
+					var colorFtm:ColorFormat = new ColorFormat();
+					colorFtm.color = format.color;
+					colorFtm.size = format.size;
+					colorFtm.endIndex = format.endIndex;
+					colorFtm.startIndex = format.startIndex;
+					colorFtm.isLink = format.isLink;
+					colorFtm.linkId = format.linkId;
+					_control.addColorFormat(colorFtm);
+				}
+				this.CloseWindow();
+			}
+			
+			private var focusIndex:int = 0;
+			private var focusItem:ColorfulFormatDataGridItem = null;
+			protected function itemFocus(event:ListEvent):void
+			{
+				focusIndex = event.rowIndex;
+				focusItem = formats.getItemAt(focusIndex) as ColorfulFormatDataGridItem;
+			}
+			
+			public function formatDelete(event:MouseEvent):void
+			{
+				formats.removeItemAt(focusIndex);
+				updateFormat();
+			}
+			
+			protected function updateFormat():void
+			{
+				_textField.setTextFormat(_textField.defaultTextFormat);
+				_textField.text = _control.text;
+				for(var idx:int = 0; idx<formats.length; idx++)
+				{
+					var format:ColorfulFormatDataGridItem = formats.getItemAt(idx) as ColorfulFormatDataGridItem;
+					var txtFormat:TextFormat = new TextFormat();
+					txtFormat.color = format.color;
+					txtFormat.size = format.size;
+					if(format.isLink)
+					{
+						txtFormat.url = "event:" + format.linkId;
+						txtFormat.underline = true;
+					}
+					_textField.setTextFormat(txtFormat,format.startIndex,format.endIndex);
+				}
 			}
 		]]>
 	</fx:Script>
@@ -88,56 +153,86 @@
 	<ui:layout>
 		<s:VerticalLayout horizontalAlign="center" paddingTop="5" />
 	</ui:layout>
-	<s:BorderContainer width="460" height="200">
+	<s:BorderContainer width="560" height="200">
 		<mx:UIComponent id="fieldContainer">
 			
 		</mx:UIComponent>
 	</s:BorderContainer>
 	
-	<s:VGroup width="460">
+	<s:HGroup width="560">
+		<s:VGroup width="200">
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="选择文本" width="60"/>
+				<s:Label id="selectLabel"/>
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="开始位置" width="60"/>
+				<s:Label id="startIndex"/>
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="结束位置" width="60"/>
+				<s:Label id="endIndex"/>
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="文字颜色" width="60"/>
+				<ui1:AdvanceColorPicker id="fontColor" />
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="文字大小" width="60"/>
+				<ui1:AdvanceHSlider id="fontSize" minimum="12" stepSize="1" maximum="50" />
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="链接模式" width="60"/>
+				<s:ComboBox id="fontLink" width="50">
+					<s:ArrayCollection>
+						<fx:String>否</fx:String>
+						<fx:String>是</fx:String>
+					</s:ArrayCollection>
+				</s:ComboBox>
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="链接命令" width="60"/>
+				<s:TextInput id="linkCommand" />
+			</s:HGroup>
+			
+			<s:Button label="应用样式" width="150" click="appendColorFormat(event)" />
+			<s:Button label="保存修改" width="150" click="save(event)" />
+		</s:VGroup>
 		
-		<s:HGroup verticalAlign="middle">
-			<s:Label text="选择文本" width="60"/>
-			<s:Label id="selectLabel"/>
-		</s:HGroup>
+		<s:Scroller width="100%" height="100%">
+			<s:Group>
+				<mx:DataGrid width="100%" height="100%" id="grid" borderVisible="true" dataProvider="{formats}" itemRollOver="itemFocus(event)" >
+					<mx:columns>
+						<mx:DataGridColumn headerText="文本" dataField="selectText" width="100">
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="颜色" dataField="colorBase" width="50">
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="大小" dataField="size" width="50">
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="链接" dataField="isLink" width="50">
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="命令" dataField="LinkId" width="50">
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="" width="30">
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:HBox horizontalAlign="center" verticalAlign="middle">
+										<s:Image source="@Embed('../assets/Delete.png')" width="24" height="24" smooth="true" click="outerDocument.formatDelete(event)" />
+									</mx:HBox>
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</s:Group>
+		</s:Scroller>
 		
-		<s:HGroup verticalAlign="middle">
-			<s:Label text="开始位置" width="60"/>
-			<s:Label id="startIndex"/>
-		</s:HGroup>
-		
-		<s:HGroup verticalAlign="middle">
-			<s:Label text="结束位置" width="60"/>
-			<s:Label id="endIndex"/>
-		</s:HGroup>
-		
-		<s:HGroup verticalAlign="middle">
-			<s:Label text="文字颜色" width="60"/>
-			<ui1:AdvanceColorPicker id="fontColor" />
-		</s:HGroup>
-		
-		<s:HGroup verticalAlign="middle">
-			<s:Label text="文字大小" width="60"/>
-			<ui1:AdvanceHSlider id="fontSize" minimum="12" stepSize="1" maximum="50" />
-		</s:HGroup>
-		
-		<s:HGroup verticalAlign="middle">
-			<s:Label text="链接模式" width="60"/>
-			<s:ComboBox id="fontLink">
-				<s:ArrayCollection>
-					<fx:String>否</fx:String>
-					<fx:String>是</fx:String>
-				</s:ArrayCollection>
-			</s:ComboBox>
-		</s:HGroup>
-		
-		<s:HGroup verticalAlign="middle">
-			<s:Label text="链接命令" width="60"/>
-			<s:TextInput id="linkCommand" />
-		</s:HGroup>
-		
-		<s:Button label="应用样式" width="150" click="appendColorFormat(event)" />
-	</s:VGroup>
-	
+	</s:HGroup>
 	
 </ui:AdvanceTitleWindow>

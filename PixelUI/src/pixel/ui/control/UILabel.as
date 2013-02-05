@@ -6,7 +6,7 @@ package pixel.ui.control
 		public function UILabel(TextValue:String = "Label",Skin:Class = null)
 		{
 			var SkinClass:Class = Skin ? Skin:UILabelStyle;
-			super(SkinClass,TextValue);
+			super(TextValue,SkinClass);
 			this.mouseChildren = false;
 			width = 100;
 			height = 40;

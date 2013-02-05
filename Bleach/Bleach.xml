@@ -39,5 +39,10 @@
 			<library id="effect" version="1.0" url="effect_chooserole.swf" desc="特效" />
 			<library id="LoginUI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
+		
+		<scene id="RoomSquareScene" version="1.0" url="bleach/scene/RoomSquareScene.swf">
+			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
+			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
+		</scene>
 	</scenes>
 </bleach>

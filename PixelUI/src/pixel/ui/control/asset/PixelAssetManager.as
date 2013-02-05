@@ -122,6 +122,11 @@ class ControlAssetManagerImpl extends EventDispatcher implements IPixelAssetMana
 		_AssetLibArray.push(lib);
 	}
 	
+	public function clearAssetLibrary():void
+	{
+		_AssetLibArray.length = 0;
+	}
+	
 	public function removeAssetLibrary(id:String):void
 	{
 		for each(var lib:IAssetLibrary in _AssetLibArray)

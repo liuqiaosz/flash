@@ -203,22 +203,19 @@ package
 			txt.x = txt.y = 100;
 			var ftm:ColorFormat = new ColorFormat();
 			ftm.color = 0xff0000;
-			ftm.startIndex = 3;
+			ftm.startIndex = 4;
 			ftm.endIndex = 5;
 			ftm.size = 14
 			txt.addColorFormat(ftm);
 			
-			var ftm2:ColorFormat = new ColorFormat();
-			ftm2.color = 0x00ff00;
-			ftm2.size = 8;
-			ftm2.startIndex = 6;
-			ftm2.endIndex = 8;
-			txt.addColorFormat(ftm2);
+			txt.text = "";
 			
-			txt.text = "0123456789";
-			var f:TextField;
+			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
 			
+				txt.text += "1";
+			});
 			addChild(txt);
+
 		}
 		
 		private function test3d():void

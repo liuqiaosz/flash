@@ -314,7 +314,7 @@ package pixel.ui.control.style
 			//1	Short	半径
 			Data.writeShort(_Radius);
 			
-			if(_BackgroundImage != null)
+			if(BackgroundImageId != null && BackgroundImageId.length > 0)
 			{
 //				//有图形数据
 //				Data.writeByte(1);
@@ -367,25 +367,27 @@ package pixel.ui.control.style
 					Data.writeByte(0);
 				}
 				
-				if(_ImagePack)
-				{
-					Data.writeByte(1);
-					Data.writeShort(_BackgroundImage.bitmapData.width);
-					Data.writeShort(_BackgroundImage.bitmapData.height);
-					Data.writeByte(_ImageFillType);
-					
-					var ImgData:ByteArray = _BackgroundImage.bitmapData.getPixels(_BackgroundImage.bitmapData.rect);
-					ImgData.compress();
-					ImgData.position = 0;
-					//1	int		图片数据域长度
-					Data.writeUnsignedInt(ImgData.length);
-					//图片数据
-					Data.writeBytes(ImgData,0,ImgData.bytesAvailable);
-				}
-				else
-				{
-					Data.writeByte(0);
-				}
+				//所有资源外挂，屏蔽打包
+//				if(_ImagePack)
+//				{
+//					Data.writeByte(1);
+//					Data.writeShort(_BackgroundImage.bitmapData.width);
+//					Data.writeShort(_BackgroundImage.bitmapData.height);
+//					Data.writeByte(_ImageFillType);
+//					
+//					var ImgData:ByteArray = _BackgroundImage.bitmapData.getPixels(_BackgroundImage.bitmapData.rect);
+//					ImgData.compress();
+//					ImgData.position = 0;
+//					//1	int		图片数据域长度
+//					Data.writeUnsignedInt(ImgData.length);
+//					//图片数据
+//					Data.writeBytes(ImgData,0,ImgData.bytesAvailable);
+//				}
+//				else
+//				{
+//					Data.writeByte(0);
+//				}
+				Data.writeByte(0);
 				
 			}
 			else

@@ -17,6 +17,14 @@ package bleach.module.message
 		//登陆回应
 		_cache[MSG_LOGIN_RESP] = MsgLoginResp;
 		
+		//进入大厅
+		_cache[MSG_GAMECENTER] = MsgGameCenterResp;
+		_cache[MSG_GAMECENTER_RESP] = MsgGameCenterResp;
+		
+		//查找房间
+		_cache[MSG_ROOMLIST] = MsgRoomList;
+		_cache[MSG_ROOMLIST_RESP] = MsgRoomListResp;
+		
 		public static function findMsgById(id:int):Object
 		{
 			if(id in _cache)

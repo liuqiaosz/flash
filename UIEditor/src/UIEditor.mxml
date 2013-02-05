@@ -402,6 +402,7 @@
 				var lib:PixelLoaderAssetLibrary = new PixelLoaderAssetLibrary(resLoader,file.name);
 				Globals.AppendAssetLibrary(lib);
 				AssetLibraryTree.addItem(lib);
+				PixelAssetManager.instance.addAssetLibrary(lib);
 				resLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE,resourceLibraryComplete);
 				resLoader = null;
 				
@@ -758,79 +759,80 @@
 			
 			private function fileClose():void
 			{
-				var original:ByteArray = this.EditWorkspace.originalModel;
-				var originalNav:String = EditWorkspace.originalNav;
-				var current:ByteArray = EditWorkspace.GenerateControlModel();
-				var file:File = null;
-				var writer:FileStream = null;
-				
-				//校验原始数据和当前数据是否不一致
-				if(original && !Tools.compareByteArray(original,current))
-				{
-					//不一致，数据有修改，询问是否先保存再关闭
-					Alert.show("关闭前是否先保存当前已修改数据？","关闭提醒",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
-						
-						if(event.detail == Alert.YES)
-						{
-							if(originalNav != "")
-							{
-								file = new File(originalNav);
-								writer = new FileStream();
-								writer.open(file,FileMode.WRITE);
-								writer.writeBytes(current);
-								writer.close();
-								resetEditor();
-							}
-							else
-							{
-								var Browser:File = new File();
-								Browser.addEventListener(Event.SELECT,function(event:Event):void{
-									
-//									var modFile:File = new File(Browser.nativePath + ".mod");
-//									writer = new FileStream();
-//									writer.open(modFile,FileMode.WRITE);
-//									writer.writeBytes(current);
-//									writer.close();
-									
-									saveModStream(current,Browser.nativePath);
-									resetEditor();
-									
-								});
-								Browser.browseForSave("保存");
-							}
-						}
-						else
-						{
-							resetEditor();
-						}
-					});
-				}
-				else
-				{
-					if(original)
-					{
-						//数据一致，不做任何提示
-						resetEditor();
-					}
-					else
-					{
-						Alert.show("关闭前是否先保存当前数据？","关闭提醒",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
-							if(event.detail == Alert.YES)
-							{
-								var Browser:File = new File();
-								Browser.addEventListener(Event.SELECT,function(event:Event):void{
-									fileSave();
-								});
-								
-								//Browser.browseForSave("请选择保存控件模型路径");
-							}
-							else
-							{
-								resetEditor();
-							}
-						});
-					}
-				}
+				resetEditor();
+//				var original:ByteArray = this.EditWorkspace.originalModel;
+//				var originalNav:String = EditWorkspace.originalNav;
+//				var current:ByteArray = EditWorkspace.GenerateControlModel();
+//				var file:File = null;
+//				var writer:FileStream = null;
+//				
+//				//校验原始数据和当前数据是否不一致
+//				if(original && !Tools.compareByteArray(original,current))
+//				{
+//					//不一致，数据有修改，询问是否先保存再关闭
+//					Alert.show("关闭前是否先保存当前已修改数据？","关闭提醒",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
+//						
+//						if(event.detail == Alert.YES)
+//						{
+//							if(originalNav != "")
+//							{
+//								file = new File(originalNav);
+//								writer = new FileStream();
+//								writer.open(file,FileMode.WRITE);
+//								writer.writeBytes(current);
+//								writer.close();
+//								resetEditor();
+//							}
+//							else
+//							{
+//								var Browser:File = new File();
+//								Browser.addEventListener(Event.SELECT,function(event:Event):void{
+//									
+////									var modFile:File = new File(Browser.nativePath + ".mod");
+////									writer = new FileStream();
+////									writer.open(modFile,FileMode.WRITE);
+////									writer.writeBytes(current);
+////									writer.close();
+//									
+//									saveModStream(current,Browser.nativePath);
+//									resetEditor();
+//									
+//								});
+//								Browser.browseForSave("保存");
+//							}
+//						}
+//						else
+//						{
+//							resetEditor();
+//						}
+//					});
+//				}
+//				else
+//				{
+//					if(original)
+//					{
+//						//数据一致，不做任何提示
+//						resetEditor();
+//					}
+//					else
+//					{
+//						Alert.show("关闭前是否先保存当前数据？","关闭提醒",Alert.YES | Alert.NO,null,function(event:CloseEvent):void{
+//							if(event.detail == Alert.YES)
+//							{
+//								var Browser:File = new File();
+//								Browser.addEventListener(Event.SELECT,function(event:Event):void{
+//									fileSave();
+//								});
+//								
+//								//Browser.browseForSave("请选择保存控件模型路径");
+//							}
+//							else
+//							{
+//								resetEditor();
+//							}
+//						});
+//					}
+//				}
 				mainMenu.disabledItemById(MENU_SAVE);
 				mainMenu.disabledItemById(MENU_SAVEAS);
 				mainMenu.disabledItemById(MENU_CLOSE);

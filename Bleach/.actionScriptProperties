@@ -62,6 +62,7 @@
     <module application="src/Bleach.as" destPath="bleach/scene/WorldScene.swf" optimize="false" sourcePath="src/bleach/scene/WorldScene.as"/>
     <module application="src/Bleach.as" destPath="bleach/scene/ChooseRoleScene.swf" optimize="false" sourcePath="src/bleach/scene/ChooseRoleScene.as"/>
     <module application="src/Bleach.as" destPath="bleach/scene/PubScene.swf" optimize="false" sourcePath="src/bleach/scene/PubScene.as"/>
+    <module application="src/Bleach.as" destPath="bleach/scene/RoomSquareScene.swf" optimize="false" sourcePath="src/bleach/scene/RoomSquareScene.as"/>
   </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>

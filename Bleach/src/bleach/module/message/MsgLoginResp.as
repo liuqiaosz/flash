@@ -8,11 +8,11 @@ package bleach.module.message
 	 **/
 	public class MsgLoginResp extends MsgResponse
 	{
-		private var _respCode:int = 0;
-		public function get respCode():int
-		{
-			return _respCode;
-		}
+//		private var _respCode:int = 0;
+//		public function get respCode():int
+//		{
+//			return _respCode;
+//		}
 		private var _name:String = "";
 		public function get name():String
 		{
@@ -37,7 +37,8 @@ package bleach.module.message
 		{
 			if(source)
 			{
-				_respCode = source.readInt();
+				super.setMessage(source);
+//				_respCode = source.readInt();
 				if(_respCode == 0)
 				{
 					_name = source.readUTF();
