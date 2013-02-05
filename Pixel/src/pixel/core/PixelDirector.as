@@ -21,7 +21,6 @@ package pixel.core
 		private var _topLayer:Sprite = null;
 		public function PixelDirector()
 		{
-			
 		}
 		
 		public function initializer():void

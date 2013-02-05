@@ -135,16 +135,20 @@ package bleach.module.loader
 		 **/
 		private function msgDownload():void
 		{
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				_loaded++;
-				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-				coreDownload();
-			});
-			var ctx:LoaderContext = new LoaderContext();
-			ctx.applicationDomain = ApplicationDomain.currentDomain;
-			//loader.load(new URLRequest(Constants.WEB_URL + "BleachScene.swf"),ctx);
-			loader.load(new URLRequest("bleach/module/message/MsgLibrary.swf"),ctx);
+//			var loader:Loader = new Loader();
+//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+//				_loaded++;
+//				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+//				coreDownload();
+//			});
+//			var ctx:LoaderContext = new LoaderContext();
+//			ctx.applicationDomain = ApplicationDomain.currentDomain;
+//			//loader.load(new URLRequest(Constants.WEB_URL + "BleachScene.swf"),ctx);
+//			loader.load(new URLRequest("bleach/module/message/MsgLibrary.swf"),ctx);
+			
+			_loaded++;
+			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+			coreDownload();
 		}
 		
 		private var _lazy:Timer = null;

@@ -109,7 +109,6 @@ package bleach.communicator
 			{
 				var msg:IMsgResponse = new prototype() as IMsgResponse;
 				msg.setMessage(data);
-				
 				NetObserver.instance.broadcast(msg);
 			}
 		}
@@ -117,16 +116,17 @@ package bleach.communicator
 		private function channelConnected(event:Event):void
 		{
 			_connected = true;
+			
 			this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_CONNECTED));
 		}
 		private function channelIoError(event:IOErrorEvent):void
 		{
-			trace(event.text);
 			this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_CONNECT_ERROR));
 		}
 		private function channelSecurityError(event:SecurityErrorEvent):void
 		{
 			this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR));
+			//this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_CONNECT_ERROR));
 		}
 		
 		public function isConnected():Boolean

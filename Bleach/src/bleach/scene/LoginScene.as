@@ -44,6 +44,7 @@ package bleach.scene
 		private var cfg:ShareDisk = ShareObjectHelper.findShareDisk(Constants.CFG_LOCAL);
 	 	override public function initializer():void
 		{
+			debug("初始化登陆场景");
 			//var cfg:ShareDisk = ShareObjectHelper.findShareDisk(Constants.CFG_LOCAL);
 			var saveAccount:Boolean = false;
 			if(cfg.containKey(Constants.CFG_KEY_SAVELOGINNAME))
@@ -73,6 +74,7 @@ package bleach.scene
 			{
 				submit.addEventListener(MouseEvent.CLICK,loginSubmit);
 			}
+			debug("登陆场景初始化完成");
 			//s.addEventListener(MouseEvent.CLICK,loginSubmit);
 		}
 		
@@ -127,7 +129,7 @@ package bleach.scene
 			}
 		}
 		
-		override public function dealloc():void
+		override public function dispose():void
 		{
 			submit.removeEventListener(MouseEvent.CLICK,loginSubmit);
 			removeChild(login);

@@ -65,10 +65,6 @@ package bleach.scene
 //			});
 		}
 		
-		override public function dispose():void
-		{
-			super.dispose();
-		}
 		
 		private function direct(event:MouseEvent):void
 		{
@@ -77,9 +73,9 @@ package bleach.scene
 			this.dispatchMessage(msg);
 		}
 		
-		override public function dealloc():void
+		override public function dispose():void
 		{
-			super.dealloc();
+			super.dispose();
 			_left.removeEventListener(MouseEvent.CLICK,direct);
 			removeChild(_left);
 			_left = null;

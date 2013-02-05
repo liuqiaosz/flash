@@ -59,6 +59,8 @@ package bleach
 	 **/
 	public class BleachDirector extends PixelDirector implements IPixelDirector
 	{
+		private var _debug:Debuger = null;
+		private var _isDebug:Boolean = false;
 		private var _initialized:Boolean = false;
 		private var _channel:ITCPCommunicator = null;
 		private var _loading:Boolean = false;
@@ -67,14 +69,22 @@ package bleach
 		private var _system:BleachSystem = null;
 		private var _connectTryCount:int = 0;
 		private var _progressLoad:ILoading = null;
-		public function BleachDirector()
+		public function BleachDirector(debug:Boolean = true)
 		{
 			super();
+			_isDebug = debug;
 		}
 		
 		override public function initializer():void
 		{
 			super.initializer();
+			
+			if(_isDebug)
+			{
+				_debug = new Debuger();
+				this.gameStage.addChild(_debug);
+				addMessageListener(BleachMessage.BLEACH_DEBUG,onDebug);
+			}
 			
 			//加载配置
 			configInit();
@@ -82,10 +92,19 @@ package bleach
 			//连接服务器
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECT_ERROR,serverConnectError);
+			addMessageListener(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR,function(msg:BleachNetMessage):void{
+				debug("security error");
+			});
 			addMessageListener(BleachNetMessage.BLEACH_NET_RECONNECT,serverConnectError);
 			_channel = new TCPCommunicator();
+			debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
 			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 			//serverConnected(null);
+		}
+		
+		protected function onDebug(msg:BleachMessage):void
+		{
+			debug(msg.value as String);
 		}
 		
 		/**
@@ -93,17 +112,23 @@ package bleach
 		 **/
 		private function serverConnectError(msg:BleachNetMessage):void
 		{
+			debug("连接错误");
 			if(_connectTryCount < BleachSystem.instance.reConnectCount)
 			{
 				_connectTryCount++;
 				_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
-				trace("连接错误,重连...");
+				debug("连接错误,重连...");
 			}
 			else
 			{
 				//超过重连次数
-				trace("重连超过次数");
+				debug("重连超过次数");
 			}
+		}
+		
+		protected function debug(info:String):void
+		{
+			_debug.log(info);
 		}
 		
 		private var _heartBeat:HeartBeat = null;
@@ -113,8 +138,9 @@ package bleach
 		 **/
 		private function serverConnected(msg:BleachNetMessage):void
 		{
+			debug("服务端连接成功");
 			//重置连接尝试次数
-			_connectTryCount = 0;
+			//_connectTryCount = 0;
 			if(!_initialized)
 			{
 				_heartBeat = new HeartBeat(BleachSystem.instance.heartbeat,BleachSystem.instance.heartbeatot);
@@ -232,6 +258,7 @@ package bleach
 				_sceneMap[scene.id] = scene;
 			}
 			System.disposeXML(config);
+			debug("配置加载解析完毕");
 		}
 		
 		
@@ -375,7 +402,7 @@ package bleach
 //				IScene(_activedScene).pause();
 				if(oldDealloc)
 				{
-					IScene(_activedScene).dealloc();
+					IScene(_activedScene).dispose();
 				}
 				_activedScene = null;
 				_activedScene = newScene;

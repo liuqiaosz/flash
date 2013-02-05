@@ -86,7 +86,7 @@ package bleach.scene
 			}
 		}
 		
-		override public function dealloc():void
+		override public function dispose():void
 		{
 			ui.dispose();
 			ui = null;
