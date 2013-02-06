@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf8"?>
+
+<root>
+  <element rescode="0" desc="成功"/>
+  <element rescode="1" desc="失败"/>
+  <element rescode="2" desc="没有权限"/>
+  <element rescode="10" desc="还未登录"/>
+  <element rescode="11" desc="密码不正确"/>
+  <element rescode="12" desc="您已经不是新用户"/>
+  <element rescode="13" desc="该名字已经被人抢啦"/>
+  <element rescode="14" desc="还未创建角色"/>
+</root>

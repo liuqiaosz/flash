@@ -1,10 +1,11 @@
 package bleach.scene
 {
+	import bleach.cfg.BleachErrorCode;
 	import bleach.communicator.CommMarshal;
 	import bleach.communicator.NetObserver;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
-	import bleach.module.message.IMsg;
+	import bleach.module.protocol.IProtocol;
 	
 	import pixel.core.PixelLayer;
 
@@ -42,12 +43,17 @@ package bleach.scene
 			}
 		}
 		
+		protected function getErrorDescByCode(code:int):String
+		{
+			return BleachErrorCode.getDescByCode(code);
+		}
+		
 //		public function dealloc():void
 //		{
 //			
 //		}
 		
-		protected function sendNetMessage(msg:IMsg):void
+		protected function sendNetMessage(msg:IProtocol):void
 		{
 			var notify:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
 			notify.value = msg;

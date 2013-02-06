@@ -1,10 +1,11 @@
 package bleach.communicator
 {
+	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
-	import bleach.module.message.IMsg;
-	import bleach.module.message.IMsgRequest;
-	import bleach.module.message.IMsgResponse;
-	import bleach.module.message.MsgConstants;
+	import bleach.module.protocol.IProtocol;
+	import bleach.module.protocol.IProtocolRequest;
+	import bleach.module.protocol.IProtocolResponse;
+	import bleach.module.protocol.ProtocolConstants;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -13,6 +14,9 @@ package bleach.communicator
 	import flash.events.SecurityErrorEvent;
 	import flash.net.Socket;
 	import flash.utils.ByteArray;
+	
+	import pixel.message.PixelMessage;
+	import pixel.utility.BASE64;
 
 	public class TCPCommunicator extends GenericCommunicator implements ITCPCommunicator
 	{
@@ -57,42 +61,51 @@ package bleach.communicator
 		 **/
 		private function channelProgressData(event:ProgressEvent):void
 		{
-			//将所有数据读入接收缓存
-			_channel.readBytes(dataBuffer,0,event.bytesLoaded);
-			while(dataBuffer.length >= 4)
+			try
 			{
-				position = dataBuffer.length;
-				dataBuffer.position = 0;
-				//4字节ID长度
-				packLength = dataBuffer.readUnsignedInt() + 4;
-				
-				if(dataBuffer.bytesAvailable >= packLength)
+				//将所有数据读入接收缓存
+				_channel.readBytes(dataBuffer,0,event.bytesLoaded);
+				while(dataBuffer.length >= 4)
 				{
-					//包接收完整
-					var data:ByteArray = new ByteArray();
-					dataBuffer.readBytes(data,0,packLength);
-					//dataBuffer.position += packLength;
-					analysisMessage(data);
-					if(dataBuffer.bytesAvailable > 0)
+					position = dataBuffer.length;
+					dataBuffer.position = 0;
+					//4字节ID长度
+					packLength = dataBuffer.readUnsignedInt() + 4;
+					
+					if(dataBuffer.bytesAvailable >= packLength)
 					{
-						//读取剩余数据
-						remainBuffer.readBytes(dataBuffer,dataBuffer.position,dataBuffer.bytesAvailable);
-						dataBuffer.clear();
-						dataBuffer.writeBytes(remainBuffer);
-						remainBuffer.clear();
+						//包接收完整
+						var data:ByteArray = new ByteArray();
+						dataBuffer.readBytes(data,0,packLength);
+						//dataBuffer.position += packLength;
+						analysisMessage(data);
+						if(dataBuffer.bytesAvailable > 0)
+						{
+							//读取剩余数据
+							remainBuffer.readBytes(dataBuffer,dataBuffer.position,dataBuffer.bytesAvailable);
+							dataBuffer.clear();
+							dataBuffer.writeBytes(remainBuffer);
+							remainBuffer.clear();
+						}
+						else
+						{
+							dataBuffer.clear();
+						}
 					}
 					else
 					{
-						dataBuffer.clear();
+						//不完整包，恢复位置，等待下一个数据包到达
+						dataBuffer.position = position;
+						break;
 					}
 				}
-				else
-				{
-					//不完整包，恢复位置，等待下一个数据包到达
-					dataBuffer.position = position;
-					break;
-				}
 			}
+			catch(err:Error)
+			{
+				
+				this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_DISCONNECT));
+			}
+			
 		}
 		
 		/**
@@ -103,11 +116,11 @@ package bleach.communicator
 		{
 			data.position = 0;
 			command = data.readInt();
-			trace("Command[" + command + "] Reponse...");
-			var prototype:Object = MsgConstants.findMsgById(command);
+			debug("Recive command[" + command + "]");
+			var prototype:Object = ProtocolConstants.findMsgById(command);
 			if(prototype)
 			{
-				var msg:IMsgResponse = new prototype() as IMsgResponse;
+				var msg:IProtocolResponse = new prototype() as IProtocolResponse;
 				msg.setMessage(data);
 				NetObserver.instance.broadcast(msg);
 			}
@@ -146,14 +159,29 @@ package bleach.communicator
 				_connected = false;
 			}
 		}
-		public function sendMessage(msg:IMsgRequest):void
+		public function sendMessage(msg:IProtocolRequest):void
 		{
-			var data:ByteArray = msg.getMessage() ;
-			_channel.writeInt(data.length - 4);
-			_channel.writeBytes(data,0,data.length);
-			_channel.flush();
+			try
+			{
+				var data:ByteArray = msg.getMessage() ;
+				debug("Send command[" + msg.id + "]");
+				_channel.writeInt(data.length - 4);
+				_channel.writeBytes(data,0,data.length);
+				_channel.flush();
+			}
+			catch(err:Error)
+			{
+				this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_DISCONNECT));
+			}
 		}
 		public function sendString(value:String):void
 		{}
+		
+		protected function debug(msg:String):void
+		{
+			var notify:BleachMessage = new BleachMessage(BleachMessage.BLEACH_DEBUG);
+			notify.value = msg;
+			dispatchMessage(notify);
+		}
 	}
 }

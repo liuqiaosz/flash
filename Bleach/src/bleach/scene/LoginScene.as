@@ -3,10 +3,12 @@ package bleach.scene
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
-	import bleach.module.message.IMsg;
-	import bleach.module.message.MsgIdConstants;
-	import bleach.module.message.MsgLogin;
-	import bleach.module.message.MsgLoginResp;
+	import bleach.module.protocol.IProtocol;
+	import bleach.module.protocol.Protocol;
+	import bleach.module.protocol.ProtocolCheckAccount;
+	import bleach.module.protocol.ProtocolCheckAccountResp;
+	import bleach.module.protocol.ProtocolLogin;
+	import bleach.module.protocol.ProtocolLoginResp;
 	import bleach.utils.Constants;
 	
 	import flash.display.Loader;
@@ -89,15 +91,62 @@ package bleach.scene
 		 **/
 		private function loginSubmit(event:MouseEvent):void
 		{
-//			addNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
-//			//发送登陆消息
-//			var msg:MsgLogin = new MsgLogin();
-//			var login:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
-//			login.value = msg;
-//			dispatchMessage(login);
-			var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-			direct.value = "RoomSquareScene";
-			dispatchMessage(direct);
+			addNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
+			var checkAccount:ProtocolCheckAccount = new ProtocolCheckAccount();
+			checkAccount.accName = "lq";
+			checkAccount.accPwsd = "123456";
+			sendNetMessage(checkAccount);
+		}
+		
+		/**
+		 * 账户检查回应
+		 **/
+		private function accountCheckResponse(protocol:ProtocolCheckAccountResp):void
+		{
+			removeNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
+			if(protocol.respCode == 0)
+			{
+				if(protocol.isNew)
+				{
+					//新用户，进入角色创建场景	
+					var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+					direct.value = "ChooseRoleScene";
+					dispatchMessage(direct);
+				}
+				else
+				{
+					addNetListener(Protocol.SM_Login,onLoginResponse);
+					//检查正确发起登陆
+					debug("发起登陆");
+					var msg:ProtocolLogin = new ProtocolLogin();
+					msg.accName = "lq";
+					msg.accPwsd = "123456"; 
+					sendNetMessage(msg);
+				}
+			}
+		}
+		
+		/**
+		 * 登陆返回
+		 * 
+		 **/
+		private function onLoginResponse(message:IProtocol):void
+		{
+			removeNetListener(Protocol.SM_Login,onLoginResponse);
+			var msg:ProtocolLoginResp = message as ProtocolLoginResp;
+			if(msg.respCode == 0)
+			{
+				debug("登陆成功,进入战斗大厅");
+				//登陆成功，跳转场景
+				var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+				direct.value = "RoomSquareScene";
+				dispatchMessage(direct);
+			}
+			else
+			{
+				//登陆失败，弹出提示框
+				debug("登陆失败,错误码[" + msg.respCode + "] 错误信息[" + getErrorDescByCode(msg.respCode) + "]");
+			}
 		}
 		
 		private function loginNameSaveChange(event:UIControlEvent):void
@@ -109,24 +158,6 @@ package bleach.scene
 				acc = account.text;
 			}
 			cfg.addValue(Constants.CFG_KEY_LOGINNAME,acc);
-		}
-		
-		/**
-		 * 登陆报文返回回调
-		 * 
-		 **/
-		private function onLoginResponse(message:IMsg):void
-		{
-			removeNetListener(MsgIdConstants.MSG_LOGIN_RESP,onLoginResponse);
-			var msg:MsgLoginResp = message as MsgLoginResp;
-			if(msg.respCode == 0)
-			{
-				//登陆成功，跳转场景
-			}
-			else
-			{
-				//登陆失败，弹出提示框
-			}
 		}
 		
 		override public function dispose():void

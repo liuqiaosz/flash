@@ -22,18 +22,18 @@ package bleach.communicator
 	}
 }
 import bleach.communicator.INetObserver;
-import bleach.module.message.IMsg;
+import bleach.module.protocol.IProtocol;
 
 import flash.utils.Dictionary;
 
 class ObserverImpl implements INetObserver
 {
-	private var _reciveQueue:Vector.<IMsg> = null;
+	private var _reciveQueue:Vector.<IProtocol> = null;
 	private var _diction:Dictionary = null;
 	public function ObserverImpl()
 	{
 		_diction = new Dictionary();
-		_reciveQueue = new Vector.<IMsg>();
+		_reciveQueue = new Vector.<IProtocol>();
 	}
 	
 	public function addListener(command:int,callback:Function):void
@@ -56,12 +56,12 @@ class ObserverImpl implements INetObserver
 		}
 	}
 	
-	public function broadcast(msg:IMsg):void
+	public function broadcast(msg:IProtocol):void
 	{
 		_reciveQueue.push(msg);
 		
 	}
-	private var _recive:IMsg = null;
+	private var _recive:IProtocol = null;
 	public function update():void
 	{
 		if(_reciveQueue.length > 0)
@@ -69,6 +69,10 @@ class ObserverImpl implements INetObserver
 			_recive = _reciveQueue.shift();
 			if(_recive)
 			{
+				if(_recive.id == 3)
+				{
+					trace("!");
+				}
 				if(_recive.id in _diction)
 				{
 					var calls:Vector.<Function> = _diction[_recive.id];

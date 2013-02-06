@@ -19,8 +19,8 @@ package bleach.communicator
 }
 import bleach.communicator.GenericCommunicator;
 import bleach.communicator.IHTTPCommunicator;
-import bleach.module.message.IMsg;
-import bleach.module.message.MsgHTTP;
+import bleach.module.protocol.IProtocol;
+import bleach.module.protocol.MsgHTTP;
 import bleach.utils.Constants;
 
 import flash.events.Event;
@@ -49,11 +49,11 @@ class CommunicatorImpl extends GenericCommunicator implements IHTTPCommunicator
 		var data:ByteArray = new ByteArray();
 		var source:ByteArray = _loader.data as ByteArray;
 		source.readBytes(data,0,source.length);
-		var msg:IMsg = parseMessage(data);
+		var msg:IProtocol = parseMessage(data);
 		reciveNotify(msg);
 	}
 
-	public function post(msg:IMsg,url:String = Constants.SERVICE_URL):void
+	public function post(msg:IProtocol,url:String = Constants.SERVICE_URL):void
 	{
 		var request:URLRequest = new URLRequest();
 		request.method = "POST";
@@ -61,7 +61,7 @@ class CommunicatorImpl extends GenericCommunicator implements IHTTPCommunicator
 		_loader.load(request);
 	}
 	
-	public function get(msg:IMsg,url:String = Constants.SERVICE_URL):void
+	public function get(msg:IProtocol,url:String = Constants.SERVICE_URL):void
 	{
 		var request:URLRequest = new URLRequest(url);
 		request.method = "POST";

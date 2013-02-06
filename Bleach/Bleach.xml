@@ -3,7 +3,7 @@
 <bleach>
 	<system>
 		<!-- 心跳间隔 -->
-		<heartbeat>5000</heartbeat>
+		<heartbeat>100000</heartbeat>
 		<!-- 心跳超时 -->
 		<heartbeattimeout>10000</heartbeattimeout>
 		

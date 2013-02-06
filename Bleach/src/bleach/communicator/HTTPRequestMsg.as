@@ -1,8 +1,8 @@
 package bleach.communicator
 {
-	import bleach.module.message.IMsg;
+	import bleach.module.protocol.IProtocol;
 
-	public class HTTPRequestMsg implements IMsg
+	public class HTTPRequestMsg implements IProtocol
 	{
 		public function HTTPRequestMsg()
 		{

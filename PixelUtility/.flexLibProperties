@@ -14,6 +14,7 @@
     <classEntry path="pixel.utility.math.Int64"/>
     <classEntry path="pixel.utility.math.UInt64"/>
     <classEntry path="pixel.utility.IUpdate"/>
+    <classEntry path="pixel.utility.BASE64"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

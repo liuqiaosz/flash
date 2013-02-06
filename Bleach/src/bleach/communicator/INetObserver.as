@@ -1,6 +1,6 @@
 package bleach.communicator
 {
-	import bleach.module.message.IMsg;
+	import bleach.module.protocol.IProtocol;
 	
 	import pixel.utility.IUpdate;
 
@@ -8,6 +8,6 @@ package bleach.communicator
 	{
 		function addListener(command:int,callback:Function):void;
 		function removeListener(command:int,callback:Function):void;
-		function broadcast(msg:IMsg):void;
+		function broadcast(msg:IProtocol):void;
 	}
 }

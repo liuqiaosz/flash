@@ -1,9 +1,10 @@
 package bleach
 {
 	import bleach.message.BleachNetMessage;
-	import bleach.module.message.IMsg;
-	import bleach.module.message.MsgHeartBeat;
-	import bleach.module.message.MsgIdConstants;
+	import bleach.module.protocol.IProtocol;
+	import bleach.module.protocol.Protocol;
+	import bleach.module.protocol.ProtocolHeartBeat;
+	import bleach.module.protocol.ProtocolHeartBeatResp;
 	
 	import pixel.core.PixelSprite;
 	
@@ -18,10 +19,10 @@ package bleach
 		//心跳超时
 		private var _heartBeatTimeOut:int = 0;
 		private var lastHeartbeat:Number = 0;//new Date().time;
-		private var heartbeat:MsgHeartBeat = new MsgHeartBeat();
+		private var heartbeatReq:ProtocolHeartBeat = new ProtocolHeartBeat();
 		//等待心跳回应
 		private var waitHeartbeatResp:Boolean = false;
-		private var _heartbeat:MsgHeartBeat = new MsgHeartBeat();
+		//private var heartbeatRes:ProtocolHeartBeatResp = new ProtocolHeartBeatResp();
 		private var requestMessage:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
 		
 		public function HeartBeat(hbtime:int,hbot:int)
@@ -34,7 +35,7 @@ package bleach
 		
 		public function start():void
 		{
-			addNetListener(MsgIdConstants.MSG_HEARTBEAT_RESP,heartbeatResponse);
+			addNetListener(Protocol.SM_HeartBeat,heartbeatResponse);
 			_running = true;
 		}
 		public function pause():void
@@ -46,7 +47,7 @@ package bleach
 		 * 心跳报回应
 		 * 
 		 **/
-		private function heartbeatResponse(msg:IMsg):void
+		private function heartbeatResponse(msg:IProtocol):void
 		{
 			waitHeartbeatResp = false;
 			trace("心跳回应");
@@ -59,8 +60,8 @@ package bleach
 		private function heartbeatRequest(time:Number):void
 		{
 			lastHeartbeat = time;
-			_heartbeat.timestamp = lastHeartbeat;
-			requestMessage.value = _heartbeat;
+			heartbeatReq.timestamp = lastHeartbeat;
+			requestMessage.value = heartbeatReq;
 			//_channel.sendMessage(_heartbeat);
 			dispatchMessage(requestMessage);
 			waitHeartbeatResp = true;
@@ -97,7 +98,7 @@ package bleach
 		
 		override public function dispose():void
 		{
-			removeNetListener(MsgIdConstants.MSG_HEARTBEAT_RESP,heartbeatResponse);
+			removeNetListener(Protocol.SM_HeartBeat,heartbeatResponse);
 		}
 	}
 }

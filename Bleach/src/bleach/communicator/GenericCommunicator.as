@@ -1,9 +1,8 @@
 package bleach.communicator
 {
 	import bleach.cfg.GlobalConfig;
-	import bleach.module.message.IMsg;
-	import bleach.module.message.IMsgParser;
-	import bleach.module.message.MsgGeneric;
+	import bleach.module.protocol.IProtocol;
+	import bleach.module.protocol.ProtocolGeneric;
 	
 	import flash.events.EventDispatcher;
 	import flash.system.ApplicationDomain;
@@ -86,7 +85,7 @@ package bleach.communicator
 //			return _parser.parse(data);
 //		}
 		
-		protected function reciveNotify(msg:IMsg):void
+		protected function reciveNotify(msg:IProtocol):void
 		{
 			if(msg.id in _listenerList)
 			{

@@ -1,9 +1,9 @@
 package bleach.scene
 {
 	import bleach.message.BleachNetMessage;
-	import bleach.module.message.MsgConstants;
-	import bleach.module.message.MsgGameCenter;
-	import bleach.module.message.MsgIdConstants;
+	import bleach.module.protocol.Protocol;
+	import bleach.module.protocol.ProtocolConstants;
+	import bleach.module.protocol.ProtocolEnterGameCenter;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -39,10 +39,10 @@ package bleach.scene
 				_room = mod.controls.pop().control;
 				_room.x = _room.y = 0;
 				addChild(_room);
-				addNetListener(MsgIdConstants.MSG_GAMECENTER_RESP,onRoomListInitializer);
+				addNetListener(Protocol.SM_EnterGameCenter,onRoomListInitializer);
 				
 				trace("发送大厅消息");
-				var msg:MsgGameCenter = new MsgGameCenter();
+				var msg:ProtocolEnterGameCenter = new ProtocolEnterGameCenter();
 				sendNetMessage(msg);
 			}
 		}
@@ -50,7 +50,7 @@ package bleach.scene
 		override public function dispose():void
 		{
 			super.dispose();
-			removeNetListener(MsgIdConstants.MSG_GAMECENTER_RESP,onRoomListInitializer);
+			removeNetListener(Protocol.SM_EnterGameCenter,onRoomListInitializer);
 		}
 		
 		private function onRoomListInitializer(msg:BleachNetMessage):void

@@ -8,8 +8,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_charts.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="1" linkType="1" path="${PROJECT_FRAMEWORKS}/locale/{locale}"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/advancedgrids.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/charts.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_air.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/charts.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/netmon.swc" useDefaultLinkType="false"/>
           <libraryPathEntry applicationDomain="default" forceLoad="false" index="2" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/osmf.swc" useDefaultLinkType="true">
             <crossDomainRsls>
@@ -20,8 +20,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/spark.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/sparkskins.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/rpc.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/videoPlayer.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp_air.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/videoPlayer.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flash-integration.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/authoringsupport.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp.swc" useDefaultLinkType="false"/>
@@ -55,13 +55,13 @@
     <application path="Bleach.as"/>
   </applications>
   <modules>
-    <module application="src/Bleach.as" destPath="bleach/module/message/MsgLibrary.swf" optimize="false" sourcePath="src/bleach/module/message/MsgLibrary.as"/>
     <module application="src/Bleach.as" destPath="BleachLauncher.swf" optimize="false" sourcePath="src/BleachLauncher.as"/>
-    <module application="src/Sample.as" destPath="bleach/scene/LoginScene.swf" optimize="false" sourcePath="src/bleach/scene/LoginScene.as"/>
-    <module application="src/Sample.as" destPath="Mod.swf" optimize="false" sourcePath="src/Mod.as"/>
     <module application="src/Bleach.as" destPath="bleach/scene/WorldScene.swf" optimize="false" sourcePath="src/bleach/scene/WorldScene.as"/>
+    <module application="src/Sample.as" destPath="Mod.swf" optimize="false" sourcePath="src/Mod.as"/>
     <module application="src/Bleach.as" destPath="bleach/scene/ChooseRoleScene.swf" optimize="false" sourcePath="src/bleach/scene/ChooseRoleScene.as"/>
+    <module application="src/Sample.as" destPath="bleach/scene/LoginScene.swf" optimize="false" sourcePath="src/bleach/scene/LoginScene.as"/>
     <module application="src/Bleach.as" destPath="bleach/scene/PubScene.swf" optimize="false" sourcePath="src/bleach/scene/PubScene.as"/>
+    <module application="src/Bleach.as" destPath="bleach/module/protocol/ProtocolLibrary.swf" optimize="false" sourcePath="src/bleach/module/protocol/ProtocolLibrary.as"/>
     <module application="src/Bleach.as" destPath="bleach/scene/RoomSquareScene.swf" optimize="false" sourcePath="src/bleach/scene/RoomSquareScene.as"/>
   </modules>
   <buildCSSFiles/>

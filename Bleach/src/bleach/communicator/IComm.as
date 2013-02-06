@@ -1,6 +1,6 @@
 package bleach.communicator
 {
-	import bleach.module.message.IMsg;
+	import bleach.module.protocol.IProtocol;
 	import bleach.scene.GenericScene;
 
 	public interface IComm

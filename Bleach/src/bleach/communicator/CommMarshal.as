@@ -27,7 +27,7 @@ import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
 import bleach.communicator.PixelNetSocket;
-import bleach.module.message.IMsg;
+import bleach.module.protocol.IProtocol;
 import pixel.net.msg.tcp.IPixelTCPMessage;
 
 /**

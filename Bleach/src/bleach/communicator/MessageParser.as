@@ -1,6 +1,6 @@
 package bleach.communicator
 {
-	import bleach.module.message.MsgGetLevel;
+	import bleach.module.protocol.MsgGetLevel;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
@@ -9,7 +9,7 @@ package bleach.communicator
 	import pixel.net.msg.tcp.IPixelTCPMessageBody;
 	import pixel.net.msg.tcp.IPixelTCPMessageHeader;
 	import pixel.net.msg.tcp.PixelTCPMessageGenericParser;
-	import bleach.module.message.MsgConstants;
+	import bleach.module.protocol.ProtocolConstants;
 
 	public class MessageParser extends PixelTCPMessageGenericParser
 	{
@@ -17,7 +17,7 @@ package bleach.communicator
 		public function MessageParser()
 		{
 			_map = new Dictionary();
-			_map[MsgConstants.MSG_GETLEVELTOTAL] = MsgGetLevel;
+			_map[ProtocolConstants.MSG_GETLEVELTOTAL] = MsgGetLevel;
 		}
 		
 		public function decode(data:ByteArray):IPixelTCPMessage

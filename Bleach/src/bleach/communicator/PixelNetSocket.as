@@ -9,9 +9,9 @@ package bleach.communicator
 	import flash.utils.ByteArray;
 	
 	import pixel.error.PixelNetError;
-	import bleach.module.message.event.PixelNetEvent;
-	import bleach.module.message.Charset;
-	import bleach.module.message.IMsg;
+	import bleach.module.protocol.event.PixelNetEvent;
+	import bleach.module.protocol.Charset;
+	import bleach.module.protocol.IProtocol;
 
 	public class PixelNetSocket extends EventDispatcher implements ITCPCommunicator
 	{
@@ -130,7 +130,7 @@ package bleach.communicator
 			}
 		}
 		
-		public function sendMessage(msg:IMsg):void
+		public function sendMessage(msg:IProtocol):void
 		{
 			if(_channel && _isConnected)
 			{

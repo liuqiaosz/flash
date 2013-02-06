@@ -1,8 +1,8 @@
 package bleach.scene
 {
 	import bleach.communicator.CommMarshal;
-	import bleach.module.message.MsgConstants;
-	import bleach.module.message.MsgGetLevel;
+	import bleach.module.protocol.ProtocolConstants;
+	import bleach.module.protocol.MsgGetLevel;
 	import bleach.event.BleachEvent;
 	import bleach.view.IViewController;
 	
@@ -11,7 +11,7 @@ package bleach.scene
 	import flash.utils.Dictionary;
 	
 	import pixel.core.PixelLayer;
-	import bleach.module.message.IMsg;
+	import bleach.module.protocol.IProtocol;
 	
 	/**
 	 * 
@@ -50,8 +50,8 @@ package bleach.scene
 			}
 
 			//添加数据通讯监听
-			CommMarshal.instance.addMessageListener(MsgConstants.MSG_GETLEVELTOTAL,reciveMessage);
-			CommMarshal.instance.addEventListener(MsgConstants.MSG_GETLEVELINFO,reciveMessage);
+			CommMarshal.instance.addMessageListener(ProtocolConstants.MSG_GETLEVELTOTAL,reciveMessage);
+			CommMarshal.instance.addEventListener(ProtocolConstants.MSG_GETLEVELINFO,reciveMessage);
 		}
 		
 		/**
@@ -59,17 +59,17 @@ package bleach.scene
 		 **/
 		override public function dispose():void
 		{
-			CommMarshal.instance.removeMessageListener(MsgConstants.MSG_GETLEVELTOTAL,reciveMessage);
-			CommMarshal.instance.removeMessageListener(MsgConstants.MSG_GETLEVELINFO,reciveMessage);
+			CommMarshal.instance.removeMessageListener(ProtocolConstants.MSG_GETLEVELTOTAL,reciveMessage);
+			CommMarshal.instance.removeMessageListener(ProtocolConstants.MSG_GETLEVELINFO,reciveMessage);
 		}
 		
-		protected function reciveMessage(message:IMsg):void
+		protected function reciveMessage(message:IProtocol):void
 		{
 			switch(message.id)
 			{
-				case MsgConstants.MSG_GETLEVELTOTAL:
+				case ProtocolConstants.MSG_GETLEVELTOTAL:
 					break;
-				case MsgConstants.MSG_GETLEVELINFO:
+				case ProtocolConstants.MSG_GETLEVELINFO:
 					break;
 			}
 		}

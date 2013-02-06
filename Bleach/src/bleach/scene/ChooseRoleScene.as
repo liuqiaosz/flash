@@ -1,6 +1,9 @@
 package bleach.scene
 {
 	import bleach.message.BleachMessage;
+	import bleach.module.protocol.Protocol;
+	import bleach.module.protocol.ProtocolCreatePlayer;
+	import bleach.module.protocol.ProtocolCreatePlayerResp;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -61,17 +64,42 @@ package bleach.scene
 			addChild(ui);
 			
 			role01 = UIContainer(ui).GetChildById("chooserole001",true) as UIButton;
-			role01.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//				var a:Object = getDefinitionByName("choose_role013");
-//				if(a)
-//				{
-//					role.image = new a() as BitmapData;
-//				}
-				var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_POPWINDOW_MODEL);
-				msg.value = "loginScene"; 
-				dispatchMessage(msg);
-			});
+//			role01.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
+////				var a:Object = getDefinitionByName("choose_role013");
+////				if(a)
+////				{
+////					role.image = new a() as BitmapData;
+////				}
+//				var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_POPWINDOW_MODEL);
+//				msg.value = "loginScene"; 
+//				dispatchMessage(msg);
+//			});
+			role01.addEventListener(MouseEvent.CLICK,createPlayer);
 			addChild(role);
+		}
+		
+		private function createPlayer(event:MouseEvent):void
+		{
+			var msg:ProtocolCreatePlayer = new ProtocolCreatePlayer();
+			msg.playerName = "Hero Monster";
+			msg.templateId = 0;
+			
+			sendNetMessage(msg);
+
+			this.addNetListener(Protocol.SM_CreatePlayer,createResponse);
+		}
+		
+		private function createResponse(msg:ProtocolCreatePlayerResp):void
+		{
+			if(msg.respCode == 0)
+			{
+				debug("创建角色成功");
+			}
+			else
+			{
+				debug("创建失败[" + this.getErrorDescByCode(msg.respCode) + "]");
+			}
+			
 		}
 		
 		override protected function sceneUpdate():void

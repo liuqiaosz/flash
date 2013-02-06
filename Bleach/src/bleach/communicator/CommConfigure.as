@@ -1,6 +1,6 @@
 package bleach.communicator
 {
-	import bleach.module.message.Charset;
+	import bleach.module.protocol.Charset;
 
 	public class CommConfigure
 	{

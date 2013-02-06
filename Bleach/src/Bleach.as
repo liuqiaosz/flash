@@ -7,6 +7,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.net.Socket;
+	import flash.system.Security;
 	import flash.utils.ByteArray;
 	
 	import pixel.utility.Tools;

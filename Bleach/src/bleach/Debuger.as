@@ -21,6 +21,7 @@ package bleach
 		
 		public function log(txt:String):void
 		{
+			trace(txt);
 			_infoArea.appendText(txt + "\n");
 			_infoArea.scrollV = _infoArea.maxScrollV;
 		}

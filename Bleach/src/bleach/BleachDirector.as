@@ -1,5 +1,6 @@
 package bleach
 {
+	import bleach.cfg.BleachErrorCode;
 	import bleach.cfg.BleachSystem;
 	import bleach.cfg.GlobalConfig;
 	import bleach.communicator.ITCPCommunicator;
@@ -12,12 +13,14 @@ package bleach
 	import bleach.message.BleachNetMessage;
 	import bleach.module.loader.MaskLoading;
 	import bleach.module.loader.ProgressLoading;
-	import bleach.module.message.IMsg;
-	import bleach.module.message.IMsgRequest;
-	import bleach.module.message.MsgGeneric;
-	import bleach.module.message.MsgHeartBeat;
-	import bleach.module.message.MsgHeartBeatResp;
-	import bleach.module.message.MsgIdConstants;
+	import bleach.module.protocol.IProtocol;
+	import bleach.module.protocol.IProtocolRequest;
+	import bleach.module.protocol.IProtocolResponse;
+	import bleach.module.protocol.Protocol;
+	import bleach.module.protocol.ProtocolGeneric;
+	import bleach.module.protocol.ProtocolHeartBeat;
+	import bleach.module.protocol.ProtocolHeartBeatResp;
+	import bleach.module.protocol.ProtocolResponse;
 	import bleach.scene.IScene;
 	import bleach.scene.LoginScene;
 	import bleach.scene.PopUpMaskScene;
@@ -89,9 +92,13 @@ package bleach
 			//加载配置
 			configInit();
 			
+			//错误码配置
+			errorDescInit();
+			
 			//连接服务器
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECT_ERROR,serverConnectError);
+			addMessageListener(BleachNetMessage.BLEACH_NET_DISCONNECT,onNetDisconnect);
 			addMessageListener(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR,function(msg:BleachNetMessage):void{
 				debug("security error");
 			});
@@ -100,6 +107,12 @@ package bleach
 			debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
 			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 			//serverConnected(null);
+		}
+		
+		protected function onNetDisconnect(msg:BleachMessage):void
+		{
+			debug("服务器链接异常，重新链接");
+			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 		}
 		
 		protected function onDebug(msg:BleachMessage):void
@@ -128,7 +141,11 @@ package bleach
 		
 		protected function debug(info:String):void
 		{
-			_debug.log(info);
+			if(_debug)
+			{
+				_debug.log(info);
+			}
+			
 		}
 		
 		private var _heartBeat:HeartBeat = null;
@@ -153,6 +170,8 @@ package bleach
 				addMessageListener(BleachNetMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
 				
 				addMessageListener(BleachMessage.BLEACH_POPCLOSE,onClosePopScene);
+
+				NetObserver.instance.addListener(Protocol.SM_Error,onNetErrorMessage);
 				
 				var notify:BleachMessage = null;
 				switch(BleachSystem.instance.portal)
@@ -167,6 +186,14 @@ package bleach
 			}
 			//重新开启心跳
 			_heartBeat.start();
+		}
+		
+		/**
+		 * 异常协议处理
+		 **/
+		private function onNetErrorMessage(msg:IProtocolResponse):void
+		{
+			debug("异常协议,返回错误码[" + msg.respCode + "] 错误信息[" + BleachErrorCode.getDescByCode(msg.respCode) + "]");
 		}
 		
 		private function onClosePopScene(msg:PixelMessage):void
@@ -201,7 +228,7 @@ package bleach
 		 **/
 		private function onMessageSend(msg:BleachNetMessage):void
 		{
-			_channel.sendMessage(msg.value as IMsgRequest);
+			_channel.sendMessage(msg.value as IProtocolRequest);
 		}
 		
 		private var _sceneCache:Dictionary = new Dictionary();
@@ -259,6 +286,24 @@ package bleach
 			}
 			System.disposeXML(config);
 			debug("配置加载解析完毕");
+		}
+		
+		private function errorDescInit():void
+		{
+			debug("错误码表初始化");
+			var errorXML:Object = getDefinitionByName("BleachErrorCode");
+			if(!errorXML)
+			{
+				throw new Error("");
+			}
+			var config:XML = new XML(new errorXML());
+			trace(config.toString());
+			
+			var elements:XMLList = config.element;
+			for each(var element:XML in elements)
+			{
+				BleachErrorCode.addErrorDesc(element);
+			}
 		}
 		
 		
