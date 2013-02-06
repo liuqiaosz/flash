@@ -24,6 +24,12 @@ package pixel.ui.control
 		function get Style():IVisualStyle;
 		function set Style(value:IVisualStyle):void;
 		function initializer():void;
+		
+		function set x(value:Number):void;
+		function get x():Number;
+		
+		function set y(value:Number):void;
+		function get y():Number;
 		//以中心为注册点进行缩放
 		//function CenterScale(Value:Number):void;
 	}

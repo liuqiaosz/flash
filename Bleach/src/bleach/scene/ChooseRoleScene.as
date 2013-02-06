@@ -83,10 +83,8 @@ package bleach.scene
 			var msg:ProtocolCreatePlayer = new ProtocolCreatePlayer();
 			msg.playerName = "Hero Monster";
 			msg.templateId = 0;
-			
 			sendNetMessage(msg);
-
-			this.addNetListener(Protocol.SM_CreatePlayer,createResponse);
+			addNetListener(Protocol.SM_CreatePlayer,createResponse);
 		}
 		
 		private function createResponse(msg:ProtocolCreatePlayerResp):void
@@ -94,6 +92,9 @@ package bleach.scene
 			if(msg.respCode == 0)
 			{
 				debug("创建角色成功");
+				var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+				direct.value = "WorldScene";
+				dispatchMessage(direct);
 			}
 			else
 			{

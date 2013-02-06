@@ -5,13 +5,19 @@ package bleach.scene
 	import bleach.module.GenericModule;
 	import bleach.scene.ui.WorldFlow;
 	
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.utils.ByteArray;
 	import flash.utils.Timer;
+	import flash.utils.getDefinitionByName;
 	
 	import pixel.core.PixelLauncher;
+	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.UIButton;
+	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UIPanel;
+	import pixel.ui.control.vo.UIMod;
 	
 	/**
 	 * 世界选择场景
@@ -19,7 +25,7 @@ package bleach.scene
 	 **/
 	public class WorldScene extends GenericScene
 	{
-		private var _left:UIButton = null;
+		private var _worldmap:IUIControl = null;
 		public function WorldScene()
 		{
 			super();
@@ -27,58 +33,19 @@ package bleach.scene
 		
 		override public function initializer():void
 		{
-			//addMessageListener(BleachLoadingMessage.BLEACH_LOADING_END,loadingEnd);
-			//加载世界数据
-//			_scroller = new WorldFlow(1280,400,600,300);
-//			_scroller.y = 100;
-//			this.addChild(_scroller);
-//			var p1:UIPanel = new UIPanel();
-//			p1.width = 600;
-//			p1.height = 300;
-//			
-//			var p2:UIPanel = new UIPanel();
-//			p2.width = 600;
-//			p2.height = 300;
-//			
-//			var p3:UIPanel = new UIPanel();
-//			p3.width = 600;
-//			p3.height = 300;
-//			
-//			p1.BackgroundColor = 0xFF0000;
-//			_scroller.addChild(p1);
-//			_scroller.addChild(p2);
-//			_scroller.addChild(p3);
-			
-			_left = new UIButton();
-			_left.Text = "Left";
-			
-			addChild(_left);
-			
-			_left.addEventListener(MouseEvent.CLICK,direct);
-//			
-//			var right:UIButton = new UIButton();
-//			right.Text = "Right";
-//			right.x = 200;
-//			addChild(right);
-//			right.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//				_scroller.scrollRight();
-//			});
-		}
-		
-		
-		private function direct(event:MouseEvent):void
-		{
-			var msg:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-			msg.value = "loginScene";
-			this.dispatchMessage(msg);
+			var cls:Object = getDefinitionByName("ui.world");
+			var data:ByteArray = new cls() as ByteArray;
+			var mod:UIMod = UIControlFactory.instance.decode(data,false);
+			_worldmap = mod.controls.pop().control;
+			_worldmap.x = _worldmap.y = 0;
+			addChild(_worldmap as DisplayObject);
 		}
 		
 		override public function dispose():void
 		{
 			super.dispose();
-			_left.removeEventListener(MouseEvent.CLICK,direct);
-			removeChild(_left);
-			_left = null;
+			_worldmap.dispose();
+			_worldmap = null;
 		}
 		
 		override protected function sceneUpdate():void
