@@ -209,18 +209,18 @@ package pixel.core
 		 **/
 		public function frameUpdate(message:PixelMessage):void
 		{
-			
 //			if(_switching)
 //			{
 //				//正在切换过渡
 //				return;
 //			}
 //			
-//			if(_activedScene)
-//			{
-//				//更新状态
-//				_activedScene.update();
-//			}
+			if(_activedScene)
+			{
+				//更新状态
+				IPixelLayer(_activedScene).update();
+			}
+			
 //			for each(var scene:IPixelLayer in _sceneQueue)
 //			{
 //				scene.update();

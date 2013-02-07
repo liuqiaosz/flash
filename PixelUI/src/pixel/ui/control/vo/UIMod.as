@@ -28,6 +28,20 @@ package pixel.ui.control.vo
 		{
 			return _controls;
 		}
+		
+		public function findControlById(id:String):UIControlMod
+		{
+			var control:UIControlMod = null;
+			for each(control in _controls)
+			{
+				if(control.id == id)
+				{
+					return control;
+				}
+			}
+			return null;
+		}
+		
 		public function get styles():Vector.<UIStyleMod>
 		{
 			return _styles;

@@ -31,8 +31,8 @@ package
 //			var cv:Number = Tools.readInt64(data);
 //			trace("[" + cv + "]");
 //			
-			this.stage.scaleMode = StageScaleMode.NO_SCALE;
-			this.stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 			_loader = new BaseLoader();
 			addChild(_loader);
 			addEventListener(BleachEvent.BLEACH_INIT_COMPLETE,initComplete);

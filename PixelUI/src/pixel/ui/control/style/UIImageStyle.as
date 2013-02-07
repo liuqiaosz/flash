@@ -43,6 +43,7 @@ package pixel.ui.control.style
 			data.writeByte(int(_isGif));
 			if(_isGif)
 			{
+				data.writeShort(_gif.length);
 				data.writeBytes(_gif);
 			}
 			return data;
@@ -55,7 +56,8 @@ package pixel.ui.control.style
 			if(_isGif)
 			{
 				_gif = new ByteArray();
-				Data.readBytes(_gif);
+				var len:int = Data.readShort();
+				Data.readBytes(_gif,0,len);
 			}
 		}
 	}

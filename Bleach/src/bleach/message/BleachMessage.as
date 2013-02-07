@@ -8,9 +8,16 @@ package bleach.message
 		public static const BLEACH_SYNCSCENEDATA:String = "SyncSceneData";
 		public static const BLEACH_TEXTURE_DOWNLOADED:String = "TextureDownloaded";
 		public static const BLEACH_WORLD_REDIRECT:String = "WorldRedirect";
-		public static const BLEACH_POPWINDOW_MODEL:String = "PopWindowModel";
-		public static const BLEACH_POPWINDOW:String = "PopWindow";
-		public static const BLEACH_POPCLOSE:String = "PopClose";
+//		public static const BLEACH_POPWINDOW_MODEL:String = "PopWindowModel";
+//		
+//		public static const BLEACH_PRELOAD_SHOW:String = "PreloadShow";
+//		public static const BLEACH_PRELOAD_UPDATE:String = "PreloadUpdate";
+//		public static const BLEACH_PRELOAD_CLOSE:String = "PreloadClose";
+//		
+//		public static const BLEACH_CLOSE_PRELOAD_MODEL:String = "ClosePreloadModel";
+//		
+//		public static const BLEACH_POPWINDOW:String = "PopWindow";
+//		public static const BLEACH_POPCLOSE:String = "PopClose";
 		public static const BLEACH_DEBUG:String = "Debug";
 		
 		private var _deallocOld:Boolean = false;

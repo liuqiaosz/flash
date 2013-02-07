@@ -446,11 +446,15 @@ package pixel.ui.control
 			var Type:uint = 0;
 			for(var Idx:int=0; Idx<ChildLen; Idx++)
 			{
-				Type = Data.readByte();
-				Prototype = Utils.GetPrototypeByType(Type);
-				Child = new Prototype() as UIControl;
-				Child.decode(Data);
-				addChild(Child);
+				if(Data.bytesAvailable > 0)
+				{
+					Type = Data.readByte();
+					Prototype = Utils.GetPrototypeByType(Type);
+					Child = new Prototype() as UIControl;
+					Child.decode(Data);
+					addChild(Child);
+				}
+				
 			}
 			
 			padding = padding;

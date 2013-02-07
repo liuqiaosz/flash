@@ -3,12 +3,14 @@ package bleach.scene
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
+	import bleach.message.BleachPopUpMessage;
 	import bleach.module.protocol.IProtocol;
 	import bleach.module.protocol.Protocol;
 	import bleach.module.protocol.ProtocolCheckAccount;
 	import bleach.module.protocol.ProtocolCheckAccountResp;
 	import bleach.module.protocol.ProtocolLogin;
 	import bleach.module.protocol.ProtocolLoginResp;
+	import bleach.scene.ui.PopUpMaskPreloader;
 	import bleach.utils.Constants;
 	
 	import flash.display.Loader;
@@ -91,6 +93,13 @@ package bleach.scene
 		 **/
 		private function loginSubmit(event:MouseEvent):void
 		{
+			//锁屏并且显示内容
+			var msg:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
+			msg.value = new PopUpMaskPreloader();
+			PopUpMaskPreloader(msg.value).updateDesc("登陆较验中，请稍后...ABCDEFGHIJKLMNOPQRSTUVWXYZFJDKLSFJADKLSFJAKLSFJLF");
+			dispatchMessage(msg);
+			return;
+			//发送账户验证消息
 			addNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
 			var checkAccount:ProtocolCheckAccount = new ProtocolCheckAccount();
 			checkAccount.accName = "lq";
@@ -110,7 +119,7 @@ package bleach.scene
 				{
 					//新用户，进入角色创建场景	
 					var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-					direct.value = "ChooseRoleScene";
+					direct.value = Constants.SCENE_CHOOSE;
 					dispatchMessage(direct);
 				}
 				else
@@ -139,7 +148,7 @@ package bleach.scene
 				debug("登陆成功,进入战斗大厅");
 				//登陆成功，跳转场景
 				var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-				direct.value = "RoomSquareScene";
+				direct.value = Constants.SCENE_ROOMSQUARE;
 				dispatchMessage(direct);
 			}
 			else

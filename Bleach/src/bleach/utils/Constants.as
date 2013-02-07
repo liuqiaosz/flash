@@ -15,6 +15,11 @@ package bleach.utils
 		public static const CFG_KEY_SAVELOGINNAME:String = "SaveLoginName";
 		public static const CFG_KEY_LOGINNAME:String = "LoginName";
 		
+		public static const SCENE_LOGIN:String = "LoginScene";
+		public static const SCENE_CHOOSE:String = "ChooseRoleScene";
+		public static const SCENE_WORLD:String = "WorldScene";
+		public static const SCENE_ROOMSQUARE:String = "RoomSquareScene";
+		
 		public function Constants()
 		{
 		}

@@ -39,7 +39,7 @@ package pixel.ui.control
 				if(result == 0)
 				{
 					_count = decoder.getFrameCount();
-					_gifFrames = new Vector.<GIFFrame>(_count);
+					_gifFrames = new Vector.<GIFFrame>();
 					
 					for(var idx:int = 0; idx<_count; idx++)
 					{
@@ -78,6 +78,23 @@ package pixel.ui.control
 			if(_currentIndex >= _count)
 			{
 				_currentIndex = 0;
+			}
+			
+		}
+		
+		public function stopGifPlay():void
+		{
+			if(_timer && _timer.running)
+			{
+				_timer.stop();
+			}
+		}
+		
+		public function playGif():void
+		{
+			if(_timer && !_timer.running)
+			{
+				_timer.start();
 			}
 		}
 		

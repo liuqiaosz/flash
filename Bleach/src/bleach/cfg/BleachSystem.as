@@ -1,5 +1,10 @@
 package bleach.cfg
 {
+	import bleach.SceneModule;
+	import bleach.SceneVO;
+	
+	import flash.utils.Dictionary;
+
 	public class BleachSystem
 	{
 		private static var _instance:BleachSystem = null;
@@ -78,5 +83,19 @@ package bleach.cfg
 			return _instance;
 		}
 		
+		private var _scenes:Dictionary = new Dictionary();
+		public function addScene(scene:SceneVO):void
+		{
+			_scenes[scene.id] = scene;
+		}
+		
+		public function findSceneById(id:String):SceneVO
+		{
+			if(id in _scenes)
+			{
+				return _scenes[id] as SceneVO;
+			}
+			return null;
+		}
 	}
 }

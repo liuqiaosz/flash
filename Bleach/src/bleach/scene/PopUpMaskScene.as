@@ -108,7 +108,7 @@ package bleach.scene
 			_downloader = null;
 			removeChild(_progress);
 			addContent(module.sceneContent.content as Sprite);
-			dispatchMessage(new BleachMessage(BleachMessage.BLEACH_POPCLOSE));
+//			dispatchMessage(new BleachMessage(BleachMessage.BLEACH_POPCLOSE));
 		}
 		
 		/**

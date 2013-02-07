@@ -252,7 +252,7 @@ package pixel.ui.control
 			_Format.color = _Style.FontTextStyle.FontColor;
 			_Format.font = _Style.FontTextStyle.FontFamily;
 			_Format.bold = _Style.FontTextStyle.FontBold;
-			
+		
 			//_TextField.defaultTextFormat = _Format;
 			
 			_TextField.width = width;

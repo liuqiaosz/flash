@@ -114,20 +114,20 @@ package bleach.module.loader
 		 **/
 		private function rslLibraryDownload():void
 		{
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				_loaded++;
-				//_loading.progressUpdate(_loadTotal,_loaded);
-				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-				msgDownload();
-				
-			});
-			var ctx:LoaderContext = new LoaderContext();
-			ctx.applicationDomain = ApplicationDomain.currentDomain;
-			loader.load(new URLRequest("BleachLibrary.swf"),ctx);
-//			_loaded++;
-//			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-//			msgDownload();
+//			var loader:Loader = new Loader();
+//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+//				_loaded++;
+//				//_loading.progressUpdate(_loadTotal,_loaded);
+//				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+//				msgDownload();
+//				
+//			});
+//			var ctx:LoaderContext = new LoaderContext();
+//			ctx.applicationDomain = ApplicationDomain.currentDomain;
+//			loader.load(new URLRequest("BleachLibrary.swf"),ctx);
+			_loaded++;
+			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+			msgDownload();
 		}
 		
 		/**
@@ -135,20 +135,19 @@ package bleach.module.loader
 		 **/
 		private function msgDownload():void
 		{
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-				_loaded++;
-				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-				coreDownload();
-			});
-			var ctx:LoaderContext = new LoaderContext();
-			ctx.applicationDomain = ApplicationDomain.currentDomain;
-			//loader.load(new URLRequest(Constants.WEB_URL + "BleachScene.swf"),ctx);
-			loader.load(new URLRequest("bleach/module/protocol/ProtocolLibrary.swf"),ctx);
+//			var loader:Loader = new Loader();
+//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+//				_loaded++;
+//				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+//				coreDownload();
+//			});
+//			var ctx:LoaderContext = new LoaderContext();
+//			ctx.applicationDomain = ApplicationDomain.currentDomain;
+//			loader.load(new URLRequest("bleach/module/protocol/ProtocolLibrary.swf"),ctx);
 			
-//			_loaded++;
-//			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-//			coreDownload();
+			_loaded++;
+			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+			coreDownload();
 		}
 		
 		private var _lazy:Timer = null;

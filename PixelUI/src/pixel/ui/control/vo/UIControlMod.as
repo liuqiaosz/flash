@@ -36,7 +36,7 @@ package pixel.ui.control.vo
 		
 		public function get id():String
 		{
-			if(_control)
+			if(control)
 			{
 				return _control.Id;
 			}
