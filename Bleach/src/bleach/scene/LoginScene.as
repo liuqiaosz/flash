@@ -94,11 +94,12 @@ package bleach.scene
 		private function loginSubmit(event:MouseEvent):void
 		{
 			//锁屏并且显示内容
-			var msg:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
-			msg.value = new PopUpMaskPreloader();
-			PopUpMaskPreloader(msg.value).updateDesc("登陆较验中，请稍后...ABCDEFGHIJKLMNOPQRSTUVWXYZFJDKLSFJADKLSFJAKLSFJLF");
-			dispatchMessage(msg);
-			return;
+//			var msg:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
+//			msg.value = new PopUpMaskPreloader();
+//			PopUpMaskPreloader(msg.value).updateDesc("登陆较验中，请稍后...11111111111111111111111");
+//			dispatchMessage(msg);
+//			return;
+			
 			//发送账户验证消息
 			addNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
 			var checkAccount:ProtocolCheckAccount = new ProtocolCheckAccount();

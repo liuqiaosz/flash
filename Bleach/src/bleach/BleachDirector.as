@@ -115,8 +115,8 @@ package bleach
 			addMessageListener(BleachNetMessage.BLEACH_NET_RECONNECT,serverConnectError);
 			_channel = new TCPCommunicator();
 			debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
-			//_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
-			serverConnected(null);
+			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+			//serverConnected(null);
 		}
 		
 		protected function onNetDisconnect(msg:BleachMessage):void
@@ -204,7 +204,7 @@ package bleach
 				}
 			}
 			//重新开启心跳
-			//_heartBeat.start();
+			_heartBeat.start();
 		}
 		
 		/**
@@ -334,6 +334,7 @@ package bleach
 			BleachSystem.instance.host = system.remotehost;
 			BleachSystem.instance.host = "125.65.108.148";
 			BleachSystem.instance.port = new Number(system.remoteport);
+			BleachSystem.instance.port = 9666;
 			BleachSystem.instance.portal = new Number(system.portal);
 			
 			var scenes:XMLList = config.scenes[0].scene;

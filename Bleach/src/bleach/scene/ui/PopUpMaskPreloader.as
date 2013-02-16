@@ -49,6 +49,7 @@ package bleach.scene.ui
 					_panel = controlMod.control as UIContainer;
 					_panel.x = _panel.y = 0;
 					_textDesc = _panel.GetChildById("TextDesc",true) as UILabel;
+					_textDesc.Mutiline = true;
 					_loading = _panel.GetChildById("Loading",true) as UIImage;
 				}
 			}

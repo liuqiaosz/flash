@@ -151,11 +151,19 @@ package bleach.communicator
 		{
 			if(_channel)
 			{
-				_channel.close();
 				_channel.removeEventListener(Event.CONNECT,channelConnected);
 				_channel.removeEventListener(IOErrorEvent.IO_ERROR,channelIoError);
 				_channel.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,channelSecurityError);
-				_channel = null;
+				try
+				{
+					_channel.close();
+					_channel = null;
+					
+				}
+				catch(err:Error)
+				{
+					_channel = null;
+				}
 				_connected = false;
 			}
 		}

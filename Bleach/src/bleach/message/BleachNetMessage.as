@@ -2,7 +2,7 @@ package bleach.message
 {
 	import pixel.message.PixelMessage;
 
-	public class BleachNetMessage extends PixelMessage
+	public class BleachNetMessage extends BleachMessage
 	{
 		public static const BLEACH_NET_CONNECTED:String = "Connected";
 		public static const BLEACH_NET_CONNECT_ERROR:String = "ConnectError";

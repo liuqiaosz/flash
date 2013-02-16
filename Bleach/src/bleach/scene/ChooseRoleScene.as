@@ -9,6 +9,7 @@ package bleach.scene
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.text.TextInteractionMode;
 	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	
@@ -22,6 +23,7 @@ package bleach.scene
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
+	import pixel.ui.control.UITextInput;
 	import pixel.ui.control.vo.UIMod;
 
 	public class ChooseRoleScene extends GenericScene
@@ -37,6 +39,8 @@ package bleach.scene
 		private var role03:UIButton = null;
 		private var role04:UIButton = null;
 		private var rolePower:PixelSpriteSheet = null;
+		private var enter:UIButton = null;
+		private var playerName:UITextInput = null;
 		private var ui:UIControl = null;
 		override public function initializer():void
 		{
@@ -64,6 +68,10 @@ package bleach.scene
 			addChild(ui);
 			
 			role01 = UIContainer(ui).GetChildById("chooserole001",true) as UIButton;
+			enter = UIContainer(ui).GetChildById("chooserole016",true) as UIButton;
+			playerName = UIContainer(ui).GetChildById("textinput",true) as UITextInput;
+			playerName.text = "Hero Monster";
+			enter.addEventListener(MouseEvent.CLICK,createPlayer);
 //			role01.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
 ////				var a:Object = getDefinitionByName("choose_role013");
 ////				if(a)
@@ -74,14 +82,15 @@ package bleach.scene
 //				msg.value = "loginScene"; 
 //				dispatchMessage(msg);
 //			});
-			role01.addEventListener(MouseEvent.CLICK,createPlayer);
-			addChild(role);
+			//role01.addEventListener(MouseEvent.CLICK,createPlayer);
+			//addChild(role);
 		}
 		
 		private function createPlayer(event:MouseEvent):void
 		{
 			var msg:ProtocolCreatePlayer = new ProtocolCreatePlayer();
-			msg.playerName = "Hero Monster";
+			//msg.playerName = "Hero Monster";
+			msg.playerName = playerName.text;
 			msg.templateId = 0;
 			sendNetMessage(msg);
 			addNetListener(Protocol.SM_CreatePlayer,createResponse);
