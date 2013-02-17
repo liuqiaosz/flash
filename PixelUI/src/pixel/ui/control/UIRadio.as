@@ -10,7 +10,7 @@ package pixel.ui.control
 
 	public class UIRadio extends UIControl
 	{
-		private var _value:String = null;
+		private var _value:String = "";
 		public function set value(data:String):void
 		{
 			_value = data;

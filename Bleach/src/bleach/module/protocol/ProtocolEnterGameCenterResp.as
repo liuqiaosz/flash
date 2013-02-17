@@ -30,7 +30,6 @@ package bleach.module.protocol
 		{
 			if(source)
 			{
-				super.setMessage(source);
 				_rooms = new Vector.<RoomInfo>();
 				if(_respCode == 0)
 				{

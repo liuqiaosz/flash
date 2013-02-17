@@ -149,7 +149,7 @@ package bleach.scene
 				debug("登陆成功,进入战斗大厅");
 				//登陆成功，跳转场景
 				var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-				direct.value = Constants.SCENE_ROOMSQUARE;
+				direct.value = Constants.SCENE_WORLD;
 				dispatchMessage(direct);
 			}
 			else

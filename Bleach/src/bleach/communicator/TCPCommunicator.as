@@ -114,15 +114,22 @@ package bleach.communicator
 		 **/
 		private function analysisMessage(data:ByteArray):void
 		{
-			data.position = 0;
-			command = data.readInt();
-			debug("Recive command[" + command + "]");
-			var prototype:Object = ProtocolConstants.findMsgById(command);
-			if(prototype)
+			try
 			{
-				var msg:IProtocolResponse = new prototype() as IProtocolResponse;
-				msg.setMessage(data);
-				NetObserver.instance.broadcast(msg);
+				data.position = 0;
+				command = data.readInt();
+				debug("Recive command[" + command + "]");
+				var prototype:Object = ProtocolConstants.findMsgById(command);
+				if(prototype)
+				{
+					var msg:IProtocolResponse = new prototype() as IProtocolResponse;
+					msg.setMessage(data);
+					NetObserver.instance.broadcast(msg);
+				}
+			}
+			catch(err:Error)
+			{
+				debug(err.message + " ID[" + err.errorID + "]");
 			}
 		}
 		
@@ -179,6 +186,7 @@ package bleach.communicator
 			}
 			catch(err:Error)
 			{
+				debug(err.message + " ID[" + err.errorID + "]");
 				this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_DISCONNECT));
 			}
 		}

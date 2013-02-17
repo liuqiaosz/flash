@@ -32,6 +32,10 @@ package bleach.module.protocol
 		_cache[Protocol.CM_CreatePlayer] = ProtocolCreatePlayer;
 		_cache[Protocol.SM_CreatePlayer] = ProtocolCreatePlayerResp;
 		
+		//创建房间
+		_cache[Protocol.CM_CreateRoom] = ProtocolCreateRoom;
+		_cache[Protocol.SM_CreateRoom] = ProtocolCreateRoomResp;
+		
 		public static function findMsgById(id:int):Object
 		{
 			if(id in _cache)

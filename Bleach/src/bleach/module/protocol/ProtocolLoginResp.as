@@ -37,8 +37,6 @@ package bleach.module.protocol
 		{
 			if(source)
 			{
-				super.setMessage(source);
-//				_respCode = source.readInt();
 				if(_respCode == 0)
 				{
 					_name = source.readUTF();
