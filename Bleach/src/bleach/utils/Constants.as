@@ -19,6 +19,13 @@ package bleach.utils
 		public static const SCENE_CHOOSE:String = "ChooseRoleScene";
 		public static const SCENE_WORLD:String = "WorldScene";
 		public static const SCENE_ROOMSQUARE:String = "RoomSquareScene";
+		public static const SCENE_ROOM_CHALLENGE:String = "RoomChallenge";
+		public static const SCENE_ROOM_ATHLETICS:String = "RoomAthletics";
+		
+		//挑战
+		public static const ROOM_CHALLENGE:int = 1;
+		//竞技
+		public static const ROOM_ATHLETICS:int = 2;
 		
 		public function Constants()
 		{

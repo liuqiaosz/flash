@@ -5,12 +5,12 @@ package bleach.scene.ui
 	import flash.display.Shape;
 	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.getTimer;
 	
 	import pixel.core.PixelLauncher;
 	import pixel.core.PixelNode;
 	import pixel.core.PixelScreen;
 	import pixel.message.PixelMessage;
-	
 	import pixel.ui.control.IUIControl;
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControlFactory;
@@ -18,13 +18,9 @@ package bleach.scene.ui
 	import pixel.ui.control.UILabel;
 	import pixel.ui.control.vo.UIControlMod;
 	import pixel.ui.control.vo.UIMod;
-	import flash.utils.getTimer;
 
-	public class PopUpMaskPreloader  extends PixelNode
+	public class PopUpMaskPreloader  extends PopUpMask
 	{
-		//背景遮罩
-		private var _mask:Shape = null;
-		private var _screen:PixelScreen = null;
 		private var _desc:String = "";
 		private var _textDesc:UILabel = null;
 		private var _loading:UIImage = null;
@@ -32,13 +28,7 @@ package bleach.scene.ui
 		
 		public function PopUpMaskPreloader()
 		{
-			_screen = PixelLauncher.launcher.screen;
-			_mask = new Shape();
-			_mask.graphics.beginFill(0x000000,0.7);
-			_mask.graphics.drawRect(0,0,_screen.screenWidth,_screen.screenHeight);
-			_mask.graphics.endFill();
-			addChild(_mask);
-			
+			super();
 			var preloadData:Object = getDefinitionByName("ui.common");
 			if(preloadData)
 			{

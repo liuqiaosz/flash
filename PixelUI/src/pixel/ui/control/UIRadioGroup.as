@@ -28,6 +28,21 @@ package pixel.ui.control
 			super.initializer();	
 		}
 		
+		public function set selectedIndex(idx:int):void
+		{
+			var select:UIRadio = this._Children[idx] as UIRadio;
+			if(_selected)
+			{
+				_selected.selected = false;
+			}
+			_selected = select;
+		}
+		
+		public function get selected():UIRadio
+		{
+			return _selected;
+		}
+		
 		override public function dispose():void
 		{
 			super.dispose();

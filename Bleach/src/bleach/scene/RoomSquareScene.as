@@ -1,6 +1,9 @@
 package bleach.scene
 {
+	import bleach.event.BleachPopUpEvent;
+	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
+	import bleach.message.BleachPopUpMessage;
 	import bleach.module.protocol.IProtocol;
 	import bleach.module.protocol.Protocol;
 	import bleach.module.protocol.ProtocolConstants;
@@ -10,6 +13,7 @@ package bleach.scene
 	import bleach.module.protocol.ProtocolEnterGameCenterResp;
 	import bleach.module.protocol.ProtocolGetRoomList;
 	import bleach.module.protocol.ProtocolGetRoomListResp;
+	import bleach.scene.ui.PopUpCreateRoomWindow;
 	import bleach.utils.Constants;
 	
 	import flash.display.DisplayObject;
@@ -65,25 +69,65 @@ package bleach.scene
 			}
 		}
 		
+		private var _roomDetail:PopUpCreateRoomWindow = null;
 		/**
 		 * 打开创建房间选项窗口
 		 * 
 		 **/
 		private function onOpenCreateRoomDialog(event:MouseEvent):void
 		{
+			//锁屏并且显示内容
+			var msg:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
+			_roomDetail = new PopUpCreateRoomWindow();
+			msg.value = _roomDetail;
+			dispatchMessage(msg);
+			_roomDetail.addEventListener(BleachPopUpEvent.BLEACH_POP_CLOSE,function(e:BleachPopUpEvent):void{
+				trace("close");
+			});
+			
+			_roomDetail.addEventListener(BleachPopUpEvent.BLEACH_POP_ENTER,onCreateRoomEnter);
+
+		}
+		
+		/**
+		 * 房间创建确认
+		 * 
+		 **/
+		private function onCreateRoomEnter(event:BleachPopUpEvent):void
+		{
+			
 			addNetListener(Protocol.SM_CreateRoom,onCreateRoomResponse);
 			var msg:ProtocolCreateRoom = new ProtocolCreateRoom();
-			msg.desc = "test";
-			msg.map = 14;
+			msg.desc = _roomDetail.roomName;
 			msg.playerNum = 4;
-			msg.password = "123456";
-			this.sendNetMessage(msg);
+			msg.password = _roomDetail.roomPwd;
+			sendNetMessage(msg);
 		}
 		
 		private function onCreateRoomResponse(protocol:ProtocolCreateRoomResp):void
 		{
-			this.removeNetListener(Protocol.SM_CreateRoom,onCreateRoomResponse);
-			debug("room created");
+			removeNetListener(Protocol.SM_CreateRoom,onCreateRoomResponse);
+			this.dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSE));
+			if(protocol.respCode == 0)
+			{
+				var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+				debug("room created");
+				switch(_roomDetail.roomMode)
+				{
+					case Constants.ROOM_CHALLENGE:
+						direct.value = Constants.SCENE_ROOM_CHALLENGE;
+						dispatchMessage(direct);
+						break;
+					case Constants.ROOM_ATHLETICS:
+						direct.value = Constants.SCENE_ROOM_ATHLETICS;
+						dispatchMessage(direct);
+						break;
+				}
+			}
+			else
+			{
+				debug("Room create error respCode[" + protocol.respCode + "]");
+			}
 		}
 		
 		/**

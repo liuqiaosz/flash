@@ -18,7 +18,7 @@ package bleach.event
 		public static const BLEACH_SCENE_DOWNLOAD_COMPLETE:String = "SceneDownloadComplete";
 		public static const BLEACH_SCENE_DOWNLOAD_FAILURE:String = "SceneDownloadFailure";
 		
-		public static const BLEACH_POP_CLOSE:String = "PopUpClose";
+		
 		
 		private var _value:Object = null;
 		public function set value(data:Object):void

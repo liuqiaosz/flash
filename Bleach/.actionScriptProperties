@@ -63,6 +63,7 @@
     <module application="src/Bleach.as" destPath="bleach/scene/PubScene.swf" optimize="false" sourcePath="src/bleach/scene/PubScene.as"/>
     <module application="src/Bleach.as" destPath="bleach/module/protocol/ProtocolLibrary.swf" optimize="false" sourcePath="src/bleach/module/protocol/ProtocolLibrary.as"/>
     <module application="src/Bleach.as" destPath="bleach/scene/RoomSquareScene.swf" optimize="false" sourcePath="src/bleach/scene/RoomSquareScene.as"/>
+    <module application="src/Bleach.as" destPath="bleach/scene/ChallengeRoomScene.swf" optimize="false" sourcePath="src/bleach/scene/ChallengeRoomScene.as"/>
   </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>

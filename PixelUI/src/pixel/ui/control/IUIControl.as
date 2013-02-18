@@ -30,6 +30,12 @@ package pixel.ui.control
 		
 		function set y(value:Number):void;
 		function get y():Number;
+		
+		function set width(value:Number):void;
+		function get width():Number;
+		
+		function set height(value:Number):void;
+		function get height():Number;
 		//以中心为注册点进行缩放
 		//function CenterScale(Value:Number):void;
 	}

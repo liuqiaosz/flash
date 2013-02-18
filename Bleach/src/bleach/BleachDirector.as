@@ -234,6 +234,7 @@ package bleach
 				removeSceneTop(_poper as DisplayObject);
 				_poper.dispose();
 				_poper = null;
+				TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
 			}
 		}
 		

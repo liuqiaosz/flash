@@ -49,5 +49,10 @@
 			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
 			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
+		
+		<scene id="RoomChallenge" version="1.0" url="bleach/scene/ChallengeRoomScene.swf">
+			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
+			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
+		</scene>
 	</scenes>
 </bleach>

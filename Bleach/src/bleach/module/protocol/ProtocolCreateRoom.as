@@ -23,11 +23,11 @@ package bleach.module.protocol
 			_type = value;
 		}
 		
-		private var _map:int = 0;
-		public function set map(value:int):void
-		{
-			_map = value;
-		}
+//		private var _map:int = 0;
+//		public function set map(value:int):void
+//		{
+//			_map = value;
+//		}
 		
 		private var _password:String = "";
 		public function set password(value:String):void
@@ -56,7 +56,7 @@ package bleach.module.protocol
 		{
 			var data:ByteArray = super.getMessage();
 			data.writeByte(_type);
-			data.writeShort(_map);
+//			data.writeShort(_map);
 			if(_password.length > 0)
 			{
 				data.writeUTF(_password);
