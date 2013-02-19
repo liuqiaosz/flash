@@ -44,6 +44,7 @@ package bleach.scene.ui
 				_name = _window.GetChildById("RoomName",true) as UITextInput;
 				_password = _window.GetChildById("RoomPwd",true) as UITextInput;
 				_radioGroup = _window.GetChildById("ModeGroup",true) as UIRadioGroup;
+				_radioGroup.selectedIndex = 0;
 				_enter.addEventListener(MouseEvent.CLICK,createEnter);
 				_cancel.addEventListener(MouseEvent.CLICK,closeWindow);
 				_close.addEventListener(MouseEvent.CLICK,closeWindow);

@@ -25,17 +25,13 @@ package pixel.ui.control
 		
 		override public function initializer():void
 		{
-			super.initializer();	
+			super.initializer();
 		}
 		
 		public function set selectedIndex(idx:int):void
 		{
 			var select:UIRadio = this._Children[idx] as UIRadio;
-			if(_selected)
-			{
-				_selected.selected = false;
-			}
-			_selected = select;
+			select.selected = true;
 		}
 		
 		public function get selected():UIRadio
