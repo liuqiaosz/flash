@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" initialize="initializer(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import im.jpg.JpegExifDecoder;
+			
+			import mx.events.FlexEvent;
+			[Embed(source="IMG_2149.jpg")]
+			private var IMG:Class;
+			
+			protected function initializer(event:FlexEvent):void
+			{
+				
+				var file:File = new File("/Users/LiuQiao/Documents/Developer/Code/flash/ImageMagic/bin-debug/IMG_2149.jpg");
+				var reader:FileStream = new FileStream();
+				reader.open(file,FileMode.READ);
+				var data:ByteArray = new ByteArray();
+				reader.readBytes(data);
+				var decoder:JpegExifDecoder = new JpegExifDecoder();
+				decoder.decode(data);
+			}
+			
+		]]>
+	</fx:Script>
+</s:WindowedApplication>

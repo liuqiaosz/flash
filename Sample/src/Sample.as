@@ -74,7 +74,14 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
+	import flash.text.engine.BreakOpportunity;
+	import flash.text.engine.ElementFormat;
+	import flash.text.engine.FontDescription;
+	import flash.text.engine.RenderingMode;
+	import flash.text.engine.TextBaseline;
+	import flash.text.engine.TextBlock;
 	import flash.text.engine.TextElement;
+	import flash.text.engine.TextLine;
 	import flash.utils.ByteArray;
 	import flash.utils.Proxy;
 	import flash.utils.Timer;
@@ -181,41 +188,29 @@ package
 		{
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
-			//rotateTest();
-			//pngTo4444();
-			//progress();
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
+			var desc:FontDescription = new FontDescription();
+			desc.renderingMode = RenderingMode.CFF;
+			var format:ElementFormat = new ElementFormat(desc);
+			format.dominantBaseline = TextBaseline.IDEOGRAPHIC_TOP;
+			format.alignmentBaseline = TextBaseline.DESCENT;
+			//format.breakOpportunity = BreakOpportunity.ALL;
+			var text:TextElement = new TextElement("测试文字发动机奋斗空间发呆咖啡就",format);
 			
-//			var control:UIControl = UIMod(UIControlFactory.instance.decode(new TIP() as ByteArray)).controls.pop().control as UIControl;
-//			addChild(control);
-//			var value:int = 0;
-//			UIProgress(control).progressUpdate(100,5);
-//			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-//				value += 10;
-//				UIProgress(control).progressUpdate(100,value);
-//			});
+			var block:TextBlock = new TextBlock();
+			block.content = text;
+			var line:TextLine = block.createTextLine(null,100);
+			var offsetY:int = 0;
+			while(line)
+			{
+				line.y += offsetY;
+				addChild(line);
+				offsetY += line.height;
+				line = block.createTextLine(null,100);
+				trace("..");
+			}
 			
-			var txt:UIColorfulLabel = new UIColorfulLabel();
-			txt.width = 300;
-			txt.height= 20;
-			
-			txt.x = txt.y = 100;
-			var ftm:ColorFormat = new ColorFormat();
-			ftm.color = 0xff0000;
-			ftm.startIndex = 4;
-			ftm.endIndex = 5;
-			ftm.size = 14
-			txt.addColorFormat(ftm);
-			
-			txt.text = "";
-			
-			stage.addEventListener(MouseEvent.CLICK,function(event:MouseEvent):void{
-			
-				txt.text += "1";
-			});
-			addChild(txt);
-
 		}
 		
 		private function test3d():void
