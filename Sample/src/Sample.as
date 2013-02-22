@@ -75,8 +75,11 @@ package
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.engine.BreakOpportunity;
+	import flash.text.engine.ContentElement;
 	import flash.text.engine.ElementFormat;
 	import flash.text.engine.FontDescription;
+	import flash.text.engine.GraphicElement;
+	import flash.text.engine.GroupElement;
 	import flash.text.engine.RenderingMode;
 	import flash.text.engine.TextBaseline;
 	import flash.text.engine.TextBlock;
@@ -139,6 +142,8 @@ package
 	import pixel.utility.data.QuadTree;
 	import pixel.utility.loader.Loader;
 	
+	import text.RichTextFactory;
+	
 	import ui.aa;
 	
 	[SWF(width="1280",height="600")]
@@ -190,27 +195,75 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			center.x = stage.stageWidth / 2;
 			center.y = stage.stageHeight / 2;
-			var desc:FontDescription = new FontDescription();
-			desc.renderingMode = RenderingMode.CFF;
-			var format:ElementFormat = new ElementFormat(desc);
-			format.dominantBaseline = TextBaseline.IDEOGRAPHIC_TOP;
-			format.alignmentBaseline = TextBaseline.DESCENT;
-			//format.breakOpportunity = BreakOpportunity.ALL;
-			var text:TextElement = new TextElement("测试文字发动机奋斗空间发呆咖啡就",format);
+//			var desc:FontDescription = new FontDescription();
+//			desc.renderingMode = RenderingMode.CFF;
+//			var format:ElementFormat = new ElementFormat(desc);
+//			format.dominantBaseline = TextBaseline.IDEOGRAPHIC_TOP;
+//			format.alignmentBaseline = TextBaseline.DESCENT;
+//			format.fontSize = 12;
+//			//format.breakOpportunity = BreakOpportunity.ALL;
+//			var text:TextElement = new TextElement("测试文字发动机奋斗空间发呆咖啡就",format);
+//			var s:String = " [aa]456[bb]"; 
+//			var reg:RegExp = /\[\w+\]/;
+//			var sts:Array = s.match(reg);
+//			while(sts && sts.length > 0)
+//			{
+//				var icon:String = sts.pop();
+//				trace("icon[" + icon);
+//				var off:int  =s.indexOf(icon);
+//				trace("icon idx[" + off + "]");
+//				s = s.substr(off + icon.length);
+//				sts = s.match(reg);
+//			}
+//			var v:Array = s.split(reg);
+//
+//			trace(sts.length);
+//			var img:Bitmap = new SCROLLERARROW_DOWN() as Bitmap;
+//			var imgFormat:ElementFormat = new ElementFormat();
+//			imgFormat.dominantBaseline = TextBaseline.IDEOGRAPHIC_TOP;
+//			imgFormat.alignmentBaseline = TextBaseline.DESCENT;
+//			var imgElement:GraphicElement = new GraphicElement(img,img.width,img.height,imgFormat);
+//			var arr:Vector.<ContentElement> = new Vector.<ContentElement>();
+//			arr.push(text);
+//			arr.push(imgElement);
+//			
+//			var group:GroupElement = new GroupElement(arr);
+//			
+//			var block:TextBlock = new TextBlock();
+//			block.content = group;
+//			var line:TextLine = block.createTextLine(null,160);
+//			var offsetY:int = 0;
+//			var idx:int = 0;
+//			while(line)
+//			{
+//				line.y += offsetY;
+//				addChild(line);
+//				offsetY += line.height + 5;
+//				line = block.createTextLine(line,160);
+//				trace("..");
+//				idx++;
+//				if(idx>10)
+//				{
+//					break;
+//				}
+//			}
+//			RichTextFactory.instance.addIcon("[arrow]",new SCROLLERARROW_DOWN() as Bitmap);
+//			var lines:Vector.<TextLine> = RichTextFactory.instance.parse("放得开撒酒疯离[arrow]开撒[arrow]酒疯大房的司机快疯了冻死了看风景的萨拉发送放假；拉萨放假啊速度房的三角恋警方的拉萨房的司机卡减肥啦范德萨空间疯狂垃圾家发奖金空间对方辣椒粉放假打开司法局阿隆索开发",100);
+//			
+//			var offset:int = 0;
+//			for each(var line:TextLine in lines)
+//			{
+//				line.y = offset;
+//				offset += line.height;
+//				addChild(line);
+//			}
 			
-			var block:TextBlock = new TextBlock();
-			block.content = text;
-			var line:TextLine = block.createTextLine(null,100);
-			var offsetY:int = 0;
-			while(line)
-			{
-				line.y += offsetY;
-				addChild(line);
-				offsetY += line.height;
-				line = block.createTextLine(null,100);
-				trace("..");
-			}
-			
+			var f:TextField = new TextField();
+			f.border = false;
+			f.text = "123456";
+			f.width = f.textWidth;
+			f.height = f.textHeight;
+			addChild(f);
 		}
 		
 		private function test3d():void
