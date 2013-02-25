@@ -1,4 +1,4 @@
-package bleach.scene
+package 
 {
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
@@ -20,6 +20,7 @@ package bleach.scene
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.vo.UIMod;
+	import bleach.scene.GenericScene;
 	
 	/**
 	 * 世界选择场景

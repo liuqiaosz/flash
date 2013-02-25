@@ -3,7 +3,7 @@
 <bleach>
 	<system>
 		<!-- 心跳间隔 -->
-		<heartbeat>100000</heartbeat>
+		<heartbeat>30000</heartbeat>
 		<!-- 心跳超时 -->
 		<heartbeattimeout>10000</heartbeattimeout>
 		
@@ -27,30 +27,30 @@
 	<scenes>
 		
 		<!-- 登陆场景 -->
-		<scene id="LoginScene" version="1.0" url="bleach/scene/LoginScene.swf">
+		<scene id="LoginScene" version="1.0" url="LoginScene.swf">
 			<!-- 链接库 --> 
 			<library id="LoginRes" version="1.0" url="login.swf" desc="UI资源" uilib="true" />
 			<library id="LoginUI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
 		
 		<!-- 角色选择场景 -->
-		<scene id="ChooseRoleScene" version="1.0" url="bleach/scene/ChooseRoleScene.swf">
+		<scene id="ChooseRoleScene" version="1.0" url="ChooseRoleScene.swf">
 			<library id="chooseRole" version="1.0" url="choose_role.swf" desc="资源" uilib="true" />
 			<library id="effect" version="1.0" url="effect_chooserole.swf" desc="特效" />
 			<library id="LoginUI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
 		
-		<scene id="WorldScene" version="1.0" url="bleach/scene/WorldScene.swf">
+		<scene id="WorldScene" version="1.0" url="WorldScene.swf">
 			<library id="UIRes" version="1.0" url="Worldmap.swf" desc="资源" uilib="true" />
 			<library id="LoginUI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
 		
-		<scene id="RoomSquareScene" version="1.0" url="bleach/scene/RoomSquareScene.swf">
+		<scene id="RoomSquareScene" version="1.0" url="RoomSquareScene.swf">
 			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
 			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
 		
-		<scene id="RoomChallenge" version="1.0" url="bleach/scene/ChallengeRoomScene.swf">
+		<scene id="RoomChallenge" version="1.0" url="ChallengeRoomScene.swf">
 			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
 			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>

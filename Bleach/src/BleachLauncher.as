@@ -4,8 +4,6 @@ package
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
 	import bleach.scene.Battle;
-	import bleach.scene.LoginScene;
-	import bleach.scene.WorldScene;
 	import bleach.scene.ui.WorldFlow;
 	
 	import flash.display.Loader;
@@ -35,6 +33,8 @@ package
 		public function BleachLauncher()
 		{
 			super(BleachDirector);
+			
+			
 		}
 		
 //		override protected function initializer():void

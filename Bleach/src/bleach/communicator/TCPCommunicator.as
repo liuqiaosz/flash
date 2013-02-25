@@ -178,6 +178,8 @@ package bleach.communicator
 		{
 			try
 			{
+				//放入发送队列
+				//_sendQueue.push(msg);
 				var data:ByteArray = msg.getMessage() ;
 				debug("Send command[" + msg.id + "]");
 				_channel.writeInt(data.length - 4);

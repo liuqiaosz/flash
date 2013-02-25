@@ -8,8 +8,8 @@ package pixel.ui.control.asset
 	
 	public class AssetLibrary implements IAssetLibrary
 	{
-		private var _assets:Vector.<IAsset> = null;
-		private var _assetsMap:Dictionary = null;
+		protected var _assets:Vector.<IAsset> = null;
+		protected var _assetsMap:Dictionary = null;
 		
 		private var _id:String = "";
 		public function set id(value:String):void

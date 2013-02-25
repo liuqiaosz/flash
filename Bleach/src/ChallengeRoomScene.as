@@ -1,4 +1,4 @@
-package bleach.scene
+package 
 {
 	import bleach.event.BleachPopUpEvent;
 	import bleach.message.BleachPopUpMessage;
@@ -13,6 +13,7 @@ package bleach.scene
 	import pixel.ui.control.UIButton;
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.vo.UIMod;
+	import bleach.scene.GenericScene;
 
 	public class ChallengeRoomScene extends GenericScene
 	{

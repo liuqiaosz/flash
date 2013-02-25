@@ -1,4 +1,4 @@
-package bleach.scene
+package 
 {
 	import bleach.message.BleachMessage;
 	import bleach.module.protocol.Protocol;
@@ -25,6 +25,7 @@ package bleach.scene
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UITextInput;
 	import pixel.ui.control.vo.UIMod;
+	import bleach.scene.GenericScene;
 
 	public class ChooseRoleScene extends GenericScene
 	{

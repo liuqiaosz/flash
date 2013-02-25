@@ -125,6 +125,7 @@ package bleach.module.loader
 //			var ctx:LoaderContext = new LoaderContext();
 //			ctx.applicationDomain = ApplicationDomain.currentDomain;
 //			loader.load(new URLRequest("BleachLibrary.swf"),ctx);
+			
 			_loaded++;
 			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
 			msgDownload();
@@ -143,7 +144,7 @@ package bleach.module.loader
 //			});
 //			var ctx:LoaderContext = new LoaderContext();
 //			ctx.applicationDomain = ApplicationDomain.currentDomain;
-//			loader.load(new URLRequest("bleach/module/protocol/ProtocolLibrary.swf"),ctx);
+//			loader.load(new URLRequest("ProtocolLibrary.swf"),ctx);
 			
 			_loaded++;
 			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);

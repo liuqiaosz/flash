@@ -1,4 +1,4 @@
-package bleach.scene
+package 
 {
 	import bleach.event.BleachPopUpEvent;
 	import bleach.message.BleachMessage;
@@ -30,6 +30,7 @@ package bleach.scene
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.vo.UIMod;
+	import bleach.scene.GenericScene;
 	
 	/**
 	 * 游戏大厅场景

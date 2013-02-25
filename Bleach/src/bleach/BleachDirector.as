@@ -23,9 +23,7 @@ package bleach
 	import bleach.module.protocol.ProtocolHeartBeatResp;
 	import bleach.module.protocol.ProtocolResponse;
 	import bleach.scene.IScene;
-	import bleach.scene.LoginScene;
 	import bleach.scene.PopUpMaskScene;
-	import bleach.scene.WorldScene;
 	import bleach.scene.ui.IPopUp;
 	import bleach.scene.ui.PopUpLayer;
 	import bleach.scene.ui.PopUpMaskPreloader;
@@ -109,14 +107,37 @@ package bleach
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECTED,serverConnected);
 			addMessageListener(BleachNetMessage.BLEACH_NET_CONNECT_ERROR,serverConnectError);
 			addMessageListener(BleachNetMessage.BLEACH_NET_DISCONNECT,onNetDisconnect);
-			addMessageListener(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR,function(msg:BleachNetMessage):void{
-				debug("security error");
-			});
+			addMessageListener(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR,serverConnectError);
 			addMessageListener(BleachNetMessage.BLEACH_NET_RECONNECT,serverConnectError);
-			_channel = new TCPCommunicator();
-			debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
-			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+			addMessageListener(BleachNetMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
+			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
+			//				addMessageListener(BleachMessage.BLEACH_POPWINDOW_MODEL,popUpWindowModel);
+			
+			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
+			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
+			//				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
+			
+			
+			//				addMessageListener(BleachMessage.BLEACH_POPCLOSE,onClosePopScene);
+			
+			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_SHOW,onPopUpLayerShow);
+			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_CLOSE,onPopUpLayerClose);
+//			_channel = new TCPCommunicator();
+//			debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
+//			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 			//serverConnected(null);
+			
+			//
+			var notify:BleachMessage = null;
+			switch(BleachSystem.instance.portal)
+			{
+				case GlobalConfig.SYSTEM_PORTAL_NORMAL:
+					notify = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
+					notify.value = Constants.SCENE_LOGIN;
+					notify.deallocOld = true;
+					dispatchMessage(notify);
+					break;
+			}
 		}
 		
 		protected function onNetDisconnect(msg:BleachMessage):void
@@ -172,18 +193,7 @@ package bleach
 			{
 				_heartBeat = new HeartBeat(BleachSystem.instance.heartbeat,BleachSystem.instance.heartbeatot);
 				_initialized = true;
-				addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
-//				addMessageListener(BleachMessage.BLEACH_POPWINDOW_MODEL,popUpWindowModel);
 				
-				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
-				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
-//				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
-				addMessageListener(BleachNetMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
-				
-//				addMessageListener(BleachMessage.BLEACH_POPCLOSE,onClosePopScene);
-
-				addMessageListener(BleachPopUpMessage.BLEACH_POPUP_SHOW,onPopUpLayerShow);
-				addMessageListener(BleachPopUpMessage.BLEACH_POPUP_CLOSE,onPopUpLayerClose);
 
 				NetObserver.instance.addListener(Protocol.SM_Error,onNetErrorMessage);
 				
@@ -192,16 +202,7 @@ package bleach
 //				addMessageListener(BleachMessage.BLEACH_PRELOAD_UPDATE,updatePreload);
 //				addMessageListener(BleachMessage.BLEACH_PRELOAD_CLOSE,closePreload);
 				
-				var notify:BleachMessage = null;
-				switch(BleachSystem.instance.portal)
-				{
-					case GlobalConfig.SYSTEM_PORTAL_NORMAL:
-						notify = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-						notify.value = Constants.SCENE_LOGIN;
-						notify.deallocOld = true;
-						dispatchMessage(notify);
-						break;
-				}
+				
 			}
 			//重新开启心跳
 			_heartBeat.start();
@@ -303,12 +304,24 @@ package bleach
 //			addSceneTop(PopUpMaskPreloader.instance);
 //		}
 		
+		private var _protocolQueue:Vector.<IProtocolRequest> = new Vector.<IProtocolRequest>();
 		/**
 		 * 发送消息事件处理
 		 **/
 		private function onMessageSend(msg:BleachNetMessage):void
 		{
-			_channel.sendMessage(msg.value as IProtocolRequest);
+			_protocolQueue.push(msg.value as IProtocolRequest);
+			
+			if(_channel == null || !_channel.isConnected())
+			{
+				if(!_channel)
+				{
+					_channel = new TCPCommunicator();
+				}
+				debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
+				_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+			}
+//			_channel.sendMessage(msg.value as IProtocolRequest);
 		}
 		
 		private var _sceneCache:Dictionary = new Dictionary();
@@ -490,7 +503,7 @@ package bleach
 		}
 		private var _downloader:SceneDownloader = null;
 		private var _module:SceneModule = null;
-
+		private var _protocol:IProtocolRequest = null;
 		/**
 		 * 更新
 		 * 
@@ -506,6 +519,14 @@ package bleach
 			if(_poper)
 			{
 				_poper.update();
+			}
+			if(_protocolQueue.length > 0 && _channel && _channel.isConnected())
+			{
+				for each(_protocol in _protocolQueue)
+				{
+					_channel.sendMessage(_protocol);
+				}
+				_protocolQueue.length = 0;
 			}
 //			if(_activedScene)
 //			{

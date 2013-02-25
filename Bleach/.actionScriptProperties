@@ -2,7 +2,7 @@
 <actionScriptProperties analytics="false" mainApplicationPath="Bleach.as" projectUUID="0199a71d-11c7-4761-84f3-0925e12a504f" version="10">
   <compiler additionalCompilerArguments="-debug=true" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
-    <libraryPath defaultLinkType="0">
+    <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path="">
         <excludedEntries>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_charts.swc" useDefaultLinkType="false"/>
@@ -51,19 +51,17 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="Sample.as"/>
     <application path="Bleach.as"/>
   </applications>
   <modules>
+    <module application="src/Bleach.as" destPath="ChallengeRoomScene.swf" optimize="false" sourcePath="src/ChallengeRoomScene.as"/>
     <module application="src/Bleach.as" destPath="BleachLauncher.swf" optimize="false" sourcePath="src/BleachLauncher.as"/>
-    <module application="src/Bleach.as" destPath="bleach/scene/WorldScene.swf" optimize="false" sourcePath="src/bleach/scene/WorldScene.as"/>
-    <module application="src/Sample.as" destPath="Mod.swf" optimize="false" sourcePath="src/Mod.as"/>
-    <module application="src/Bleach.as" destPath="bleach/scene/ChooseRoleScene.swf" optimize="false" sourcePath="src/bleach/scene/ChooseRoleScene.as"/>
-    <module application="src/Sample.as" destPath="bleach/scene/LoginScene.swf" optimize="false" sourcePath="src/bleach/scene/LoginScene.as"/>
-    <module application="src/Bleach.as" destPath="bleach/scene/PubScene.swf" optimize="false" sourcePath="src/bleach/scene/PubScene.as"/>
-    <module application="src/Bleach.as" destPath="bleach/module/protocol/ProtocolLibrary.swf" optimize="false" sourcePath="src/bleach/module/protocol/ProtocolLibrary.as"/>
-    <module application="src/Bleach.as" destPath="bleach/scene/RoomSquareScene.swf" optimize="false" sourcePath="src/bleach/scene/RoomSquareScene.as"/>
-    <module application="src/Bleach.as" destPath="bleach/scene/ChallengeRoomScene.swf" optimize="false" sourcePath="src/bleach/scene/ChallengeRoomScene.as"/>
+    <module application="src/Bleach.as" destPath="ChooseRoleScene.swf" optimize="false" sourcePath="src/ChooseRoleScene.as"/>
+    <module application="src/Bleach.as" destPath="ProtocolLibrary.swf" optimize="false" sourcePath="src/ProtocolLibrary.as"/>
+    <module application="src/Bleach.as" destPath="RoomSquareScene.swf" optimize="false" sourcePath="src/RoomSquareScene.as"/>
+    <module application="src/Bleach.as" destPath="WorldScene.swf" optimize="false" sourcePath="src/WorldScene.as"/>
+    <module application="src/Sample.as" destPath="LoginScene.swf" optimize="false" sourcePath="src/LoginScene.as"/>
+    <module application="src/Bleach.as" destPath="PubScene.swf" optimize="false" sourcePath="src/PubScene.as"/>
   </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>

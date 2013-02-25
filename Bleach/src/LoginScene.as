@@ -1,4 +1,4 @@
-package bleach.scene
+package 
 {
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
@@ -37,6 +37,7 @@ package bleach.scene
 	import pixel.ui.control.vo.UIMod;
 	import pixel.utility.ShareDisk;
 	import pixel.utility.ShareObjectHelper;
+	import bleach.scene.GenericScene;
 
 
 	public class LoginScene extends GenericScene
@@ -67,7 +68,8 @@ package bleach.scene
 			password = login.GetChildById("accPwd",true) as UITextInput;
 			checkbox = login.GetChildById("saveAccount",true) as UICheckBox;
 			checkbox.selected = saveAccount;
-			
+			account.text = "lq";
+			password.text = "123456";
 			checkbox.addEventListener(UIControlEvent.CHANGE,loginNameSaveChange);
 			if(saveAccount)
 			{
@@ -103,8 +105,8 @@ package bleach.scene
 			//发送账户验证消息
 			addNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
 			var checkAccount:ProtocolCheckAccount = new ProtocolCheckAccount();
-			checkAccount.accName = "lq";
-			checkAccount.accPwsd = "123456";
+			checkAccount.accName = account.text;
+			checkAccount.accPwsd = password.text;
 			sendNetMessage(checkAccount);
 		}
 		
@@ -129,8 +131,8 @@ package bleach.scene
 					//检查正确发起登陆
 					debug("发起登陆");
 					var msg:ProtocolLogin = new ProtocolLogin();
-					msg.accName = "lq";
-					msg.accPwsd = "123456"; 
+					msg.accName = account.text;
+					msg.accPwsd = password.text; 
 					sendNetMessage(msg);
 				}
 			}

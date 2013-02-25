@@ -1,5 +1,7 @@
-package bleach.scene
+package 
 {
+	import bleach.scene.GenericScene;
+
 	/**
 	 * 
 	 * 酒馆
