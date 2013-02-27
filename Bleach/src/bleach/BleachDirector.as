@@ -168,6 +168,7 @@ package bleach
 			{
 				//超过重连次数
 				debug("重连超过次数");
+				this.onPopUpLayerCloseAll(null);
 			}
 		}
 		
