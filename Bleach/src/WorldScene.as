@@ -2,7 +2,9 @@ package
 {
 	import bleach.message.BleachLoadingMessage;
 	import bleach.message.BleachMessage;
-	import bleach.module.GenericModule;
+	import bleach.message.BleachPopUpMessage;
+	import bleach.scene.GenericScene;
+	import bleach.scene.ui.PopUpBagWindow;
 	import bleach.scene.ui.WorldFlow;
 	import bleach.utils.Constants;
 	
@@ -20,7 +22,6 @@ package
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.vo.UIMod;
-	import bleach.scene.GenericScene;
 	
 	/**
 	 * 世界选择场景
@@ -30,6 +31,7 @@ package
 	{
 		private var _worldmap:IUIContainer = null;
 		private var _roomBuild:UIButton = null;
+		private var _bagShow:UIButton = null;
 		public function WorldScene()
 		{
 			super();
@@ -44,6 +46,9 @@ package
 			_worldmap.x = _worldmap.y = 0;
 			_roomBuild = _worldmap.GetChildById("map013",true) as UIButton;
 			_roomBuild.addEventListener(MouseEvent.CLICK,gotoRoomSequare);
+			
+			_bagShow = _worldmap.GetChildById("map010",true) as UIButton;
+			_bagShow.addEventListener(MouseEvent.CLICK,openBag);
 			addChild(_worldmap as DisplayObject);
 		}
 		
@@ -57,6 +62,18 @@ package
 			var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
 			direct.value = Constants.SCENE_ROOMSQUARE;
 			dispatchMessage(direct);
+		}
+		
+		private var bagWindow:PopUpBagWindow = null;
+		/**
+		 * 打开背包
+		 **/
+		private function openBag(event:MouseEvent):void
+		{
+			var notify:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
+			bagWindow = new PopUpBagWindow();
+			notify.value = bagWindow;
+			this.dispatchMessage(notify);
 		}
 		
 		override public function dispose():void

@@ -19,7 +19,7 @@ package bleach.communicator
 }
 import bleach.communicator.GenericCommunicator;
 import bleach.communicator.IHTTPCommunicator;
-import bleach.module.protocol.IProtocol;
+import bleach.protocol.IProtocol;
 import bleach.module.protocol.MsgHTTP;
 import bleach.utils.Constants;
 

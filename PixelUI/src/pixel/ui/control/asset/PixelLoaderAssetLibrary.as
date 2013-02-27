@@ -62,6 +62,7 @@ package pixel.ui.control.asset
 					var img:Bitmap = value is Bitmap ? value as Bitmap:new Bitmap(value as BitmapData);
 					var image:AssetImage = new AssetImage(name,img);
 					addAsset(image);
+					return image;
 				}
 			}
 			return null;

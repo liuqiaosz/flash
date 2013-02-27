@@ -9,7 +9,7 @@ package bleach.communicator
 	import pixel.net.msg.tcp.IPixelTCPMessageBody;
 	import pixel.net.msg.tcp.IPixelTCPMessageHeader;
 	import pixel.net.msg.tcp.PixelTCPMessageGenericParser;
-	import bleach.module.protocol.ProtocolConstants;
+	import bleach.protocol.ProtocolConstants;
 
 	public class MessageParser extends PixelTCPMessageGenericParser
 	{

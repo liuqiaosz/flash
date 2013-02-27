@@ -1,11 +1,10 @@
 package bleach.communicator
 {
-	import bleach.module.protocol.IProtocol;
+	import bleach.protocol.IProtocol;
 	import bleach.scene.GenericScene;
 
-	public interface IComm
+	public interface ICommunicator
 	{
-		//function send(sender:GenericScene,message:IPixelNetMessage):void;
 		function addNetMessageListener(type:int,listener:Function):void;
 		function removeNetMessageListener(type:int,listener:Function):void;
 	}

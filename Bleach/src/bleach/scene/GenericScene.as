@@ -2,10 +2,11 @@ package bleach.scene
 {
 	import bleach.cfg.BleachErrorCode;
 	import bleach.communicator.CommMarshal;
-	import bleach.communicator.NetObserver;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
-	import bleach.module.protocol.IProtocol;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.ProtocolObserver;
+	import bleach.protocol.event.ProtocolMessage;
 	
 	import pixel.core.PixelLayer;
 
@@ -55,7 +56,7 @@ package bleach.scene
 		
 		protected function sendNetMessage(msg:IProtocol):void
 		{
-			var notify:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
+			var notify:ProtocolMessage = new ProtocolMessage(ProtocolMessage.BLEACH_NET_SENDMESSAGE);
 			notify.value = msg;
 			dispatchMessage(notify);
 		}
@@ -71,11 +72,11 @@ package bleach.scene
 		
 		protected function addNetListener(command:int,callback:Function):void
 		{
-			NetObserver.instance.addListener(command,callback);
+			ProtocolObserver.instance.addListener(command,callback);
 		}
 		protected function removeNetListener(command:int,callback:Function):void
 		{
-			NetObserver.instance.removeListener(command,callback);
+			ProtocolObserver.instance.removeListener(command,callback);
 		}
 			
 	}

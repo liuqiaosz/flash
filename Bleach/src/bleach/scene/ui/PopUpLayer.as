@@ -37,6 +37,11 @@ package bleach.scene.ui
 			}
 		}
 		
+		public function get content():DisplayObject
+		{
+			return _content;
+		}
+		
 		override public function update():void
 		{
 			IUpdate(_content).update();

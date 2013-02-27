@@ -21,6 +21,7 @@ package
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.BlendMode;
 	import flash.display.CapsStyle;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
@@ -85,6 +86,7 @@ package
 	import flash.text.engine.TextBlock;
 	import flash.text.engine.TextElement;
 	import flash.text.engine.TextLine;
+	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	import flash.utils.Proxy;
 	import flash.utils.Timer;
@@ -257,13 +259,53 @@ package
 //				offset += line.height;
 //				addChild(line);
 //			}
+			var sp:Sprite = new Sprite();
+			sp.graphics.beginFill(0xff0000);
+			sp.graphics.drawCircle(0,0,10);
+			sp.graphics.endFill();
 			
-			var f:TextField = new TextField();
-			f.border = false;
-			f.text = "123456";
-			f.width = f.textWidth;
-			f.height = f.textHeight;
-			addChild(f);
+			sp.x = (stage.stageWidth - 10) * .5;
+			sp.y = (stage.stageHeight - 10) *.5;
+			
+			addChild(sp);
+			var fogLayer:BitmapData = new BitmapData(stage.stageWidth,stage.stageHeight,false,0x000000);
+			
+			var fogMask:Bitmap = new Bitmap(fogLayer);
+			fogMask.blendMode = BlendMode.LAYER;
+			addChild(fogMask);
+			
+			var range:Sprite = new Sprite();
+			range.graphics.lineStyle(0,0);
+			range.graphics.beginFill(0xff0000,1);
+			range.graphics.drawCircle(0,0,90);
+			range.graphics.endFill();
+			
+			var mtx:Matrix = new Matrix();
+			
+			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
+				mtx.tx = sp.x;
+				mtx.ty = sp.y;
+				fogMask.bitmapData.draw(range,mtx,null,BlendMode.ERASE,null,true);
+			});
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent){
+				
+				switch(event.keyCode)
+				{
+					case Keyboard.LEFT:
+						sp.x -= 2;
+						break;
+					case Keyboard.RIGHT:
+						sp.x += 2;
+						break;
+					case Keyboard.UP:
+						sp.y -= 2;
+						break;
+					case Keyboard.DOWN:
+						sp.y += 2;
+						break;
+				}
+			});
 		}
 		
 		private function test3d():void

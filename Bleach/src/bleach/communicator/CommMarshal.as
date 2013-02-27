@@ -2,12 +2,12 @@ package bleach.communicator
 {
 	public class CommMarshal
 	{
-		private static var _instance:IComm = null;
+		private static var _instance:ICommunicator = null;
 		public function CommMarshal()
 		{
 		}
 		
-		public static function get instance():IComm
+		public static function get instance():ICommunicator
 		{
 			if(_instance == null)
 			{
@@ -18,7 +18,7 @@ package bleach.communicator
 		}
 	}
 }
-import bleach.communicator.IComm;
+import bleach.communicator.ICommunicator;
 import bleach.communicator.MessageParser;
 import bleach.scene.GenericScene;
 
@@ -26,15 +26,15 @@ import flash.events.EventDispatcher;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
-import bleach.communicator.PixelNetSocket;
-import bleach.module.protocol.IProtocol;
+import bleach.communicator.BleachSocket;
+import bleach.protocol.IProtocol;
 import pixel.net.msg.tcp.IPixelTCPMessage;
 
 /**
  * 网络数据包通讯
  * 
  **/
-class CommImpl extends PixelNetSocket implements IComm
+class CommImpl extends BleachSocket implements ICommunicator
 {
 	private var _parser:MessageParser = null;
 	private var _listenerList:Dictionary = null;

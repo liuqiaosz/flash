@@ -2,10 +2,12 @@ package bleach.communicator
 {
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
-	import bleach.module.protocol.IProtocol;
-	import bleach.module.protocol.IProtocolRequest;
-	import bleach.module.protocol.IProtocolResponse;
-	import bleach.module.protocol.ProtocolConstants;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.IProtocolRequest;
+	import bleach.protocol.IProtocolResponse;
+	import bleach.protocol.ProtocolConstants;
+	import bleach.protocol.ProtocolObserver;
+	import bleach.protocol.ProtocolResponse;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -102,7 +104,7 @@ package bleach.communicator
 			}
 			catch(err:Error)
 			{
-				
+				debug("数据包接收异常");
 				this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_DISCONNECT));
 			}
 			
@@ -119,13 +121,24 @@ package bleach.communicator
 				data.position = 0;
 				command = data.readInt();
 				debug("Recive command[" + command + "]");
-				var prototype:Object = ProtocolConstants.findMsgById(command);
+				var prototype:Object = ProtocolConstants.findMsgByCommand(command);
+				var protocol:IProtocolResponse = null;
+				var protocolByte:ByteArray = new ByteArray();
+				protocolByte.writeBytes(data,data.position);
+				protocolByte.position = 0;
 				if(prototype)
 				{
-					var msg:IProtocolResponse = new prototype() as IProtocolResponse;
-					msg.setMessage(data);
-					NetObserver.instance.broadcast(msg);
+					protocol = new prototype() as IProtocolResponse;
+					
 				}
+				else
+				{
+					protocol = new ProtocolResponse();
+					protocol.id = command;
+				}
+				
+				protocol.setMessage(protocolByte);
+				ProtocolObserver.instance.broadcast(protocol);
 			}
 			catch(err:Error)
 			{
@@ -141,10 +154,12 @@ package bleach.communicator
 		}
 		private function channelIoError(event:IOErrorEvent):void
 		{
+			debug("Connect io异常");
 			this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_CONNECT_ERROR));
 		}
 		private function channelSecurityError(event:SecurityErrorEvent):void
 		{
+			debug("Connect security异常");
 			this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR));
 			//this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_CONNECT_ERROR));
 		}
@@ -178,8 +193,6 @@ package bleach.communicator
 		{
 			try
 			{
-				//放入发送队列
-				//_sendQueue.push(msg);
 				var data:ByteArray = msg.getMessage() ;
 				debug("Send command[" + msg.id + "]");
 				_channel.writeInt(data.length - 4);
@@ -188,7 +201,7 @@ package bleach.communicator
 			}
 			catch(err:Error)
 			{
-				debug(err.message + " ID[" + err.errorID + "]");
+				debug("发送协议异常," + err.message + " ID[" + err.errorID + "]");
 				this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_DISCONNECT));
 			}
 		}

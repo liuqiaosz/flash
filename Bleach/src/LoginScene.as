@@ -4,12 +4,14 @@ package
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
 	import bleach.message.BleachPopUpMessage;
-	import bleach.module.protocol.IProtocol;
-	import bleach.module.protocol.Protocol;
-	import bleach.module.protocol.ProtocolCheckAccount;
-	import bleach.module.protocol.ProtocolCheckAccountResp;
-	import bleach.module.protocol.ProtocolLogin;
-	import bleach.module.protocol.ProtocolLoginResp;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.Protocol;
+	import bleach.protocol.ProtocolCheckAccount;
+	import bleach.protocol.ProtocolCheckAccountResp;
+	import bleach.protocol.ProtocolLogin;
+	import bleach.protocol.ProtocolLoginResp;
+	import bleach.scene.GenericScene;
+	import bleach.scene.ui.DialogWindow;
 	import bleach.scene.ui.PopUpMaskPreloader;
 	import bleach.utils.Constants;
 	
@@ -37,7 +39,6 @@ package
 	import pixel.ui.control.vo.UIMod;
 	import pixel.utility.ShareDisk;
 	import pixel.utility.ShareObjectHelper;
-	import bleach.scene.GenericScene;
 
 
 	public class LoginScene extends GenericScene
@@ -62,7 +63,7 @@ package
 			var mod:UIMod = UIControlFactory.instance.decode(data,false);
 			login = mod.controls.pop().control;
 			addChild(login);
-			
+
 			submit = login.GetChildById("Submit",true) as UIButton;
 			account = login.GetChildById("accName",true) as UITextInput;
 			password = login.GetChildById("accPwd",true) as UITextInput;
@@ -90,17 +91,18 @@ package
 		private var password:UITextInput = null;
 		private var checkbox:UICheckBox = null;
 		
+		private var _dialog:DialogWindow = null;
 		/**
 		 * 登陆提交
 		 **/
 		private function loginSubmit(event:MouseEvent):void
 		{
 			//锁屏并且显示内容
-//			var msg:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
-//			msg.value = new PopUpMaskPreloader();
-//			PopUpMaskPreloader(msg.value).updateDesc("登陆较验中，请稍后...11111111111111111111111");
-//			dispatchMessage(msg);
-//			return;
+			var msg:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
+			_dialog = new DialogWindow();
+			msg.value = _dialog;
+			_dialog.text = "登陆请求中，请稍后...";
+			dispatchMessage(msg);
 			
 			//发送账户验证消息
 			addNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
@@ -120,9 +122,11 @@ package
 			{
 				if(protocol.isNew)
 				{
+					
 					//新用户，进入角色创建场景	
 					var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
 					direct.value = Constants.SCENE_CHOOSE;
+					dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
 					dispatchMessage(direct);
 				}
 				else
@@ -144,6 +148,7 @@ package
 		 **/
 		private function onLoginResponse(message:IProtocol):void
 		{
+			dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
 			removeNetListener(Protocol.SM_Login,onLoginResponse);
 			var msg:ProtocolLoginResp = message as ProtocolLoginResp;
 			if(msg.respCode == 0)

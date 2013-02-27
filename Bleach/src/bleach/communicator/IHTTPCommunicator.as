@@ -1,10 +1,10 @@
 package bleach.communicator
 {
-	import bleach.module.protocol.IProtocol;
+	import bleach.protocol.IProtocol;
 	
 	import flash.net.URLLoaderDataFormat;
 
-	public interface IHTTPCommunicator extends IComm
+	public interface IHTTPCommunicator extends ICommunicator
 	{
 		function post(msg:IProtocol):void;
 		function get(msg:IProtocol):void;

@@ -11,9 +11,9 @@ package bleach.communicator
 	import pixel.error.PixelNetError;
 	import bleach.module.protocol.event.PixelNetEvent;
 	import bleach.module.protocol.Charset;
-	import bleach.module.protocol.IProtocol;
+	import bleach.protocol.IProtocol;
 
-	public class PixelNetSocket extends EventDispatcher implements ITCPCommunicator
+	public class BleachSocket extends EventDispatcher implements ITCPCommunicator
 	{
 		private var _channel:Socket = null;
 		private var _ip:String = "";
@@ -21,7 +21,7 @@ package bleach.communicator
 		private var _charset:String = null;
 		private var _isConnected:Boolean = false;
 		private var _readBuffer:ByteArray = null;
-		public function PixelNetSocket()
+		public function BleachSocket()
 		{
 			super();
 			_readBuffer = new ByteArray();

@@ -1,7 +1,7 @@
 package bleach.communicator
 {
-	import bleach.module.protocol.IProtocol;
-	import bleach.module.protocol.IProtocolRequest;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.IProtocolRequest;
 	
 	import flash.events.IEventDispatcher;
 	

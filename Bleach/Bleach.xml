@@ -3,16 +3,16 @@
 <bleach>
 	<system>
 		<!-- 心跳间隔 -->
-		<heartbeat>30000</heartbeat>
+		<heartbeat>40000</heartbeat>
 		<!-- 心跳超时 -->
-		<heartbeattimeout>10000</heartbeattimeout>
+		<heartbeattimeout>60000</heartbeattimeout>
 		
 		<!-- 服务器IP 端口 -->
 		<remotehost>219.234.0.12</remotehost>
 		<remoteport>33445</remoteport>
 		
 		<!-- 异常后重新连接尝试的次数 -->
-		<reconnect>5</reconnect>
+		<reconnect>1</reconnect>
 		
 		<!-- 
 			接入类型
@@ -42,6 +42,7 @@
 		
 		<scene id="WorldScene" version="1.0" url="WorldScene.swf">
 			<library id="UIRes" version="1.0" url="Worldmap.swf" desc="资源" uilib="true" />
+			<library id="RoleRes" version="1.0" url="role.swf" desc="角色信息资源" uilib="true" />
 			<library id="LoginUI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
 		
@@ -54,5 +55,7 @@
 			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
 			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
+		
+		
 	</scenes>
 </bleach>

@@ -196,6 +196,21 @@ package pixel.core
 			}
 		}
 		
+		protected function clearSceneTop():void
+		{
+			var child:DisplayObject = null;
+			var total:int = _topLayer.numChildren;
+			while(total >= 0)
+			{
+				child = _topLayer.removeChildAt(total);
+				if(_sceneQueue.indexOf(child) >= 0)
+				{
+					_sceneQueue.splice(_sceneQueue.indexOf(child),1);
+				}
+				total--;
+			}
+		}
+		
 		protected function get gameStage():Stage
 		{
 			return PixelLauncher.launcher.gameStage;

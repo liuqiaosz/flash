@@ -4,15 +4,16 @@ package
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
 	import bleach.message.BleachPopUpMessage;
-	import bleach.module.protocol.IProtocol;
-	import bleach.module.protocol.Protocol;
-	import bleach.module.protocol.ProtocolConstants;
-	import bleach.module.protocol.ProtocolCreateRoom;
-	import bleach.module.protocol.ProtocolCreateRoomResp;
-	import bleach.module.protocol.ProtocolEnterGameCenter;
-	import bleach.module.protocol.ProtocolEnterGameCenterResp;
-	import bleach.module.protocol.ProtocolGetRoomList;
-	import bleach.module.protocol.ProtocolGetRoomListResp;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.Protocol;
+	import bleach.protocol.ProtocolConstants;
+	import bleach.protocol.ProtocolCreateRoom;
+	import bleach.protocol.ProtocolCreateRoomResp;
+	import bleach.protocol.ProtocolEnterGameCenter;
+	import bleach.protocol.ProtocolEnterGameCenterResp;
+	import bleach.protocol.ProtocolGetRoomList;
+	import bleach.protocol.ProtocolGetRoomListResp;
+	import bleach.scene.GenericScene;
 	import bleach.scene.ui.PopUpCreateRoomWindow;
 	import bleach.utils.Constants;
 	
@@ -30,7 +31,6 @@ package
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
 	import pixel.ui.control.vo.UIMod;
-	import bleach.scene.GenericScene;
 	
 	/**
 	 * 游戏大厅场景
@@ -82,12 +82,15 @@ package
 			_roomDetail = new PopUpCreateRoomWindow();
 			msg.value = _roomDetail;
 			dispatchMessage(msg);
-			_roomDetail.addEventListener(BleachPopUpEvent.BLEACH_POP_CLOSE,function(e:BleachPopUpEvent):void{
-				trace("close");
-			});
+			_roomDetail.addEventListener(BleachPopUpEvent.BLEACH_POP_CLOSE,onCreateRoomWindowClose);
 			
 			_roomDetail.addEventListener(BleachPopUpEvent.BLEACH_POP_ENTER,onCreateRoomEnter);
 
+		}
+		
+		private function onCreateRoomWindowClose(event:BleachPopUpEvent):void
+		{
+			this.dispatchEvent(event);
 		}
 		
 		/**
@@ -108,11 +111,10 @@ package
 		private function onCreateRoomResponse(protocol:ProtocolCreateRoomResp):void
 		{
 			removeNetListener(Protocol.SM_CreateRoom,onCreateRoomResponse);
-			this.dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSE));
+			this.dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
 			if(protocol.respCode == 0)
 			{
 				var direct:BleachMessage = new BleachMessage(BleachMessage.BLEACH_WORLD_REDIRECT);
-				debug("room created");
 				switch(_roomDetail.roomMode)
 				{
 					case Constants.ROOM_CHALLENGE:

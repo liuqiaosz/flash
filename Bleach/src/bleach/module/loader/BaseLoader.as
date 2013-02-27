@@ -1,8 +1,8 @@
 package bleach.module.loader
 {
 	import bleach.event.BleachEvent;
-	import bleach.module.GenericModule;
 	import bleach.utils.Constants;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -26,19 +26,15 @@ package bleach.module.loader
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
 
-	public class BaseLoader extends GenericModule
+	public class BaseLoader extends Sprite
 	{
 		private var _mainApp:DisplayObject = null;
-		
+		private var _isLocal:Boolean = true;
 		public function get mainApp():DisplayObject
 		{
 			return _mainApp;
 		}
 		public function BaseLoader()
-		{
-		}
-		
-		override protected function initializer():void
 		{
 			this.graphics.beginFill(0x000000);
 			this.graphics.drawRect(0,0,1280,600);
@@ -106,7 +102,7 @@ package bleach.module.loader
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = ApplicationDomain.currentDomain;
 			//loader.load(new URLRequest(Constants.WEB_URL + "library/commlib.swf"),ctx);
-			loader.load(new URLRequest("commlib.swf"),ctx);
+			loader.load(new URLRequest("commlib.swf?" + new Date().time),ctx);
 		}
 		
 		/**
@@ -114,21 +110,29 @@ package bleach.module.loader
 		 **/
 		private function rslLibraryDownload():void
 		{
-//			var loader:Loader = new Loader();
-//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-//				_loaded++;
-//				//_loading.progressUpdate(_loadTotal,_loaded);
-//				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-//				msgDownload();
-//				
-//			});
-//			var ctx:LoaderContext = new LoaderContext();
-//			ctx.applicationDomain = ApplicationDomain.currentDomain;
-//			loader.load(new URLRequest("BleachLibrary.swf"),ctx);
+			if(!_isLocal)
+			{
+				var loader:Loader = new Loader();
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+					_loaded++;
+					//_loading.progressUpdate(_loadTotal,_loaded);
+					MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+					msgDownload();
+					
+				});
+				var ctx:LoaderContext = new LoaderContext();
+				ctx.applicationDomain = ApplicationDomain.currentDomain;
+				loader.load(new URLRequest("BleachLibrary.swf?" + new Date().time),ctx);
+			}
+			else
+			{
+				_loaded++;
+				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+				msgDownload();
+			}
 			
-			_loaded++;
-			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-			msgDownload();
+			
+
 		}
 		
 		/**
@@ -136,19 +140,26 @@ package bleach.module.loader
 		 **/
 		private function msgDownload():void
 		{
-//			var loader:Loader = new Loader();
-//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
-//				_loaded++;
-//				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-//				coreDownload();
-//			});
-//			var ctx:LoaderContext = new LoaderContext();
-//			ctx.applicationDomain = ApplicationDomain.currentDomain;
-//			loader.load(new URLRequest("ProtocolLibrary.swf"),ctx);
+			if(!_isLocal)
+			{
+				var loader:Loader = new Loader();
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE,function(event:Event):void{
+					_loaded++;
+					MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+					coreDownload();
+				});
+				var ctx:LoaderContext = new LoaderContext();
+				ctx.applicationDomain = ApplicationDomain.currentDomain;
+				loader.load(new URLRequest("ProtocolLibrary.swf?" + new Date().time),ctx);
+			}
+			else
+			{
+				_loaded++;
+				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
+				coreDownload();
+			}
 			
-			_loaded++;
-			MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
-			coreDownload();
+
 		}
 		
 		private var _lazy:Timer = null;
@@ -168,7 +179,7 @@ package bleach.module.loader
 			});
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = ApplicationDomain.currentDomain;
-			loader.load(new URLRequest("BleachLauncher.swf"),ctx);
+			loader.load(new URLRequest("BleachLauncher.swf?" + + new Date().time),ctx);
 		}
 		
 		/**

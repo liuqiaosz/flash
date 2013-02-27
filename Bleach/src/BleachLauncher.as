@@ -9,9 +9,11 @@ package
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.utils.getTimer;
 	
 	import pixel.core.PixelLauncher;
 	import pixel.message.PixelMessage;
@@ -33,8 +35,6 @@ package
 		public function BleachLauncher()
 		{
 			super(BleachDirector);
-			
-			
 		}
 		
 //		override protected function initializer():void

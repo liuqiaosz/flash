@@ -1,8 +1,8 @@
 package bleach.communicator
 {
 	import bleach.cfg.GlobalConfig;
-	import bleach.module.protocol.IProtocol;
-	import bleach.module.protocol.ProtocolGeneric;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.ProtocolGeneric;
 	
 	import flash.events.EventDispatcher;
 	import flash.system.ApplicationDomain;
@@ -13,7 +13,7 @@ package bleach.communicator
 	import pixel.core.PixelNode;
 	import pixel.message.IPixelMessage;
 
-	public class GenericCommunicator extends PixelNode implements IComm
+	public class GenericCommunicator extends PixelNode implements ICommunicator
 	{
 		private var _listenerList:Dictionary = null;
 //		private var _parser:IMsgParser = null;

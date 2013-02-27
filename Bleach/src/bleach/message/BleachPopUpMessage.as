@@ -3,7 +3,8 @@ package bleach.message
 	public class BleachPopUpMessage extends BleachMessage
 	{
 		public static const BLEACH_POPUP_SHOW:String = "PopUpShow";
-		public static const BLEACH_POPUP_CLOSE:String = "PopUpClose";
+		//public static const BLEACH_POPUP_CLOSE:String = "PopUpClose";
+		public static const BLEACH_POPUP_CLOSEALL:String = "PopUpCloseAll";
 		
 		private var _isCenter:Boolean = true;
 		public function set isCenter(value:Boolean):void

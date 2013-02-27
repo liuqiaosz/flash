@@ -399,7 +399,8 @@
 			}
 			private function resourceLibraryComplete(event:Event):void
 			{
-				var lib:PixelLoaderAssetLibrary = new PixelLoaderAssetLibrary(resLoader,file.name);
+				var key:Vector.<String> = resLoader.contentLoaderInfo.applicationDomain.getQualifiedDefinitionNames();
+				var lib:PixelLoaderAssetLibrary = new PixelLoaderAssetLibrary(resLoader,file.name,key);
 				Globals.AppendAssetLibrary(lib);
 				AssetLibraryTree.addItem(lib);
 				PixelAssetManager.instance.addAssetLibrary(lib);

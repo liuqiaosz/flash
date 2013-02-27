@@ -9,4 +9,9 @@
   <element rescode="12" desc="您已经不是新用户"/>
   <element rescode="13" desc="该名字已经被人抢啦"/>
   <element rescode="14" desc="还未创建角色"/>
+  <element rescode="10001" desc="房间不存在"/>
+  <element rescode="10002" desc="战斗已经开始"/>
+  <element rescode="10003" desc="不能关闭自己的槽位"/>
+  <element rescode="10004" desc="战斗力不平衡，无法开始游戏"/>
+  <element rescode="10005" desc="还有玩家为准备，无法开始游戏"/>
 </root>

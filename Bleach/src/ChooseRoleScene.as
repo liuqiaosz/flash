@@ -1,9 +1,9 @@
 package 
 {
 	import bleach.message.BleachMessage;
-	import bleach.module.protocol.Protocol;
-	import bleach.module.protocol.ProtocolCreatePlayer;
-	import bleach.module.protocol.ProtocolCreatePlayerResp;
+	import bleach.protocol.Protocol;
+	import bleach.protocol.ProtocolCreatePlayer;
+	import bleach.protocol.ProtocolCreatePlayerResp;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

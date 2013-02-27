@@ -1,7 +1,7 @@
 package bleach.scene
 {
 	import bleach.communicator.CommMarshal;
-	import bleach.module.protocol.ProtocolConstants;
+	import bleach.protocol.ProtocolConstants;
 	import bleach.module.protocol.MsgGetLevel;
 	import bleach.event.BleachEvent;
 	import bleach.view.IViewController;
@@ -11,7 +11,7 @@ package bleach.scene
 	import flash.utils.Dictionary;
 	
 	import pixel.core.PixelLayer;
-	import bleach.module.protocol.IProtocol;
+	import bleach.protocol.IProtocol;
 	
 	/**
 	 * 

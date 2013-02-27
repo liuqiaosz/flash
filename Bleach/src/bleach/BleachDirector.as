@@ -4,7 +4,6 @@ package bleach
 	import bleach.cfg.BleachSystem;
 	import bleach.cfg.GlobalConfig;
 	import bleach.communicator.ITCPCommunicator;
-	import bleach.communicator.NetObserver;
 	import bleach.communicator.TCPCommunicator;
 	import bleach.event.BleachEvent;
 	import bleach.event.BleachProgressEvent;
@@ -14,14 +13,16 @@ package bleach
 	import bleach.message.BleachPopUpMessage;
 	import bleach.module.loader.MaskLoading;
 	import bleach.module.loader.ProgressLoading;
-	import bleach.module.protocol.IProtocol;
-	import bleach.module.protocol.IProtocolRequest;
-	import bleach.module.protocol.IProtocolResponse;
-	import bleach.module.protocol.Protocol;
-	import bleach.module.protocol.ProtocolGeneric;
-	import bleach.module.protocol.ProtocolHeartBeat;
-	import bleach.module.protocol.ProtocolHeartBeatResp;
-	import bleach.module.protocol.ProtocolResponse;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.IProtocolRequest;
+	import bleach.protocol.IProtocolResponse;
+	import bleach.protocol.Protocol;
+	import bleach.protocol.ProtocolGeneric;
+	import bleach.protocol.ProtocolHeartBeat;
+	import bleach.protocol.ProtocolHeartBeatResp;
+	import bleach.protocol.ProtocolObserver;
+	import bleach.protocol.ProtocolResponse;
+	import bleach.protocol.event.ProtocolMessage;
 	import bleach.scene.IScene;
 	import bleach.scene.PopUpMaskScene;
 	import bleach.scene.ui.IPopUp;
@@ -79,7 +80,7 @@ package bleach
 		private var _system:BleachSystem = null;
 		private var _connectTryCount:int = 0;
 		private var _progressLoad:ILoading = null;
-		private var _poper:IPopUp = null;
+		//private var _poper:IPopUp = null;
 		public function BleachDirector(debug:Boolean = true)
 		{
 			super();
@@ -109,7 +110,7 @@ package bleach
 			addMessageListener(BleachNetMessage.BLEACH_NET_DISCONNECT,onNetDisconnect);
 			addMessageListener(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR,serverConnectError);
 			addMessageListener(BleachNetMessage.BLEACH_NET_RECONNECT,serverConnectError);
-			addMessageListener(BleachNetMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
+			addMessageListener(ProtocolMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
 			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
 			//				addMessageListener(BleachMessage.BLEACH_POPWINDOW_MODEL,popUpWindowModel);
 			
@@ -121,7 +122,7 @@ package bleach
 			//				addMessageListener(BleachMessage.BLEACH_POPCLOSE,onClosePopScene);
 			
 			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_SHOW,onPopUpLayerShow);
-			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_CLOSE,onPopUpLayerClose);
+			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL,onPopUpLayerCloseAll);
 //			_channel = new TCPCommunicator();
 //			debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
 //			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
@@ -195,7 +196,7 @@ package bleach
 				_initialized = true;
 				
 
-				NetObserver.instance.addListener(Protocol.SM_Error,onNetErrorMessage);
+				ProtocolObserver.instance.addListener(Protocol.SM_Error,onNetErrorMessage);
 				
 				//预载界面消息监听
 //				addMessageListener(BleachMessage.BLEACH_PRELOAD_SHOW,showPreload);
@@ -216,29 +217,63 @@ package bleach
 			debug("异常协议,返回错误码[" + msg.respCode + "] 错误信息[" + BleachErrorCode.getDescByCode(msg.respCode) + "]");
 		}
 		
+		private var _popStack:Vector.<IPopUp> = new Vector.<IPopUp>();
 		/**
 		 * 
 		 * 显示弹出层
 		 **/
 		private function onPopUpLayerShow(msg:BleachPopUpMessage):void
 		{
-			TweenPlugin.activate([BlurFilterPlugin]);
-			_poper = new PopUpLayer(msg.value as DisplayObject,msg.isCenter,msg.isModel);
-			addSceneTop(_poper as DisplayObject);
 			
-			TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:20, blurY:20}}); 
-		}
-		private function onPopUpLayerClose(msg:BleachPopUpMessage):void
-		{
-			if(_poper)
+			var poper:IPopUp = new PopUpLayer(msg.value as DisplayObject,msg.isCenter,msg.isModel);
+			
+			addSceneTop(poper as DisplayObject);
+			if(_popStack.length == 0)
 			{
-				removeSceneTop(_poper as DisplayObject);
-				_poper.dispose();
-				_poper = null;
-				TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
+				TweenPlugin.activate([BlurFilterPlugin]);
+				TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:20, blurY:20}}); 
 			}
+			_popStack.push(poper);
 		}
 		
+		/**
+		 * 删除全部弹出
+		 **/
+		private function onPopUpLayerCloseAll(msg:BleachPopUpMessage):void
+		{
+			var poper:IPopUp = null;
+			for each(poper in _popStack)
+			{
+				removeSceneTop(poper as DisplayObject);
+				poper.dispose();
+			}
+			poper = null;
+			TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
+		}
+		
+		/**
+		 * 删除指定弹出
+		 * 
+		 **/
+		private function onPopUpLayerClose(msg:BleachPopUpMessage):void
+		{
+			var poper:IPopUp = null;
+			for each(poper in _popStack)
+			{
+				if(poper.content == msg.value)
+				{
+					removeSceneTop(poper as DisplayObject);
+					_popStack.splice(_popStack.indexOf(poper),1);
+					poper.dispose();
+					if(_popStack.length == 0)
+					{
+						TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
+					}
+					
+					
+				}
+			}
+		}
 //		private function onClosePopScene(msg:PixelMessage):void
 //		{
 //			PopUpMaskScene.instance.hide();
@@ -308,7 +343,7 @@ package bleach
 		/**
 		 * 发送消息事件处理
 		 **/
-		private function onMessageSend(msg:BleachNetMessage):void
+		private function onMessageSend(msg:ProtocolMessage):void
 		{
 			_protocolQueue.push(msg.value as IProtocolRequest);
 			
@@ -504,6 +539,7 @@ package bleach
 		private var _downloader:SceneDownloader = null;
 		private var _module:SceneModule = null;
 		private var _protocol:IProtocolRequest = null;
+		private var _poper:IPopUp = null;
 		/**
 		 * 更新
 		 * 
@@ -511,14 +547,17 @@ package bleach
 		override public function frameUpdate(message:PixelMessage):void
 		{
 			super.frameUpdate(message);
-			NetObserver.instance.update();
+			ProtocolObserver.instance.update();
 			if(_heartBeat)
 			{
 				_heartBeat.update();
 			}
-			if(_poper)
+			if(_popStack.length > 0)
 			{
-				_poper.update();
+				for each(_poper in _popStack)
+				{
+					_poper.update();
+				}
 			}
 			if(_protocolQueue.length > 0 && _channel && _channel.isConnected())
 			{

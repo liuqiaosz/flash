@@ -1,10 +1,11 @@
 package bleach
 {
 	import bleach.message.BleachNetMessage;
-	import bleach.module.protocol.IProtocol;
-	import bleach.module.protocol.Protocol;
-	import bleach.module.protocol.ProtocolHeartBeat;
-	import bleach.module.protocol.ProtocolHeartBeatResp;
+	import bleach.protocol.IProtocol;
+	import bleach.protocol.Protocol;
+	import bleach.protocol.ProtocolHeartBeat;
+	import bleach.protocol.ProtocolHeartBeatResp;
+	import bleach.protocol.event.ProtocolMessage;
 	
 	import pixel.core.PixelSprite;
 	
@@ -23,7 +24,7 @@ package bleach
 		//等待心跳回应
 		private var waitHeartbeatResp:Boolean = false;
 		//private var heartbeatRes:ProtocolHeartBeatResp = new ProtocolHeartBeatResp();
-		private var requestMessage:BleachNetMessage = new BleachNetMessage(BleachNetMessage.BLEACH_NET_SENDMESSAGE);
+		private var requestMessage:ProtocolMessage = new ProtocolMessage(ProtocolMessage.BLEACH_NET_SENDMESSAGE);
 		
 		public function HeartBeat(hbtime:int,hbot:int)
 		{
@@ -50,7 +51,6 @@ package bleach
 		private function heartbeatResponse(msg:IProtocol):void
 		{
 			waitHeartbeatResp = false;
-			trace("心跳回应");
 		}
 		
 		/**
