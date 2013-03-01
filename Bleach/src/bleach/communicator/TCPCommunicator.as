@@ -73,13 +73,14 @@ package bleach.communicator
 					dataBuffer.position = 0;
 					//4字节ID长度
 					packLength = dataBuffer.readUnsignedInt() + 4;
-					
 					if(dataBuffer.bytesAvailable >= packLength)
 					{
+						
 						//包接收完整
 						var data:ByteArray = new ByteArray();
 						dataBuffer.readBytes(data,0,packLength);
 						//dataBuffer.position += packLength;
+						
 						analysisMessage(data);
 						if(dataBuffer.bytesAvailable > 0)
 						{
@@ -126,6 +127,7 @@ package bleach.communicator
 				var protocolByte:ByteArray = new ByteArray();
 				protocolByte.writeBytes(data,data.position);
 				protocolByte.position = 0;
+				protocolByte.position = 0;
 				if(prototype)
 				{
 					protocol = new prototype() as IProtocolResponse;
@@ -138,6 +140,7 @@ package bleach.communicator
 				}
 				
 				protocol.setMessage(protocolByte);
+				debug(protocol.toInfo);
 				ProtocolObserver.instance.broadcast(protocol);
 			}
 			catch(err:Error)
@@ -178,6 +181,7 @@ package bleach.communicator
 				_channel.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,channelSecurityError);
 				try
 				{
+					debug("关闭连接");
 					_channel.close();
 					_channel = null;
 					
@@ -202,6 +206,7 @@ package bleach.communicator
 			catch(err:Error)
 			{
 				debug("发送协议异常," + err.message + " ID[" + err.errorID + "]");
+				debug("Socket connected[" + _channel.connected + "]");
 				this.dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_DISCONNECT));
 			}
 		}

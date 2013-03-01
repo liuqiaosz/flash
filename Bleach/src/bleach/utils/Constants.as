@@ -22,6 +22,11 @@ package bleach.utils
 		public static const SCENE_ROOM_CHALLENGE:String = "RoomChallenge";
 		public static const SCENE_ROOM_ATHLETICS:String = "RoomAthletics";
 		
+		public static const LIB_COMM:String = "commlib.swf";
+		public static const LIB_RSL:String = "BleachLibrary.swf";
+		public static const LIB_PROTOCOL:String = "ProtocolLibrary.swf";
+		public static const LIB_LAUNCHER:String = "BleachLauncher.swf";
+		
 		//挑战
 		public static const ROOM_CHALLENGE:int = 1;
 		//竞技

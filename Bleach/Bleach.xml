@@ -3,7 +3,7 @@
 <bleach>
 	<system>
 		<!-- 心跳间隔 -->
-		<heartbeat>40000</heartbeat>
+		<heartbeat>10000</heartbeat>
 		<!-- 心跳超时 -->
 		<heartbeattimeout>60000</heartbeattimeout>
 		
@@ -48,6 +48,7 @@
 		
 		<scene id="RoomSquareScene" version="1.0" url="RoomSquareScene.swf">
 			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
+			<library id="UIRes2" version="1.0" url="creat_room.swf" desc="资源" uilib="true" />
 			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
 		
@@ -56,6 +57,9 @@
 			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
 		</scene>
 		
-		
+		<scene id="RoomAthletics" version="1.0" url="AthleticsScene.swf">
+			<library id="UIRes" version="1.0" url="new_battle.swf" desc="资源" uilib="true" />
+			<library id="UI" version="1.0" url="UI.swf" desc="UI定义" />
+		</scene>
 	</scenes>
 </bleach>

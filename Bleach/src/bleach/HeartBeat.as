@@ -89,7 +89,7 @@ package bleach
 				{
 					//心跳回应超时
 					//重新链接服务器
-					dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_RECONNECT));
+					dispatchMessage(new BleachNetMessage(BleachNetMessage.BLEACH_NET_HBOT));
 					//停止当前心跳
 					this.pause();
 				}

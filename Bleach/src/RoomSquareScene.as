@@ -1,6 +1,5 @@
 package 
 {
-	import bleach.event.BleachPopUpEvent;
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachNetMessage;
 	import bleach.message.BleachPopUpMessage;
@@ -82,24 +81,22 @@ package
 			_roomDetail = new PopUpCreateRoomWindow();
 			msg.value = _roomDetail;
 			dispatchMessage(msg);
-			_roomDetail.addEventListener(BleachPopUpEvent.BLEACH_POP_CLOSE,onCreateRoomWindowClose);
+			//addMessageListener(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL,onCreateRoomWindowClose);
+			//addMessageListener(BleachPopUpMessage.BLEACH_POP_CLOSE,onCreateRoomWindowClose);
 			
-			_roomDetail.addEventListener(BleachPopUpEvent.BLEACH_POP_ENTER,onCreateRoomEnter);
+			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_ENTER,onCreateRoomEnter);
 
 		}
 		
-		private function onCreateRoomWindowClose(event:BleachPopUpEvent):void
-		{
-			this.dispatchEvent(event);
-		}
 		
 		/**
 		 * 房间创建确认
 		 * 
 		 **/
-		private function onCreateRoomEnter(event:BleachPopUpEvent):void
+		private function onCreateRoomEnter(event:BleachPopUpMessage):void
 		{
-			
+			removeMessageListener(BleachPopUpMessage.BLEACH_POPUP_ENTER,onCreateRoomEnter);
+			dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
 			addNetListener(Protocol.SM_CreateRoom,onCreateRoomResponse);
 			var msg:ProtocolCreateRoom = new ProtocolCreateRoom();
 			msg.desc = _roomDetail.roomName;

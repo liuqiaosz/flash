@@ -1,7 +1,7 @@
 package bleach.scene.ui
 {
 	import bleach.event.BleachEvent;
-	import bleach.event.BleachPopUpEvent;
+//	import bleach.event.BleachPopUpEvent;
 	import bleach.utils.Constants;
 	
 	import flash.display.DisplayObject;

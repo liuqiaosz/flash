@@ -3,6 +3,7 @@ package pixel.ui.control
 	import flash.events.MouseEvent;
 	import flash.utils.ByteArray;
 	
+	import pixel.ui.control.event.UIControlEvent;
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UIToggleButtonStyle;
 	import pixel.ui.control.utility.ButtonState;
@@ -12,7 +13,7 @@ package pixel.ui.control
 	 * 
 	 * 
 	 **/
-	public class UIToggleButton extends UIControl
+	public class UIToggleButton extends UIControl implements IUIToggle
 	{
 		private var _state:int = ButtonState.TOGGLE_UP;
 		public function set state(value:int):void
@@ -66,15 +67,42 @@ package pixel.ui.control
 		{
 			//变更按钮状态
 			state = ButtonState.TOGGLE_DOWN == _state ? ButtonState.TOGGLE_UP : ButtonState.TOGGLE_DOWN;
+			selected = (ButtonState.TOGGLE_DOWN == _state);
 		}
 		
-		override public function initializer():void
+		private var _selected:Boolean = false;
+		public function set selected(value:Boolean):void
 		{
-			
+			_selected = value;
+			if(_selected)
+			{
+				var notify:UIControlEvent = new UIControlEvent(UIControlEvent.SELECTED,true);
+				dispatchEvent(notify);
+				state = ButtonState.TOGGLE_DOWN;
+			}
+			else
+			{
+				state = ButtonState.TOGGLE_UP;
+			}
+		}	
+		public function get selected():Boolean
+		{
+			return _selected;
+		}
+		
+		private var _value:String = "";
+		public function set value(data:String):void
+		{
+			_value = data;
+		}
+		public function get value():String
+		{
+			return _value;
 		}
 		
 		override public function dispose():void
 		{
+			super.dispose();
 			removeEventListener(MouseEvent.MOUSE_DOWN,onPressDown);
 		}
 	}

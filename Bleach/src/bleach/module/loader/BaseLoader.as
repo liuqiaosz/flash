@@ -102,7 +102,7 @@ package bleach.module.loader
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = ApplicationDomain.currentDomain;
 			//loader.load(new URLRequest(Constants.WEB_URL + "library/commlib.swf"),ctx);
-			loader.load(new URLRequest("commlib.swf?" + new Date().time),ctx);
+			loader.load(new URLRequest(Constants.LIB_COMM + "?" + new Date().time),ctx);
 		}
 		
 		/**
@@ -122,7 +122,7 @@ package bleach.module.loader
 				});
 				var ctx:LoaderContext = new LoaderContext();
 				ctx.applicationDomain = ApplicationDomain.currentDomain;
-				loader.load(new URLRequest("BleachLibrary.swf?" + new Date().time),ctx);
+				loader.load(new URLRequest(Constants.LIB_RSL + "?" + new Date().time),ctx);
 			}
 			else
 			{
@@ -130,9 +130,6 @@ package bleach.module.loader
 				MaskLoading.instance.progressUpdate(_loadTotal,_loaded);
 				msgDownload();
 			}
-			
-			
-
 		}
 		
 		/**
@@ -150,7 +147,7 @@ package bleach.module.loader
 				});
 				var ctx:LoaderContext = new LoaderContext();
 				ctx.applicationDomain = ApplicationDomain.currentDomain;
-				loader.load(new URLRequest("ProtocolLibrary.swf?" + new Date().time),ctx);
+				loader.load(new URLRequest(Constants.LIB_PROTOCOL + "?" + new Date().time),ctx);
 			}
 			else
 			{
@@ -179,7 +176,7 @@ package bleach.module.loader
 			});
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.applicationDomain = ApplicationDomain.currentDomain;
-			loader.load(new URLRequest("BleachLauncher.swf?" + + new Date().time),ctx);
+			loader.load(new URLRequest(Constants.LIB_LAUNCHER + "?" + + new Date().time),ctx);
 		}
 		
 		/**

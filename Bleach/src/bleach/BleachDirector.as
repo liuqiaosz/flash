@@ -17,6 +17,7 @@ package bleach
 	import bleach.protocol.IProtocolRequest;
 	import bleach.protocol.IProtocolResponse;
 	import bleach.protocol.Protocol;
+	import bleach.protocol.ProtocolCheckAccount;
 	import bleach.protocol.ProtocolGeneric;
 	import bleach.protocol.ProtocolHeartBeat;
 	import bleach.protocol.ProtocolHeartBeatResp;
@@ -31,8 +32,8 @@ package bleach
 	import bleach.utils.Constants;
 	
 	import com.greensock.TweenLite;
-	import com.greensock.plugins.BlurFilterPlugin;
-	import com.greensock.plugins.TweenPlugin;
+	//import com.greensock.plugins.BlurFilterPlugin;
+	//import com.greensock.plugins.TweenPlugin;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
@@ -111,24 +112,13 @@ package bleach
 			addMessageListener(BleachNetMessage.BLEACH_NET_SECURIRY_ERROR,serverConnectError);
 			addMessageListener(BleachNetMessage.BLEACH_NET_RECONNECT,serverConnectError);
 			addMessageListener(ProtocolMessage.BLEACH_NET_SENDMESSAGE,onMessageSend);
+			addMessageListener(BleachNetMessage.BLEACH_NET_HBOT,onHeartBeatTimeout);
 			addMessageListener(BleachMessage.BLEACH_WORLD_REDIRECT,directScene);
-			//				addMessageListener(BleachMessage.BLEACH_POPWINDOW_MODEL,popUpWindowModel);
 			
 			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_SHOW,loadingShow);
 			addMessageListener(BleachLoadingMessage.BLEACH_LOADING_HIDE,loadingHide);
-			//				addMessageListener(BleachLoadingMessage.BLEACH_LOADING_UPDATE,loadingUpdate);
-			
-			
-			//				addMessageListener(BleachMessage.BLEACH_POPCLOSE,onClosePopScene);
-			
 			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_SHOW,onPopUpLayerShow);
 			addMessageListener(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL,onPopUpLayerCloseAll);
-//			_channel = new TCPCommunicator();
-//			debug("开始连接服务器 " + BleachSystem.instance.host + ":" + BleachSystem.instance.port);
-//			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
-			//serverConnected(null);
-			
-			//
 			var notify:BleachMessage = null;
 			switch(BleachSystem.instance.portal)
 			{
@@ -141,9 +131,16 @@ package bleach
 			}
 		}
 		
+		protected function onHeartBeatTimeout(msg:BleachNetMessage):void
+		{
+			debug("心跳包回应超时,重新连接");
+			//_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
+			serverConnectError(msg);
+		}
+		
 		protected function onNetDisconnect(msg:BleachMessage):void
 		{
-			debug("服务器链接异常，重新链接");
+			debug("服务器链接异常，重新连接");
 			_channel.connect(BleachSystem.instance.host,BleachSystem.instance.port);
 		}
 		
@@ -195,16 +192,7 @@ package bleach
 			{
 				_heartBeat = new HeartBeat(BleachSystem.instance.heartbeat,BleachSystem.instance.heartbeatot);
 				_initialized = true;
-				
-
 				ProtocolObserver.instance.addListener(Protocol.SM_Error,onNetErrorMessage);
-				
-				//预载界面消息监听
-//				addMessageListener(BleachMessage.BLEACH_PRELOAD_SHOW,showPreload);
-//				addMessageListener(BleachMessage.BLEACH_PRELOAD_UPDATE,updatePreload);
-//				addMessageListener(BleachMessage.BLEACH_PRELOAD_CLOSE,closePreload);
-				
-				
 			}
 			//重新开启心跳
 			_heartBeat.start();
@@ -229,11 +217,11 @@ package bleach
 			var poper:IPopUp = new PopUpLayer(msg.value as DisplayObject,msg.isCenter,msg.isModel);
 			
 			addSceneTop(poper as DisplayObject);
-			if(_popStack.length == 0)
-			{
-				TweenPlugin.activate([BlurFilterPlugin]);
-				TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:20, blurY:20}}); 
-			}
+//			if(_popStack.length == 0)
+//			{
+//				TweenPlugin.activate([BlurFilterPlugin]);
+//				TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:20, blurY:20}}); 
+//			}
 			_popStack.push(poper);
 		}
 		
@@ -249,7 +237,7 @@ package bleach
 				poper.dispose();
 			}
 			poper = null;
-			TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
+			//TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
 		}
 		
 		/**
@@ -266,79 +254,14 @@ package bleach
 					removeSceneTop(poper as DisplayObject);
 					_popStack.splice(_popStack.indexOf(poper),1);
 					poper.dispose();
-					if(_popStack.length == 0)
-					{
-						TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
-					}
-					
-					
+//					if(_popStack.length == 0)
+//					{
+//						TweenLite.to(_activedScene, 0.1, {blurFilter:{blurX:0, blurY:0}}); 
+//					}
 				}
 			}
 		}
-//		private function onClosePopScene(msg:PixelMessage):void
-//		{
-//			PopUpMaskScene.instance.hide();
-//			this.removeSceneTop(PopUpMaskScene.instance);
-//		}
-//		
-//		/**
-//		 * 显示预载界面
-//		 * 
-//		 **/
-//		private function showPreload(msg:BleachMessage):void
-//		{
-//			_poper = PopUpMaskPreloader.instance;
-//			PopUpMaskPreloader(_poper).updateDesc(msg.value as String);
-//			addSceneTop(_poper as DisplayObject);
-//		}
-//		
-//		/**
-//		 * 更新预载界面
-//		 **/
-//		private function updatePreload(msg:BleachMessage):void
-//		{
-//			if(_poper is PopUpMaskPreloader)
-//			{
-//				PopUpMaskPreloader(_poper).updateDesc(msg.value as String);
-//			}
-//			
-//		}
-//		
-//		/**
-//		 * 关闭预载界面
-//		 * 
-//		 **/
-//		private function closePreload(msg:BleachMessage):void
-//		{
-//			if(_poper is PopUpMaskPreloader)
-//			{
-//				removeSceneTop(_poper as DisplayObject);
-//				_poper = null;
-//			}
-//			
-//		}
-//		
-//		/**
-//		 * 非模式弹出窗
-//		 **/
-//		private function popUpWindow(msg:BleachMessage):void
-//		{
-//			
-//		}
-//		
-//		/**
-//		 * 模式弹出窗
-//		 **/
-//		private function popUpWindowModel(msg:BleachMessage):void
-//		{
-//			//var id:String = msg.value as String;
-//			//_progressLoad = ProgressLoading.instance;
-//			//this.addSceneTop(_progressLoad as Sprite);
-//			//PopUpMaskScene.instance.show(_sceneCache[msg.value] as SceneModule);
-//			
-//			//addSceneTop(PopUpMaskScene.instance);
-//			addSceneTop(PopUpMaskPreloader.instance);
-//		}
+
 		
 		private var _protocolQueue:Vector.<IProtocolRequest> = new Vector.<IProtocolRequest>();
 		/**
@@ -346,6 +269,10 @@ package bleach
 		 **/
 		private function onMessageSend(msg:ProtocolMessage):void
 		{
+//			if(!(msg.value is ProtocolCheckAccount))
+//			{
+//				_protocolQueue.push(msg.value as IProtocolRequest);
+//			}
 			_protocolQueue.push(msg.value as IProtocolRequest);
 			
 			if(_channel == null || !_channel.isConnected())

@@ -4,7 +4,7 @@ package
 	import bleach.message.BleachMessage;
 	import bleach.message.BleachPopUpMessage;
 	import bleach.scene.GenericScene;
-	import bleach.scene.ui.PopUpBagWindow;
+	import bleach.scene.ui.PopUpRoleWindow;
 	import bleach.scene.ui.WorldFlow;
 	import bleach.utils.Constants;
 	
@@ -64,14 +64,14 @@ package
 			dispatchMessage(direct);
 		}
 		
-		private var bagWindow:PopUpBagWindow = null;
+		private var bagWindow:PopUpRoleWindow = null;
 		/**
 		 * 打开背包
 		 **/
 		private function openBag(event:MouseEvent):void
 		{
 			var notify:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
-			bagWindow = new PopUpBagWindow();
+			bagWindow = new PopUpRoleWindow();
 			notify.value = bagWindow;
 			this.dispatchMessage(notify);
 		}
@@ -81,11 +81,10 @@ package
 			super.dispose();
 			_worldmap.dispose();
 			_worldmap = null;
-		}
-		
-		override protected function sceneUpdate():void
-		{
-			
+			_roomBuild.dispose();
+			_roomBuild = null;
+			_bagShow.dispose();
+			_bagShow = null;
 		}
 	}
 }

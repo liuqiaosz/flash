@@ -1,6 +1,6 @@
 package 
 {
-	import bleach.event.BleachPopUpEvent;
+//	import bleach.event.BleachPopUpEvent;
 	import bleach.message.BleachPopUpMessage;
 	import bleach.scene.ui.PopUpSelectMap;
 	
@@ -45,11 +45,6 @@ package
 			_selectWidnow = new PopUpSelectMap();
 			msg.value = _selectWidnow;
 			dispatchMessage(msg);
-
-			_selectWidnow.addEventListener(BleachPopUpEvent.BLEACH_POP_CLOSE,function(e:BleachPopUpEvent):void{
-				trace("close");
-			});
-			
 			//_selectMap.addEventListener(BleachPopUpEvent.BLEACH_POP_ENTER,onCreateRoomEnter);
 		}
 	}

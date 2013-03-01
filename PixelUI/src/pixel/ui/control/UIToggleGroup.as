@@ -3,38 +3,27 @@ package pixel.ui.control
 	import flash.display.DisplayObject;
 	
 	import pixel.ui.control.event.UIControlEvent;
-	import pixel.ui.control.style.UIRadioGroupStyle;
-
-	/**
-	 * Radio群组
-	 * 
-	 * 
-	 **/
-	public class UIRadioGroup extends UIContainer
+	
+	public class UIToggleGroup extends UIContainer
 	{
-		private var _selected:UIRadio = null;
-		public function UIRadioGroup(skin:Class = null)
+		private var _selected:IUIToggle = null;
+		public function UIToggleGroup()
 		{
-			super(skin ? skin : UIRadioGroupStyle);
+			super();
 			//默认横向布局
 			this.Layout = UILayoutConstant.HORIZONTAL;
 			width = 100;
 			height = 30;
-			addEventListener(UIControlEvent.SELECTED,onChildRadioChanged);
-		}
-		
-		override public function initializer():void
-		{
-			super.initializer();
+			addEventListener(UIControlEvent.SELECTED,onChildToggleChanged);
 		}
 		
 		public function set selectedIndex(idx:int):void
 		{
-			var select:UIRadio = this._Children[idx] as UIRadio;
+			var select:IUIToggle = this._Children[idx] as IUIToggle;
 			select.selected = true;
 		}
 		
-		public function get selected():UIRadio
+		public function get selected():IUIToggle
 		{
 			return _selected;
 		}
@@ -42,7 +31,7 @@ package pixel.ui.control
 		override public function dispose():void
 		{
 			super.dispose();
-			removeEventListener(UIControlEvent.SELECTED,onChildRadioChanged);
+			removeEventListener(UIControlEvent.SELECTED,onChildToggleChanged);
 		}
 		
 		override public function EnableEditMode():void
@@ -50,21 +39,20 @@ package pixel.ui.control
 			super.EnableEditMode();
 		}
 		
-		protected function onChildRadioChanged(event:UIControlEvent):void
+		protected function onChildToggleChanged(event:UIControlEvent):void
 		{
 			if(_selected)
 			{
 				_selected.selected = false;
 			}
-			_selected = event.target as UIRadio;
+			_selected = event.target as IUIToggle;
 		}
 		
 		/**
-		 * 只接受UIRadio
 		 **/
 		override public function OnDrop(Control:UIControl):void
 		{
-			if(Control is UIRadio)
+			if(Control is IUIToggle)
 			{
 				super.OnDrop(Control);
 			}
@@ -75,7 +63,7 @@ package pixel.ui.control
 		 **/
 		override public function addChild(Child:DisplayObject):DisplayObject
 		{
-			if(Child is UIRadio)
+			if(Child is IUIToggle)
 			{
 				return super.addChild(Child);
 			}

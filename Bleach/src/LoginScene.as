@@ -71,7 +71,7 @@ package
 			checkbox.selected = saveAccount;
 			account.text = "lq";
 			password.text = "123456";
-			checkbox.addEventListener(UIControlEvent.CHANGE,loginNameSaveChange);
+			//checkbox.addEventListener(UIControlEvent.CHANGE,loginNameSaveChange);
 			if(saveAccount)
 			{
 				//从本地获取保存的账号
@@ -97,6 +97,15 @@ package
 		 **/
 		private function loginSubmit(event:MouseEvent):void
 		{
+			//是否记住账户，保存选择到shareobject
+			cfg.addValue(Constants.CFG_KEY_SAVELOGINNAME,checkbox.selected);
+			var acc:String = "";
+			if(checkbox.selected)
+			{
+				acc = account.text;
+			}
+			cfg.addValue(Constants.CFG_KEY_LOGINNAME,acc);
+			
 			//锁屏并且显示内容
 			var msg:BleachPopUpMessage = new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_SHOW);
 			_dialog = new DialogWindow();
@@ -166,16 +175,10 @@ package
 			}
 		}
 		
-		private function loginNameSaveChange(event:UIControlEvent):void
-		{
-			cfg.addValue(Constants.CFG_KEY_SAVELOGINNAME,checkbox.selected);
-			var acc:String = "";
-			if(checkbox.selected)
-			{
-				acc = account.text;
-			}
-			cfg.addValue(Constants.CFG_KEY_LOGINNAME,acc);
-		}
+//		private function loginNameSaveChange(event:UIControlEvent):void
+//		{
+//			
+//		}
 		
 		override public function dispose():void
 		{

@@ -8,7 +8,7 @@ package pixel.ui.control
 	import pixel.ui.control.style.IVisualStyle;
 	import pixel.ui.control.style.UIRadioStyle;
 
-	public class UIRadio extends UIControl
+	public class UIRadio extends UIControl implements IUIToggle
 	{
 		private var _value:String = "";
 		public function set value(data:String):void

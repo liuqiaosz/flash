@@ -14,6 +14,9 @@ package bleach.message
 		public static const BLEACH_NET_RECONNECT:String = "ChannelReconnect";
 		//链接断开
 		public static const BLEACH_NET_DISCONNECT:String = "ChannelDisconnect";
+		//心跳回应超时
+		public static const BLEACH_NET_HBOT:String = "HeartBeatOT";
+		
 		public function BleachNetMessage(type:String)
 		{
 			super(type);

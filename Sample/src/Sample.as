@@ -47,6 +47,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.ServerSocketConnectEvent;
 	import flash.events.TextEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
@@ -60,6 +61,7 @@ package
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.geom.Vector3D;
+	import flash.net.ServerSocket;
 	import flash.net.SharedObject;
 	import flash.net.Socket;
 	import flash.net.URLLoader;
@@ -116,7 +118,6 @@ package
 	import pixel.ui.control.UIPanel;
 	import pixel.ui.control.UIProgress;
 	import pixel.ui.control.UIRadio;
-	import pixel.ui.control.UIRadioGroup;
 	import pixel.ui.control.UITextInput;
 	import pixel.ui.control.UIToggleButton;
 	import pixel.ui.control.UIToolTipManager;
@@ -179,7 +180,7 @@ package
 		[Embed(source="effect.tpk",mimeType="application/octet-stream")]
 		private var TPK:Class;
 		
-		[Embed(source="1111.mod",mimeType="application/octet-stream")]
+		[Embed(source="111.mod",mimeType="application/octet-stream")]
 		private var PRO:Class;
 		
 		[Embed(source="333.mod",mimeType="application/octet-stream")]
@@ -259,53 +260,15 @@ package
 //				offset += line.height;
 //				addChild(line);
 //			}
-			var sp:Sprite = new Sprite();
-			sp.graphics.beginFill(0xff0000);
-			sp.graphics.drawCircle(0,0,10);
-			sp.graphics.endFill();
+			var a:ServerSocket = new ServerSocket();
 			
-			sp.x = (stage.stageWidth - 10) * .5;
-			sp.y = (stage.stageHeight - 10) *.5;
-			
-			addChild(sp);
-			var fogLayer:BitmapData = new BitmapData(stage.stageWidth,stage.stageHeight,false,0x000000);
-			
-			var fogMask:Bitmap = new Bitmap(fogLayer);
-			fogMask.blendMode = BlendMode.LAYER;
-			addChild(fogMask);
-			
-			var range:Sprite = new Sprite();
-			range.graphics.lineStyle(0,0);
-			range.graphics.beginFill(0xff0000,1);
-			range.graphics.drawCircle(0,0,90);
-			range.graphics.endFill();
-			
-			var mtx:Matrix = new Matrix();
-			
-			stage.addEventListener(Event.ENTER_FRAME,function(event:Event):void{
-				mtx.tx = sp.x;
-				mtx.ty = sp.y;
-				fogMask.bitmapData.draw(range,mtx,null,BlendMode.ERASE,null,true);
+			a.bind(9991);
+			a.addEventListener(ServerSocketConnectEvent.CONNECT,function(event:ServerSocketConnectEvent):void{
+				trace("in");
+				var client:Socket = event.socket;
+				client.close();
 			});
-			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN,function(event:KeyboardEvent){
-				
-				switch(event.keyCode)
-				{
-					case Keyboard.LEFT:
-						sp.x -= 2;
-						break;
-					case Keyboard.RIGHT:
-						sp.x += 2;
-						break;
-					case Keyboard.UP:
-						sp.y -= 2;
-						break;
-					case Keyboard.DOWN:
-						sp.y += 2;
-						break;
-				}
-			});
+			a.listen();
 		}
 		
 		private function test3d():void

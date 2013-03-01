@@ -5,6 +5,7 @@ package bleach.message
 		public static const BLEACH_POPUP_SHOW:String = "PopUpShow";
 		//public static const BLEACH_POPUP_CLOSE:String = "PopUpClose";
 		public static const BLEACH_POPUP_CLOSEALL:String = "PopUpCloseAll";
+		public static const BLEACH_POPUP_ENTER:String = "PopUpEnter";
 		
 		private var _isCenter:Boolean = true;
 		public function set isCenter(value:Boolean):void

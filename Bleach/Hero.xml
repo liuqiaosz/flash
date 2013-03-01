@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+no                          //编号 数字 数字  数字！！！！！！！！！！！！！！！！！！！！
+icon
+name;                       //如果是主将，跟主角名相同
+type;                       //类型，攻击型，防御型，灵压型
+desc;                       //描述
+health;                     //体制
+strength;                   //力量
+lingya;                     //灵压 决定先手
+wakan;                      //灵力         
+skill
+open
+score                        //战斗力
+-->
+<Hero no="" name="">
+	<Property no="1" name="山本元柳斋重国" icon="1001" type="1" strength="35" lingya="35" health="35" wakan="100" skill="1" open="0" score="800" des="统领护廷十三队的总队长，并直接听命於中央四十六室。在中央四十六室被蓝染全灭後，由他直接管辖整个屍魂界。"/>
+	<Property no="2" name="阿散井恋次" icon="1002" type="1" strength="9" lingya="6" health="8" wakan="100" skill="2" open="1" score="800" des="发色鲜红，通常用发带束起成冲天状，眉上方刺了大面积的青纹，几乎覆盖全额。"/>
+	<Property no="3" name="更木剑八" icon="1003" type="1" strength="25" lingya="19" health="18" wakan="100" skill="3" open="1" score="800" des="尸魂界第一位不懂卍解的队长，他之所以能成为队长是因为其性格及强大的灵压。"/>
+	<Property no="4" name="斑目一角" icon="1004" type="1" strength="9" lingya="6" health="8" wakan="100" skill="4" open="0" score="800" des="受剑八影响而活的人，唯一的心愿就是能在队长身边战死。"/>
+	<Property no="5" name="浦原浦原喜助" icon="1005" type="1" strength="9" lingya="6" health="8" wakan="100" skill="5" open="0" score="800" des="经典打扮是一双木屐，一顶白绿相间遮住眼睛的帽子，一根手杖，内里藏着他的斩魄刀——红姬。"/>
+	<Property no="6" name="黑崎一护" icon="1006" type="1" strength="9" lingya="6" health="8" wakan="100" skill="6" open="0" score="800" des="一护不但战斗力高强，富有同情心，责任心极强，还是个运动万能、品学兼优、内心纯洁的好孩子。"/>
+	<Property no="7" name="平子真子" icon="1007" type="1" strength="9" lingya="6" health="8" wakan="100" skill="7" open="0" score="800" des="淡黄的沙宣头，不羁的眼神，迷人的笑容，露出整齐牙齿，夸张的嘴，从容面对，握着逆拂，不带分毫的怯懦。"/>
+	<Property no="8" name="猿柿日世里" icon="1008" type="1" strength="8" lingya="5" health="8" wakan="100" skill="8" open="0" score="800" des="暴力倾向，单纯得每次都会少说一句话，热情，外向，有些桀骜不驯。"/>
+	<Property no="9" name="桧佐木修兵" icon="1009" type="1" strength="9" lingya="6" health="8" wakan="100" skill="9" open="0" score="800" des="左脸颊上的“69”意思是“六车九番队”，因其被腹部正中刺有“69”的六车拳西所救，应该是带着对拳西的感激才刺上了“69”。"/>
+	<Property no="10" name="碎蜂" icon="1010" type="1" strength="9" lingya="6" health="8" wakan="100" skill="10" open="0" score="800" des="具备极高的机动力,体力很高，攻击力也很强。"/>
+	<Property no="11" name="狛村左阵" icon="1011" type="2" strength="8" lingya="9" health="6" wakan="100" skill="11" open="0" score="800" des="身躯庞大，用压倒性的力量将对方制服的狛村队长，是个绝对不使小手段的力量型战将。"/>
+	<Property no="12" name="朽木露琪亚" icon="1012" type="2" strength="8" lingya="9" health="6" wakan="100" skill="12" open="1" score="800" des="身材短小、洋溢高雅气质的美少女，发型天生。"/>
+	<Property no="13" name="市丸银" icon="1013" type="2" strength="19" lingya="24" health="20" wakan="100" skill="13" open="1" score="800" des="浅紫色短发、眼睛幼细及有红色的虹膜，说话带有关西腔，在成为三番队队长前是属于五番队的副队长。"/>
+	<Property no="14" name="卯之花烈" icon="1014" type="2" strength="8" lingya="9" health="6" wakan="100" skill="14" open="0" score="800" des="虽然很少有在前线战斗的机会，但是却拥有最高的攻击力！要是爆发的话，可能是最恐怖的对战也不一定。"/>
+	<Property no="15" name="朽木白哉" icon="1015" type="2" strength="8" lingya="9" health="6" wakan="100" skill="15" open="0" score="800" des="朽木家为尸魂界第一贵族，地位高尚，是王族进入王族界面时赐予的五大贵族之一。"/>
+	<Property no="16" name="有昭田钵玄" icon="1016" type="2" strength="8" lingya="9" health="6" wakan="100" skill="16" open="0" score="800" des="假面军势成员当中，唯一拥有结界与鬼道能力的成员。"/>
+	<Property no="17" name="涅音无" icon="1017" type="2" strength="8" lingya="9" health="6" wakan="100" skill="17" open="0" score="800" des="茧利所“做出”的女儿，是他集义骸及义魂技术的精粹所作的“最高杰作”。"/>
+	<Property no="18" name="井上织姬" icon="1018" type="2" strength="7" lingya="8" health="5" wakan="100" skill="18" open="1" score="800" des="织姬的味觉比较特别，不过她也喜欢一般的食物。护廷十三队十番队副队长松本乱菊和她的口感相同，对井上的烹饪赞不绝口。"/>
+	<Property no="19" name="茶渡泰虎" icon="1019" type="2" strength="8" lingya="9" health="6" wakan="100" skill="19" open="1" score="800" des="由于容貌看上去比起实际年龄老很多，被一护的妹妹夏梨称为“大叔”。"/>
+	<Property no="20" name="浮竹十四郎" icon="1020" type="2" strength="8" lingya="9" health="6" wakan="100" skill="20" open="0" score="800" des="为人和善而且本事高强，所以他队里的队员都很崇拜他。"/>
+	<Property no="21" name="草鹿八千留" icon="1021" type="3" strength="6" lingya="5" health="12" wakan="100" skill="21" open="0" score="800" des="喜欢帮人起绰号，起的乱七八糟，不过也蛮可爱的。"/>
+	<Property no="22" name="松本乱菊" icon="1022" type="3" strength="6" lingya="5" health="12" wakan="100" skill="22" open="0" score="800" des="明朗大方、尽责而细心的金发妖艳美女，性格豪放磊落。身材火辣，偶尔流露小女生般的可爱，实际上非常可靠，面对敌人之时也很有气魄。"/>
+	<Property no="23" name="石田雨龙" icon="1023" type="3" strength="6" lingya="5" health="12" wakan="100" skill="23" open="1" score="800" des="平时石田是一位腼腆、安静的人，但当有人在场时他会尽量让自己在别人面前显得酷一些。"/>
+	<Property no="24" name="涅茧利" icon="1024" type="3" strength="6" lingya="5" health="12" wakan="100" skill="24" open="0" score="800" des="有不错的防御力和鬼道防御，攻击力也不弱，命中率和机动力极其优秀，还有大量灵子实验武器弥补作战，所以综合实力很高。"/>
+	<Property no="25" name="京楽春水" icon="1025" type="3" strength="6" lingya="5" health="12" wakan="100" skill="25" open="0" score="800" des="上级贵族京乐家的次男。原本具备了擅长武艺的血统，但因为他讨厌练习武功，老是四处闲晃，只好被强迫进入真央灵术院就读。"/>
+	<Property no="26" name="久南白" icon="1026" type="3" strength="6" lingya="5" health="12" wakan="100" skill="26" open="0" score="800" des="第一次虚化就可以长达15小时，也许是个天才。"/>
+	<Property no="27" name="东仙要" icon="1027" type="3" strength="6" lingya="5" health="12" wakan="100" skill="27" open="0" score="800" des="九番队队长东仙要的青虫，其X解阎魔蟋蟀可以将创造一个空间，将敌人出触觉以外的五感全部抹杀。可以说这招是毫无破绽的，可以唯一的破绽就是东仙要本人，他的攻击力实在太差了"/>
+	<Property no="28" name="四枫院夜一" icon="1028" type="3" strength="6" lingya="5" health="12" wakan="100" skill="28" open="0" score="800" des="曾是尸魂界四大贵族之一“天赐兵装番”的四枫院家的公主，四枫院家第二十二代当家，前二番队队长，也是尸魂界隐秘机动队的前任队长。"/>
+	<Property no="29" name="日番谷冬狮郎" icon="1029" type="3" strength="17" lingya="17" health="27" wakan="100" skill="29" open="1" score="800" des="历史上最年轻成为队长的天才少年，银发，碧绿双眼，身材矮小。"/>
+	<Property no="30" name="蓝染惣右介" icon="1030" type="3" strength="19" lingya="17" health="25" wakan="100" skill="30" open="1" score="800" des="原静灵庭护庭十三番队五番队队长"/>
+</Hero>

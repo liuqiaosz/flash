@@ -45,19 +45,19 @@ package
 		private var ui:UIControl = null;
 		override public function initializer():void
 		{
-			var effect:Object = getDefinitionByName("effect.rolepower");
-			if(effect)
-			{
-				//chooserole001
-				var effectData:ByteArray = new effect() as ByteArray;
-				var pack:PixelTexturePackage = PixelTextureFactory.instance.decode(effectData);
-				PixelTextureFactory.instance.addEventListener(PixelTextureEvent.PACKAGE_DECODE_SUCCESS,function(event:Event):void{
-					rolePower = new PixelSpriteSheet(pack);
-					pack.playGap = 100;
-					addChild(rolePower);
-				});
-				PixelTextureFactory.instance.asyncDecodeTexturePackage(pack);
-			}
+//			var effect:Object = getDefinitionByName("effect.rolepower");
+//			if(effect)
+//			{
+//				//chooserole001
+//				var effectData:ByteArray = new effect() as ByteArray;
+//				var pack:PixelTexturePackage = PixelTextureFactory.instance.decode(effectData);
+//				PixelTextureFactory.instance.addEventListener(PixelTextureEvent.PACKAGE_DECODE_SUCCESS,function(event:Event):void{
+//					rolePower = new PixelSpriteSheet(pack);
+//					pack.playGap = 100;
+//					addChild(rolePower);
+//				});
+//				PixelTextureFactory.instance.asyncDecodeTexturePackage(pack);
+//			}
 			role = new PixelSprite();
 			
 			var cls:Object = getDefinitionByName("ui.chooserole");

@@ -1,8 +1,10 @@
 package pixel.ui.control
 {
 	import flash.utils.ByteArray;
+	
+	import mx.logging.AbstractTarget;
 
-	public class UICheckBox extends UIContainer
+	public class UICheckBox extends UIContainer implements IUIToggle
 	{
 		private var _btn:UICheckButton = null;
 		private var _label:UITextBase = null;
@@ -46,6 +48,15 @@ package pixel.ui.control
 			addChild(_label);
 		}
 		
+		public function set selected(value:Boolean):void
+		{
+			_btn.selected = value;
+		}
+		public function get selected():Boolean
+		{
+			return _btn.selected;
+		}
+		
 		override protected function SpecialEncode(Data:ByteArray):void
 		{
 			var data:ByteArray = _btn.encode();
@@ -80,13 +91,15 @@ package pixel.ui.control
 		{
 			return _label.text;
 		}
-		public function set selected(value:Boolean):void
+		
+		private var _value:String = "";
+		public function set value(data:String):void
 		{
-			_btn.selected = value;
+			_value = data;
 		}
-		public function get selected():Boolean
+		public function get value():String
 		{
-			return _btn.selected;
+			return _value;
 		}
 		
 		override public function set Layout(Value:uint):void

@@ -257,8 +257,8 @@
 					icon: radioIcon
 				},
 				{
-					label : "RadioGroup",
-					id: Utils.RADIOGROUP,
+					label : "ToggleGroup",
+					id: Utils.TOGGLEGROUP,
 					icon: radioGroupIcon
 				}
 				

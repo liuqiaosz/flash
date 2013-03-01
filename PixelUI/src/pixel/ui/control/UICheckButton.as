@@ -35,7 +35,7 @@ package pixel.ui.control
 		public function UICheckButton(style:Class = null)
 		{
 			super(style ? style:UICheckButtonStyle);
-			addEventListener(MouseEvent.CLICK,onClick);
+			addEventListener(MouseEvent.MOUSE_DOWN,onClick);
 		}
 		
 		private function onClick(event:MouseEvent):void
