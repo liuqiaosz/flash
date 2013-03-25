@@ -85,8 +85,8 @@ Offset to Exif Sub IFD
 		{
 			var tag:int = data.readUnsignedShort();
 			var format:int = data.readShort();
-			var elementCount:int = data.readInt();
-			var value:int = data.readInt();
+			var elementCount:int = data.readUnsignedInt();
+			var value:int = data.readUnsignedInt();
 			//trace(data.readUTFBytes(8));
 			
 			trace("Tag[" + tag.toString(16) + "] format[" + format + "] count[" + elementCount + "] value[" + value +"]");

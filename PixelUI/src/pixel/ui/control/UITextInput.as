@@ -36,6 +36,8 @@ package pixel.ui.control
 		{
 			super.width = value;
 			_TextField.width = value;
+			_TextField.width = value - 10;
+			_TextField.x = 5;
 		}
 		override public function set height(value:Number):void
 		{

@@ -192,7 +192,7 @@ package bleach
 			{
 				_heartBeat = new HeartBeat(BleachSystem.instance.heartbeat,BleachSystem.instance.heartbeatot);
 				_initialized = true;
-				ProtocolObserver.instance.addListener(Protocol.SM_Error,onNetErrorMessage);
+				ProtocolObserver.instance.addListener(Protocol.SP_Error,onNetErrorMessage);
 			}
 			//重新开启心跳
 			_heartBeat.start();

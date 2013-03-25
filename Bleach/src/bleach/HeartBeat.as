@@ -36,7 +36,7 @@ package bleach
 		
 		public function start():void
 		{
-			addNetListener(Protocol.SM_HeartBeat,heartbeatResponse);
+			addNetListener(Protocol.SP_HeartBeat,heartbeatResponse);
 			_running = true;
 		}
 		public function pause():void
@@ -98,7 +98,7 @@ package bleach
 		
 		override public function dispose():void
 		{
-			removeNetListener(Protocol.SM_HeartBeat,heartbeatResponse);
+			removeNetListener(Protocol.SP_HeartBeat,heartbeatResponse);
 		}
 	}
 }

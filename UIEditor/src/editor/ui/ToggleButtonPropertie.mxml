@@ -20,7 +20,7 @@
 			
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
-			
+			[Bindable]
 			private var Button:UIToggleButton = null;
 			[Bindable]
 			private var _Label:UILabel = null;
@@ -157,7 +157,10 @@
 //				FontColorPicker.selectedColor = Code;
 //				Button.textLabel.FontColor = Code;
 //			}
-			
+			protected function valueChanged(event:TextOperationEvent):void
+			{
+				Button.value = radioValue.text;
+			}
 		]]>
 	</fx:Script>
 
@@ -169,7 +172,10 @@
 			
 		</s:ComboBox>
 	</s:HGroup>
-	
+	<s:HGroup verticalAlign="middle">
+		<s:Label text="数据值" width="60"/>
+		<s:TextInput id="radioValue" width="100" text="{Button.value}" change="valueChanged(event)" restrict="0-9 a-z A-Z" />
+	</s:HGroup>
 	<ui:BasicPropertie id="SimpleStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"  />
 	<ui:BordeStyleProperty id="BorderStyle" Control="{CurrentControl}" visible="{_simpleStyleEnable}" includeInLayout="{_simpleStyleEnable}"/>
 	<ui:Background id="BackgroundStyle" Control="{CurrentControl}"/>

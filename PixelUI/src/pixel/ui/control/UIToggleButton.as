@@ -105,5 +105,27 @@ package pixel.ui.control
 			super.dispose();
 			removeEventListener(MouseEvent.MOUSE_DOWN,onPressDown);
 		}
+		
+		override protected function SpecialDecode(data:ByteArray):void
+		{
+			if(data.readByte() == 1)
+			{
+				_value = data.readUTF();
+			}
+			//_value = data.readUTF();
+		}
+		
+		override protected function SpecialEncode(data:ByteArray):void
+		{
+			if(_value.length > 0)
+			{
+				data.writeByte(1);
+				data.writeUTF(_value);
+			}
+			else
+			{
+				data.writeByte(0);
+			}
+		}
 	}
 }

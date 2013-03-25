@@ -94,7 +94,7 @@ package bleach.scene.ui
 		 **/
 		private function createEnter(event:MouseEvent):void
 		{
-			this.dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
+			this.dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_ENTER));
 			//dispatchEvent(new BleachPopUpEvent(BleachPopUpEvent.BLEACH_POP_ENTER));
 		}
 		

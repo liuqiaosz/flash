@@ -41,6 +41,7 @@ package pixel.ui.control
 			_TextField.text = _TextValue;
 			Align = TextAlign.LEFT;
 			addChild(_TextField);
+			
 			this.BorderThinkness = 0;
 			this.BackgroundAlpha = 0;
 		}
@@ -61,7 +62,7 @@ package pixel.ui.control
 		override public function set width(value:Number):void
 		{
 			super.width = value;
-			_TextField.width = value;
+			
 		}
 //		override public function set height(value:Number):void
 //		{

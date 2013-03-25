@@ -29,7 +29,7 @@ package bleach.module.loader
 	public class BaseLoader extends Sprite
 	{
 		private var _mainApp:DisplayObject = null;
-		private var _isLocal:Boolean = true;
+		private var _isLocal:Boolean = false;
 		public function get mainApp():DisplayObject
 		{
 			return _mainApp;

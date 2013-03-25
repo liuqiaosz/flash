@@ -42,7 +42,5 @@ package im.jpg
 			}
 			return null;
 		}
-		
-		
 	}
 }

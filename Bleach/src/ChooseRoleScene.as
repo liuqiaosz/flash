@@ -94,7 +94,7 @@ package
 			msg.playerName = playerName.text;
 			msg.templateId = 0;
 			sendNetMessage(msg);
-			addNetListener(Protocol.SM_CreatePlayer,createResponse);
+			addNetListener(Protocol.SP_CreatePlayer,createResponse);
 		}
 		
 		private function createResponse(msg:ProtocolCreatePlayerResp):void

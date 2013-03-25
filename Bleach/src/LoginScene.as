@@ -26,8 +26,9 @@ package
 	import flash.utils.getDefinitionByName;
 	
 	import pixel.message.PixelMessageBus;
+	import pixel.ui.control.IUIToggle;
 	import pixel.ui.control.UIButton;
-	import pixel.ui.control.UICheckBox;
+	
 	import pixel.ui.control.UIContainer;
 	import pixel.ui.control.UIControl;
 	import pixel.ui.control.UIControlFactory;
@@ -62,12 +63,13 @@ package
 			var data:ByteArray = new cls() as ByteArray;
 			var mod:UIMod = UIControlFactory.instance.decode(data,false);
 			login = mod.controls.pop().control;
+			login.x = login.y = 0;
 			addChild(login);
 
 			submit = login.GetChildById("Submit",true) as UIButton;
 			account = login.GetChildById("accName",true) as UITextInput;
 			password = login.GetChildById("accPwd",true) as UITextInput;
-			checkbox = login.GetChildById("saveAccount",true) as UICheckBox;
+			checkbox = login.GetChildById("saveAccount",true) as IUIToggle;
 			checkbox.selected = saveAccount;
 			account.text = "lq";
 			password.text = "123456";
@@ -89,7 +91,7 @@ package
 		private var submit:UIButton = null;
 		private var account:UITextInput = null;
 		private var password:UITextInput = null;
-		private var checkbox:UICheckBox = null;
+		private var checkbox:IUIToggle = null;
 		
 		private var _dialog:DialogWindow = null;
 		/**
@@ -114,7 +116,7 @@ package
 			dispatchMessage(msg);
 			
 			//发送账户验证消息
-			addNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
+			addNetListener(Protocol.SP_CheckAccount,accountCheckResponse);
 			var checkAccount:ProtocolCheckAccount = new ProtocolCheckAccount();
 			checkAccount.accName = account.text;
 			checkAccount.accPwsd = password.text;
@@ -126,7 +128,7 @@ package
 		 **/
 		private function accountCheckResponse(protocol:ProtocolCheckAccountResp):void
 		{
-			removeNetListener(Protocol.SM_CheckAccount,accountCheckResponse);
+			removeNetListener(Protocol.SP_CheckAccount,accountCheckResponse);
 			if(protocol.respCode == 0)
 			{
 				if(protocol.isNew)
@@ -140,7 +142,7 @@ package
 				}
 				else
 				{
-					addNetListener(Protocol.SM_Login,onLoginResponse);
+					addNetListener(Protocol.SP_Login,onLoginResponse);
 					//检查正确发起登陆
 					debug("发起登陆");
 					var msg:ProtocolLogin = new ProtocolLogin();
@@ -158,7 +160,7 @@ package
 		private function onLoginResponse(message:IProtocol):void
 		{
 			dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
-			removeNetListener(Protocol.SM_Login,onLoginResponse);
+			removeNetListener(Protocol.SP_Login,onLoginResponse);
 			var msg:ProtocolLoginResp = message as ProtocolLoginResp;
 			if(msg.respCode == 0)
 			{

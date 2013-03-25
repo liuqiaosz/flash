@@ -1,6 +1,8 @@
 package pixel.ui.control
 {
-	public interface IUIToggle
+	import flash.events.IEventDispatcher;
+
+	public interface IUIToggle extends IEventDispatcher
 	{
 		function set selected(value:Boolean):void;
 		function get selected():Boolean;

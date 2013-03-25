@@ -63,7 +63,7 @@ package
 				//main014
 				_startGame = _room.GetChildById("main014",true) as UIButton;
 				_startGame.addEventListener(MouseEvent.CLICK,onOpenCreateRoomDialog);
-				addNetListener(Protocol.SM_EnterGameCenter,onRoomListInitializer);
+				addNetListener(Protocol.SP_EnterGameCenter,onRoomListInitializer);
 				var msg:ProtocolEnterGameCenter = new ProtocolEnterGameCenter();
 				sendNetMessage(msg);
 			}
@@ -97,7 +97,7 @@ package
 		{
 			removeMessageListener(BleachPopUpMessage.BLEACH_POPUP_ENTER,onCreateRoomEnter);
 			dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
-			addNetListener(Protocol.SM_CreateRoom,onCreateRoomResponse);
+			addNetListener(Protocol.SP_CreateRoom,onCreateRoomResponse);
 			var msg:ProtocolCreateRoom = new ProtocolCreateRoom();
 			msg.desc = _roomDetail.roomName;
 			msg.playerNum = 4;
@@ -107,7 +107,7 @@ package
 		
 		private function onCreateRoomResponse(protocol:ProtocolCreateRoomResp):void
 		{
-			removeNetListener(Protocol.SM_CreateRoom,onCreateRoomResponse);
+			removeNetListener(Protocol.SP_CreateRoom,onCreateRoomResponse);
 			this.dispatchMessage(new BleachPopUpMessage(BleachPopUpMessage.BLEACH_POPUP_CLOSEALL));
 			if(protocol.respCode == 0)
 			{
@@ -172,14 +172,14 @@ package
 		 **/
 		private function onRefreshRoomResponse(protocol:ProtocolGetRoomListResp):void
 		{
-			removeNetListener(Protocol.SM_GetRoomList,onRefreshRoomResponse);
+			removeNetListener(Protocol.SP_GetRoomList,onRefreshRoomResponse);
 			debug("刷新房间返回,返回码[" + protocol.respCode + "][" + protocol.totalPage + "]");
 		}
 		
 		override public function dispose():void
 		{
 			super.dispose();
-			removeNetListener(Protocol.SM_EnterGameCenter,onRoomListInitializer);
+			removeNetListener(Protocol.SP_EnterGameCenter,onRoomListInitializer);
 		}
 	}
 }
