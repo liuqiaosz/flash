@@ -38,6 +38,9 @@
     <classEntry path="pixel.ui.control.vo.ColorFormat"/>
     <classEntry path="pixel.ui.control.IUIToggle"/>
     <classEntry path="pixel.ui.control.UIToggleGroup"/>
+    <classEntry path="pixel.ui.control.UIAnimationButton"/>
+    <classEntry path="pixel.ui.control.vo.UIAnimAtlas"/>
+    <classEntry path="pixel.ui.control.vo.UIAnimFrame"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -333,5 +333,12 @@ package pixel.utility
 		{
 			return nav.substring(nav.lastIndexOf(System.SystemSplitSymbol) + 1,nav.lastIndexOf("."));	
 		}
+		
+		public static function trim(value:String):String
+		{
+			var r1:RegExp =/^\W+/;  
+			var r2:RegExp =/\W+$/;  
+			return value.replace(r1,"").replace(r2,"");  
+		}
 	}
 }

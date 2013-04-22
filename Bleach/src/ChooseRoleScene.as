@@ -92,7 +92,7 @@ package
 			var msg:ProtocolCreatePlayer = new ProtocolCreatePlayer();
 			//msg.playerName = "Hero Monster";
 			msg.playerName = playerName.text;
-			msg.templateId = 0;
+			msg.templateId = 6;
 			sendNetMessage(msg);
 			addNetListener(Protocol.SP_CreatePlayer,createResponse);
 		}
@@ -110,7 +110,6 @@ package
 			{
 				debug("创建失败[" + this.getErrorDescByCode(msg.respCode) + "]");
 			}
-			
 		}
 		
 		override protected function sceneUpdate():void

@@ -133,12 +133,15 @@ package
 	import pixel.ui.control.vo.UIMod;
 	import pixel.utility.BitmapTools;
 	import pixel.utility.ColorCode;
+	import pixel.utility.FileObj3D;
+	import pixel.utility.Object3DLoader;
 	import pixel.utility.RGBA;
 	import pixel.utility.ShareDisk;
 	import pixel.utility.ShareObjectHelper;
 	import pixel.utility.Stat;
 	import pixel.utility.System;
 	import pixel.utility.Tools;
+	import pixel.utility.atlas.starling.AtlasXMLParser;
 	import pixel.utility.bitmap.gif.GIFDecoder;
 	import pixel.utility.bitmap.gif.GIFFrame;
 	import pixel.utility.data.QuadNode;
@@ -188,87 +191,23 @@ package
 		[Embed(source="arrow_down.png")]
 		private var DOWN:Class;
 		
+		[Embed(source="spaceship.obj",mimeType="application/octet-stream")]
+		private var MODEL:Class;
+		
+		[Embed(source="sprites.xml",mimeType="application/octet-stream")]
+		private var SPR:Class;
+		
 		private var sid:String = "";
 		private var center:Point = new Point();
 		private var angle:int
 		private var startAngle:int
 		public function Sample()
 		{
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			center.x = stage.stageWidth / 2;
-			center.y = stage.stageHeight / 2;
-//			var desc:FontDescription = new FontDescription();
-//			desc.renderingMode = RenderingMode.CFF;
-//			var format:ElementFormat = new ElementFormat(desc);
-//			format.dominantBaseline = TextBaseline.IDEOGRAPHIC_TOP;
-//			format.alignmentBaseline = TextBaseline.DESCENT;
-//			format.fontSize = 12;
-//			//format.breakOpportunity = BreakOpportunity.ALL;
-//			var text:TextElement = new TextElement("测试文字发动机奋斗空间发呆咖啡就",format);
-//			var s:String = " [aa]456[bb]"; 
-//			var reg:RegExp = /\[\w+\]/;
-//			var sts:Array = s.match(reg);
-//			while(sts && sts.length > 0)
-//			{
-//				var icon:String = sts.pop();
-//				trace("icon[" + icon);
-//				var off:int  =s.indexOf(icon);
-//				trace("icon idx[" + off + "]");
-//				s = s.substr(off + icon.length);
-//				sts = s.match(reg);
-//			}
-//			var v:Array = s.split(reg);
-//
-//			trace(sts.length);
-//			var img:Bitmap = new SCROLLERARROW_DOWN() as Bitmap;
-//			var imgFormat:ElementFormat = new ElementFormat();
-//			imgFormat.dominantBaseline = TextBaseline.IDEOGRAPHIC_TOP;
-//			imgFormat.alignmentBaseline = TextBaseline.DESCENT;
-//			var imgElement:GraphicElement = new GraphicElement(img,img.width,img.height,imgFormat);
-//			var arr:Vector.<ContentElement> = new Vector.<ContentElement>();
-//			arr.push(text);
-//			arr.push(imgElement);
-//			
-//			var group:GroupElement = new GroupElement(arr);
-//			
-//			var block:TextBlock = new TextBlock();
-//			block.content = group;
-//			var line:TextLine = block.createTextLine(null,160);
-//			var offsetY:int = 0;
-//			var idx:int = 0;
-//			while(line)
-//			{
-//				line.y += offsetY;
-//				addChild(line);
-//				offsetY += line.height + 5;
-//				line = block.createTextLine(line,160);
-//				trace("..");
-//				idx++;
-//				if(idx>10)
-//				{
-//					break;
-//				}
-//			}
-//			RichTextFactory.instance.addIcon("[arrow]",new SCROLLERARROW_DOWN() as Bitmap);
-//			var lines:Vector.<TextLine> = RichTextFactory.instance.parse("放得开撒酒疯离[arrow]开撒[arrow]酒疯大房的司机快疯了冻死了看风景的萨拉发送放假；拉萨放假啊速度房的三角恋警方的拉萨房的司机卡减肥啦范德萨空间疯狂垃圾家发奖金空间对方辣椒粉放假打开司法局阿隆索开发",100);
-//			
-//			var offset:int = 0;
-//			for each(var line:TextLine in lines)
-//			{
-//				line.y = offset;
-//				offset += line.height;
-//				addChild(line);
-//			}
-			var a:ServerSocket = new ServerSocket();
+			var data:ByteArray = new SPR() as ByteArray;
+			var xml:String = data.readUTFBytes(data.length);
 			
-			a.bind(9991);
-			a.addEventListener(ServerSocketConnectEvent.CONNECT,function(event:ServerSocketConnectEvent):void{
-				trace("in");
-				var client:Socket = event.socket;
-				client.close();
-			});
-			a.listen();
+			var parser:AtlasXMLParser = new AtlasXMLParser();
+			parser.parse(xml);
 		}
 		
 		private function test3d():void
@@ -287,6 +226,7 @@ package
 		private var program:Program3D = null;
 		private var texture:Texture = null;
 		private var per:PerspectiveMatrix3D = null;
+		
 		private function perstes(context:Context3D):void
 		{
 			_context = context;

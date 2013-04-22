@@ -212,10 +212,6 @@ package pixel.ui.control
 				{
 					addChild(_Text);
 				}
-				//_Text.y = ((this.height - _Text.textHeight) / 2) +  _Text.textHeight;
-				//_Text.x = ((this.width - _Text.textWidth) / 2);
-				//_Text.x = ((this.width - _Text.TextWidth) / 2);
-				//_Text.y = ((this.height - _Text.TextHeight) / 2);
 			}
 		}
 		

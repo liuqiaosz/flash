@@ -15,6 +15,13 @@
     <classEntry path="pixel.utility.math.UInt64"/>
     <classEntry path="pixel.utility.IUpdate"/>
     <classEntry path="pixel.utility.BASE64"/>
+    <classEntry path="pixel.utility.Object3DLoader"/>
+    <classEntry path="pixel.utility.FileObj3D"/>
+    <classEntry path="pixel.utility.FileObj3DVertexIndex"/>
+    <classEntry path="pixel.utility.FileObj3DVertexIndexGroup"/>
+    <classEntry path="pixel.utility.atlas.starling.AtlasXMLParser"/>
+    <classEntry path="pixel.utility.atlas.starling.vo.TextureAtlas"/>
+    <classEntry path="pixel.utility.atlas.starling.vo.SubTexture"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
