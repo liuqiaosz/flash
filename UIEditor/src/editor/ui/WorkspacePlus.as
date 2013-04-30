@@ -54,45 +54,35 @@ package editor.ui
 	 **/
 	public class WorkspacePlus extends UIComponent implements IDispose
 	{
-		//private var CurrentActived:Sprite = null;
 		private var _Children:Vector.<IUIControl> = new Vector.<IUIControl>();
 		//新创建组件的基本信息
 		private var _ComponentProfile:ComponentProfile = null;
-		//private var _Container:Container = null;
-		//private var _ContainerControl:UIControl = null;
-		
-		//是否复合组件
-		//private var IsComplex:Boolean = false;
-		
-		//private var _ConstructTree:Array = [];
-		
-		//private var _ContainerNode:TreeNode = null;
-		
 		//当前选择的控件
-		private var _FocusControl:UIControl = null;
+		private var _focus:UIControl = null;
+		//控件层
+		private var _controlLayer:Sprite = null;
+		//编辑器效果层
+		private var _effectLayer:Sprite = null;
 		
-		//private var _NodeMap:Dictionary = new Dictionary();
-		//		public function Workspace(Profile:ComponentProfile = null)
-		//		{
-		////			if(Profile)
-		////			{
-		////				BuildWorkspace(Profile);
-		////			}
-		//			
-		//			//this.addEventListener(ControlEditModeEvent.CHILDSELECTED,OnControlChildSelect);
-		//			
-		//		}
+		private var _focusBox:FocusBox = null;
 		
 		public function WorkspacePlus()
 		{
+			_controlLayer = new Sprite();
+			_effectLayer = new Sprite();
+			_focusBox = new FocusBox();
+			super.addChild(_controlLayer);
+			super.addChild(_effectLayer);
+			
+			_effectLayer.addChild(_focusBox);
 			//			if(Profile)
 			//			{
 			//				BuildWorkspace(Profile);
 			//			}
 			
 			//this.addEventListener(ControlEditModeEvent.CHILDSELECTED,OnControlChildSelect);
-			addEventListener(MouseEvent.MOUSE_DOWN,DragStart);
-			addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
+			_controlLayer.addEventListener(MouseEvent.MOUSE_DOWN,DragStart,true);
+			_controlLayer.addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
 				
 			});
 		}
@@ -107,52 +97,7 @@ package editor.ui
 		{
 			return _Children;
 		}
-		
-		//		public function BuildWorkspace(Profile:ComponentProfile):void
-		//		{
-		//			if(Profile)
-		//			{
-		//				_ComponentProfile = Profile;
-		//				if(_ComponentProfile.Category == 1)
-		//				{
-		//					IsComplex = true;
-		//					//复合组件
-		//					switch(_ComponentProfile.Container)
-		//					{
-		//						case 0:
-		//							_Container = addChild(new UIPanel()) as Container;
-		//							_Container.width = 500;
-		//							_Container.height = 500;
-		//							break;
-		//					}
-		//					
-		//					_Container.addEventListener(MouseEvent.MOUSE_DOWN,function(event:MouseEvent):void{
-		//						OnComponentChoice(event.target);
-		//
-		//					});
-		//				}
-		//				else
-		//				{
-		//					var Prototype:Class = Utils.GetPrototypeByType(_ComponentProfile.Component);
-		//					var Control:UIControl = new Prototype() as UIControl;
-		//					Control.width = 200;
-		//					Control.height = 80;
-		//					if(Prototype)
-		//					{
-		//						if(Control is SimpleTabPanel)
-		//						{
-		//							SimpleTabPanel(Control).CreateTab();
-		//						}
-		//					}
-		//					addChild(Control);
-		//					var ChoiceNotify:NotifyEvent = new NotifyEvent(NotifyEvent.COMPONENT_SELECTED);
-		//					ChoiceNotify.Params.push(Control);
-		//					dispatchEvent(ChoiceNotify);
-		//					Control.FrameFocus();
-		//				}
-		//			}
-		//		}
-		
+		/*
 		public function OnComponentChoice(Obj:Object):void
 		{
 			if(Obj == this)
@@ -176,19 +121,6 @@ package editor.ui
 				}
 				
 				_FocusControl = Choice;
-//				if(_FocusControl is Tab)
-//				{
-//					_FocusControl = Tab(_FocusControl).parent.parent as UIControl;
-//				}
-//				else if(_FocusControl is TabBar)
-//				{
-//					_FocusControl = TabBar(_FocusControl).Owner;
-//				}
-//				else if(_FocusControl is TabContent)
-//				{
-//					_FocusControl = TabContent(_FocusControl).Owner;
-//				}
-				
 				if(_FocusControl)
 				{
 					_FocusControl.FrameFocus();
@@ -204,19 +136,7 @@ package editor.ui
 				}
 			}
 		}
-		
-		//		public function get Component():UIControl
-		//		{
-		//			if(IsComplex)
-		//			{
-		//				return _Container as UIControl;
-		//			}
-		//			else
-		//			{
-		//				return _Children[0] as UIControl;
-		//			}
-		//		}
-		//		
+		*/
 				public function dispose():void
 				{
 					
@@ -234,40 +154,10 @@ package editor.ui
 					}
 				}
 		
-		
-		
-		/**
-		 * 自定义组件添加
-		 **/
-		//		public function AddComponent(child:ComponentModel):void
-		//		{
-		//			
-		//			ComponentModel(child).Control.EnableEditMode();
-		//			
-		//			addChild(child.Control);
-		//		}
-		
-		
-		//		override public function addChild(child:DisplayObject):DisplayObject
-		//		{
-		//			UIControl(child).EnableEditMode();
-		//			if(_Container)
-		//			{
-		//				var Drag:Boolean = IsComplex && _ComponentProfile.Container == 0 ? true:false;
-		//				child = _Container.addChild(child);
-		//			}
-		//			else
-		//			{
-		//				child = super.addChild(child);
-		//				_Children.push(child);
-		//			}
-		//			return child;
-		//		}
-		
 		override public function addChild(child:DisplayObject):DisplayObject
 		{
 			_Children.push(child);
-			return super.addChild(child);
+			return _controlLayer.addChild(child);
 		}
 		
 		override public function removeChild(child:DisplayObject):DisplayObject
@@ -276,42 +166,67 @@ package editor.ui
 			{
 				_Children.splice(_Children.indexOf(child),1);
 			}
-			return super.removeChild(child);
+			return _controlLayer.removeChild(child);
 		}
 		
 		private var OffsetX:int = 0;
 		private var OffsetY:int = 0;
 		private var DragTarget:DisplayObject = null;
-		
+		private var pos:Point = new Point();
 		private function DragStart(event:MouseEvent):void
 		{
-			OnComponentChoice(event.target);
+			event.stopImmediatePropagation();
 			
-			if(_Children.indexOf(event.target) >= 0 )
+			if(event.target is UIControl)
 			{
-				DragTarget = event.target as DisplayObject;
-				var Offset:Point = new Point(event.stageX,event.stageY);
-				Offset = DragTarget.globalToLocal(Offset);
-				OffsetX = Offset.x;
-				OffsetY = Offset.y;
-				stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
-				stage.addEventListener(MouseEvent.MOUSE_UP,DragEnd);
+				_focus = event.target as UIControl;
+				_focusBox.redraw(_focus.width,_focus.height);
+				pos.x = _focus.x;
+				pos.y = _focus.y;
+				
+				pos = stage.localToGlobal(pos);
+				
+				pos = _effectLayer.globalToLocal(pos);
+				_focusBox.x = pos.x;
+				_focusBox.y = pos.y;
+				_focusBox.control = _focus;
+				var ChoiceNotify:NotifyEvent = new NotifyEvent(NotifyEvent.COMPONENT_SELECTED);
+				ChoiceNotify.Params.push(_focus);
+				dispatchEvent(ChoiceNotify);
+				
+				if(_Children.indexOf(_focus) >= 0)
+				{
+					//_FocusControl.dispatchEvent(new NotifyEvent(NotifyEvent.COMPONENT_DRAG_START));
+				}
+				
+				//OnComponentChoice(event.target);
+				
+				if(_Children.indexOf(_focus) >= 0 )
+				{
+					DragTarget = event.target as DisplayObject;
+					var Offset:Point = new Point(event.stageX,event.stageY);
+					Offset = DragTarget.globalToLocal(Offset);
+					OffsetX = Offset.x;
+					OffsetY = Offset.y;
+					stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+					stage.addEventListener(MouseEvent.MOUSE_UP,DragEnd);
+				}
 			}
 		}
 		
 		public function DeleteCurrentShell():void
 		{
-			if(_FocusControl)
+			if(_focus)
 			{
-				if(_Children.indexOf(_FocusControl) >= 0)
+				if(_Children.indexOf(_focus) >= 0)
 				{
-					removeChild(_FocusControl);
-					_FocusControl = null;
+					removeChild(_focus);
+					_focus = null;
 				}
 				else
 				{
-					_FocusControl.Owner.removeChild(_FocusControl);
-					_FocusControl = null;
+					_focus.Owner.removeChild(_focus);
+					_focus = null;
 				}
 			}
 		}
@@ -343,8 +258,8 @@ package editor.ui
 			{
 				PosY = 0;
 			}
-			DragTarget.x = PosX;
-			DragTarget.y = PosY;;
+			_focusBox.x = DragTarget.x = PosX;
+			_focusBox.y = DragTarget.y = PosY;;
 		}
 		
 		private function DragEnd(event:MouseEvent):void

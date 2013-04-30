@@ -174,31 +174,7 @@ package pixel.ui.control
 		{
 			return _TextValue;
 		}
-		
-//		public function set FontSize(Value:int):void
-//		{
-//			_Style.FontTextStyle.FontSize = Value;
-//			_Text.FontSize = Value;
-//			
-//			//Text = _TextValue;
-//		}
-//		public function get FontSize():int
-//		{
-//			return _Style.FontTextStyle.FontSize;
-//		}
-//		
-//		public function set FontColor(Value:uint):void
-//		{
-//			
-//			_Style.FontTextStyle.FontColor = Value;
-//			_Text.FontColor = Value;
-//			//Text = _TextValue;
-//		}
-//		public function get FontColor():uint
-//		{
-//			return _Style.FontTextStyle.FontColor;
-//		}
-		
+
 		/**
 		 * 渲染
 		 **/

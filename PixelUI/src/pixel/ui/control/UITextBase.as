@@ -198,6 +198,7 @@ package pixel.ui.control
 			return _TextField.multiline;
 		}
 		
+		/*
 		private function DownProxy(event:MouseEvent):void
 		{
 			if(event.target != _TextField)
@@ -218,13 +219,14 @@ package pixel.ui.control
 				
 			}
 		}
-		
+		*/
 		override public function EnableEditMode():void
 		{
 			super.EnableEditMode();
 			Input = false;
-			addEventListener(MouseEvent.MOUSE_DOWN,DownProxy,true);
-			_TextField.mouseEnabled = false;
+			//addEventListener(MouseEvent.MOUSE_DOWN,DownProxy,true);
+			//_TextField.mouseEnabled = false;
+			this.mouseChildren = false;
 		}
 		
 		override public function set Style(value:IVisualStyle):void

@@ -22,7 +22,7 @@ package pixel.ui.control
 	import pixel.ui.control.style.UIStyle;
 	import pixel.ui.control.style.UIStyleLinkEmu;
 	import pixel.ui.control.style.UIStyleManager;
-	import pixel.ui.control.utility.FocusFrame;
+	//import pixel.ui.control.utility.FocusFrame;
 	import pixel.ui.control.utility.ScaleRect;
 	import pixel.ui.control.utility.Utils;
 	import pixel.ui.control.vo.UIStyleMod;
@@ -88,21 +88,21 @@ package pixel.ui.control
 			return _Owner;
 		}
 		
-		protected var _Frame:FocusFrame = null;
+		//protected var _Frame:FocusFrame = null;
 		/**
 		 * 开启控件的编辑模式
 		 **/
 		public function EnableEditMode():void
 		{
-			_Frame = new FocusFrame(this);
-			super.addChildAt(_Frame,this.numChildren);
+			//_Frame = new FocusFrame(this);
+			//super.addChildAt(_Frame,this.numChildren);
 			//this.RemoveEvent();
 			_EditMode = true;
 		}
 		public function DisableEditMode():void
 		{
 			_EditMode = false;
-			removeChild(_Frame);
+			//removeChild(_Frame);
 			//this.RegisterEvent();
 		}
 		
@@ -124,6 +124,7 @@ package pixel.ui.control
 			return _ToolTip
 		}
 		
+		/*
 		public function FrameFocus():void
 		{
 			if(_Frame)
@@ -138,7 +139,7 @@ package pixel.ui.control
 				_Frame.Disable();
 			}
 		}
-		
+		*/
 		/**
 		 **/
 		public function get StyleClass():Class

@@ -1060,7 +1060,7 @@
 						{
 							UIControl(_DragControl).EnableEditMode();
 							UIContainer(event.target).OnDrop(_DragControl as UIControl);
-							this.EditWorkspace.OnComponentChoice(_DragControl);
+							//this.EditWorkspace.OnComponentChoice(_DragControl);
 						}
 						else if(event.target == WorkspaceContainer)
 						{

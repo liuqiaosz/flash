@@ -39,9 +39,10 @@ package pixel.ui.control
 		override public function EnableEditMode():void
 		{
 			super.EnableEditMode();
-			this.addEventListener(MouseEvent.MOUSE_DOWN,DownProxy,true);
+			//this.addEventListener(MouseEvent.MOUSE_DOWN,DownProxy,true);
 		}
 		
+		/*
 		private function DownProxy(event:MouseEvent):void
 		{
 			if(event.target != _TitleBar && event.target != _WindowContent)
@@ -61,7 +62,7 @@ package pixel.ui.control
 				dispatchEvent(Notify);
 			}
 		}
-		
+		*/
 		override public function set width(value:Number):void
 		{
 			super.width = value;
