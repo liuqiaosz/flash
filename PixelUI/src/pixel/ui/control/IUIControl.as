@@ -1,18 +1,21 @@
 package pixel.ui.control
 {
+	import flash.display.DisplayObject;
 	import flash.events.IEventDispatcher;
 	
 	import pixel.ui.control.style.IVisualStyle;
+	import pixel.ui.core.PixelUINS;
 	import pixel.utility.IDispose;
 	import pixel.utility.ISerializable;
 	import pixel.utility.IUpdate;
-
+	
+	use namespace PixelUINS;
 	/**
 	 * 
 	 * UI基本接口
 	 * 
 	 **/
-	public interface IUIControl extends IDispose,IEventDispatcher,ISerializable,IUpdate
+	public interface IUIControl extends IDispose,IEventDispatcher,ISerializable,IUpdate,IFlashSprite
 	{
 		//绘制接口
 		function Render():void;
@@ -24,18 +27,6 @@ package pixel.ui.control
 		function get Style():IVisualStyle;
 		function set Style(value:IVisualStyle):void;
 		function initializer():void;
-		
-		function set x(value:Number):void;
-		function get x():Number;
-		
-		function set y(value:Number):void;
-		function get y():Number;
-		
-		function set width(value:Number):void;
-		function get width():Number;
-		
-		function set height(value:Number):void;
-		function get height():Number;
 		//以中心为注册点进行缩放
 		//function CenterScale(Value:Number):void;
 	}

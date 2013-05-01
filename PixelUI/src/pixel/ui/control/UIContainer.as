@@ -158,7 +158,7 @@ package pixel.ui.control
 			//return super.addChildAt(Child,Index);
 			if(Child is UIControl)
 			{
-				UIControl(Child).Owner = this;
+				UIControl(Child).owner = this;
 			}
 			return _Content.addChildAt(Child,Index);
 		}
@@ -309,7 +309,7 @@ package pixel.ui.control
 					break;
 			}
 			_Children.push(Child);
-			UIControl(Child).Owner = this;
+			UIControl(Child).owner = this;
 		}
 		
 		public function GetChildById(Id:String,DeepSearch:Boolean = false):IUIControl

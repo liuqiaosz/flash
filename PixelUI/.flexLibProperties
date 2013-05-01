@@ -41,6 +41,10 @@
     <classEntry path="pixel.ui.control.UIAnimationButton"/>
     <classEntry path="pixel.ui.control.vo.UIAnimAtlas"/>
     <classEntry path="pixel.ui.control.vo.UIAnimFrame"/>
+    <classEntry path="pixel.ui.control.IFlashSprite"/>
+    <classEntry path="pixel.ui.export.IPixelUIExport"/>
+    <classEntry path="pixel.ui.export.IPixelUIImport"/>
+    <classEntry path="pixel.ui.export.PixelUIXMLExport"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

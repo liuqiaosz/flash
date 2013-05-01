@@ -82,9 +82,11 @@ package editor.ui
 			
 			//this.addEventListener(ControlEditModeEvent.CHILDSELECTED,OnControlChildSelect);
 			_controlLayer.addEventListener(MouseEvent.MOUSE_DOWN,DragStart,true);
+			/*
 			_controlLayer.addEventListener(UIControlEvent.EDIT_LOADRES_OUTSIDE,function(event:UIControlEvent):void{
 				
 			});
+			*/
 		}
 		
 		//		public function IsContainer(Item:UIControl):Boolean
@@ -171,8 +173,8 @@ package editor.ui
 		
 		private var OffsetX:int = 0;
 		private var OffsetY:int = 0;
-		private var DragTarget:DisplayObject = null;
-		private var pos:Point = new Point();
+		//private var dragControl:UIControl = null;
+		//private var pos:Point = new Point();
 		private function DragStart(event:MouseEvent):void
 		{
 			event.stopImmediatePropagation();
@@ -180,15 +182,15 @@ package editor.ui
 			if(event.target is UIControl)
 			{
 				_focus = event.target as UIControl;
-				_focusBox.redraw(_focus.width,_focus.height);
-				pos.x = _focus.x;
-				pos.y = _focus.y;
+				//pos.x = _focus.x;
+				//pos.y = _focus.y;
 				
-				pos = stage.localToGlobal(pos);
+				//pos = stage.localToGlobal(pos);
 				
-				pos = _effectLayer.globalToLocal(pos);
-				_focusBox.x = pos.x;
-				_focusBox.y = pos.y;
+				//pos = _effectLayer.globalToLocal(pos);
+				
+				_focusBox.x = _effectLayer.mouseX - event.localX;
+				_focusBox.y = _effectLayer.mouseY - event.localY;
 				_focusBox.control = _focus;
 				var ChoiceNotify:NotifyEvent = new NotifyEvent(NotifyEvent.COMPONENT_SELECTED);
 				ChoiceNotify.Params.push(_focus);
@@ -200,17 +202,23 @@ package editor.ui
 				}
 				
 				//OnComponentChoice(event.target);
-				
+				/*
 				if(_Children.indexOf(_focus) >= 0 )
 				{
-					DragTarget = event.target as DisplayObject;
-					var Offset:Point = new Point(event.stageX,event.stageY);
-					Offset = DragTarget.globalToLocal(Offset);
-					OffsetX = Offset.x;
-					OffsetY = Offset.y;
-					stage.addEventListener(MouseEvent.MOUSE_MOVE,DragMove);
-					stage.addEventListener(MouseEvent.MOUSE_UP,DragEnd);
+					
 				}
+				*/
+				//var Offset:Point = new Point(event.stageX,event.stageY);
+				//Offset = DragTarget.globalToLocal(Offset);
+				OffsetX = _focus.mouseX;
+				OffsetY = _focus.mouseY;
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,dragControlMove);
+				stage.addEventListener(MouseEvent.MOUSE_UP,DragEnd);
+			}
+			else
+			{
+				_focus = null;
+				_focusBox.close();
 			}
 		}
 		
@@ -225,8 +233,9 @@ package editor.ui
 				}
 				else
 				{
-					_focus.Owner.removeChild(_focus);
+					_focus.owner.removeChild(_focus);
 					_focus = null;
+					_focusBox.close();
 				}
 			}
 		}
@@ -235,20 +244,23 @@ package editor.ui
 		private var TransPoint:Point = new Point();
 		private var PosX:int = 0;
 		private var PosY:int = 0;
-		private function DragMove(Event:MouseEvent):void
+		private function dragControlMove(Event:MouseEvent):void
 		{
-			TransPoint.x = Event.stageX;
-			TransPoint.y = Event.stageY;
-			TransPoint = globalToLocal(TransPoint);
+			TransPoint.x = _focus && _focus.owner ? _focus.owner.mouseX:_controlLayer.mouseX;
+			TransPoint.y = _focus && _focus.owner ? _focus.owner.mouseY:_controlLayer.mouseY;
+			//TransPoint = globalToLocal(TransPoint);
 			PosX = TransPoint.x - OffsetX;
 			PosY = TransPoint.y - OffsetY;
-			if(PosX + DragTarget.width > (width))
+			
+			var w:int = _focus && _focus.owner is UIControl ? _focus.owner.width:width;
+			var h:int = _focus && _focus.owner is UIControl ? _focus.owner.height:height;
+			if(PosX + _focus.width > (w))
 			{
-				PosX = width - DragTarget.width;
+				PosX = w - _focus.width;
 			}
-			if(PosY + DragTarget.height > height)
+			if(PosY + _focus.height > h)
 			{
-				PosY = height - DragTarget.height;
+				PosY = h - _focus.height;
 			}
 			if(PosX < 0)
 			{
@@ -258,15 +270,36 @@ package editor.ui
 			{
 				PosY = 0;
 			}
-			_focusBox.x = DragTarget.x = PosX;
-			_focusBox.y = DragTarget.y = PosY;;
+			_focus.x = PosX;
+			_focus.y = PosY;
+			
+			var t:Point = new Point();
+			t.x = PosX;
+			t.y = PosY;
+			
+			_focusBox.x = _effectLayer.mouseX - _focus.mouseX;
+			_focusBox.y = _effectLayer.mouseY - _focus.mouseY;
+			/*
+			if(_focusBox.parent && _focusBox.parent is UIControl)
+			{
+				if(_focusBox.x + _focusBox.width > _focusBox.parent.x + _focusBox.parent.width)
+				{
+					_focusBox.x = (_focusBox.parent.x + _focusBox.parent.width) - _focusBox.width;
+				}
+				
+				if(_focusBox.y + _focusBox.height > _focusBox.parent.y + _focusBox.parent.height)
+				{
+					_focusBox.y = (_focusBox.parent.y + _focusBox.parent.height) - _focusBox.height;
+				}
+			}
+			*/
 		}
 		
 		private function DragEnd(event:MouseEvent):void
 		{
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE,DragMove);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE,dragControlMove);
 			stage.removeEventListener(MouseEvent.MOUSE_UP,DragEnd);
-			DragTarget = null;
+			//_focus = null;
 		}
 		
 		

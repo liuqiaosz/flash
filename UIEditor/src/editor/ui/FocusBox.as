@@ -23,7 +23,7 @@ package editor.ui
 		//protected var _FrameWidth:int = 0;
 		//protected var _FrameHeight:int = 0;
 		protected var _BorderColor:uint = 0x1B8DEA;
-		protected var _PointSize:int = 10;
+		protected var _PointSize:int = 6;
 		//protected var _Actived:Boolean = false;
 		private var _lt:AnchorPoint = null;
 		private var _lm:AnchorPoint = null;
@@ -38,6 +38,17 @@ package editor.ui
 		public function set control(value:UIControl):void
 		{
 			_control = value;
+			redraw();
+			if(_control)
+			{
+				visible = true;
+			}
+		}
+		
+		public function close():void
+		{
+			_control = null;
+			visible = false;
 		}
 		
 		//private var _Control:UIControl = null;
@@ -48,6 +59,7 @@ package editor.ui
 			//_FrameWidth = _Control.width;
 			//_FrameHeight = _Control.height;
 			//addChild(_Control);
+			visible = false;
 			_lt = new AnchorPoint(_PointSize,_BorderColor);
 			_lm = new AnchorPoint(_PointSize,_BorderColor);
 			_lb = new AnchorPoint(_PointSize,_BorderColor);
@@ -83,42 +95,43 @@ package editor.ui
 			this.addEventListener(MouseEvent.MOUSE_DOWN,Click);
 		}
 		
-		public function redraw(w:int,h:int):void
+		protected function redraw():void
 		{
-			
 			this.graphics.clear();
-			
 			this.graphics.lineStyle(1,0x0000ff);
-			this.graphics.drawRect(0,0,w,h);
 			
+			if(_control)
+			{
+				this.graphics.drawRect(0,0,_control.width,_control.height);
+				var Offset:int = _PointSize / 2 + 1;
+				var Width:int =_control.width;
+				var Height:int = _control.height;
+				
+				_lt.x = -Offset;
+				_lt.y = -Offset;
+				
+				_lm.y = ((Height - _PointSize)) / 2;
+				_lm.x = -Offset;
+				
+				_lb.y = Height - Offset;
+				_lb.x = -Offset;
+				
+				_mt.x = (Width - _PointSize) / 2;
+				_mt.y = -Offset;
+				
+				_mb.x = _mt.x;
+				_mb.y = _lb.y;
+				
+				_rt.x = Width - Offset;
+				_rt.y = _mt.y;
+				
+				_rm.x = _rt.x;
+				_rm.y = _lm.y;
+				
+				_rb.x = _rt.x;
+				_rb.y = _mb.y;
+			}
 			
-			var Offset:int = _PointSize / 2 + 1;
-			var Width:int = w;
-			var Height:int = h;
-			
-			_lt.x = -Offset;
-			_lt.y = -Offset;
-			
-			_lm.y = ((Height - _PointSize)) / 2;
-			_lm.x = -Offset;
-			
-			_lb.y = Height - Offset;
-			_lb.x = -Offset;
-			
-			_mt.x = (Width - _PointSize) / 2;
-			_mt.y = -Offset;
-			
-			_mb.x = _mt.x;
-			_mb.y = _lb.y;
-			
-			_rt.x = Width - Offset;
-			_rt.y = _mt.y;
-			
-			_rm.x = _rt.x;
-			_rm.y = _lm.y;
-			
-			_rb.x = _rt.x;
-			_rb.y = _mb.y;
 			
 			
 		}
@@ -278,8 +291,7 @@ package editor.ui
 						_control.height += Pos.y;
 					}
 				}
-				
-				redraw(_control.width,_control.height);
+				redraw();
 			}
 			
 		}
@@ -339,7 +351,7 @@ class AnchorPoint extends Sprite
 	{
 		super();
 		this.graphics.clear();
-		this.graphics.beginFill(0xFFFFFF);
+		this.graphics.beginFill(Color);
 		this.graphics.lineStyle(1,Color);
 		this.graphics.drawRect(0,0,Size,Size);
 		this.graphics.endFill();

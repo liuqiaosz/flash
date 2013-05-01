@@ -22,7 +22,6 @@ package pixel.ui.control
 	import pixel.ui.control.style.UIStyle;
 	import pixel.ui.control.style.UIStyleLinkEmu;
 	import pixel.ui.control.style.UIStyleManager;
-	//import pixel.ui.control.utility.FocusFrame;
 	import pixel.ui.control.utility.ScaleRect;
 	import pixel.ui.control.utility.Utils;
 	import pixel.ui.control.vo.UIStyleMod;
@@ -78,14 +77,15 @@ package pixel.ui.control
 			stage.removeEventListener(Event.RENDER,StageRender);
 		}
 		
-		protected var _Owner:UIControl = null;
-		public function set Owner(Value:UIControl):void
+		protected var _owner:IUIContainer = null;
+		public function get owner():IUIContainer
 		{
-			_Owner = Value;
+			return _owner;
 		}
-		public function get Owner():UIControl
+		
+		public function set owner(value:IUIContainer):void
 		{
-			return _Owner;
+			_owner = value;
 		}
 		
 		//protected var _Frame:FocusFrame = null;
@@ -192,7 +192,7 @@ package pixel.ui.control
 //				_Style.BackgroundImage = null;
 //			}
 			_Style.dispose();
-			_Owner = null;
+			_owner = null;
 			_Style = null;
 		}
 		
