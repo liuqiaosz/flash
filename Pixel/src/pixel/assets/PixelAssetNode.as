@@ -66,7 +66,8 @@ package pixel.assets
 		{
 			if(_loaded)
 			{
-				return _loader.contentLoaderInfo.applicationDomain.getQualifiedDefinitionNames();
+				return null;
+				//return _loader.contentLoaderInfo.applicationDomain.getQualifiedDefinitionNames();
 			}
 			return null;
 		}

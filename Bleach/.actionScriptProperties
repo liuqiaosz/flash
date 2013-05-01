@@ -45,9 +45,9 @@
       <libraryPathEntry kind="3" linkType="2" path="/Pixel/bin-debug/Pixel.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="2" path="/PixelUI/bin-debug/PixelUI.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="2" path="/PixelUtility/bin-debug/PixelUtility.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="1" linkType="1" path="/Users/LiuQiao/Documents/Developer/Code/flash/libs"/>
       <libraryPathEntry kind="3" linkType="2" path="/PixelTexture/bin-debug/PixelTexture.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/BleachProtocol/bin/BleachProtocol.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/greensock/bin/greensock.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

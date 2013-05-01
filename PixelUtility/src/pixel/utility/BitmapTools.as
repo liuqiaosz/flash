@@ -2,7 +2,7 @@ package pixel.utility
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.PNGEncoderOptions;
+	//import flash.display.PNGEncoderOptions;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -163,12 +163,12 @@ package pixel.utility
 			return pixels;
 		}
 		
-		
+		/*
 		public static function BitmapEncodeToPNG(source:BitmapData):ByteArray
 		{
 			return source.encode(source.rect,new PNGEncoderOptions());
 		}
-		
+		*/
 		public static function GetAlpha(Pixel:uint):uint
 		{
 			return Pixel >> 24 & 0xFF;

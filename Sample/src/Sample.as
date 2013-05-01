@@ -579,32 +579,7 @@ package
 		
 		[Embed(source="map_terrain.png")]
 		private var MAPT:Class;
-		
-		public function pngTo4444():void
-		{
-			var png:Bitmap = new MAPT() as Bitmap;
-			
-			var bmp:BitmapData = png.bitmapData;
-			
-			var bmp4:BitmapData = new BitmapData(bmp.width,bmp.height);
-			
-			for(var i:int = 0; i<bmp4.height; i++)
-			{
-				for(var j:int = 0; j<bmp4.width; j++)
-				{
-					var pixel:uint = bmp.getPixel32(j,i);
-					pixel = ColorCode.RGB8888ToRGB4444(pixel).Pixel;
-					bmp4.setPixel32(j,i,pixel);
-				}
-			}
-			var op:PNGEncoderOptions = new PNGEncoderOptions();
-			var data:ByteArray = BitmapTools.BitmapEncodeToPNG(bmp4);
-			
-			var writer:FileStream = new FileStream();
-			writer.open(new File("D:\\map_terrain.png"),FileMode.WRITE);
-			writer.writeBytes(data,0,data.length);
-			writer.close();
-		}
+
 		
 		private function combotest():void
 		{

@@ -14,7 +14,7 @@ package
 	import flash.utils.getDefinitionByName;
 	
 	import pixel.core.PixelSprite;
-	import pixel.core.PixelSpriteSheet;
+	//import pixel.core.PixelSpriteSheet;
 	import pixel.message.PixelMessage;
 	import pixel.texture.PixelTextureFactory;
 	import pixel.texture.event.PixelTextureEvent;
@@ -39,7 +39,7 @@ package
 		private var role02:UIButton = null;
 		private var role03:UIButton = null;
 		private var role04:UIButton = null;
-		private var rolePower:PixelSpriteSheet = null;
+		//private var rolePower:PixelSpriteSheet = null;
 		private var enter:UIButton = null;
 		private var playerName:UITextInput = null;
 		private var ui:UIControl = null;
@@ -114,6 +114,7 @@ package
 		
 		override protected function sceneUpdate():void
 		{
+			/*
 			if(rolePower)
 			{
 				var w:int = rolePower.frame.bitmap.width;
@@ -122,6 +123,7 @@ package
 				role.y = rolePower.y = (600 - h) /2 + 100;
 				//rolePower.update();
 			}
+			*/
 		}
 		
 		override public function dispose():void

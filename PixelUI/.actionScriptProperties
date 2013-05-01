@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="PixelUI.as" projectUUID="08ff93c6-6303-4512-bf7a-ea246b5c50f5" version="10">
-  <compiler additionalCompilerArguments="-debug=true" autoRSLOrdering="true" copyDependentFiles="false" flexSDK="Flex 4.6.0" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderLocation="/Users/LiuQiao/Documents/Developer/Code/flash/PixelLibraries" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="10.3.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-debug=true" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderLocation="D:/Users/LiuQiao/Documents/Developer/Code/flash/PixelLibraries" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -65,9 +65,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flash-integration.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="1" linkType="1" path="/Users/LiuQiao/Documents/Developer/Code/flash/libs"/>
-      <libraryPathEntry kind="3" linkType="2" path="/PixelUtility/bin-debug/PixelUtility.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="2" path="/PixelTexture/bin-debug/PixelTexture.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/greensock/bin/greensock.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/PixelUtility/bin-debug/PixelUtility.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
